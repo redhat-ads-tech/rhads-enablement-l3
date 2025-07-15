@@ -1,43 +1,64 @@
-= {lab_name}
+= Red Hat Advanced Developer Suite (RHADS) - Technical Workshop
 
-The `lab_name` var, known as an asciidoc attribute, above was set in `./content/antora.yml` and can be used to set the lab_name or title of your content.
-You are both free to change its value and if you prefer to use a different var name, you can change the value of `lab_name`, for example to `title` in `./content/antora.yml` and then reference it in your content as `\{title}`. +
+image::rhads-logo.png[RHADS Logo,align="center",width=200]
 
-image::rhel-logo-black.jpg[rhel-logo-black,55%,55%]
+== Welcome to RHADS Technical Training Workshop
 
-== Variables
+This comprehensive workshop provides **deep technical understanding** of Red Hat Advanced Developer Suite (RHADS) components and their implementation. Designed for platform engineers, DevOps practitioners, and technical leaders, this hands-on learning experience will equip you with the expertise to deploy, configure, and optimize RHADS in production environments.
 
-Other vars can also be set there, such as `ssh_user` and `ssh_password`, and referenced inline in the lab content by using the `\{foo}` syntax.
+== About Red Hat Advanced Developer Suite
 
-This is another var, or asciidoc attribute, from `./content/antora.yml` {my_var}
+Red Hat Advanced Developer Suite brings together an enterprise-grade developer portal, enhanced software supply chain security, and components that empower platform engineers to enhance developer productivity and streamline the software development lifecycle.
 
-== Writing your lab
+=== Core Benefits
 
-Whatever type of content you are writing we'll refer to your *content* as "your lab" in this document.
+* **Improved Developer Productivity**: Accelerate development with rapid onboarding into preconfigured workspaces, automated templates, and self-service capabilities
+* **Enhanced Software Supply Chain Security**: Protect your software supply chain with automated signing, cryptographic verification, and end-to-end provenance tracking
+* **Modernization and Infrastructure Adaptability**: Drive modernization with flexible tooling integration and AI-driven guidance for refactoring efforts
 
-=== Lab structure
+=== Key Components Covered
 
-Wether you are writing a lab
+[cols="1,3"]
+|===
+| Component | Description
 
-* First, we will build a monolithic application already compiled as RPM packages and put it into a container. This will allow us to deploy the application, copy it between machines, and update it separately from the operating system. This process affords us a portable and easily maintained component instead of tightly coupling the application with your operating system maintenance.
+| **Red Hat Developer Hub (RHDH)**
+| Enterprise-grade developer portal providing convenient access to curated resources and promoting efficiency and collaboration
 
-* In closing we will build a second container on a different operating system version that makes an application not packaged into RPMs. This will be similar to a web application deployment, positioning the correct files at the right locations. To do this, we will pull a project from GitHub and position the component files within our container image. The purpose of this is to achieve a portable application container that can deploy on several different versions of Red Hat Enterprise Linux. This also provides the benefit of decoupling your application maintenance, which would all happen by building new containers versus operating system maintenance. The container is no longer reliant on the operating system installed on the machine where the application is deployed.
+| **Red Hat Trusted Profile Analyzer (TPA)**
+| Build trust in your application's codebase with access to vulnerability fixes and verified content
 
-. Now let's examine this cluster a bit more by describing the cluster (the `$GUID` environment variable is already set for you so you can immediately describe your individual cluster):
-+
-[source,sh,role=execute]
-----
-podman ps
-----
-+
-.Sample Output
-[source,texinfo,subs="attributes"]
-----
-CONTAINER ID  IMAGE                        COMMAND           CREATED      STATUS      PORTS                 NAMES
-2dcfee9e50c4  docker.io/library/httpd:2.4  httpd-foreground  3 hours ago  Up 3 hours  0.0.0.0:8080->80/tcp  showroom-httpd
-----
+| **Red Hat Trusted Artifact Signer (TAS)**
+| Enhance software supply chain security by simplifying cryptographic signing and verification of software artifacts
 
-=== Lab Access
+| **AI Integration**
+| Trustworthy AI implementation and AI-driven development workflows within the RHADS ecosystem
+|===
 
-The terminal window to your right is *already* logged into the lab environment as the `{ssh_user}` user via `ssh`. 
-All steps of this lab are to be completed as the `{ssh_user}` user.
+== Workshop Objectives
+
+By the end of this workshop, you will be able to:
+
+* Deploy and configure RHADS components in production environments
+* Implement trusted software supply chain (TSSC) practices across different CI/CD systems
+* Customize RHDH with third-party integrations and self-service patterns
+* Apply security best practices and compliance standards
+* Integrate AI capabilities with trustworthy AI principles
+* Execute end-to-end RHADS implementations for production use
+
+== Prerequisites
+
+* Experience with Red Hat OpenShift and containerized applications
+* Understanding of CI/CD pipelines and DevOps practices
+* Basic knowledge of software supply chain security concepts
+* Familiarity with developer tools and workflows
+
+== Workshop Structure
+
+This workshop consists of 20 comprehensive modules covering everything from initial setup to advanced production implementations. Each module includes hands-on exercises, real-world scenarios, and practical configuration examples.
+
+Ready to dive deep into RHADS? Let's begin your journey toward mastering Red Hat Advanced Developer Suite!
+
+---
+
+_For more information about Red Hat Advanced Developer Suite, visit: https://www.redhat.com/en/products/advanced-developer-suite_
