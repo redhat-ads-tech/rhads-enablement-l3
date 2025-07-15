@@ -1,0 +1,20 @@
+Module 1: Getting started with RHADS: RHADS architecture and deployment options
+Module 2: Setup RHDH: Install and setup the tools to fit customer environments with RHDH
+Module 3: Setup TPA: Install and setup the tools to fit customer environments with TPA
+Module 4: Setup TAS: Install and setup the tools to fit customer environments with TAS
+Module 5: Customer configurations and third-party integrations: Customizing the tools to fit customer environments
+Module 6: Customer configurations RHDH: Customizing RHDH
+Module 7: Orchestrator Overview
+Module 8: Getting started with security best practices
+Module 9: Trusted Software Supply Chain with TPA
+Module 10: Attestations, Tekton Chains & Enterprise Contract (Conforma) with TAS
+Module 11: Trusted Software Supply Chain
+Module 12: Trusted Software Supply Chain with RHDH for production
+Module 13: Trusted Software Supply Chain with other CIs
+Module 14: Patterns for third-party tools integrations using software templates for self-service
+Module 15: Intro to AI for AI Engineers
+Module 16: RHADS for AI Engineers
+Module 17: Intro to Trustworthy AI
+Module 18: Trustworthy AI
+Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain
+Module 20: End to End with RHADS

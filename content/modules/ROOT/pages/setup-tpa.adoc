@@ -1,0 +1,17 @@
+= Setup TPA
+
+== Install and setup the tools to fit customer environments with TPA
+
+// TODO: Add content for TPA installation and setup
+
+== Installation Requirements
+
+// TODO: Add installation requirements
+
+== Configuration
+
+// TODO: Add configuration steps
+
+== Verification
+
+// TODO: Add verification steps 

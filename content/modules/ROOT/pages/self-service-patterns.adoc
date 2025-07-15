@@ -1,0 +1,17 @@
+= Integration Patterns
+
+== Patterns for third-party tools integrations using software templates for self-service
+
+// TODO: Add content for integration patterns
+
+== Software Templates
+
+// TODO: Add software templates content
+
+== Self-service Patterns
+
+// TODO: Add self-service patterns
+
+== Implementation Examples
+
+// TODO: Add implementation examples 

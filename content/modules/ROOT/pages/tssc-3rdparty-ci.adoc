@@ -1,0 +1,17 @@
+= Trusted Software Supply Chain with Other CIs
+
+== Integration with Other CI Systems
+
+// TODO: Add content for trusted software supply chain with other CIs
+
+== Supported CI Systems
+
+// TODO: Add supported CI systems
+
+== Integration Patterns
+
+// TODO: Add integration patterns
+
+== Configuration Examples
+
+// TODO: Add configuration examples 

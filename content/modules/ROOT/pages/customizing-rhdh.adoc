@@ -1,0 +1,17 @@
+= Customizing RHDH
+
+== Customer configurations RHDH
+
+// TODO: Add content for customizing RHDH
+
+== Configuration Options
+
+// TODO: Add configuration options
+
+== Customization Examples
+
+// TODO: Add customization examples
+
+== Advanced Settings
+
+// TODO: Add advanced settings 
