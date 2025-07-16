@@ -2,7 +2,7 @@
 
 == RHADS Architecture and Deployment Options
 
-// TODO: Add content for RHADS architecture and deployment options
+// TODO: Add cntent for RHADS architecture and deployment options
 
 == Prerequisites
 
