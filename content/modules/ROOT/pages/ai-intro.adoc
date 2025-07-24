@@ -9,7 +9,7 @@ In this module, you have the opportunity to explore a role with a fictional comp
 Before making recommendations or choosing an approach, you must learn critical concepts for building AI applications. 
 
 == AI Overview
-The rise of AI has created new roles in the industry, such as AI Engineers. These personas are responsible for building AI solutions, such as chatbots, AI assistants, fraud detection systems, MCP servers, and more. The challenge is to bring standardization in a consistent, secure, and transparent way to drive adoption of AI.
+The rise of AI has created new roles in the industry, such as AI Engineers. These personas are responsible for building AI solutions, such as a chatbot, AI assistants, fraud detection systems, MCP servers, and more. The challenge is to bring standardization in a consistent, secure, and transparent way to drive adoption of AI.
 
 The diagram below shows the key personas involved in the AI development lifecycle and how they interact. Understanding these roles will help you achieve your goal as a Consultant since it will help you engage with the appropriate teams and make recommendations for future projects.
 
@@ -98,7 +98,7 @@ link:https://www.anthropic.com/news/model-context-protocol[Model Context Protoco
 
 
 == Llama Stack Overview
-To standarize and bring best practices. Llama Stack (an open-source framework developed by Meta) consists of a set of tools for creating generative AI applications using standardized APIs. 
+To standardize and bring best practices. Llama Stack (an open-source framework developed by Meta) consists of a set of tools for creating generative AI applications using standardized APIs. 
 
 The following image, created by the link:https://llama-stack.readthedocs.io/en/latest/[Llama Stack community,window='_blank'], shows the key components of Llama Stack are:
 
@@ -106,7 +106,7 @@ The following image, created by the link:https://llama-stack.readthedocs.io/en/l
 * Plugin architecture that supports many APIs across various environments (mobile, cloud, on-premise). This architecture allows for rapid deployment of prepackaged and verified distributions.
 * Developer interfaces, including a CLI and SDKs for Python, Node.js, iOS, and Android.
 ** Agents
-** Evals
+** Eval
 ** Inference
 ** RAG
 ** Safety
