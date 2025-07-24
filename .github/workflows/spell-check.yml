@@ -7,7 +7,7 @@ on:
       - '.github/workflows/spell-check.yml'
       - '.github/workflows/.cspell.json'
   push:
-    branches: [ main ]
+    branches: [ module-15-final ]
     paths:
       - 'content/**/*.adoc'
       - '.github/workflows/spell-check.yml'
