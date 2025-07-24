@@ -13,7 +13,7 @@ The rise of AI has created new roles in the industry, such as AI Engineers. Thes
 
 The diagram below shows the key personas involved in the AI development lifecycle and how they interact. Understanding these roles will help you achieve your goal as a Consultant since it will help you engage with the appropriate teams and make recommendations for future projects.
 
-image::assets/images/module15/personas_ai.png[Personas]
+image::module15/personas_ai.png[Personas]
 
 Platform Engineers build and maintain OpenShift, an application platform that provides foundational technologies with the necessary tools to support MLOps and AIOps engineers in efficiently deploying models to production while following best practices. Then, AI Engineers will build AI applications using the deployed LLMs that the Data Scientists first trained and built. 
 
