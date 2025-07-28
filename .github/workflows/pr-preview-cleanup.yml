@@ -1,0 +1,41 @@
+name: PR Preview Cleanup
+
+on:
+  pull_request:
+    types: [ closed ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  cleanup-preview:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Add cleanup comment
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          ## 🧹 Documentation Preview Cleanup
+          
+          This PR has been ${{ github.event.pull_request.merged && 'merged' || 'closed' }}. 
+          
+          The documentation preview for PR #${{ github.event.pull_request.number }} has been scheduled for cleanup.
+          
+          **📋 Cleanup Details:**
+          - **PR Number:** #${{ github.event.pull_request.number }}
+          - **Status:** ${{ github.event.pull_request.merged && 'Merged' || 'Closed' }}
+          - **Cleanup Time:** ${{ steps.date.outputs.date }}
+          
+          *Note: Preview artifacts and deployments will be automatically cleaned up according to retention policies.*
+    
+    - name: Get current date
+      id: date
+      run: echo "date=$(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT 
