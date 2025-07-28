@@ -1,0 +1,97 @@
+name: PR Documentation Preview with Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  build-and-deploy-preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}pr-${{ github.event.number }}/
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install Antora
+      run: npm install -g @antora/cli@3.1 @antora/site-generator@3.1
+    
+    - name: Create cache directory
+      run: mkdir -p ./.cache/antora
+    
+    - name: Build documentation
+      run: |
+        echo "Building Antora documentation..."
+        antora --stacktrace default-site.yml
+    
+    - name: Create PR-specific directory
+      run: |
+        mkdir -p preview/pr-${{ github.event.number }}
+        cp -r www/* preview/pr-${{ github.event.number }}/
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    
+    - name: Upload to GitHub Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: preview/
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+    
+    - name: Get current date
+      id: date
+      run: echo "date=$(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+    
+    - name: Find PR comment
+      uses: peter-evans/find-comment@v3
+      id: find-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: 'Documentation Preview'
+    
+    - name: Create or update PR comment
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        edit-mode: replace
+        body: |
+          ## 📖 Documentation Preview
+          
+          The documentation preview for this PR has been built and deployed successfully!
+          
+          **📋 Preview Details:**
+          - **PR Number:** #${{ github.event.pull_request.number }}
+          - **Commit:** ${{ github.event.pull_request.head.sha }}
+          - **Build Time:** ${{ steps.date.outputs.date }}
+          
+          **🌐 Live Preview:**
+          [**🔗 View Documentation Preview**](${{ steps.deployment.outputs.page_url }}pr-${{ github.event.number }}/)
+          
+          **📥 Alternative - Download Artifact:**
+          You can also download the generated documentation from the [Actions tab](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+          
+          **🔄 This comment will be updated automatically when new commits are pushed to this PR.**
+          
+          ---
+          *Preview will be available for 30 days or until the PR is closed.* 
