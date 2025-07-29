@@ -113,7 +113,7 @@ Policies are enforced from CI through runtime using signed artifacts, security s
 * Attestation verification
 * Image scanning
 
-=== RHADS Install Options
+== RHADS Install Options
 
 RHADS is designed as an **add-on offering for https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift] and https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus[Red Hat OpenShift Platform Plus]**. Additionally, using https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer[Red Hat Trusted Artifact Signer] to sign artifacts on Red Hat Enterprise Linux (RHEL) is supported.
 
