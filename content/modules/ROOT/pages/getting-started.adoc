@@ -4,16 +4,14 @@
 
 Organizations developing software face a critical dual challenge: the urgent need to move fast by integrating AI and boosting developer productivity, coupled with the imperative to stay safe amidst rising software supply chain threats. Top software engineering priorities include integrating AI and increasing developer productivity, yet organizations struggle with long onboarding times, inconsistent development environments, and a lack of automation, which impede their ability to accelerate innovation and reduce the average 7-day software development cycle time. Simultaneously, despite open-source components comprising around 90% of modern applications, the ecosystem has seen a 156% year-on-year increase in malicious packages, leading to an estimated $60 billion in damages in 2025 and demanding effective risk remediation. This complex environment, where speed cannot compromise security, necessitates an integrated and comprehensive platform engineering solution like https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-developer-suite[Red Hat Advanced Developer Suite (RHADS)] to balance these competing demands.
 
-== RHADS Technical Overview
-
-RHADS combines platform engineering tools with enhanced security capabilities to help accelerate and simplify application development with new enhancements to speed the adoption of AI 
+RHADS combines platform engineering tools with enhanced security capabilities to help accelerate and simplify application development with new enhancements to speed the adoption of AI:
 
 * Modular design allows it to be integrated with existing platforms and systems including Red Hat's platforms
 * Integrates with existing security capabilities found in **https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes[Red Hat Advanced Cluster Security]**
 * Complements existing developer tools from Red Hat including **https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift DevSpaces]**
 * Built on leading open source projects like **https://backstage.io[Backstage]** and **https://www.sigstore.dev[Sigstore]**
 
-=== Architecture Overview
+== Architecture Overview
 
 RHADS is not just a set of tools; it's purpose-built for balancing speed and security, integrating into existing workflows. It combines platform engineering tools with enhanced security capabilities to accelerate and simplify application development.
 
@@ -41,7 +39,7 @@ RHADS **complements OpenShift**:
 
 The architecture aims to empower platform teams to define and curate trusted environments and tools, which developers then consume for accelerated, secure application delivery from development to production.
 
-=== Typical RHADS deployment
+== Typical RHADS deployment
 
 RHADS is designed with a modular approach that allows it to be integrated seamlessly with a variety of supported tools and existing platforms and systems, including those already in use by customers. The following diagram shows a typical RHADS deployment, the components involved, and how they interact with each other.
 
@@ -49,17 +47,71 @@ image::getting-started/rhads-components.png[alt="RHADS Components"]
 
 Here is a summary of the components and their roles based on the diagram above.
 
-* **Developer Hub** - This component acts as the central portal for developers to log in, monitor applications, and access cluster resources and logs. Developer Hub provides a centralized portal for templates, documentation, and tools
-* **Authentication Provider (OIDC, Keycloak, etc.)** - It handles user login and authentication for Developer Hub and is a key component in enabling keyless signing for software artifacts within RHTAS. The signature is tied to an OIDC Identity like Keycloak, Google, or GitHub
-* **OpenShift Container Platform** - This platform hosts the running applications and is where resources are deployed. It is also where most components of RHADS are deployed, along with storage, networking, and compute resources.
-* **OpenShift GitOps** - It monitors source code repositories and automatically deploys resources to the OpenShift cluster. GitOps plays a significant role in the deployment stage of the software development lifecycle within RHADS by enabling declarative continuous delivery
-* **SCM (Source Code Management) (GitHub, GitLab, Azure Devops, etc.)** - This system stores application source code and is used to trigger CI pipelines.
-* **CI (Continuous Integration) (OpenShift Pipelines, Jenkins, etc.)** - It builds application artifacts, pushes them to the registry, and triggers various security scans and validations. It also integrates with RHTAS to sign artifacts. RHADS is flexible enough to allow customers with other leading CI/CD solutions, such as Jenkins pipelines and GitHub Actions, to integrate them into Red Hat Developer Hub. This ensures that customers can continue to leverage their existing CI/CD investments
-* **Image Registry (Quay, JFrog, etc.)** - It stores and serves the container images and artifacts created by the CI pipeline, including container images and their related signatures, attestations, and Software Bill of Materials (SBOMs)
-* **Advanced Cluster Security** - This component receives and analyzes the Software Bill of Materials (SBOM) from the CI pipeline. ACS plays a critical role in enforcing security policies for containerized applications and ensuring that only trusted, verified, and compliant artifacts run in production environments.
-* **Trusted Artifact Signer** - It simplifies cryptographic signing and verification for software artifacts like container images, binaries, and documents during CI pipeline runs. It supports keyless and key-based signing, using existing user identities like GitHub, Google, or SSO, and maintains an immutable audit trail for maximum transparency and trust.
-* **Trusted Profile Analyzer** - It receives and analyzes the Software Bill of Materials (SBOMs), Vulnerability Exploitability Exchanges (VEX), and Common Vulnerabilities and Exposures (CVEs) as part of the CI pipeline. It also integrates with OpenShift DevSpaces to provide a unified view of the application's security posture directly from the IDE.
+=== Developer Productivity
 
+==== IDE (Red Hat OpenShift Dev Spaces, IntelliJ, VS Code)
+Provides cloud-native development environments, enabling developers to code using familiar tools. These IDEs integrate with the Developer Portal and CI pipelines, allowing seamless transition from code to build.
+
+==== Developer Portal (Red Hat Developer Hub)
+A centralized hub offering self-service templates, API documentation, component catalogs, and plugins to integrate with other tools and services including Red Hat OpenShift and a variety of 3rd party components. It connects developers with resources and tools across the development lifecycle, and enables team collaboration and knowledge sharing.
+
+==== Version Control (GitHub, GitLab)
+Houses both application and platform source code, including policies and configurations. Feeds into CI pipelines and GitOps workflows, ensuring traceable and automated deployments.
+
+=== Integration & Delivery
+
+==== CI Pipeline (Tekton, GitLab Runners, Jenkins, GitHub Actions, Azure DevOps)
+Automates building, testing, and integration of code changes. It pulls source code from version control and produces deployable artifacts. It also integrates with RHTAS to sign artifacts. RHADS is flexible enough to allow customers with other leading CI/CD solutions, such as Jenkins pipelines and GitHub Actions, to integrate them into Red Hat Developer Hub. This ensures that customers can continue to leverage their existing CI/CD investments.
+
+==== Artifact Registry (Quay, JFrog)
+Stores and manages container images and other build artifacts such as SBOMs, VEX documents, and attestations. All artifacts are signed, scanned, and verified before deployment to ensure compliance and security.
+
+==== Desired State
+Defines the target configuration and image versions that the application platform should enforce. GitOps tools reconcile actual state with this desired configuration to maintain consistency. 
+
+=== Secure Supply Chain
+
+==== Early Risk/Compliance Analysis (Red Hat Trusted Profile Analyzer)
+Analyzes Software Bills of Materials (SBOMs) and VEX documents to detect vulnerabilities early in the development cycle. Integrates with CI pipelines to inform developers of potential risks. It also integrates with OpenShift DevSpaces to provide a unified view of the application's security posture directly from the IDE.
+
+==== Artifact Signing & Verification (Red Hat Trusted Artifact Signer)
+Digitally signs and verifies artifacts, ensuring their integrity and provenance. Integrates with registries and GitOps tools to block untrusted content from being deployed.
+
+==== Image/Deployment Scan (Red Hat Advanced Cluster Security)
+Scans container images and runtime deployments for vulnerabilities and policy violations. Works with CI/CD pipelines and cluster environments to enforce security policies.
+
+=== Application Platform
+
+==== GitOps (OpenShift GitOps)
+Automates application deployment and lifecycle management using Git repositories as the source of truth. Applies the desired state to clusters in a continuous manner.
+
+==== Target Clusters (Red Hat OpenShift)
+Kubernetes-based environments for running applications. Includes support for multi-cluster management through Red Hat Advanced Cluster Management.
+
+==== Platform Services
+Provides core operational capabilities including:
+- Service Mesh
+- Serverless
+- Builds and Pipelines
+- GitOps
+- Tracing
+- Observability
+- Logging
+- Cost Management
+
+=== Cross-Cutting Concerns
+
+==== Authentication / Authorization / Signing
+Managed via Keycloak and other OpenID Connect providers for secure identity and access management. Digital signing ensures trust across all pipeline stages. RHADS supports both keyless and key-based signing, using existing user identities like GitHub, Google, or SSO, and maintains an immutable audit trail for maximum transparency and trust.
+
+==== Policy Enforcement
+Policies are enforced from CI through runtime using signed artifacts, security scanning, and GitOps reconciliation. RHADS supports a variety of policies, including:
+
+* Vulnerability scanning
+* License compliance
+* SBOM compliance
+* Attestation verification
+* Image scanning
 
 === RHADS Install Options
 
