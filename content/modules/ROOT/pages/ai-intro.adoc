@@ -1,17 +1,137 @@
-= Intro to AI for AI Engineers
+= RHADS for AI Engineers
 
-== Introduction to AI for AI Engineers
+== Introduction
 
-// TODO: Add content for intro to AI for AI engineers
+In this module, you will review AI concepts for Engineers, including frameworks, protocols, and tools to build AI applications.
 
-== AI Fundamentals
+=== Study Case
+In this module, you have the opportunity to explore a role with a fictional company. You are a Consultant working for a global bank called ACME, with many branches worldwide. Your role is to introduce AI capabilities to the bank, ensuring its adoption including best practices, security, and standardization. 
+Before making recommendations or choosing an approach, you must learn critical concepts for building AI applications. 
 
-// TODO: Add AI fundamentals
+== AI Overview
+The rise of AI has created new roles in the industry, such as AI Engineers. These personas are responsible for building AI solutions, such as a chatbot, AI assistants, fraud detection systems, AI Agents, and more. The challenge is to bring standardization in a consistent, secure, and transparent way to drive adoption of AI.
 
-== Tools and Frameworks
+The diagram below shows the key personas involved in the AI development lifecycle and how they interact. Understanding these roles will help you achieve your goal as a Consultant since it will help you engage with the appropriate teams and make recommendations for future projects.
 
-// TODO: Add tools and frameworks
+image::ai-intro/personas_ai.png[Personas]
 
-== Best Practices
+Platform Engineers build and maintain OpenShift, an application platform that provides foundational technologies with the necessary tools to support MLOps and AIOps engineers in efficiently deploying models to production while following best practices. Then, AI Engineers will build AI applications using the deployed LLMs that the Data Scientists first trained and built. 
 
-// TODO: Add best practices 
+In the next sections, you will explore core AI concepts around AI applications, including standards, frameworks and protocols.
+
+
+== Overview of Retrieval-Augmented Generation (RAG)
+
+Organizations seek to integrate AI into their software ecosystems to drive business value. To achieve this, AI applications must be capable of understanding technical concepts specific to the industries and organizations. 
+
+Foundational models are enhanced using Retrieval-Augmented Generation (RAG) techniques to improve large language models (LLMs) output with domain-specific business knowledge, such as information about bank-specific products or customer loyalty programs.
+
+A potential use case is a chatbot trained on a bank’s products and services, enabling it to provide customers with the product and services information when they are looking to open a bank account or explore additional financial products.
+
+=== How does RAG work?
+
+1. **Data Collection:** Data is collected from both structured (databases) and unstructured data (documents, marketing materials, blogs). This process can be accomplished asynchronously to keep the system up to date with the latest sources.
+
+2. **Embedding system:** Once the user submits a question, an intermediary system converts it into a numerical representation (embedding).
+
+3. **Retrieval:** The system compares the resulting embedding against the data sources looking for similarities in content.
+
+4. **Augmentation:** This retrieved context and the question will be creating an augmented prompt to be sent to the LLM for processing.
+
+5. **Generation:** The LLM will generate a response back to the user.
+
+image::ai-intro/rag_how_works.png[RAG flow]
+
+
+=== Benefits
+
+** Up-to-date Information: RAG techniques enable LLMs to keep information updated with relevant sources.
+
+** Reduced Hallucinations: RAG reduces hallucinations given the specific domain knowledge acquired from the different sources.
+
+** Enhanced Domain-Specific Knowledge: With RAG, organizations can customize the LLM with specific knowledge according to their business needs and goals.
+
+** Transparency: Organizations control the model-specific knowledge domain based on the sources used during RAG.
+
+
+== AI Agents 
+Agents are applications that, on behalf of the user and autonomously, will execute actions according to specific prompts using LLMs and third-party tools such as websites, databases.
+
+=== AI Agents vs AI workflows
+
+An AI workflow is a predefined series of steps to accomplish several tasks with one or many goals, including AI for logic or decision making based on previous information or specific parameters.
+
+Agents can make decisions and reasoning to achieve a specific outcome without a clear path. So, Agents do not need the predefined steps or sequences as the workflow needs and it could help solve different use cases.
+
+For example, an AI workflow could be deciding if bank customers should be managed by different services/departments based on certain information, credit check, salary range, etc.
+An AI agent could determine if a customer should receive a loan and how much based on different information such as customer profile, customer annual spent, credit background, and customer financial profile. 
+The AI agent can process complex information and make decisions accordingly. 
+
+=== Agent Frameworks
+
+AI Agent Frameworks help developers to build AI agents by reducing boilerplate code, standardizing building blocks to be reused during agent implementation.
+
+=== Benefits
+
+* Predefined architecture and functions to build, manage, and call agents.
+* Communication between third-party tools and other actors, including end-users, agents, and systems.
+* Retain context from previous interactions
+
+=== Agent Protocols
+
+=== Agent2Agent(A2A)
+
+Agent2Agent is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. Provides security and agent discovery using Agent cards to access detailed information about an agent.
+
+
+=== Overview Model Context Protocol (MCP) 
+
+Model Context Protocol is an open protocol, created by Anthropic. It provides a standardized way to build AI agents and AI workflows. It defines how applications can call external tools, retrieve data, and interact with other systems to enhance their capabilities.
+MCP provides MCP clients and MCP servers. Developers can use MCP servers to enhance their applications by building functionalities that later will serve MPC clients that any AI applications will consume. 
+
+=== Benefits
+
+* Many available pre-built integrations that a LLM can directly plug into
+* MCP makes it flexibility to switch between different LLM providers
+
+image::ai-intro/mcp_architecture.png[MCP architecture]
+
+link:https://www.anthropic.com/news/model-context-protocol[Model Context Protocol- Anthropic website,window='_blank']
+
+
+== Llama Stack Overview
+To standardize and bring best practices. Llama Stack (an open-source framework developed by Meta) consists of a set of tools for creating generative AI applications using standardized APIs. 
+
+The following image, created by the link:https://llama-stack.readthedocs.io/en/latest/[Llama Stack community,window='_blank'], shows the key components of Llama Stack are:
+
+* Unified API layer supporting:
+* Plugin architecture that supports many APIs across various environments (mobile, cloud, on-premise). This architecture allows for rapid deployment of prepackaged and verified distributions.
+* Developer interfaces, including a CLI and SDKs for Python, Node.js, iOS, and Android.
+** Agents
+** Eval
+** Inference
+** RAG
+** Safety
+** Telemetry
+** Tools
+
+image::ai-intro/llama_stack.png[Llama Stack]
+
+=== Benefits
+
+* Flexibility to work with different models, plugins, and developer tools.
+* Easy integration with AI tooling
+* Interoperability and Standardization when building AI applications
+
+== Conclusion
+
+During this section, you have explored the core AI concepts. You will learn how Red Hat implements these solutions within the Red Hat stack, increasing user experience, interoperability, and security with open source tools.
+
+== References
+
+* link:https://llama-stack.readthedocs.io/en/latest/[Llama Stack,window='_blank']
+* link:https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[blog AI Agents,window='_blank']
+* link:https://www.redhat.com/en/topics/ai/what-is-agentic-ai?intcmp=7013a000003Sq0iAAC[What's Agentic AI,window='_blank']
+* link:https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[AI Agents,window='_blank']
+* link:https://a2a-protocol.org/latest/specification/[A2A,window='_blank']
+
