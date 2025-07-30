@@ -1,0 +1,10 @@
+= Hands-on Lab RHADS for AI Engineers
+
+[#introduction]
+== Introduction
+
+In this lab, we will gain hands-on experience working with RHADS and Developer tools to build AI applications, including:
+
+* Build an AI application locally with Podman AI Lab
+* Build an Agent with RHDH from OpenShift Dev Spaces
+* Build an Agent with RHADS with security integrated
