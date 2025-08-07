@@ -1,0 +1,187 @@
+= Software Template Patterns for Self-service
+
+[#introduction]
+== Introduction
+
+Software templates are the heart of Red Hat Developer Hub (RHDH). This section will explore leveraging software templates to enable self-service integration of third-party tools and platform capabilities.
+During this session, you will explore the different patterns and self-service approach to reduce cognitive load, scale operations, and promote best practices across the organization.
+
+For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems with self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team's needs. Now, let's explore the different architectures and designs for self-service.
+
+
+== Pre-reqs
+
+* link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps,window='_blank']
+* link:https://www.redhat.com/en/topics/devops/what-is-helm[What is Helm,window='_blank']
+
+[#architecting-software-templates]
+== Architecting Software Templates
+
+Architecting software templates is essential for implementing Platform Engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to advancing a successful self-service approach.
+
+Let's review the core structure of software templates:
+
+==== *Software Templates Structure*
+
+The software templates' structure in folders and files will vary depending on the component's type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each other.
+
+==== *Folder for skeleton*
+
+This folder contains the application source code and catalog file, including the information to be displayed on the component's UI in RHDH.
+
+
+==== *Folder for manifests*
+
+This folder contains the application Kubernetes manifests and additional files that enable RHDH to build and deploy that component in a Kubernetes cluster. 
+
+==== *Template.yaml*
+
+The template yaml file defines how the component creation will interact with RHDH by defining the UI experience for the end-user, including fields, inputs, and workflow for the end user. Additionally, it describes the backend interactions and activities after the end user clicks on the create button, including creating repositories, creating GitOps objects, etc.
+
+*Template actions* 
+The following actions can be used to define the steps and actions in the template.yaml representing the backend tasks required.
+
+* **fetch:template**: Retrieves and processes template files
+* **publish:github**: Creates repositories in version control
+* **register:catalog**: Adds the new component to the service catalog
+* **Custom actions**: Organization-specific automation
+ 
+
+=== The mechanics of Software Templates
+
+We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm help will use templating variables from the RHDH UI and the template.
+
+
+image::self-service-patterns/software_templates_flow.png[]
+
+[#patterns]
+== Patterns for third-party tools integrations using software templates for self-service
+
+Different patterns can be created to accomplish business and technical needs according to your organization's guidelines.
+As a Platform Architect, you want to identify these specific patterns and how they will be customized according to the Software Development Lifecycle.
+
+Here are some potential integrations that you will explore:
+
+image::self-service-patterns/pe_integrations.png[]
+
+
+=== Building Patterns
+
+When building different patterns, it is critical to understand the main key points:
+
+* *The use case:* What is the use case for this component? When and why should it be created, updated, or removed? 
+** *Example:* An in-memory database will be created only on the development environment for development purposes.
+* *Who is the end-user?* This is a key question to grant access to specific users and understand how much "power" flexibility we will grant to end users, such as developers, data scientists, and AI engineers.
+** *Example:* In this case the Java Team and, Cobra team will be the only one creating this component. However, the legacy team wants to have read access.
+* *The technology required* (database, VM): understanding which database and how this can be customized/configured. Mainly learning about basic vs custom configurations and how these configurations can fulfill the end-user needs. Which information will be filled out by the user, default values, which information is mandatory vs optional, and which data will be part of the manifests and not customized by the end-user.
+** *Example:* Many configurations could arise, from knowing the type of database, origin (vendor, community), version, but also any specifics such as storage, etc.
+* *Environments that the component will be deployed*, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with development environment. Additionally, understanding who's and how the promotion to different environments will happen and who will have access to read or update this process.
+** *Example:* If a component needs to be created in production, this could be only managed by the Platform Engineering team, but yet visible to the development team.
+
+Let's explore some potential configurations you will create during the hands-on lab, from building a database to namespace as a service or VM.
+
+image::self-service-patterns/database.png[]
+image::self-service-patterns/namespace_service.png[]
+image::self-service-patterns/vm.png[]
+
+=== Building Virtual Machines (VM)
+
+Defining the steps for the VM creation
+
+After the user clicks the *Create button*, a series of actions will happen that are all part of the VM’s creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub . These steps are customizable and will be defined on the template.yaml file as part of the Software templates. Review the Software template file.
+
+**Using OpenShift GitOps to create a VM**
+
+The OpenShift GitOps controller will ensure that the desired state defined on the project and application are applied into the cluster. The OpenShift Virtualization operator will ensure that the VMs are being created, pods are running, and the VNC Console is accessible. 
+
+
+**Building VMs Helm charts**
+
+Below we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).
+
+**Using VMs from instance types**
+
+You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM's manifest. You can customize the helm charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types. 
+
+Your Helm chart files can represent all the virtual machine definitions. For this use case, the Helm charts are: 
+
+* _template/helpers.tpl to hold the variables such as labels, annotations to be used on the manifest files. More information.
+
+* template/Vm.yaml, kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.
+
+* chart.yamlIncluding the Chart’s definition, such as name and version.
+
+* values.yamlVariables coming from the template.yaml. 
+
+**Building the template.yaml file**
+
+**Step 1:** Generating the source code component
+
+Developer Hub reads from the parameters coming from the UI and software templates definitions:
+
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+action: fetch:template
+----
+
+
+**Step 2:** Publishing to source code repository
+
+From there, it clones the repo with a new source code representing the VM source code. In this case, we only have one file, the catalog-info.yaml:
+
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+action: publish:gitlab
+----
+
+**Step 3:** Registering the source code component
+
+Using the catalog-info.yaml file, Developer Hub will register this component, making it available in the Developer Hub UI:
+
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+action: catalog:register
+----
+
+**Step 4:** Generating the deployment resources and artifacts
+
+Building the templates using the software templates defined in the manifest folder and reading from the template.yaml file to create the manifests in a new repository representing the values required to build the VM:
+
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+action: fetch:template
+----
+
+**Step 5:** Publishing to deployment resource repository
+
+Publish the templated source code into the GitLab repository:
+
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+action: publish:gitlab
+----
+
+**Step 6:** Create Argo CD resources
+
+Request Argo CD  to create a GitOps application based on the previous source repository published in the last step:
+
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+action: argocd:create-resources
+----
+
+=== Conclusion
+
+Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will serve any organization. In the next lab you will explore how to put this module into practice.
+
+=== Resources
+* link:https://developers.redhat.com/articles/2025/03/17/10-tips-better-backstage-software-templates[10 tips for better Backstage Software Templates,window='_blank']
+* link:https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how[Building virtual machines with Red Hat Developer Hub: The what, why, and how,window='_blank']
+
+
