@@ -20,7 +20,7 @@ For this section, we'll be using an existent template already defined, we'll be 
 
 The team will create the VM from RHDH. After this, Developer Hub will use the power of GitOps to build the new virtual machines in OpenShift with OpenShift Virtualization. The following diagram describes the VMs creation process using RHDH. As you can see in this diagram, the OpenShift Virtualization operator is required to provision the VM in OpenShift. The VM will run as a container in the selected namespace.
 
-image:self-service-patterns/vm-lab/vm-architecture.png[Red Hat Developer Hub as part of the VM creation process.]
+image:self-service-patterns/vm-lab/vm-architecture.jpg[Red Hat Developer Hub as part of the VM creation process.]
 
 === Explore the VM template in GitLab
 . Take the time to review the source code to get familiarize with the content.
