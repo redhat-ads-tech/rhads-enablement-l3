@@ -9,7 +9,7 @@ During this session, you will explore the different patterns and self-service ap
 For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems with self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team's needs. Now, let's explore the different architectures and designs for self-service.
 
 
-== Pre-reqs
+== Prerequisites
 
 * link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps,window='_blank']
 * link:https://www.redhat.com/en/topics/devops/what-is-helm[What is Helm,window='_blank']
