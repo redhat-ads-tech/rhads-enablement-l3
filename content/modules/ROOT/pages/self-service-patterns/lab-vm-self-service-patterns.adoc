@@ -227,7 +227,7 @@ TODO to be replaced with
 
 Remember that these software templates are built with *Helm*, which will use templating variables from the RHDH UI and the template.
 
-image::self-service-patterns/software_templates_flow.png[]
+image::self-service-patterns/software_templates_flow.jpg[]
 
 * The variables need to be updated in the *vm.yaml* and the *values.yaml* files.
 

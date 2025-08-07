@@ -52,7 +52,7 @@ The following actions can be used to define the steps and actions in the templat
 We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm help will use templating variables from the RHDH UI and the template.
 
 
-image::self-service-patterns/software_templates_flow.png[]
+image::self-service-patterns/software_templates_flow.jpg[]
 
 [#patterns]
 == Patterns for third-party tools integrations using software templates for self-service
