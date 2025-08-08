@@ -109,7 +109,9 @@
     "datacenter",
     "datacenters",
     "virtualization",
-    "containerization"
+    "containerization",
+    "architecting",
+    "kubevirt"
   ],
   "ignoreWords": [
     "adoc",
@@ -119,7 +121,9 @@
     "ifdef",
     "asciidoc",
     "TODO",
-    "FIXME"
+    "FIXME",
+    "webkitallowfullscreen",
+    "mozallowfullscreen"
   ],
   "ignorePaths": [
     "node_modules/**",
@@ -146,6 +150,7 @@
         "^<.*>$",
         "xref:.*\\[.*\\]",
         "image::.*\\[.*\\]",
+        "image:.*\\[.*\\]",
         "include::.*\\[.*\\]",
         "link:.*\\[.*\\]",
         "ifdef::.*\\[\\]",
