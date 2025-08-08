@@ -3,6 +3,8 @@
 
 == Prerequisites
 
+* link:https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[Red Hat OpenShift Virtualization,window='_blank']
+
 * link:https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how#[Building virtual machines with Red Hat Developer Hub: The what, why, and how,window='_blank']
 
 == Introduction

@@ -14,7 +14,7 @@ During this lab, you will have the opportunity to explore different projects' cu
 
 [#lab]
 == Scenario
-Now, imagine for a moment that you need to fullfil a need for the Java Development team. The Java Team's responsibility is to create a new start prototyping with AI and for this you need a namespace, this new namespace is not part of the Software Development Lifecycle. The request is having a namespace isolated from the rest of the cluster, with resource limits but enough to experiment.
+Now, imagine for a moment that you need to fullfil a need for the Python Development team. The Java Team's responsibility is to create a new start prototyping with AI and for this you need a namespace, this new namespace is not part of the Software Development Lifecycle. The request is having a namespace isolated from the rest of the cluster, with resource limits but enough to experiment.
 
 
 == Explore the Project template in GitLab
@@ -159,7 +159,7 @@ image:self-service-patterns/namespace-lab/project-file-changes.png[width=60%]
 
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/quota.yaml
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml
 ----
 
 === Test your changes: Explore the user experience as Developer
