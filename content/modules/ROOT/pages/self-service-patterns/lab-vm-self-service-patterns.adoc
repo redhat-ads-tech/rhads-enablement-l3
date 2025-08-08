@@ -1,4 +1,5 @@
-= Self-service VMs in OpenShift using Software Template Patterns
+= VM as a service in OpenShift using Software Template Patterns
+== A self-service approach to build VMs in OpenShift
 
 == Prerequisites
 
@@ -11,12 +12,11 @@ Welcome to this lab, where you will have the chance to learn about OpenShift Vir
 This lab will use an existent template already defined, you will be simplifying the user experience and updating the software template to a new version for RHEL.
 During this lab, you will have the opportunity to explore different techniques to create a new template or to update one, and understand 
 
-The following diagram describes the VMs creation process using RHDH. RH Developer Hub will use the power of GitOps to build the new virtual machines in OpenShift with OpenShift Virtualization. The VM will run as a container in the selected namespace. 
 
 [#lab]
 == Build a new Virtual Machine in OpenShift 
 
-For this section, we'll be using an existent template already defined, we'll be updating the user experience UI on the template.yaml file.
+For this section, we'll be using an existent template already defined, we'll be updating the user experience UI on the *template.yaml* file and the *Helm charts*.
 
 The team will create the VM from RHDH. After this, Developer Hub will use the power of GitOps to build the new virtual machines in OpenShift with OpenShift Virtualization. The following diagram describes the VMs creation process using RHDH. As you can see in this diagram, the OpenShift Virtualization operator is required to provision the VM in OpenShift. The VM will run as a container in the selected namespace.
 
@@ -240,7 +240,7 @@ Take the time to review your file with the solution file provided here:
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm.yaml
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/vm.yaml
 ----
 
 
@@ -255,7 +255,7 @@ image:self-service-patterns/vm-lab/vm-valuesfile-changes.png[width=60%]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/values.yaml
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml
 ----
 
 === Make updates in the VM template in GitLab
@@ -296,7 +296,7 @@ image:self-service-patterns/vm-lab/vm-template-changes1.png[width=60%]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-template.yaml
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml
 ----
 
 * Next, we need to include the new variable in the steps. If we do not include that *new variable*, the Helm charts will not receive the data.
@@ -317,7 +317,7 @@ image:self-service-patterns/vm-lab/vm-template-step2.png[width=50%]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-template.yaml
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml
 ----
 
 * Proceed to *save your changes*.
@@ -333,7 +333,7 @@ Let's create an instance of the new VM defined in the software templates.
 image:self-service-patterns/vm-lab/vm-catalog-new.png[width=50%]
 
 * Click on the *Choose*
-* Review the information until you complete the flow and click on create.
+* Review the information until you complete the flow and click on *Create*.
 * You should see only one screen, like this one:
 
 

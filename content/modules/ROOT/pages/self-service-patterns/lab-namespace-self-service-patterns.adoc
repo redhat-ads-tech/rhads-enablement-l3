@@ -1,0 +1,197 @@
+= Namespace as a service in OpenShift using Software Template Patterns
+== A self-service approach to build Namespaces and Projects in OpenShift
+== Prerequisites
+
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/building_applications/quotas#quotas-resources-managed_quotas-setting-per-project[Understanding Quotas,window='_blank']
+
+== Introduction
+
+Welcome to this lab, where you will have the chance to learn how to work with Software templates in Red Hat Developer Hub, and create a new OpenShift Project from Red Hat Developer Hub with custom configurations.
+
+This lab will use an existent template to create OpenShift Projects. You will be working to increasing functionality by updating the software template to limit resource quotas.
+During this lab, you will have the opportunity to explore different projects' customizations across different clusters.
+
+
+[#lab]
+== Scenario
+Now, imagine for a moment that you need to fullfil a need for the Java Development team. The Java Team's responsibility is to create a new start prototyping with AI and for this you need a namespace, this new namespace is not part of the Software Development Lifecycle. The request is having a namespace isolated from the rest of the cluster, with resource limits but enough to experiment.
+
+
+== Explore the Project template in GitLab
+. Take the time to review the source code to get familiarize with the content.
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+https://github.com/rh-mad-workshop/coolstore-software-templates/blob/platform-engineering/scaffolder-templates/namespace-medium
+----
+////
+TODO to be replaced with 
+## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/namespace/
+////
+
+////
+TODO replace the images once templates are in GitLab
+////
+
+* Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.
++
+image:self-service-patterns/namespace-lab/source-code-catalog-info.png[Project Catalog]
+
+* Developer Hub, powered by GitOps, maintains the desired state as the actual state in the cluster for any template definitions, ensuring system stability.
++
+image:self-service-patterns/namespace-lab/source-code-manifests.png[Project Manifests]
+
+* GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Namespace manifest's folder.
++
+image:self-service-patterns/namespace-lab/source-code-argocd.png[Project GitOps]
+
+* Helm Charts are great for templating. In this case, the Namespace manifests are implemented using Helm.
++
+image:self-service-patterns/namespace-lab/source-code-helm.png[Project Helm Charts]
+
+* template.yaml file: Defines the UI experience for the end user and the desired steps to get the software templates, create repositories, create GitOps objects, and more. 
++
+image:self-service-patterns/namespace-lab/source-code-template.png[Project template.yaml]
+
+ 
+=== Explore the Project template in RHDH
+
+* Select the *plus icon* on the top navigation bar to access the Create option.
+
++
+image:self-service-patterns/namespace-lab/rhdh-create-icon.png[Create UI] 
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+https://backstage-backstage.{openshift_cluster_ingress_domain}/create
+----
+
+* Click the *Register Existing Component* button.
+
++
+image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI] 
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
+----
+
+* Enter the following URL in the *Select URL* field and click *Analyze*:
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+https://github.com/rh-mad-workshop/coolstore-software-templates/tree/platform-engineering/scaffolder-templates/namespace-medium/template.yaml
+----
+////
+TODO to be replaced with 
+## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/namespace-medium/-/blob/main/template.yaml?ref_type=heads
+////
+
+* Click on the *Import* button
+
+////
+TODO to be replaced with the new image once we have the templates in gitlab
+////
+
+image:self-service-patterns/namespace-lab/rhdh-register-component-finish.png[width=60%] 
+
+*Congratulations!* You now have a new Software template in RHDH. Now, end-users can *self-provision Namespaces*.
+
+* We'll explore the end-user experience by accessing the Software Templates view.
+* From *catalog*, select *Self-service*
+
++
+image:self-service-patterns/namespace-lab/project-template.png[width=60%]
+
+*Let's explore the current catalog:*
+
+* Click on the *Choose*
+* Review and fill out the information with dummy data until you reach the review screen, **without creating the Namespace**. **DO NOT CLICK ON CREATE** 
++
+image:self-service-patterns/namespace-lab/project-sample.png[width=120%]
+
+
+
+== Implement changes in Software Templates.
+
+To accomplish the requirement, we will be updating the quotas definition in the *quota.yaml* file.
+
+The Java Team will create a new OpenShift project from RHDH. After this, Developer Hub will use the power of GitOps to create a new Project in OpenShift. 
+
+
+=== Let's review the information in the new Template.
+
+* Access the URL and click on *Edit Configuration*
+
++
+image:self-service-patterns/namespace-lab/edit-config.png[width=40%]
+
+Or directly to the URL:
+
+[source, bash,role=execute,subs=attributes+]
+----
+https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/namespace-medium
+----
+
+* This action will take you to the template.yaml file. We need to update the Project instance, go to manifests/helm/app/templates/quota.yaml
++
+[source,bash,role=execute,subs=attributes+]
+----
+https://github.com/rh-mad-workshop/coolstore-software-templates/blob/platform-engineering/scaffolder-templates/namespace-medium/manifests/helm/app/templates/quota.yaml
+----
+////
+TODO to be replaced with 
+## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/namespace-medium/manifests/helm/app/templates/quota.yaml
+////
+
+
+* Increase the quota limit to *2 CPU and memory 2Gi* in the current quota.yaml file.
+
+
++
+image:self-service-patterns/namespace-lab/project-file-changes.png[width=60%]
+
+*Take the time to review your file with the solution file provided here:*
+
+[source,bash,role=execute,subs=attributes+]
+----
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/quota.yaml
+----
+
+=== Test your changes: Explore the user experience as Developer
+
+Let's create an instance of the new Project defined in the software templates.
+
+* From *catalog*, select *Self-service*
+
++
+image:self-service-patterns/namespace-lab/project-template.png[width=50%]
+
+* Click on the *Choose*
+* Review the information until you complete the flow and click on *Create*.
+* You should see only one screen, like this one:
+
+
+// TODO add screen
+
+* Watch the following arcade, your experience should be very similar.
+++++
+<iframe 
+src="https://demo.arcade.software/Ik3ukBlBHN8Cj8uncDvg?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"       width="100%" 
+height="600px" 
+frameborder="0" 
+allowfullscreen
+webkitallowfullscreen
+mozallowfullscreen
+allow="clipboard-write"
+muted>
+</iframe>
+++++
+
+=== Conclusion
+
+You have updated a Project software template by increasing the quota limit to fulfill the requirement from the Java Development team.
