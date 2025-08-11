@@ -8,14 +8,9 @@ on:
 jobs:
   build-and-deploy-preview:
     permissions:
-      contents: read
-      pages: write
-      id-token: write
+      contents: write
       pull-requests: write
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}pr-${{ github.event.number }}/
     
     steps:
     - name: Checkout repository
@@ -40,22 +35,14 @@ jobs:
         echo "Building Antora documentation..."
         antora --stacktrace default-site.yml
     
-    - name: Create PR-specific directory
-      run: |
-        mkdir -p preview/pr-${{ github.event.number }}
-        cp -r www/* preview/pr-${{ github.event.number }}/
-    
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-    
-    - name: Upload to GitHub Pages
-      uses: actions/upload-pages-artifact@v3
+    - name: Deploy PR Preview to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        path: preview/
-    
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./www
+        destination_dir: pr-${{ github.event.number }}
+        keep_files: true
+        enable_jekyll: false
     
     - name: Get current date
       id: date
@@ -86,7 +73,7 @@ jobs:
           - **Build Time:** ${{ steps.date.outputs.date }}
           
           **🌐 Live Preview:**
-          [**🔗 View Documentation Preview**](${{ steps.deployment.outputs.page_url }}pr-${{ github.event.number }}/)
+          [**🔗 View Documentation Preview**](https://redhat-ads-tech.github.io/rhads-enablement-l3/pr-${{ github.event.number }}/)
           
           **📥 Alternative - Download Artifact:**
           You can also download the generated documentation from the [Actions tab](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).

@@ -8,14 +8,34 @@ jobs:
   cleanup-preview:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pages: write
-      id-token: write
+      contents: write
       pull-requests: write
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    
+    - name: Checkout gh-pages branch
+      uses: actions/checkout@v4
+      with:
+        ref: gh-pages
+        path: gh-pages-content
+    
+    - name: Remove PR preview directory
+      run: |
+        if [ -d "gh-pages-content/pr-${{ github.event.pull_request.number }}" ]; then
+          rm -rf gh-pages-content/pr-${{ github.event.pull_request.number }}
+          echo "Removed preview directory for PR #${{ github.event.pull_request.number }}"
+        else
+          echo "Preview directory for PR #${{ github.event.pull_request.number }} not found"
+        fi
+    
+    - name: Deploy cleanup to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./gh-pages-content
+        enable_jekyll: false
     
     - name: Get current date
       id: date
@@ -30,11 +50,11 @@ jobs:
           
           This PR has been ${{ github.event.pull_request.merged && 'merged' || 'closed' }}. 
           
-          The documentation preview for PR #${{ github.event.pull_request.number }} has been scheduled for cleanup.
+          The documentation preview for PR #${{ github.event.pull_request.number }} has been cleaned up successfully.
           
           **📋 Cleanup Details:**
           - **PR Number:** #${{ github.event.pull_request.number }}
           - **Status:** ${{ github.event.pull_request.merged && 'Merged' || 'Closed' }}
           - **Cleanup Time:** ${{ steps.date.outputs.date }}
           
-          *Note: Preview artifacts and deployments will be automatically cleaned up according to retention policies.* 
+          *The preview directory has been removed from GitHub Pages.* 
