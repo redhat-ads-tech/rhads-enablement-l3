@@ -103,7 +103,8 @@
     "virtualization",
     "containerization",
     "architecting",
-    "kubevirt"
+    "kubevirt",
+    "infinispan"
   ],
   "ignoreWords": [
     "adoc",
