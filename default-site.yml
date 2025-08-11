@@ -1,7 +1,7 @@
 ---
 site:
   title: Red Hat Advanced Developer Suite - Level 3 Self-paced training
-  url: https://redhat-scholars.github.io/course-template
+  url: https://redhat-ads-tech.github.io/rhads-enablement-l3
   start_page: modules::index.adoc
 
 content:
