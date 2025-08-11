@@ -45,7 +45,7 @@ Live-reload is not supported.
 . Open http://localhost:8080 in your browser
 . Run ./utilities/lab-build to build your html
 
-To rebuild your html, run `./utilites/build`.
+To rebuild your html, run `./utilities/lab-build`.
 
 == Editing Files
 
