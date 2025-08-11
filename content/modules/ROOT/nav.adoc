@@ -12,7 +12,7 @@
 * xref:tssc-rhdh.adoc[Module 12: Trusted Software Supply Chain with RHDH for production]
 * xref:tssc-3rdparty-ci.adoc[Module 13: Trusted Software Supply Chain with other CIs]
 * xref:self-service-patterns.adoc[Module 14: Patterns for third-party tools integrations]
-* xref:ai-intro.adoc[Module 15: Intro to AI for AI Engineers]
+* xref:ai-intro.adoc[Module 15: Introduction to AI for AI Engineers]
 * xref:rhads-ai.adoc[Module 16: RHADS for AI Engineers]
 * xref:trustworthy-ai-intro.adoc[Module 17: Intro to Trustworthy AI]
 * xref:trustworthy-ai.adoc[Module 18: Trustworthy AI]
