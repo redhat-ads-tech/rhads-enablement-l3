@@ -1,4 +1,4 @@
-= RHADS for AI Engineers
+= Introduction to AI for AI Engineers
 
 == Introduction
 
