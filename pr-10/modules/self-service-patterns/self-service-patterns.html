@@ -191,7 +191,7 @@
 During this session, you will explore the different patterns and self-service approach to reduce cognitive load, scale operations, and promote best practices across the organization.</p>
 </div>
 <div class="paragraph">
-<p>For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems with self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team&#8217;s needs. Now, let&#8217;s explore the different architectures and designs for self-service.</p>
+<p>For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems to self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing up databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team&#8217;s needs. Now, let&#8217;s explore the different architectures and designs for self-service.</p>
 </div>
 </div>
 </div>
@@ -217,12 +217,12 @@ During this session, you will explore the different patterns and self-service ap
 <p>Architecting software templates is essential for implementing Platform Engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to advancing a successful self-service approach.</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s review the core structure of software templates:</p>
+<p><strong>Let&#8217;s review the core structure of software templates:</strong></p>
 </div>
 <div class="sect3">
 <h4 id="_software_templates_structure"><a class="anchor" href="#_software_templates_structure"></a><strong>Software Templates Structure</strong></h4>
 <div class="paragraph">
-<p>The software templates' structure in folders and files will vary depending on the component&#8217;s type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each other.</p>
+<p>The software templates' structure in folders and files will vary depending on the component&#8217;s type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each component.</p>
 </div>
 </div>
 <div class="sect3">
@@ -243,8 +243,10 @@ During this session, you will explore the different patterns and self-service ap
 <p>The template yaml file defines how the component creation will interact with RHDH by defining the UI experience for the end-user, including fields, inputs, and workflow for the end user. Additionally, it describes the backend interactions and activities after the end user clicks on the create button, including creating repositories, creating GitOps objects, etc.</p>
 </div>
 <div class="paragraph">
-<p><strong>Template actions</strong>
-The following actions can be used to define the steps and actions in the template.yaml representing the backend tasks required.</p>
+<p><strong>Template actions</strong></p>
+</div>
+<div class="paragraph">
+<p>The following actions can be used to define the steps and actions in the template.yaml representing the backend tasks required.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -266,7 +268,7 @@ The following actions can be used to define the steps and actions in the templat
 <div class="sect2">
 <h3 id="_the_mechanics_of_software_templates"><a class="anchor" href="#_the_mechanics_of_software_templates"></a>The mechanics of Software Templates</h3>
 <div class="paragraph">
-<p>We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm help will use templating variables from the RHDH UI and the template.</p>
+<p>We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm will use variables in the Helm Charts received from the RHDH UI to build the chart.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -309,11 +311,11 @@ As a Platform Architect, you want to identify these specific patterns and how th
 </div>
 </li>
 <li>
-<p><strong>Who is the end-user?</strong> This is a key question to grant access to specific users and understand how much "power" flexibility we will grant to end users, such as developers, data scientists, and AI engineers.</p>
+<p><strong>Who is the end-user?</strong> This is a key question to grant access to specific users and understand how much "power" and flexibility we will grant to end users, such as developers, data scientists, and AI engineers.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Example:</strong> In this case the Java Team and, Cobra team will be the only one creating this component. However, the legacy team wants to have read access.</p>
+<p><strong>Example:</strong> In this case, the Java team will be the only ones creating this component. However, the legacy team wants to have read access.</p>
 </li>
 </ul>
 </div>
@@ -323,17 +325,17 @@ As a Platform Architect, you want to identify these specific patterns and how th
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Example:</strong> Many configurations could arise, from knowing the type of database, origin (vendor, community), version, but also any specifics such as storage, etc.</p>
+<p><strong>Example:</strong> Many configurations could arise, from knowing the type of database, origin (vendor, community), version, and any specifics such as storage, etc.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Environments that the component will be deployed</strong>, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with development environment. Additionally, understanding who&#8217;s and how the promotion to different environments will happen and who will have access to read or update this process.</p>
+<p><strong>Environments required for the components</strong>, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with the development environment. Additionally, understanding who and how the promotion to different environments will happen, and who will have access to read or update this process.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Example:</strong> If a component needs to be created in production, this could be only managed by the Platform Engineering team, but yet visible to the development team.</p>
+<p><strong>Example:</strong> If a component needs to be created in production, this could only be managed by the Platform Engineering team, yet visible to the development team.</p>
 </li>
 </ul>
 </div>
@@ -353,19 +355,19 @@ As a Platform Architect, you want to identify these specific patterns and how th
 <img src="../_images/self-service-patterns/namespace_service.png" alt="namespace service">
 </div>
 </div>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="self-service-patterns/vm.png" alt="vm">
+<img src="../_images/self-service-patterns/vm.png" alt="vm">
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_building_virtual_machines_vm"><a class="anchor" href="#_building_virtual_machines_vm"></a>Building Virtual Machines (VM)</h3>
 <div class="paragraph">
-<p>Defining the steps for the VM creation</p>
+<p><strong>Defining the steps for the VM creation:</strong></p>
 </div>
 <div class="paragraph">
-<p>After the user clicks the <strong>Create button</strong>, a series of actions will happen that are all part of the VM’s creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub . These steps are customizable and will be defined on the template.yaml file as part of the Software templates. Review the Software template file.</p>
+<p>After the user clicks the <strong>Create button</strong>, a series of actions will happen that are all part of the VM&#8217;s creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub. These steps are customizable and will be defined on the <strong>template.yaml</strong> file as part of the Software templates.</p>
 </div>
 <div class="paragraph">
 <p><strong>Using OpenShift GitOps to create a VM</strong></p>
@@ -377,13 +379,13 @@ As a Platform Architect, you want to identify these specific patterns and how th
 <p><strong>Building VMs Helm charts</strong></p>
 </div>
 <div class="paragraph">
-<p>Below we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).</p>
+<p>Below, we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).</p>
 </div>
 <div class="paragraph">
 <p><strong>Using VMs from instance types</strong></p>
 </div>
 <div class="paragraph">
-<p>You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM&#8217;s manifest. You can customize the helm charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types.</p>
+<p>You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM&#8217;s manifest. You can customize the Helm Charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types.</p>
 </div>
 <div class="paragraph">
 <p>Your Helm chart files can represent all the virtual machine definitions. For this use case, the Helm charts are:</p>
@@ -391,16 +393,16 @@ As a Platform Architect, you want to identify these specific patterns and how th
 <div class="ulist">
 <ul>
 <li>
-<p>_template/helpers.tpl to hold the variables such as labels, annotations to be used on the manifest files. More information.</p>
+<p>_template/helpers.tpl: to hold the variables such as labels, annotations to be used on the manifest files.</p>
 </li>
 <li>
-<p>template/Vm.yaml, kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.</p>
+<p>template/vm.yaml: kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.</p>
 </li>
 <li>
-<p>chart.yamlIncluding the Chart’s definition, such as name and version.</p>
+<p>chart.yaml: Including the Chart&#8217;s definition, such as name and version.</p>
 </li>
 <li>
-<p>values.yamlVariables coming from the template.yaml.</p>
+<p>values.yaml: Variables coming from the template.yaml provided by RHDH.</p>
 </li>
 </ul>
 </div>
@@ -477,7 +479,7 @@ As a Platform Architect, you want to identify these specific patterns and how th
 <div class="sect2">
 <h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h3>
 <div class="paragraph">
-<p>Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will serve any organization. In the next lab you will explore how to put this module into practice.</p>
+<p>Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will benefit any organization. In the next labs, you will explore how to put this module into practice.</p>
 </div>
 </div>
 <div class="sect2">

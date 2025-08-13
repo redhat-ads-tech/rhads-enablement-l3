@@ -204,7 +204,7 @@
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Welcome to this lab, where you will have the chance to learn about OpenShift Virtualization, how to build a new VM in OpenShift,  how to work with Software templates in Red Hat Developer Hub, and create a new VM instance from Red Hat Developer Hub with your configurations.</p>
+<p>Welcome to this lab, where you will have the chance to learn about OpenShift Virtualization, how to build a new VM in OpenShift, how to work with Software templates in Red Hat Developer Hub, and create a new VM instance from Red Hat Developer Hub with your configurations.</p>
 </div>
 <div class="paragraph">
 <p>This lab will use an existent template already defined, you will be simplifying the user experience and updating the software template to a new version for RHEL.
@@ -232,11 +232,8 @@ During this lab, you will have the opportunity to explore different techniques t
 <p>Take the time to review the source code to get familiarize with the content.</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/rh-mad-workshop/coolstore-software-templates/tree/demo-all/scaffolder-templates/rhel9-vm-med</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium</code></pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 <div class="ulist">
 <ul>
@@ -272,6 +269,9 @@ During this lab, you will have the opportunity to explore different techniques t
 </li>
 </ul>
 </div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_explore_the_vm_template_in_rhdh"><a class="anchor" href="#_explore_the_vm_template_in_rhdh"></a>Explore the VM template in RHDH</h3>
@@ -303,14 +303,10 @@ During this lab, you will have the opportunity to explore different techniques t
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/rh-mad-workshop/coolstore-software-templates/blob/demo-all/scaffolder-templates/rhel9-vm-medium/template.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml</code></pre>
 </div>
 </div>
 </li>
-</ul>
-</div>
-<div class="ulist">
-<ul>
 <li>
 <p>Click on the <strong>Import</strong> button</p>
 </li>
@@ -399,7 +395,7 @@ We&#8217;ll choose the second option, update the current software template to su
 <div class="ulist">
 <ul>
 <li>
-<p>Login into the OpenShift Cluster <a href="https://console-openshift-console.%SUBDOMAIN%" target="_blank" rel="noopener">Red Hat OpenShift</a></p>
+<p>Login into the OpenShift Cluster <a href="https://console-openshift-console.%SUBDOMAIN%" target="_blank" rel="noopener">Web Console</a></p>
 </li>
 <li>
 <p>Login with your user credentials:</p>
@@ -422,58 +418,54 @@ We&#8217;ll choose the second option, update the current software template to su
 <p>You will see the welcome page.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/virt-welcome-page.png" alt="virt welcome page" width="60%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/virt-welcome-page.png" alt="virt welcome page" width="100%"></span></p>
 </div>
 <div class="paragraph">
-<p>You will get familiarize with the quick starts. Quick starts will allow you to create VMs in OpenShift using OpenShift Virtualization quickly.</p>
+<p>You will get familiarize with OpenShift Virtualization using the <strong>Start Tour</strong>.  Click on <strong>Virtual Tour</strong> and follow the steps.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Select the option <strong>Create a virtual machine from a template (Quick start)</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/virt-welcome-page-click.png" alt="virt welcome page click" width="50%"></span></p>
-</div>
+<p>Complete the tour and stay on the screen.</p>
 </li>
-<li>
-<p>You will see a set of instructions on the screen.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-quickstart.png" alt="vm quickstart" width="50%"></span></p>
+</ul>
 </div>
-</li>
-<li>
-<p>Explore the instructions. In the next step, you will follow similar instructions but with a specific namespace and VM configurations.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-finish-tour.png" alt="vm finish tour" width="80%"></span></p>
+</div>
 <div class="ulist">
 <ul>
 <li>
 <p><strong>Let&#8217;s create a VM in OpenShift</strong></p>
-</li>
-</ul>
-</div>
-</li>
+<div class="ulist">
+<ul>
 <li>
-<p>On the <strong>Catalog</strong> screen, select the project <strong>legacy-vm</strong> containing the template for the virtual machine you want to create.</p>
-</li>
-<li>
-<p>Under the <strong>Virtualization</strong> menu, click on <strong>Catalog</strong>.
+<p>On the <strong>Create new VirtualMachine</strong> screen
 You will see a new screen listing all VM configurations available. Remember, you can also customize it to your needs.</p>
 </li>
 <li>
 <p>Select the <strong>volume</strong> <strong>rhel10</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/virt-volumes-click.png" alt="virt volumes click" width="50%"></span></p>
-</div>
-</li>
-<li>
-<p>Next, Explore the <strong>Instance Type</strong> available</p>
-</li>
-<li>
-<p>Select <strong>u1</strong> and the <strong>1CPUs, 4GiB memory</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-instancetype-click.png" alt="vm instancetype click" width="50%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/virt-volumes-click.png" alt="virt volumes click" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Next, Explore the <strong>Instance Type</strong> available</p>
+</li>
+<li>
+<p>Select the <strong>General Purpose</strong> <strong>U series</strong> and the <strong>small</strong> <strong>1CPUs, GiB memory</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-instancetype-click.png" alt="vm instancetype click" width="100%"></span></p>
 </div>
 <div class="paragraph">
 <p><strong>Note: Do not create the VM. You will be creating a VM using this Configuration through RHDH.</strong></p>
@@ -492,7 +484,7 @@ You will see a new screen listing all VM configurations available. Remember, you
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-confirmation.png" alt="vm confirmation" width="100%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-explore-yaml.png" alt="vm explore yaml" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -529,7 +521,7 @@ You will see a new screen listing all VM configurations available. Remember, you
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel9-vm-medium-template</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel-vm-medium-template</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -538,14 +530,10 @@ You will see a new screen listing all VM configurations available. Remember, you
 <p>This action will take you to the template.yaml file. We need to update the VM instance, go to manifests/helm/app/templates/vm.yaml</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/rh-mad-workshop/coolstore-software-templates/tree/demo-all/scaffolder-templates/rhel9-vm-med/manifests/helm/app/templates/vm.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml</code></pre>
 </div>
 </div>
 </li>
-</ul>
-</div>
-<div class="ulist">
-<ul>
 <li>
 <p>Replace in the current vm.yaml file, the hardcoded values with variables. Take a look at all the information related to RHEL10 highlighted in the images, except the name. The name will remain variable since the end user will provide it.</p>
 </li>
