@@ -9,7 +9,7 @@
 
 == Introduction
 
-Welcome to this lab, where you will have the chance to learn about OpenShift Virtualization, how to build a new VM in OpenShift,  how to work with Software templates in Red Hat Developer Hub, and create a new VM instance from Red Hat Developer Hub with your configurations.
+Welcome to this lab, where you will have the chance to learn about OpenShift Virtualization, how to build a new VM in OpenShift, how to work with Software templates in Red Hat Developer Hub, and create a new VM instance from Red Hat Developer Hub with your configurations.
 
 This lab will use an existent template already defined, you will be simplifying the user experience and updating the software template to a new version for RHEL.
 During this lab, you will have the opportunity to explore different techniques to create a new template or to update one, and understand 
@@ -30,13 +30,8 @@ image:self-service-patterns/vm-lab/vm-architecture.jpg[Red Hat Developer Hub as 
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/tree/demo-all/scaffolder-templates/rhel9-vm-med
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/vm/
-////
-
 
 * Component/catalog-info.yaml: This file will represent the object in Developer Hub,  such as name and links.
 +
@@ -86,12 +81,8 @@ https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/blob/demo-all/scaffolder-templates/rhel9-vm-medium/template.yaml
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/vm/-/blob/main/template.yaml?ref_type=heads
-////
 
 * Click on the *Import* button
 
@@ -142,7 +133,7 @@ We'll choose the second option, update the current software template to support 
 Let's explore what type of VMs I can create in OpenShift. Imagine that you are new to templating VMs in OpenShift, then what's the best approach to bring a new instance of OpenShift? Let's use OpenShift Virtualization to explore the different types and solutions available, or you can create a new one.
 
 * We need to update the VM with a new RHEL version
-** Login into the OpenShift Cluster https://console-openshift-console.%SUBDOMAIN%[Red Hat OpenShift^]
+** Login into the OpenShift Cluster https://console-openshift-console.%SUBDOMAIN%[Web Console^]
 
 ** Login with your user credentials:
 
@@ -153,35 +144,27 @@ Let's explore what type of VMs I can create in OpenShift. Imagine that you are n
 
 You will see the welcome page.
 
-image:self-service-patterns/vm-lab/virt-welcome-page.png[width=60%]
+image:self-service-patterns/vm-lab/virt-welcome-page.png[width=100%]
 
-You will get familiarize with the quick starts. Quick starts will allow you to create VMs in OpenShift using OpenShift Virtualization quickly.
+You will get familiarize with OpenShift Virtualization using the *Start Tour*.  Click on *Virtual Tour* and follow the steps.
 
-** Select the option *Create a virtual machine from a template (Quick start)* 
+* Complete the tour and stay on the screen.
 
-+
-image:self-service-patterns/vm-lab/virt-welcome-page-click.png[width=50%]
-
-** You will see a set of instructions on the screen.
-+
-image:self-service-patterns/vm-lab/vm-quickstart.png[width=50%]
-
-** Explore the instructions. In the next step, you will follow similar instructions but with a specific namespace and VM configurations.
+image:self-service-patterns/vm-lab/vm-finish-tour.png[width=80%]
 
 * *Let's create a VM in OpenShift*
-** On the *Catalog* screen, select the project *legacy-vm* containing the template for the virtual machine you want to create. 
-** Under the *Virtualization* menu, click on *Catalog*.
+** On the *Create new VirtualMachine* screen
 You will see a new screen listing all VM configurations available. Remember, you can also customize it to your needs.
 ** Select the *volume* *rhel10*
 
 +
-image:self-service-patterns/vm-lab/virt-volumes-click.png[width=50%]
+image:self-service-patterns/vm-lab/virt-volumes-click.png[width=100%]
 
 
 ** Next, Explore the *Instance Type* available
-** Select *u1* and the *1CPUs, 4GiB memory*
+** Select the *General Purpose* *U series* and the *small* *1CPUs, GiB memory*
 
-image:self-service-patterns/vm-lab/vm-instancetype-click.png[width=50%]
+image:self-service-patterns/vm-lab/vm-instancetype-click.png[width=100%]
 
 *Note: Do not create the VM. You will be creating a VM using this Configuration through RHDH.*
 
@@ -191,7 +174,7 @@ Let's review the information in the new VM instance.
 
 ** Click on the button *View YAML & CLI*
 
-image:self-service-patterns/vm-lab/vm-confirmation.png[width=100%]
+image:self-service-patterns/vm-lab/vm-explore-yaml.png[width=100%]
 
 ** From that view, review the *RHEL10* related values:
 
@@ -210,20 +193,15 @@ Or directly to the URL:
 
 [source, bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel9-vm-medium-template
+https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel-vm-medium-template
 ----
 
 * This action will take you to the template.yaml file. We need to update the VM instance, go to manifests/helm/app/templates/vm.yaml
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/tree/demo-all/scaffolder-templates/rhel9-vm-med/manifests/helm/app/templates/vm.yaml
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/vm/manifests/helm/app/templates/vm.yaml
-////
-
 
 * Replace in the current vm.yaml file, the hardcoded values with variables. Take a look at all the information related to RHEL10 highlighted in the images, except the name. The name will remain variable since the end user will provide it.
 

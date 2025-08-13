@@ -23,12 +23,8 @@ Now, imagine for a moment that you need to fullfil a need for the Python Develop
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/blob/platform-engineering/scaffolder-templates/namespace-medium
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/namespace/
-////
 
 ////
 TODO replace the images once templates are in GitLab
@@ -84,12 +80,8 @@ https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/tree/platform-engineering/scaffolder-templates/namespace-medium/template.yaml
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/template.yaml
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/namespace-medium/-/blob/main/template.yaml?ref_type=heads
-////
 
 * Click on the *Import* button
 
@@ -141,16 +133,10 @@ https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/blob/platform-engineering/scaffolder-templates/namespace-medium/manifests/helm/app/templates/quota.yaml
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/namespace-medium/manifests/helm/app/templates/quota.yaml
-////
-
 
 * Increase the quota limit to *2 CPU and memory 2Gi* in the current quota.yaml file.
-
 
 +
 image:self-service-patterns/namespace-lab/project-file-changes.png[width=60%]

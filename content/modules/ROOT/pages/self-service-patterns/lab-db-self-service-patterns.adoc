@@ -25,12 +25,8 @@ Now, imagine for a moment that you need to fullfil a need for the Java Developme
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/blob/platform-engineering/scaffolder-templates/rhdatagrid_infinispan
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/rhdatagrid_infinispan/
-////
 
 ////
 TODO replace the images once templates are in GitLab
@@ -86,12 +82,8 @@ https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://github.com/rh-mad-workshop/coolstore-software-templates/tree/platform-engineering/scaffolder-templates/rhdatagrid_infinispan/template.yaml
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/template.yaml
 ----
-////
-TODO to be replaced with 
-## https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/db-lab/-/blob/main/template.yaml?ref_type=heads
-////
 
 * Click on the *Import* button
 
@@ -196,7 +188,7 @@ image:self-service-patterns/db-lab/datagrid-created.png[width=50%]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml
+https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml
 ----
 
 

@@ -26,19 +26,13 @@ spec:
     metadata:
       labels:
         {{- include "vm.labels" . | nindent 8 }}
-        {{- include "backstage.labels" . | nindent 8 }}
-        network.kubevirt.io/headlessService: headless   
+        {{- include "backstage.labels" . | nindent 8 }}   
     spec:
       domain:
         devices:
           interfaces:
             - masquerade: {}
               name: default
-      nodeSelector:
-        node-role.kubernetes.io/metal: ''
-      tolerations:
-        - key: metal
-          operator: Exists
       networks:
         - name: default
           pod: {}

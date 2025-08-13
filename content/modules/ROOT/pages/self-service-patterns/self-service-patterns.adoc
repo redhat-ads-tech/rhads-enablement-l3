@@ -6,7 +6,7 @@
 Software templates are the heart of Red Hat Developer Hub (RHDH). This section will explore leveraging software templates to enable self-service integration of third-party tools and platform capabilities.
 During this session, you will explore the different patterns and self-service approach to reduce cognitive load, scale operations, and promote best practices across the organization.
 
-For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems with self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team's needs. Now, let's explore the different architectures and designs for self-service.
+For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems to self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing up databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team's needs. Now, let's explore the different architectures and designs for self-service.
 
 
 == Prerequisites
@@ -19,11 +19,11 @@ For this module, you are a Platform Architect working for an Online market store
 
 Architecting software templates is essential for implementing Platform Engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to advancing a successful self-service approach.
 
-Let's review the core structure of software templates:
+*Let's review the core structure of software templates:*
 
 ==== *Software Templates Structure*
 
-The software templates' structure in folders and files will vary depending on the component's type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each other.
+The software templates' structure in folders and files will vary depending on the component's type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each component.
 
 ==== *Folder for skeleton*
 
@@ -39,6 +39,7 @@ This folder contains the application Kubernetes manifests and additional files t
 The template yaml file defines how the component creation will interact with RHDH by defining the UI experience for the end-user, including fields, inputs, and workflow for the end user. Additionally, it describes the backend interactions and activities after the end user clicks on the create button, including creating repositories, creating GitOps objects, etc.
 
 *Template actions* 
+
 The following actions can be used to define the steps and actions in the template.yaml representing the backend tasks required.
 
 * **fetch:template**: Retrieves and processes template files
@@ -49,7 +50,7 @@ The following actions can be used to define the steps and actions in the templat
 
 === The mechanics of Software Templates
 
-We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm help will use templating variables from the RHDH UI and the template.
+We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm will use variables in the Helm Charts received from the RHDH UI to build the chart.
 
 
 image::self-service-patterns/software_templates_flow.jpg[]
@@ -71,12 +72,12 @@ When building different patterns, it is critical to understand the main key poin
 
 * *The use case:* What is the use case for this component? When and why should it be created, updated, or removed? 
 ** *Example:* An in-memory database will be created only on the development environment for development purposes.
-* *Who is the end-user?* This is a key question to grant access to specific users and understand how much "power" flexibility we will grant to end users, such as developers, data scientists, and AI engineers.
-** *Example:* In this case the Java Team and, Cobra team will be the only one creating this component. However, the legacy team wants to have read access.
+* *Who is the end-user?* This is a key question to grant access to specific users and understand how much "power" and flexibility we will grant to end users, such as developers, data scientists, and AI engineers.
+** *Example:* In this case, the Java team will be the only ones creating this component. However, the legacy team wants to have read access.
 * *The technology required* (database, VM): understanding which database and how this can be customized/configured. Mainly learning about basic vs custom configurations and how these configurations can fulfill the end-user needs. Which information will be filled out by the user, default values, which information is mandatory vs optional, and which data will be part of the manifests and not customized by the end-user.
-** *Example:* Many configurations could arise, from knowing the type of database, origin (vendor, community), version, but also any specifics such as storage, etc.
-* *Environments that the component will be deployed*, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with development environment. Additionally, understanding who's and how the promotion to different environments will happen and who will have access to read or update this process.
-** *Example:* If a component needs to be created in production, this could be only managed by the Platform Engineering team, but yet visible to the development team.
+** *Example:* Many configurations could arise, from knowing the type of database, origin (vendor, community), version, and any specifics such as storage, etc.
+* *Environments required for the components*, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with the development environment. Additionally, understanding who and how the promotion to different environments will happen, and who will have access to read or update this process.
+** *Example:* If a component needs to be created in production, this could only be managed by the Platform Engineering team, yet visible to the development team.
 
 Let's explore some potential configurations you will create during the hands-on lab, from building a database to namespace as a service or VM.
 
@@ -86,9 +87,9 @@ image::self-service-patterns/vm.png[]
 
 === Building Virtual Machines (VM)
 
-Defining the steps for the VM creation
+*Defining the steps for the VM creation:*
 
-After the user clicks the *Create button*, a series of actions will happen that are all part of the VM’s creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub . These steps are customizable and will be defined on the template.yaml file as part of the Software templates. Review the Software template file.
+After the user clicks the *Create button*, a series of actions will happen that are all part of the VM's creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub. These steps are customizable and will be defined on the *template.yaml* file as part of the Software templates. 
 
 **Using OpenShift GitOps to create a VM**
 
@@ -97,21 +98,21 @@ The OpenShift GitOps controller will ensure that the desired state defined on th
 
 **Building VMs Helm charts**
 
-Below we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).
+Below, we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).
 
 **Using VMs from instance types**
 
-You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM's manifest. You can customize the helm charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types. 
+You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM's manifest. You can customize the Helm Charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types. 
 
 Your Helm chart files can represent all the virtual machine definitions. For this use case, the Helm charts are: 
 
-* _template/helpers.tpl to hold the variables such as labels, annotations to be used on the manifest files. More information.
+* _template/helpers.tpl: to hold the variables such as labels, annotations to be used on the manifest files.
 
-* template/Vm.yaml, kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.
+* template/vm.yaml: kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.
 
-* chart.yamlIncluding the Chart’s definition, such as name and version.
+* chart.yaml: Including the Chart's definition, such as name and version.
 
-* values.yamlVariables coming from the template.yaml. 
+* values.yaml: Variables coming from the template.yaml provided by RHDH. 
 
 **Building the template.yaml file**
 
@@ -177,8 +178,7 @@ action: argocd:create-resources
 ----
 
 === Conclusion
-
-Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will serve any organization. In the next lab you will explore how to put this module into practice.
+Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will benefit any organization. In the next labs, you will explore how to put this module into practice.
 
 === Resources
 * link:https://developers.redhat.com/articles/2025/03/17/10-tips-better-backstage-software-templates[10 tips for better Backstage Software Templates,window='_blank']

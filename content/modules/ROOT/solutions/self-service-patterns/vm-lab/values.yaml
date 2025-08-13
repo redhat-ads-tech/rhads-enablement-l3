@@ -4,7 +4,6 @@
 app:
   name: ${{values.component_id}}
   namespace: ${{values.namespace}}
-  cluster: ${{values.cluster}}
   rhel:
     version: : ${{values.rhel_version}} 
 
@@ -13,7 +12,6 @@ git:
   repo: ${{values.source_repository}}
   org: ${{values.org}}
   name: ${{values.repository_name}}
-  host: ${{values.git_host}}
 
 nameOverride: ""
 fullnameOverride: ""
@@ -30,6 +28,3 @@ resources:
 vm:
   nodeSelector: {}
   tolerations: []
-
-
-# staticIP: "10.10.10.31/24"
