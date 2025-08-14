@@ -1,0 +1,13 @@
+kind: Infinispan
+apiVersion: infinispan.org/v1
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    {{- include "operator.labels" . | nindent 4 }}
+    {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  replicas: 2
+  expose:
+    type: Route
+  service:
+    type: DataGrid
