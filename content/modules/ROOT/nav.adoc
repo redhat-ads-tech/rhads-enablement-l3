@@ -24,6 +24,7 @@
 *** xref:rhads-ai/lab-ai-app-rhads-ai.adoc[Hands-on Lab: Build an AI application locally with Podman AI Lab]
 *** xref:rhads-ai/lab-ai-agent-rhdh-rhads-ai.adoc[Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces]
 *** xref:rhads-ai/lab-ai-sec-rhads-ai.adoc[Hands-on Lab: Build an Agent with RHADS with security integrated]
+* xref:rhads-ai.adoc[Module 16: RHADS for AI Engineers]
 * xref:trustworthy-ai-intro.adoc[Module 17: Intro to Trustworthy AI]
 * xref:trustworthy-ai.adoc[Module 18: Trustworthy AI]
 * xref:rhads-datascience.adoc[Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain]
