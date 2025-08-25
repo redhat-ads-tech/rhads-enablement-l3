@@ -30,7 +30,7 @@ image:self-service-patterns/vm-lab/vm-architecture.jpg[Red Hat Developer Hub as 
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium
 ----
 
 * Component/catalog-info.yaml: This file will represent the object in Developer Hub,  such as name and links.
@@ -63,7 +63,7 @@ image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create
+{rhdh_url}/create
 ----
 
 * Click the *Register Existing Component* button.
@@ -73,7 +73,7 @@ image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
+{rhdh_url}/catalog-import
 ----
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
@@ -81,7 +81,7 @@ https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
 ----
 
 * Click on the *Import* button
@@ -133,7 +133,7 @@ We'll choose the second option, update the current software template to support 
 Let's explore what type of VMs I can create in OpenShift. Imagine that you are new to templating VMs in OpenShift, then what's the best approach to bring a new instance of OpenShift? Let's use OpenShift Virtualization to explore the different types and solutions available, or you can create a new one.
 
 * We need to update the VM with a new RHEL version
-** Login into the OpenShift Cluster https://console-openshift-console.%SUBDOMAIN%[Web Console^]
+** Login into the OpenShift Cluster {openshift_console_url}[Web Console^]
 
 ** Login with your user credentials:
 
@@ -193,14 +193,14 @@ Or directly to the URL:
 
 [source, bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel-vm-medium-template
+{rhdh_url}/create/templates/default/rhel-vm-medium-template
 ----
 
 * This action will take you to the template.yaml file. We need to update the VM instance, go to manifests/helm/app/templates/vm.yaml
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml
 ----
 
 * Replace in the current vm.yaml file, the hardcoded values with variables. Take a look at all the information related to RHEL10 highlighted in the images, except the name. The name will remain variable since the end user will provide it.
@@ -259,7 +259,7 @@ Or directly to the URL:
 
 [source, bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel9-vm-medium-template
+{rhdh_url}/create/templates/default/rhel9-vm-medium-template
 ----
 *This action will take you to the template.yaml file.* 
 

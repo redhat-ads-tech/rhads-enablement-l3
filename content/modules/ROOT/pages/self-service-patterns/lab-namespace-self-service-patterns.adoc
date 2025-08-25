@@ -23,7 +23,7 @@ Now, imagine for a moment that you need to fullfil a need for the Python Develop
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium
 ----
 
 ////
@@ -61,7 +61,7 @@ image:self-service-patterns/namespace-lab/rhdh-create-icon.png[Create UI]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create
+{rhdh_url}/create
 ----
 
 * Click the *Register Existing Component* button.
@@ -72,7 +72,7 @@ image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
+{rhdh_url}/catalog-import
 ----
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
@@ -80,7 +80,7 @@ https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/template.yaml
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/template.yaml
 ----
 
 * Click on the *Import* button
@@ -126,14 +126,14 @@ Or directly to the URL:
 
 [source, bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/namespace-medium
+{rhdh_url}/create/templates/default/namespace-medium
 ----
 
 * This action will take you to the template.yaml file. We need to update the Project instance, go to manifests/helm/app/templates/quota.yaml
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml
 ----
 
 * Increase the quota limit to *2 CPU and memory 2Gi* in the current quota.yaml file.

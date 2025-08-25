@@ -25,7 +25,7 @@ Now, imagine for a moment that you need to fullfil a need for the Java Developme
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/
 ----
 
 ////
@@ -63,7 +63,7 @@ image:self-service-patterns/db-lab/rhdh-create-icon.png[Create UI]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create
+{rhdh_url}/create
 ----
 
 * Click the *Register Existing Component* button.
@@ -74,7 +74,7 @@ image:self-service-patterns/db-lab/rhdh-register-component.png[Create UI]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
+{rhdh_url}/catalog-import
 ----
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
@@ -82,7 +82,7 @@ https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/template.yaml
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/template.yaml
 ----
 
 * Click on the *Import* button
@@ -126,14 +126,14 @@ Or directly to the URL:
 
 [source, bash,role=execute,subs=attributes+]
 ----
-https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhdatagrid_infinispan
+{rhdh_url}/create/templates/default/rhdatagrid_infinispan
 ----
 
 * This action will take you to the template.yaml file. We need to update the RH Data Grid instance, go to manifests/helm/app/templates/infinispan.yaml
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
+{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
 ----
 
 === Explore the RH Data Grid cluster setup
@@ -150,7 +150,7 @@ image:self-service-patterns/db-lab/datagrid-doc.png[width=100%]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
+{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
 ----
 
 
@@ -188,7 +188,7 @@ image:self-service-patterns/db-lab/datagrid-created.png[width=50%]
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml
 ----
 
 
