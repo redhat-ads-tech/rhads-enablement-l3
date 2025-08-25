@@ -15,9 +15,9 @@ In this lab we will be gain hands-on experience to work with Software Templates 
 
 == Getting started
 
-* Access the Red Hat Developer Hub UI, https://developer-hub-rhdhub.%openshift_cluster_ingress_domain%[Red Hat Developer Hub UI^]
+* Access the Red Hat Developer Hub UI, https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}[Red Hat Developer Hub UI^]
 
 ** Login with your user credentials:
 
-    ** *Username*: %gitlab_user%
+    ** *Username*: {gitlab_user}
     ** *Password*: {gitlab_user_password}
