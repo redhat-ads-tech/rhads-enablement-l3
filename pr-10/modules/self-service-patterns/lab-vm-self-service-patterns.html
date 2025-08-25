@@ -238,7 +238,7 @@ During this lab, you will have the opportunity to explore different techniques t
 <p>Take the time to review the source code to get familiarize with the content.</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -290,7 +290,7 @@ During this lab, you will have the opportunity to explore different techniques t
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://backstage-backstage.{openshift_cluster_ingress_domain}/create</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/create</code></pre>
 </div>
 </div>
 </li>
@@ -301,7 +301,7 @@ During this lab, you will have the opportunity to explore different techniques t
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://backstage-backstage.{openshift_cluster_ingress_domain}/catalog-import</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/catalog-import</code></pre>
 </div>
 </div>
 </li>
@@ -309,7 +309,7 @@ During this lab, you will have the opportunity to explore different techniques t
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml</code></pre>
 </div>
 </div>
 </li>
@@ -401,7 +401,7 @@ We&#8217;ll choose the second option, update the current software template to su
 <div class="ulist">
 <ul>
 <li>
-<p>Login into the OpenShift Cluster <a href="https://console-openshift-console.%SUBDOMAIN%" target="_blank" rel="noopener">Web Console</a></p>
+<p>Login into the OpenShift Cluster {openshift_console_url}[Web Console^]</p>
 </li>
 <li>
 <p>Login with your user credentials:</p>
@@ -527,7 +527,7 @@ You will see a new screen listing all VM configurations available. Remember, you
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel-vm-medium-template</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/create/templates/default/rhel-vm-medium-template</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -536,7 +536,7 @@ You will see a new screen listing all VM configurations available. Remember, you
 <p>This action will take you to the template.yaml file. We need to update the VM instance, go to manifests/helm/app/templates/vm.yaml</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml</code></pre>
 </div>
 </div>
 </li>
@@ -643,7 +643,7 @@ You will see a new screen listing all VM configurations available. Remember, you
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://backstage-backstage.{openshift_cluster_ingress_domain}/create/templates/default/rhel9-vm-medium-template</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/create/templates/default/rhel9-vm-medium-template</code></pre>
 </div>
 </div>
 <div class="paragraph">
