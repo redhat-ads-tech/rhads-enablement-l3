@@ -14,6 +14,8 @@ asciidoc:
     ssh_user: devops
     ssh_password: devops
     ssh_command: ssh someone@example.com
+    product_rhdh_name: Red Hat Developer Hub
+    product_rhdh_version: "1.7"
     page-links:
     - url: https://redhat.com
       text: Red Hat
