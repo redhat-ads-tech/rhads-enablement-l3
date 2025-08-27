@@ -16,6 +16,12 @@ asciidoc:
     ssh_command: ssh someone@example.com
     product_rhdh_name: Red Hat Developer Hub
     product_rhdh_version: "1.7"
+
+    # Module 2 - Start
+    m2_rhdh_project: setup-rhdh
+    m2_rhdh_instance: rhdh
+    m2_rhdh_cm_name: rhdh-config
+    # Module 2 - Start
     page-links:
     - url: https://redhat.com
       text: Red Hat

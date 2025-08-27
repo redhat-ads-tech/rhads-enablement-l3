@@ -1,6 +1,3 @@
-:rhdh_project: setup-rhdh
-:rhdh_instance: rhdh
-:rhdh_cm_name: rhdh-config
 
 = Install and Configure {product_rhdh_name}
 
@@ -94,7 +91,7 @@ Before creating a Backstage CR, we need to satisfy some prerequisites. So don't 
 . Navigate to *Home > Projects*, then click the *Create project* button. 
 +
 image::setup-rhdh/create-project.png[]
-. Enter the name `{rhdh_project}` in the popup that appears, then click *Create*.
+. Enter the name `{m2_rhdh_project}` in the popup that appears, then click *Create*.
 
 You'll use this project throughout this module.
 
@@ -102,7 +99,7 @@ You'll use this project throughout this module.
 
 As mentioned earlier, {product_rhdh_name} is based on the Backstage CNCF project. Backstage requires an https://backstage.io/docs/conf/[app-config.yaml] to define its configuration. The *app-config.yaml* can be mounted as a https://kubernetes.io/docs/concepts/storage/volumes/[volume] in Backstage Pods that are created by the {product_rhdh_name} Operator.
 
-In this section you'll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the `{rhdh_project}` namespace.
+In this section you'll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the `{m2_rhdh_project}` namespace.
 
 . Login to the {openshift_console_url}[OpenShift Web Console].
 . Go to *Workloads > ConfigMaps* using the side navigation.
@@ -116,13 +113,13 @@ image::setup-rhdh/create-rhdh-configmap.png[]
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {rhdh_cm_name}
-  namespace: {rhdh_project}
+  name: {m2_rhdh_cm_name}
+  namespace: {m2_rhdh_project}
 data:
   app-config.yaml: |
     app:
       title: Red Hat Developer Hub
-      baseUrl: https://{rhdh_instance}-backstage-{rhdh_project}.{cluster_apps_domain}
+      baseUrl: https://{m2_rhdh_instance}-backstage-{m2_rhdh_project}.{cluster_apps_domain}
 
     # Enable guest sign-in without user validation. This configuration
     # is unsafe - only use it for testing when Developer Hub is not
@@ -132,15 +129,15 @@ data:
         guest:
           dangerouslyAllowOutsideDevelopment: true
     backend:
-      baseUrl: https://{rhdh_instance}-backstage-{rhdh_project}.{cluster_apps_domain}
+      baseUrl: https://{m2_rhdh_instance}-backstage-{m2_rhdh_project}.{cluster_apps_domain}
       cors:
-        origin: https://{rhdh_instance}-backstage-{rhdh_project}.{cluster_apps_domain}
+        origin: https://{m2_rhdh_instance}-backstage-{m2_rhdh_project}.{cluster_apps_domain}
 ----
 . Click *Create* to create the ConfigMap containing your *app-config.yaml*.
 
 [NOTE]
 ====
-The URL referenced in the ConfigMap is determined by combining the Backstage CR name with "backstage" and the namespace name. For example, your namespace is `{rhdh_project}` and the Backstage CR will be named `{rhdh_instance}`, so the URL is https://{rhdh_instance}-backstage-{rhdh_project}.{cluster_apps_domain}.
+The URL referenced in the ConfigMap is determined by combining the Backstage CR name with "backstage" and the namespace name. For example, your namespace is `{m2_rhdh_project}` and the Backstage CR will be named `{m2_rhdh_instance}`, so the URL is https://{m2_rhdh_instance}-backstage-{m2_rhdh_project}.{cluster_apps_domain}.
 ====
 
 === Deploy a {product_rhdh_name} Instance
@@ -153,8 +150,8 @@ The URL referenced in the ConfigMap is determined by combining the Backstage CR 
 apiVersion: rhdh.redhat.com/v1alpha3
 kind: Backstage
 metadata:
-  name: {rhdh_instance}
-  namespace: {rhdh_project}
+  name: {m2_rhdh_instance}
+  namespace: {m2_rhdh_project}
 spec:
   application:
     appConfig:
@@ -162,7 +159,7 @@ spec:
       # This instructs the operator to mount the ConfigMap
       # that you created into the Backstage Pods
       configMaps:
-        - name: {rhdh_cm_name}
+        - name: {m2_rhdh_cm_name}
     route:
       enabled: true
   database:
@@ -172,7 +169,7 @@ spec:
 +
 image::setup-rhdh/backstage-cr.png[]
 
-This Backstage CR will be detected by the {product_rhdh_name} Operator. The Operator will deploy Postgres and Backstage Pods in the `{rhdh_project}` namespace. Verify the status of the Pods by visiting *Workloads > Pods* and checking that both Pods are marked as running and ready.
+This Backstage CR will be detected by the {product_rhdh_name} Operator. The Operator will deploy Postgres and Backstage Pods in the `{m2_rhdh_project}` namespace. Verify the status of the Pods by visiting *Workloads > Pods* and checking that both Pods are marked as running and ready.
 
 image::setup-rhdh/backstage-pods.png[]
 
@@ -181,7 +178,7 @@ image::setup-rhdh/backstage-pods.png[]
 You can access your instance of {product_rhdh_name} using a https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route] that was created by the Operator.
 
 . Select *Networking > Routes* in the side menu of the OpenShift Web Console.
-. Ensure that the *{rhdh_project}* project is selected in the project selector.
+. Ensure that the *{m2_rhdh_project}* project is selected in the project selector.
 . Click the URL in the *Location* column on the *Routes* page. The {product_rhdh_name} sign-in page will appear.
 +
 image::setup-rhdh/backstage-route.png[]
