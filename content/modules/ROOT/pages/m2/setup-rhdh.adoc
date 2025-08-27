@@ -191,5 +191,12 @@ image::setup-rhdh/rhdh-homepage.png[]
 
 Nice work! You deployed an instance of {product_rhdh_name} with a minimal *app-config.yaml*. An internal developer portal is only valuable when it has been connected to sources of data and configured with templates. In the following sections you'll learn how to connect {product_rhdh_name} to:
 
-* Source control - specifically GitLab in this environment
-* Single Sign-On - specifically Keycloak in this environment
+* Source Control (GitLab in this environment)
+* Single Sign-On (Keycloak in this environment)
+* Continuous Delivery (Argo CD in this environment)
+
+Additionally, you'll learn how to:
+
+* Safely include sensitive information in your *app-config.yaml* using Secrets
+* Manage plugins and plugin configuration
+* Enable role-based access control (RBAC)
