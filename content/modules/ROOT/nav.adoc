@@ -1,5 +1,5 @@
 * xref:getting-started.adoc[Module 1: Getting started with RHADS]
-* xref:setup-rhdh.adoc[Module 2: Setup RHDH]
+* xref:m2/setup-rhdh.adoc[Module 2: Setup RHDH]
 * xref:setup-tpa.adoc[Module 3: Setup TPA]
 * xref:setup-tas.adoc[Module 4: Setup TAS]
 * xref:customer-configurations.adoc[Module 5: Customer configurations and third-party integrations]
