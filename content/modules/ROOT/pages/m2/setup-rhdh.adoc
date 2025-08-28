@@ -85,7 +85,7 @@ Before creating a Backstage CR, we need to satisfy some prerequisites. So don't 
 
 . Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
     * Username: `{openshift_admin_user}`
-    * Password: `{openshift_admin_password}`
+    * Password: `{common_password}`
 . Click the *Cluster Selector* in the top-left, and select *local-cluster*.
 . Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Navigate to *Home > Projects*, then click the *Create project* button. 

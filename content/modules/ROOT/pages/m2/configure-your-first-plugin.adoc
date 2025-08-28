@@ -1,6 +1,3 @@
-:m2_rhdh_plugins_cm_name: dynamic-plugins-rhdh
-:m2_keycloak_secret_name: keycloak-secrets
-
 = Configure your First Plugin
 
 == Plugin Architecture
