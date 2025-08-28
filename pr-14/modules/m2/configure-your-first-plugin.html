@@ -270,17 +270,17 @@
 <ol class="arabic">
 <li>
 <p>Add the following value to <strong>Web origins</strong></p>
-<div class="listingblock wrap">
+<div class="listingblock execute wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}</code></pre>
+<pre class="highlightjs highlight"><code class="language-source hljs" data-lang="source">https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Add the following value to <strong>Valid redirect URIs</strong>:</p>
-<div class="listingblock wrap">
+<div class="listingblock execute wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api/auth/oidc/handler/frame</code></pre>
+<pre class="highlightjs highlight"><code class="language-source hljs" data-lang="source">https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api/auth/oidc/handler/frame</code></pre>
 </div>
 </div>
 <div class="admonitionblock warning">
@@ -369,7 +369,7 @@
 </li>
 <li>
 <p>Switch to the YAML view and paste the following configuration:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: ConfigMap
@@ -413,7 +413,7 @@ data:
 </li>
 <li>
 <p>Update the <code>spec.application</code> section to include the dynamic plugins configuration:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
   application:
@@ -584,7 +584,7 @@ data:
 </li>
 <li>
 <p>Replace the <code>app-config.yaml</code> content with:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">app:
   title: Red Hat Developer Hub
@@ -650,7 +650,7 @@ catalog:
 </li>
 <li>
 <p>Update the <code>spec.application</code> section to inject the keys and values from the secret into the pod&#8217;s environment using the <code>extraEnvs.secrets</code> array:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
   application:

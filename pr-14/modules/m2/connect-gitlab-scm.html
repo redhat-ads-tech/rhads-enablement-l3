@@ -316,7 +316,7 @@
 </li>
 <li>
 <p>Replace the content in the YAML editor with the following:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Secret
@@ -370,7 +370,7 @@ stringData:
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>gitlab-secrets</strong> Secret you created:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">extraEnvs:
   secrets:
@@ -402,7 +402,7 @@ stringData:
 </li>
 <li>
 <p>Update the <code>dynamic-plugins.yaml</code> content to include GitLab catalog backend plugin:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- package: ./dynamic-plugins/dist/backstage-plugin-catalog-backend-module-gitlab-dynamic
   disabled: false</code></pre>
@@ -444,7 +444,7 @@ stringData:
 </li>
 <li>
 <p>Add the following <code>gitlab</code> configuration to the <code>catalog.providers</code> section your <strong>app-config.yaml</strong>:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">catalog:
   providers:
@@ -467,7 +467,7 @@ stringData:
 </li>
 <li>
 <p>Additionally, add a new <code>integrations</code> section at the root level of the <strong>app-config.yaml</strong>, i.e the same indentation level at the <code>catalog</code> and <code>app</code> keys:</p>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">integrations:
   gitlab:
