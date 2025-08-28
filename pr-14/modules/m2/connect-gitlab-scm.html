@@ -162,41 +162,222 @@
 <div class="sect1">
 <h2 id="_enable_and_configure_the_gitlab_plugin"><a class="anchor" href="#_enable_and_configure_the_gitlab_plugin"></a>Enable and Configure the GitLab Plugin</h2>
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>The GitLab plugin enables Red Hat Developer Hub to integrate with GitLab for source code management and to automatically discover and import <code>catalog-info.yaml</code> files from GitLab repositories.</p>
+<p>Red Hat Developer Hub can integrate with various source control solutions. A self-hosted instance of GitLab is used in this coursework to ensure stability and accuracy of the content, since managed solutions are subject to changes outside of our control.</p>
 </div>
-<div class="sect2">
-<h3 id="_update_dynamic_plugins_configuration"><a class="anchor" href="#_update_dynamic_plugins_configuration"></a>Update Dynamic Plugins Configuration</h3>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>First, enable the GitLab plugins by updating your dynamic plugins ConfigMap:</p>
+<p>The GitLab plugin enables Red Hat Developer Hub to integrate with GitLab to enable the following functionality:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Discover and import <code>catalog-info.yaml</code> files from GitLab repositories.</p>
+</li>
+<li>
+<p>Enable Software Templates to create new repositories and automate opening pull/merge requests.</p>
+</li>
+<li>
+<p>Display open issues, merge requests, scorecards, and CI status directly in Red Hat Developer Hub.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Configuring the integration requires:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> and click on <code>{m2_rhdh_plugins_cm_name}</code>.</p>
+<p>Generating an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/">access token</a> in GitLab.</p>
 </li>
 <li>
-<p>Click <strong>Edit ConfigMap</strong>.</p>
+<p>Creating a Secret to store the access token, and loading it into the Red Hat Developer Hub pod.</p>
 </li>
 <li>
-<p>Update the <code>dynamic-plugins.yaml</code> content to include GitLab plugins:</p>
+<p>Adding the the access token and GitLab hostname to the <code>integrations</code> section of Red Hat Developer Hub&#8217;s <strong>app-config.yaml</strong>.</p>
+</li>
+<li>
+<p>Registering a new <code>gitlab</code> provider in <code>catalog.providers</code> in the <strong>app-config.yaml</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_the_gitlab_token_and_credentials_secret"><a class="anchor" href="#_create_the_gitlab_token_and_credentials_secret"></a>Create the GitLab Token and Credentials Secret</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_create_the_gitlab_token"><a class="anchor" href="#_create_the_gitlab_token"></a>Create the GitLab Token</h3>
+<div class="paragraph">
+<p>To facilitate secure communication between Red Hat Developer Hub and the GitLab API, you need to generate an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/">access token</a>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the <a href="https://gitlab-gitlab.{cluster_apps_domain}">GitLab instance</a> deployed in your environment.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console] and viewing the <code>gitlab</code> project. Do not edit or delete anything in this project!</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Login using the root credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>root</code></p>
+</li>
+<li>
+<p>Password: {common_password}</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Click on your user&#8217;s profile picture, select <strong>Edit profile</strong>, then <strong>Access tokens</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>Add new token</strong> button, then set the following values for the token:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Token name</strong>: <code>developer-hub-integration</code></p>
+</li>
+<li>
+<p><strong>Scopes</strong>: <code>api</code>, <code>read_repository</code>, <code>write_repository</code></p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/gitlab-create-token.png" alt="gitlab create token">
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Scroll down and click <strong>Create personal access token</strong>.</p>
+</li>
+<li>
+<p>Once the token is created, copy it someplace safe - you&#8217;ll need it in the next section.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/gitlab-token-created.png" alt="gitlab token created">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_the_gitlab_secret"><a class="anchor" href="#_create_the_gitlab_secret"></a>Create the GitLab Secret</h3>
+<div class="paragraph">
+<p>Create a Secret to store the GitLab token and hostname:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{common_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Navigate to <strong>Workloads &gt; Secrets</strong> and click <strong>Create &gt; From YAML</strong>.</p>
+</li>
+<li>
+<p>Ensure that the <code>setup-rhdh</code> project is selected.</p>
+</li>
+<li>
+<p>Replace the content in the YAML editor with the following:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">includes:
-  - dynamic-plugins.default.yaml
-plugins:
-  - package: './dynamic-plugins/dist/backstage-plugin-kubernetes-backend-dynamic'
-    disabled: false
-  - package: './dynamic-plugins/dist/backstage-plugin-kubernetes'
-    disabled: false
-  - package: './dynamic-plugins/dist/janus-idp-backstage-plugin-keycloak-backend-dynamic'
-    disabled: false
-  - package: './dynamic-plugins/dist/backstage-plugin-catalog-backend-module-keycloak-dynamic'
-    disabled: false
-  - package: './dynamic-plugins/dist/backstage-plugin-scaffolder-backend-module-gitlab-dynamic'
-    disabled: false
-  - package: './dynamic-plugins/dist/backstage-plugin-catalog-backend-module-gitlab-dynamic'
-    disabled: false</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlab-secrets
+  namespace: setup-rhdh
+type: Opaque
+stringData:
+  GITLAB_HOST: gitlab-gitlab.{cluster_apps_domain}
+  GITLAB_TOKEN: YOUR_TOKEN</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Make sure to replace the <code>YOUR_TOKEN</code> placeholder with the token you generated in GitLab.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Similar to the <strong>keycloak-secrets</strong> you created in the previous section, you need to tell Red Hat Developer Hub to actually read the new Secret.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_update_the_red_hat_developer_hub_configuration"><a class="anchor" href="#_update_the_red_hat_developer_hub_configuration"></a>Update the Red Hat Developer Hub Configuration</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_add_gitlab_secrets_to_the_backstage_cr"><a class="anchor" href="#_add_gitlab_secrets_to_the_backstage_cr"></a>Add GitLab Secrets to the Backstage CR</h3>
+<div class="paragraph">
+<p>Update your Backstage CR to include the GitLab secret:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to your <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh">Backstage CR in the OpenShift Web Console</a> and click change to the <strong>YAML</strong> view.</p>
+</li>
+<li>
+<p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>gitlab-secrets</strong> Secret you created:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">extraEnvs:
+  secrets:
+    - name: keycloak-secrets
+    # Inject the GITLAB_HOST and GITLAB_TOKEN into
+    # the pod as environment variables
+    - name: gitlab-secrets</code></pre>
 </div>
 </div>
 </li>
@@ -207,61 +388,51 @@ plugins:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_create_gitlab_integration_secret"><a class="anchor" href="#_create_gitlab_integration_secret"></a>Create GitLab Integration Secret</h3>
+<h3 id="_add_the_gitlab_dynamic_plugin"><a class="anchor" href="#_add_the_gitlab_dynamic_plugin"></a>Add the GitLab Dynamic Plugin</h3>
 <div class="paragraph">
-<p>Create a Secret to store GitLab credentials:</p>
+<p>Enable the GitLab plugin by updating your <strong>dynamic-plugins-rhdh</strong> ConfigMap:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to <strong>Workloads &gt; Secrets</strong> and click <strong>Create &gt; Key/value secret</strong>.</p>
+<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> and click on <code>dynamic-plugins-rhdh</code>.</p>
 </li>
 <li>
-<p>Set the secret name to <code>gitlab-secrets</code>.</p>
+<p>Click <strong>Edit ConfigMap</strong>.</p>
 </li>
 <li>
-<p>Add the following key-value pairs:</p>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
+<p>Update the <code>dynamic-plugins.yaml</code> content to include GitLab catalog backend plugin:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- package: ./dynamic-plugins/dist/backstage-plugin-catalog-backend-module-gitlab-dynamic
+  disabled: false</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
 <tr>
-<th class="tableblock halign-left valign-top">Key</th>
-<th class="tableblock halign-left valign-top">Value</th>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Verify that your indentation is correct by aligning it with the existing Keycloak plugin.</p>
+</div>
+</td>
 </tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GITLAB_HOST</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gitlab-gitlab.{cluster_apps_domain}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GITLAB_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{gitlab_integration_token}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GITLAB_CLIENT_ID</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{gitlab_oauth_client_id}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GITLAB_CLIENT_SECRET</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{gitlab_oauth_client_secret}</code></p></td>
-</tr>
-</tbody>
 </table>
+</div>
 </li>
 <li>
-<p>Click <strong>Create</strong>.</p>
+<p>Click <strong>Save</strong>.</p>
 </li>
 </ol>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_update_app_configuration_for_gitlab"><a class="anchor" href="#_update_app_configuration_for_gitlab"></a>Update App Configuration for GitLab</h3>
+<h3 id="_update_backstage_configuration_to_enable_gitlab_integration"><a class="anchor" href="#_update_backstage_configuration_to_enable_gitlab_integration"></a>Update Backstage Configuration to Enable GitLab Integration</h3>
 <div class="paragraph">
-<p>Update your app-config ConfigMap to include GitLab integration:</p>
+<p>Update your <strong>app-config.yaml</strong> to include GitLab integration and provider configurations:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -272,123 +443,86 @@ plugins:
 <p>Click <strong>Edit ConfigMap</strong>.</p>
 </li>
 <li>
-<p>Add the following GitLab configuration to your <code>app-config.yaml</code>:</p>
+<p>Add the following <code>gitlab</code> configuration to the <code>catalog.providers</code> section your <strong>app-config.yaml</strong>:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">catalog:
   providers:
-    keycloakOrg:
-      default:
-        baseUrl: ${KEYCLOAK_BASE_URL}
-        loginRealm: ${KEYCLOAK_LOGIN_REALM}
-        realm: ${KEYCLOAK_REALM}
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        schedule:
-          frequency:
-            minutes: 30
-          timeout:
-            minutes: 3
-          initialDelay:
-            seconds: 15
+    # ...existing providers, e.g keycloak
+    # ...................................
+    # Our new GitLab provider that will synchronise catalog-info.yaml
+    # from our repositories in GitLab to the Software Catalog
     gitlab:
       yourProviderId:
         host: ${GITLAB_HOST}
-        token: ${GITLAB_TOKEN}
         orgEnabled: true
-        group: 'backstage-demo'
+        group: development
         schedule:
           frequency:
             minutes: 5
           timeout:
-            minutes: 3
-
-integrations:
-  gitlab:
-    - host: ${GITLAB_HOST}
-      token: ${GITLAB_TOKEN}
-      baseUrl: https://${GITLAB_HOST}
-
-signInPage: oidc
-auth:
-  environment: production
-  session:
-    secret: ${BACKEND_SECRET}
-  providers:
-    oidc:
-      production:
-        metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        prompt: auto</code></pre>
+            minutes: 3</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Click <strong>Save</strong>.</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_update_backstage_cr_with_gitlab_secrets"><a class="anchor" href="#_update_backstage_cr_with_gitlab_secrets"></a>Update Backstage CR with GitLab Secrets</h3>
-<div class="paragraph">
-<p>Update your Backstage CR to include the GitLab secrets:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Navigate to your Backstage CR and click the <strong>YAML</strong> tab.</p>
-</li>
-<li>
-<p>Update the <code>extraEnvs.secrets</code> section:</p>
+<p>Additionally, add a new <code>integrations</code> section at the root level of the <strong>app-config.yaml</strong>, i.e the same indentation level at the <code>catalog</code> and <code>app</code> keys:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
-  application:
-    appConfig:
-      mountPath: /opt/app-root/src
-      configMaps:
-        - name: rhdh-config
-    dynamicPluginsConfigMapName: {m2_rhdh_plugins_cm_name}
-    extraEnvs:
-      secrets:
-        - name: {m2_keycloak_secret_name}
-        - name: gitlab-secrets
-    route:
-      enabled: true</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">integrations:
+  gitlab:
+    - host: ${GITLAB_HOST}
+      baseUrl: https://${GITLAB_HOST}
+      apiBaseUrl: https://${GITLAB_HOST}/api/v4
+      token: ${GITLAB_TOKEN}</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Click <strong>Save</strong>.</p>
+<p>The resulting configuration should resemble this screenshot.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/app-config-gitlab.png" alt="app config gitlab">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong> to update the <strong>app-config.yaml</strong>.</p>
 </li>
 </ol>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_verify_gitlab_integration"><a class="anchor" href="#_verify_gitlab_integration"></a>Verify GitLab Integration</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verify_gitlab_integration"><a class="anchor" href="#_verify_gitlab_integration"></a>Verify GitLab Integration</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>After the pods restart:</p>
+<p>After the new Backstage pod has started:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log in to your Red Hat Developer Hub instance.</p>
+<p>Check the Backstage pod logs to confirm successful synchronization with GitLab.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/gitlab-discovery-log.png" alt="gitlab discovery log">
+</div>
+</div>
 </li>
 <li>
-<p>You should continue to use Keycloak as the primary authentication method.</p>
+<p>Next, log in to your Red Hat Developer Hub instance.</p>
 </li>
 <li>
-<p>Navigate to the <strong>Catalog</strong> to see imported components from GitLab repositories.</p>
+<p>Navigate to the <strong>Catalog</strong> to see imported items of <strong>Kind</strong> Component from GitLab repositories.</p>
 </li>
 <li>
-<p>The system will automatically discover and import <code>catalog-info.yaml</code> files from repositories in the configured GitLab group.</p>
-</li>
-<li>
-<p>Check the Backstage pod logs to verify successful synchronization with GitLab.</p>
+<p>TODO: add some default entities to the development group as part of cluster setup</p>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>The system automatically discovers and imports <code>catalog-info.yaml</code> files from repositories in the configured GitLab group.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -398,12 +532,11 @@ auth:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The GitLab integration will scan the specified group (<code>backstage-demo</code> in this example) for repositories containing <code>catalog-info.yaml</code> files and automatically import them into the Backstage catalog. Ensure that the GitLab token has appropriate permissions to access the target repositories and groups.</p>
+<p>The GitLab integration will scan the specified group (<code>development</code> in this example) for repositories containing <code>catalog-info.yaml</code> files and automatically import them into the Backstage catalog.</p>
 </div>
 </td>
 </tr>
 </table>
-</div>
 </div>
 </div>
 </div>
