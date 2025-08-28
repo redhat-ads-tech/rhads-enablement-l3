@@ -17,11 +17,16 @@ asciidoc:
     product_rhdh_name: Red Hat Developer Hub
     product_rhdh_version: "1.7"
 
-    # Module 2 - Start
+    keycloak_realm_name: trusted-artifact-signer
+    keycloak_client_id: rhdh
+    # Use { common_password }
+    # keycloak_client_secret: {common_password}
+
+    # Module 2 - Start Variables
     m2_rhdh_project: setup-rhdh
     m2_rhdh_instance: rhdh
     m2_rhdh_cm_name: rhdh-config
-    # Module 2 - Start
+    # Module 2 - End Variables
     page-links:
     - url: https://redhat.com
       text: Red Hat
