@@ -108,7 +108,7 @@ In this section you'll create a basic Backstage configuration and store it as a 
 image::setup-rhdh/create-rhdh-configmap.png[]
 . Switch to the YAML view and paste the following into the editor:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 apiVersion: v1
 kind: ConfigMap
@@ -145,7 +145,7 @@ The URL referenced in the ConfigMap is determined by combining the Backstage CR 
 . Click the plus (`+`) icon in the top-right corner of the OpenShift Web Console, then select the *Import YAML* option.
 . Paste the following YAML into the editor:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 apiVersion: rhdh.redhat.com/v1alpha3
 kind: Backstage

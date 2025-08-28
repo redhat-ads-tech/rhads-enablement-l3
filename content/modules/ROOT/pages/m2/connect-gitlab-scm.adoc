@@ -55,7 +55,7 @@ Create a Secret to store the GitLab token and hostname:
 . Ensure that the `{m2_rhdh_project}` project is selected.
 . Replace the content in the YAML editor with the following:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 apiVersion: v1
 kind: Secret
@@ -85,7 +85,7 @@ Update your Backstage CR to include the GitLab secret:
 . Navigate to your https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and click change to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 extraEnvs:
   secrets:
@@ -104,7 +104,7 @@ Enable the GitLab plugin by updating your *{m2_rhdh_plugins_cm_name}* ConfigMap:
 . Click *Edit ConfigMap*.
 . Update the `dynamic-plugins.yaml` content to include GitLab catalog backend plugin:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 - package: ./dynamic-plugins/dist/backstage-plugin-catalog-backend-module-gitlab-dynamic
   disabled: false
@@ -124,7 +124,7 @@ Update your *app-config.yaml* to include GitLab integration and provider configu
 . Click *Edit ConfigMap*.
 . Add the following `gitlab` configuration to the `catalog.providers` section your *app-config.yaml*:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 catalog:
   providers:
@@ -145,7 +145,7 @@ catalog:
 ----
 . Additionally, add a new `integrations` section at the root level of the *app-config.yaml*, i.e the same indentation level at the `catalog` and `app` keys:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 integrations:
   gitlab:

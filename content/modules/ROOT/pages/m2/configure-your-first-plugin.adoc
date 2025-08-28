@@ -49,13 +49,13 @@ Failure to set a valid redirect URL will result in login failures when you attem
 
 . Add the following value to *Web origins*
 +
-[.wrap,text]
+[.wrap,source,role=execute,text]
 ----
 https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
 ----
 . Add the following value to *Valid redirect URIs*:
 +
-[.wrap,text]
+[.wrap,source,role=execute,text]
 ----
 https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api/auth/oidc/handler/frame
 ----
@@ -97,7 +97,7 @@ Get started by creating a minimal `{m2_rhdh_plugins_cm_name}` ConfigMap that ena
 . Click the *Create ConfigMap* button.
 . Switch to the YAML view and paste the following configuration:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 apiVersion: v1
 kind: ConfigMap
@@ -124,7 +124,7 @@ Now you need to update your Backstage CR to reference the dynamic plugins Config
 . Click the *YAML* tab to edit the resource.
 . Update the `spec.application` section to include the dynamic plugins configuration:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 spec:
   application:
@@ -217,7 +217,7 @@ Update your *app-config.yaml* to include Keycloak integration:
 . Click *Edit ConfigMap*.
 . Replace the `app-config.yaml` content with:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 app:
   title: Red Hat Developer Hub
@@ -270,7 +270,7 @@ Update your Backstage CR to reference the Keycloak secrets:
 . Navigate to your Backstage CR and click the *YAML* tab.
 . Update the `spec.application` section to inject the keys and values from the secret into the pod's environment using the `extraEnvs.secrets` array:
 +
-[source,yaml,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
 spec:
   application:
