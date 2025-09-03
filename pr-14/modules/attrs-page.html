@@ -53,10 +53,16 @@
     <a class="nav-link" href="m2/setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="m2/configure-your-first-plugin.html">Configure your First Plugin</a>
+    <a class="nav-link" href="m2/configure-your-first-plugin.html">Configure your First Plugin (SSO)</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="m2/connect-gitlab-scm.html">Connect to GitLab</a>
+    <a class="nav-link" href="m2/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="m2/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="m2/connect-argocd.html">Argo CD Integration</a>
   </li>
 </ul>
   </li>
@@ -191,6 +197,8 @@
   "ssh_command": "ssh someone@example.com",
   "product_rhdh_name": "Red Hat Developer Hub",
   "product_rhdh_version": "1.7",
+  "product_gitops_name": "Red Hat OpenShift GitOps",
+  "ns_tssc_gitops": "tssc-gitops",
   "keycloak_realm_name": "trusted-artifact-signer",
   "keycloak_client_id": "rhdh",
   "m2_rhdh_project": "setup-rhdh",
@@ -198,6 +206,9 @@
   "m2_rhdh_cm_name": "rhdh-config",
   "m2_keycloak_secret_name": "keycloak-secrets",
   "m2_rhdh_plugins_cm_name": "dynamic-plugins-rhdh",
+  "m2_argocd_user": "developer-hub",
+  "m2_argocd_pass": "d3v3l0p3rs",
+  "m2_argocd_passhash": "$2y$10$KnsgxceFRwN15iVJ3BxskuIJ2/qUqzaLs8.Oea1WzyvBraZxdG.eu",
   "page-links": [
     {
       "url": "https://redhat.com",

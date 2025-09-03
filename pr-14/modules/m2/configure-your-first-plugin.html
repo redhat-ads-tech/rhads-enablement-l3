@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Configure your First Plugin :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <title>Configure your First Plugin (Single Sign-On) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m2/configure-your-first-plugin.html">
     <link rel="prev" href="setup-rhdh.html">
-    <link rel="next" href="connect-gitlab-scm.html">
+    <link rel="next" href="plugin-cache.html">
     <meta name="generator" content="Antora 3.1.12">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -54,10 +54,16 @@
     <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin</a>
+    <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (SSO)</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="connect-gitlab-scm.html">Connect to GitLab</a>
+    <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
 </ul>
   </li>
@@ -153,13 +159,13 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="setup-rhdh.html">Module 2: Install &amp; Administer</a></li>
-    <li><a href="configure-your-first-plugin.html">Configure your First Plugin</a></li>
+    <li><a href="configure-your-first-plugin.html">Configure your First Plugin (SSO)</a></li>
   </ul>
 </nav>
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Configure your First Plugin</h1>
+<h1 class="page">Configure your First Plugin (Single Sign-On)</h1>
 <div class="sect1">
 <h2 id="_plugin_architecture"><a class="anchor" href="#_plugin_architecture"></a>Plugin Architecture</h2>
 <div class="sectionbody">
@@ -217,7 +223,7 @@
 <p>The Keycloak plugin enables Red Hat Developer Hub to integrate with Keycloak for authentication and to import User and Group entities into the Backstage catalog. The presence of User and Group entities in the Software Catalog is essential for assigning ownership to other entities, and to facilitate user login. A user&#8217;s login attempt to Red Hat Developer Hub will fail if a corresponding User entity matching their email/username doesn&#8217;t exist in the Software Catalog.</p>
 </div>
 <div class="paragraph">
-<p>Your environment includes a preconfigured Keycloak instance with a <code>trusted-artifact-signer</code> <a href="https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms">realm</a> and <code>rhdh</code> client that acts as an OpenID Connect authentication provider already set up for Red Hat Developer Hub integration, however you need to make sure it&#8217;s configured with the correct redirect URL for authentication to be successfull.</p>
+<p>Your environment includes a preconfigured Keycloak instance with a <code>trusted-artifact-signer</code> <a href="https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms">realm</a> and <code>rhdh</code> client that acts as an OpenID Connect authentication provider already set up for Red Hat Developer Hub integration, however you need to make sure it&#8217;s configured with the correct redirect URL for authentication to be successful.</p>
 </div>
 <div class="sect2">
 <h3 id="_accessing_keycloak"><a class="anchor" href="#_accessing_keycloak"></a>Accessing Keycloak</h3>
@@ -264,7 +270,7 @@
 <div class="sect2">
 <h3 id="_update_the_redirect_urls_and_web_origins"><a class="anchor" href="#_update_the_redirect_urls_and_web_origins"></a>Update the Redirect URLs and Web Origins</h3>
 <div class="paragraph">
-<p>Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with Red Hat Developer Hub. This is because Keycloak will not recognise your Red Hat Developer Hub hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behvaiour.</p>
+<p>Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with Red Hat Developer Hub. This is because Keycloak will not recognise your Red Hat Developer Hub hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behaviour.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -299,7 +305,7 @@
 </div>
 </li>
 <li>
-<p>Your result should resemle this screenshot, albeit with different URL values.</p>
+<p>Your result should resemble this screenshot, albeit with different URL values.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/setup-rhdh/keycloak-valid-urls.png" alt="keycloak valid urls">
@@ -514,9 +520,9 @@ data:
 </li>
 <li>
 <p>Set the secret name to <code>keycloak-secrets</code>.</p>
-<div class="imageblock">
+<div class="imageblock unresolved">
 <div class="content">
-<img src="../_images/setup-rhdh/keyckloak-secret.png" alt="keyckloak secret">
+<img src="setup-rhdh/keycloak-secret.png" alt="keycloak secret">
 </div>
 </div>
 </li>
@@ -563,7 +569,7 @@ data:
 </ol>
 </div>
 <div class="paragraph">
-<p>Both a <code>KEYCLOAK_LOGIN_REALM</code> and <code>KEYCLOAK_REALM</code> are defined si it&#8217;s possible that the realm used for login is not the same as the realm used to source Users and Groups for the Software Catalog.</p>
+<p>Both a <code>KEYCLOAK_LOGIN_REALM</code> and <code>KEYCLOAK_REALM</code> are defined so it&#8217;s possible that the realm used for login is not the same as the realm used to source Users and Groups for the Software Catalog.</p>
 </div>
 </div>
 <div class="sect2">
@@ -713,7 +719,7 @@ catalog:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit in to your <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}">Red Hat Developer Hub instance</a>.</p>
+<p>Visit your <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}">Red Hat Developer Hub instance</a>.</p>
 </li>
 <li>
 <p>You should now see an OIDC sign-in option.</p>
@@ -751,7 +757,7 @@ catalog:
 </div>
 <nav class="pagination">
   <span class="prev"><a href="setup-rhdh.html" class="query-params-link">Module 2: Install &amp; Administer</a></span>
-  <span class="next"><a href="connect-gitlab-scm.html" class="query-params-link">Connect to GitLab</a></span>
+  <span class="next"><a href="plugin-cache.html" class="query-params-link">Plugin Caching</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
