@@ -16,7 +16,7 @@ Configuring the integration requires:
 
 == Create the Argo CD Service Account and Credentials
 
-To facilitate secure communication between {product_rhdh_name} and Argo CD, you should to create a dedicated readonly user account. It's possible to use the existing *admin* user account, however using principle of least privilege is best.
+To facilitate secure communication between {product_rhdh_name} and Argo CD, you should create a dedicated readonly user account. It's possible to use the existing *admin* user account, however using principle of least privilege is best.
 
 Your cluster has been preconfigured with an Argo CD instance that's managed by {product_gitops_name}. You'll update this instance to support the integration between it and {product_rhdh_name}.
 

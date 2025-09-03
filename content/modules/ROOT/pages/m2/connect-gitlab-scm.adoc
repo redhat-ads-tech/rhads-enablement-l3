@@ -15,7 +15,7 @@ Configuring the integration requires:
 
 . Generating an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token] in GitLab.
 . Creating a Secret to store the access token, and loading it into the {product_rhdh_name} pod.
-. Adding the the access token and GitLab hostname to the `integrations` section of {product_rhdh_name}'s *app-config.yaml*.
+. Adding the access token and GitLab hostname to the `integrations` section of {product_rhdh_name}'s *app-config.yaml*.
 . Registering a new `gitlab` provider in `catalog.providers` in the *app-config.yaml*.
 
 == Create the GitLab Token and Credentials Secret
@@ -82,7 +82,7 @@ Similar to the *{m2_keycloak_secret_name}* you created in the previous section, 
 
 Update your Backstage CR to include the GitLab secret:
 
-. Navigate to your https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and click change to the *YAML* view.
+. Navigate to your https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and change to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -122,7 +122,7 @@ Update your *app-config.yaml* to include GitLab integration and provider configu
 
 . Navigate to *Workloads > ConfigMaps* and click on `{m2_rhdh_cm_name}`.
 . Click *Edit ConfigMap*.
-. Add the following `gitlab` configuration to the `catalog.providers` section your *app-config.yaml*:
+. Add the following `gitlab` configuration to the `catalog.providers` section of your *app-config.yaml*:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -130,7 +130,7 @@ catalog:
   providers:
     # ...existing providers, e.g keycloak
     # ...................................
-    # Our new GitLab provider that will synchronise catalog-info.yaml
+    # Our new GitLab provider that will synchronize catalog-info.yaml
     # from our repositories in GitLab to the Software Catalog
     gitlab:
       yourProviderId:
@@ -143,7 +143,7 @@ catalog:
           timeout:
             minutes: 3
 ----
-. Additionally, add a new `integrations` section at the root level of the *app-config.yaml*, i.e the same indentation level at the `catalog` and `app` keys:
+. Additionally, add a new `integrations` section at the root level of the *app-config.yaml*, i.e. the same indentation level as the `catalog` and `app` keys:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
