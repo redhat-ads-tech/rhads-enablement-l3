@@ -1,0 +1,211 @@
+== Configure the Argo CD Integration
+
+The Argo CD plugin enables {product_rhdh_name} to display deployment status and continuous delivery information directly within the Software Catalog. This integration provides real-time visibility into application deployments managed by Argo CD.
+
+* Display deployment status information in the Software Catalog
+* Show application health and sync status from Argo CD
+* Provide direct links to Argo CD application views
+* Enable developers to monitor their application deployments without leaving the developer portal
+
+Configuring the integration requires:
+
+. Creating a dedicated readonly user account in Argo CD for secure API access
+. Storing Argo CD credentials in Secret and loading it into the {product_rhdh_name} pod
+. Adding the Argo CD dynamic plugin to your plugin configuration
+. Configuring entity annotations to link catalog entries with Argo CD applications
+
+== Create the Argo CD Service Account and Credentials
+
+To facilitate secure communication between {product_rhdh_name} and Argo CD, you should to create a dedicated readonly user account. It's possible to use the existing *admin* user account, however using principle of least privilege is best.
+
+Your cluster has been preconfigured with an Argo CD instance that's managed by {product_gitops_name}. You'll update this instance to support the integration between it and {product_rhdh_name}.
+
+=== Create a Readonly Argo CD User
+
+. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
+  * Username: `{openshift_admin_user}`
+  * Password: `{common_password}`
+. Navigate to *Operators > Installed Operators* and search for "gitops" to find the {product_gitops_name} operator.
+. Select the operator then the *Argo CD* tab.
++
+image::setup-rhdh/argocd-operator.png[]
+. Select the *{ns_tssc_gitops}* instance, and then *Actions > Edit Argo CD*.
+. Edit the `extraConfig` section to include the following line that adds the *{m2_argocd_user}* user:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+accounts.developer-hub: 'apiKey, login'
+----
+. Edit the `rbac.policy` section to grant readonly permissions to the new user:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+policy: |
+  g, system:cluster-admins, role:admin
+  g, cluster-admins, role:admin
+  g, developer-hub, role:readonly
+----
+. The resulting configuration will resemble the following screenshot.
++
+image::setup-rhdh/argocd-operator-config.png[]
+. Scroll down and click *Save*.
+
+The operator will update the necessary Argo CD ConfigMaps to enable the new *{m2_argocd_user}* user account. 
+
+=== Set the Readonly Argo CD User's Password
+
+. Navigate to *Workloads > Secrets* in the *{ns_tssc_gitops}* project.
+. Select the `argocd-secret` Secret, and use the *Actions* dropdown to select *Edit Secret*.
+. Scroll down and click *Add key/value*.
+. Supply the following *Key*:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+accounts.{m2_argocd_user}.password
+----
+. Supply the following *Value*:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+{m2_argocd_passhash}
+----
++
+image::setup-rhdh/argocd-secret.png[]
+. Click *Save*.
+
+The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above was generated using htpasswd like so `htpasswd -bnBC 10 "" '{m2_argocd_pass}'`.
+
+=== Verify the Argo CD User Account is Active
+
+. Visit the https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-gitops/route.openshift.io~v1~Route[*Routes* in the {ns_tssc_gitops}] namespace.
+. Click the link in the *Location* column to access Argo CD.
+. Login using the username `{m2_argocd_user}` and password `{m2_argocd_pass}` - an empty application list will be displayed.
+
+image::setup-rhdh/argocd-dashboard.png[]
+
+== Update the {product_rhdh_name} Configuration
+
+Now that Argo CD is configured with a readonly user, you'll update the {product_rhdh_name} configuration to enable the Argo CD integration. This procedure is similar to the previous plugins, so you're probably becoming familiar with it by now.
+
+=== Create a Secret for Argo CD Credentials
+
+Create a Secret in your {product_rhdh_name} namespace to store the *{m2_argocd_user}* Argo CD credentials:
+
+. Navigate to *Workloads > Secrets* and click *Create > From YAML*.
+. Ensure that the `{m2_rhdh_project}` project is selected.
+. Replace the content in the YAML editor with the following:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-secrets
+  namespace: {m2_rhdh_project}
+type: Opaque
+stringData:
+  ARGOCD_URL: https://{ns_tssc_gitops}-server-{ns_tssc_gitops}.{cluster_apps_domain}
+  ARGOCD_USERNAME: {m2_argocd_user}
+  ARGOCD_PASSWORD: {m2_argocd_pass}
+----
+. Click *Create*.
+
+=== Add Argo CD Secrets to the Backstage CR
+
+Update your Backstage CR to include the Argo CD secret:
+
+. Navigate to your https://console-openshift-console.{cluster_apps_domain}/k8s/ns/{m2_rhdh_project}/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and switch to the *YAML* view.
+. Update the `extraEnvs.secrets` section to reference the *argocd-secrets* Secret you created:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+extraEnvs:
+  secrets:
+    - name: {m2_keycloak_secret_name}
+    - name: gitlab-secrets
+    # Inject the ARGOCD_URL, ARGOCD_USERNAME, 
+    # and ARGOCD_PASSWORD into the pod as environment variables
+    - name: argocd-secrets
+----
+. Click *Save*.
+
+=== Enable the Argo CD Dynamic Plugin
+
+Enable the Argo CD plugin by updating your *{m2_rhdh_plugins_cm_name}* ConfigMap:
+
+. Navigate to *Workloads > ConfigMaps* and click on `{m2_rhdh_plugins_cm_name}`.
+. Click *Edit ConfigMap*.
+. Update the `dynamic-plugins.yaml` content to include the Argo CD plugin:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+- package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
+  disabled: false
+- package: ./dynamic-plugins/dist/backstage-community-plugin-redhat-argocd
+  disabled: false
+----
++
+[NOTE]
+====
+Verify that your indentation is correct by aligning it with the existing plugins.
+====
+. Click *Save*.
+
+=== Configure the Argo CD Plugin 
+
+Update your *app-config.yaml* to include Argo CD integration configuration:
+
+. Navigate to *Workloads > ConfigMaps* and click on `{m2_rhdh_cm_name}`.
+. Click *Edit ConfigMap*.
+. Add the following `argocd` configuration at the root level of the *app-config.yaml*, at the same indentation level as the `catalog` and `integrations` keys:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+argocd:
+  appLocatorMethods:
+    - type: config
+      instances:
+        - name: argocd
+          url: ${ARGOCD_URL}
+          username: ${ARGOCD_USERNAME}
+          password: ${ARGOCD_PASSWORD}
+----
+. Click *Save* to update the *app-config.yaml*.
+
+Wait for the new Backstage pod to start, and check the *backstage-backend* logs for the Argo CD plugin initializing messages.
+
+image::setup-rhdh/argocd-plugin-logs.png[]
+
+== Configure Entity Annotations
+
+For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.
+
+Add the following annotation to your `catalog-info.yaml` files or entity definitions:
+
+[source,yaml,role=execute,subs=attributes+]
+----
+metadata:
+  annotations:
+    argocd/app-selector: app.kubernetes.io/name=YOUR_APP_NAME
+----
+
+[NOTE]
+====
+Replace `YOUR_APP_NAME` with the actual application name used in your Argo CD application labels. The selector should match the labels configured on your Argo CD applications.
+====
+
+== Verify Argo CD Integration
+
+After the new Backstage pod has started:
+
+. Check the Backstage pod logs to confirm successful connection to Argo CD.
+. Log in to your {product_rhdh_name} instance.
+. Navigate to the *Catalog* and select a component that has the `argocd/app-selector` annotation.
+. You should now see a *CD* tab in the component view displaying deployment status from Argo CD.
+
+The entity that was imported by the GitLab plugin in the previous section will now display a "CD" tab in the Component view in {product_rhdh_name}, showing real-time deployment status and details from Argo CD.
+
+[NOTE]
+====
+The Argo CD integration requires proper network connectivity between {product_rhdh_name} and the Argo CD server. Ensure that the Argo CD server URL is accessible from the {product_rhdh_name} pod and that the service account has the necessary permissions to read application information.
+====

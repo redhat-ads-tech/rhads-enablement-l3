@@ -1,0 +1,93 @@
+== Enable Dynamic Plugin Caching
+
+You might have noticed that the *install-dynamic-plugins* container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your {product_rhdh_name} deployment by storing plugin packages in a https://kubernetes.io/docs/concepts/storage/persistent-volumes/[persistent volume]. This provides several benefits:
+
+* *Faster deployments*: Plugins are cached locally and don't need to be downloaded when pods start
+* *Reduced bandwidth consumption*: Plugin packages are only downloaded once and reused across deployments  
+* *Improved reliability*: Reduces dependency on external registries during pod startup
+* *Better resource utilization*: Reduces CPU and memory usage during plugin installation by avoiding repeated downloads
+
+Without dynamic plugin caching, the {product_rhdh_name} downloads and installs plugins fresh with each pod restart. This process can be slow and bandwidth-intensive, especially in environments with many plugins and frequent deployments.
+
+=== Create a PersistentVolumeClaim
+
+First, create a PersistentVolumeClaim that will store the cached plugin packages. This PVC will be mounted into the {product_rhdh_name} pods to provide persistent storage for downloaded plugins.
+
+. Navigate to *Storage > PersistentVolumeClaims* in the OpenShift Web Console.
+. Ensure the `{m2_rhdh_project}` project is selected.
+. Click the *Create PersistentVolumeClaim* button and select *With Form*.
+. Use the following settings:
+    * *StorageClass*: Use the default value 
+    * *Name*: `dynamic-plugins-root`
+    * *Access mode*: Single-user RWO
+    * *Size*: 5Gi
+    * *Volume mode*: Filesystem
++
+image::setup-rhdh/plugin-cache-pvc.png[]
+. Click *Create* to create the PersistentVolumeClaim.
+
+The 5GiB storage allocation provides sufficient space for caching multiple plugins while maintaining reasonable resource consumption. The `ReadWriteOnce` access mode is appropriate since the cache will be accessed by a single {product_rhdh_name} pod at a time.
+
+=== Patch the {product_rhdh_name} CR
+
+Next, update your Backstage Custom Resource to mount a volume. This configuration uses the {product_rhdh_name} Operator's patch functionality to modify the underlying Deployment.
+
+. Navigate to *Operators > Installed Operators* in the OpenShift Web Console.
+
+. Click on *{product_rhdh_name}*.
+. Select the *Backstage* tab, then click on your `{m2_rhdh_instance}` instance.
+. Click the *YAML* tab to edit the resource.
+. Add the following `deployment.patch` configuration to your Backstage CR's `spec` field:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+spec:
+  # Add this deployment patch configuration
+  deployment:
+    patch:
+      spec:
+        template:
+          spec:
+            volumes:
+              - $patch: replace
+                name: dynamic-plugins-root
+                persistentVolumeClaim:
+                  claimName: dynamic-plugins-root
+----
++
+[WARNING]
+====
+Do not remove or overwrite existing sections. Only add the new `deployment` field to the existing `spec` with other the fields inside `spec`.
+====
++
+[NOTE]
+====
+The `$patch: replace` directive tells the operator to replace the existing `dynamic-plugins-root` volume (which is an https://kubernetes.io/docs/concepts/storage/volumes/#emptydir[emptyDir] by default) with a PersistentVolumeClaim-backed volume. This ensures that plugin cache data persists across pod restarts.
+====
+. Click *Save* to apply the changes.
+
+=== Verify Plugin Cache Configuration
+
+After updating the Backstage CR, a new pod will be created with the persistent volume mounted for plugin caching.
+
+. Navigate to *Workloads > Pods* and select the latest Backstage pod.
+. Click the *Details* tab and scroll down to the *Volumes* section.
+. Verify that the `dynamic-plugins-root` volume shows a *PersistentVolumeClaim* source instead of *EmptyDir*.
+. Select the *Events* tab and you'll notice an event that references `AttachVolume.Attach` for your new volume.
++
+image::setup-rhdh/plugin-cache-attached.png[]
+
+Next, you'll observe just how much faster a new pod starts with plugin caching enabled.
+
+. Wait for the new deployment's `backstage-backend` container to start.
+. Return to the *Workloads > Pods* list and locate the `backstage-rhdh` pod.
+. Click the three dots to the right of the table and delete the pod - a new pod will immediately be created to replace the missing Backstage pod.
++
+image::setup-rhdh/plugin-cache-delete-pod.png[]
+. Visit the logs for the new pod and you'll find that the *install-dynamic-plugins* container reports that it's not downloading previously installed plugins.
++
+image:setup-rhdh/plugin-cache-install-skip.png[]
+
+Did you notice how much faster the plugin installation process has become?
+
+With dynamic plugin caching enabled, subsequent deployments will continue to use cached plugin packages, significantly improving startup performance and reducing external dependencies during pod initialization.

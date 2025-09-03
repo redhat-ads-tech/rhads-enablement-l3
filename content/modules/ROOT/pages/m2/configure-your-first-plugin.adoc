@@ -1,4 +1,4 @@
-= Configure your First Plugin
+= Configure your First Plugin (Single Sign-On)
 
 == Plugin Architecture
 
@@ -24,7 +24,7 @@ Third-party plugins can also be integrated with {product_rhdh_name}, but they re
 
 The Keycloak plugin enables {product_rhdh_name} to integrate with Keycloak for authentication and to import User and Group entities into the Backstage catalog. The presence of User and Group entities in the Software Catalog is essential for assigning ownership to other entities, and to facilitate user login. A user's login attempt to {product_rhdh_name} will fail if a corresponding User entity matching their email/username doesn't exist in the Software Catalog.
 
-Your environment includes a preconfigured Keycloak instance with a `{keycloak_realm_name}` https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms[realm] and `{keycloak_client_id}` client that acts as an OpenID Connect authentication provider already set up for {product_rhdh_name} integration, however you need to make sure it's configured with the correct redirect URL for authentication to be successfull.
+Your environment includes a preconfigured Keycloak instance with a `{keycloak_realm_name}` https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms[realm] and `{keycloak_client_id}` client that acts as an OpenID Connect authentication provider already set up for {product_rhdh_name} integration, however you need to make sure it's configured with the correct redirect URL for authentication to be successful.
 
 === Accessing Keycloak
 
@@ -45,7 +45,7 @@ The *General settings* screen for the client will be displayed. You need to add 
 
 === Update the Redirect URLs and Web Origins
 
-Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with {product_rhdh_name}. This is because Keycloak will not recognise your {product_rhdh_name} hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behvaiour.
+Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with {product_rhdh_name}. This is because Keycloak will not recognise your {product_rhdh_name} hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behaviour.
 
 . Add the following value to *Web origins*
 +
@@ -64,7 +64,7 @@ https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api
 ====
 Do not delete the existing *Web origins* and *Valid redirect URIs*!
 ====
-. Your result should resemle this screenshot, albeit with different URL values.
+. Your result should resemble this screenshot, albeit with different URL values.
 +
 image::setup-rhdh/keycloak-valid-urls.png[]
 . Click *Save*.
@@ -182,7 +182,7 @@ First, create a Secret to store Keycloak connection details:
 . Click *Create > Key/value secret*.
 . Set the secret name to `{m2_keycloak_secret_name}`.
 +
-image::setup-rhdh/keyckloak-secret.png[]
+image::setup-rhdh/keycloak-secret.png[]
 . Add the following key-value pairs:
 +
 [cols="1,1"]
@@ -206,7 +206,7 @@ image::setup-rhdh/keyckloak-secret.png[]
 |===
 . Click *Create*.
 
-Both a `KEYCLOAK_LOGIN_REALM` and `KEYCLOAK_REALM` are defined si it's possible that the realm used for login is not the same as the realm used to source Users and Groups for the Software Catalog.
+Both a `KEYCLOAK_LOGIN_REALM` and `KEYCLOAK_REALM` are defined so it's possible that the realm used for login is not the same as the realm used to source Users and Groups for the Software Catalog.
 
 === Update the Backstage Configuration
 
@@ -306,7 +306,7 @@ image::setup-rhdh/keycloak-plugin-logs.png[]
 
 Next, verify the new OpenID Connect login flow is working:
 
-. Visit in to your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}[{product_rhdh_name} instance].
+. Visit your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}[{product_rhdh_name} instance].
 . You should now see an OIDC sign-in option.
 +
 image::setup-rhdh/rhdh-oidc-signin.png[]

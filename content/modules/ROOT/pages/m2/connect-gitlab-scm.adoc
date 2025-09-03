@@ -1,4 +1,4 @@
-== Enable and Configure the GitLab Plugin
+== Configure the GitLab Integration
 
 [NOTE]
 ====

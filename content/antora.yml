@@ -16,6 +16,9 @@ asciidoc:
     ssh_command: ssh someone@example.com
     product_rhdh_name: Red Hat Developer Hub
     product_rhdh_version: "1.7"
+    product_gitops_name: Red Hat OpenShift GitOps
+
+    ns_tssc_gitops: tssc-gitops
 
     keycloak_realm_name: trusted-artifact-signer
     keycloak_client_id: rhdh
@@ -28,6 +31,9 @@ asciidoc:
     m2_rhdh_cm_name: rhdh-config
     m2_keycloak_secret_name: keycloak-secrets
     m2_rhdh_plugins_cm_name: dynamic-plugins-rhdh
+    m2_argocd_user: developer-hub
+    m2_argocd_pass: d3v3l0p3rs
+    m2_argocd_passhash: $2y$10$KnsgxceFRwN15iVJ3BxskuIJ2/qUqzaLs8.Oea1WzyvBraZxdG.eu
     # Module 2 - End Variables
     page-links:
     - url: https://redhat.com
