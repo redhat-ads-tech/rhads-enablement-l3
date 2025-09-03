@@ -28,7 +28,7 @@ Your environment includes a preconfigured Keycloak instance with a `{keycloak_re
 
 === Accessing Keycloak
 
-Keycloak has been predeployed on your OpenShift cluster in the `tssc-keycloak` project. Accessing Keycloak requires its URL and admin password:
+Keycloak has been pre-deployed on your OpenShift cluster in the `tssc-keycloak` project. Accessing Keycloak requires its URL and admin password:
 
 . Visit the https://console-openshift-console.apps.cluster-6zqmr.dynamic.redhatworkshops.io/k8s/ns/tssc-keycloak/core~v1~Secret[Secrets screen in the tssc-keycloak] namespace.
 . Click the `keycloak-initial-admin` Secret to view it.
@@ -45,7 +45,7 @@ The *General settings* screen for the client will be displayed. You need to add 
 
 === Update the Redirect URLs and Web Origins
 
-Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with {product_rhdh_name}. This is because Keycloak will not recognise your {product_rhdh_name} hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behaviour.
+Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with {product_rhdh_name}. This is because Keycloak will not recognise your {product_rhdh_name} hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behavior.
 
 . Add the following value to *Web origins*
 +
