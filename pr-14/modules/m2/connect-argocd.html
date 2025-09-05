@@ -196,13 +196,13 @@
 <p>Creating a dedicated readonly user account in Argo CD for secure API access</p>
 </li>
 <li>
-<p>Storing Argo CD credentials in Secret and loading it into the Red Hat Developer Hub pod</p>
+<p>Storing Argo CD credentials in a Secret and loading it into the Red Hat Developer Hub pod</p>
 </li>
 <li>
-<p>Adding the Argo CD dynamic plugin to your plugin configuration</p>
+<p>Adding the Argo CD dynamic plugin to your Red Hat Developer Hub plugin configuration</p>
 </li>
 <li>
-<p>Configuring entity annotations to link catalog entries with Argo CD applications</p>
+<p>Configuring entity annotations to link entities with <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications">Argo CD Applications</a></p>
 </li>
 </ol>
 </div>
@@ -212,10 +212,10 @@
 <h2 id="_create_the_argo_cd_service_account_and_credentials"><a class="anchor" href="#_create_the_argo_cd_service_account_and_credentials"></a>Create the Argo CD Service Account and Credentials</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To facilitate secure communication between Red Hat Developer Hub and Argo CD, you should create a dedicated readonly user account. It&#8217;s possible to use the existing <strong>admin</strong> user account, however using principle of least privilege is best.</p>
+<p>To facilitate secure communication between Red Hat Developer Hub and Argo CD, you should create a dedicated readonly user account. It&#8217;s possible to use the existing <strong>admin</strong> user account, however using the principle of least privilege is the best practice.</p>
 </div>
 <div class="paragraph">
-<p>Your cluster has been preconfigured with an Argo CD instance that&#8217;s managed by Red Hat OpenShift GitOps. You&#8217;ll update this instance to support the integration between it and Red Hat Developer Hub.</p>
+<p>Your cluster has been pre-configured with an Argo CD instance that&#8217;s managed by Red Hat OpenShift GitOps. You&#8217;ll update this instance to support the integration between it and Red Hat Developer Hub.</p>
 </div>
 <div class="sect2">
 <h3 id="_create_a_readonly_argo_cd_user"><a class="anchor" href="#_create_a_readonly_argo_cd_user"></a>Create a Readonly Argo CD User</h3>
@@ -324,7 +324,7 @@
 </ol>
 </div>
 <div class="paragraph">
-<p>The new password is <code>d3v3l0p3rs</code>, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above was generated using htpasswd like so <code>htpasswd -bnBC 10 "" 'd3v3l0p3rs'</code>.</p>
+<p>The new password is <code>d3v3l0p3rs</code>, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above were generated using htpasswd like so: <code>htpasswd -bnBC 10 "" 'd3v3l0p3rs'</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -347,6 +347,20 @@
 <img src="../_images/setup-rhdh/argocd-dashboard.png" alt="argocd dashboard">
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you can&#8217;t login, review the Argo CD ConfigMap and Secret changes you made for accuracy.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -354,7 +368,7 @@
 <h2 id="_update_the_red_hat_developer_hub_configuration"><a class="anchor" href="#_update_the_red_hat_developer_hub_configuration"></a>Update the Red Hat Developer Hub Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now that Argo CD is configured with a readonly user, you&#8217;ll update the Red Hat Developer Hub configuration to enable the Argo CD integration. This procedure is similar to the previous plugins, so you&#8217;re probably becoming familiar with it by now.</p>
+<p>Now that Argo CD is configured with a readonly user, you&#8217;ll update the Red Hat Developer Hub configuration to enable the Argo CD integration. The procedure is similar to the previous plugins you added, so you&#8217;re probably becoming familiar with it by now.</p>
 </div>
 <div class="sect2">
 <h3 id="_create_a_secret_for_argo_cd_credentials"><a class="anchor" href="#_create_a_secret_for_argo_cd_credentials"></a>Create a Secret for Argo CD Credentials</h3>
@@ -380,6 +394,7 @@ metadata:
   namespace: setup-rhdh
 type: Opaque
 stringData:
+  # Warning: Remove trailing slashes or the plugin will throw "method not allowed" errors
   ARGOCD_URL: https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}
   ARGOCD_USERNAME: developer-hub
   ARGOCD_PASSWORD: d3v3l0p3rs</code></pre>
@@ -480,7 +495,7 @@ stringData:
 <p>Click <strong>Edit ConfigMap</strong>.</p>
 </li>
 <li>
-<p>Add the following <code>argocd</code> configuration at the root level of the <strong>app-config.yaml</strong>, at the same indentation level as the <code>catalog</code> and <code>integrations</code> keys:</p>
+<p>Add the following <code>argocd</code> configuration at the root level of the <strong>app-config.yaml</strong>:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">argocd:
@@ -492,6 +507,20 @@ stringData:
           username: ${ARGOCD_USERNAME}
           password: ${ARGOCD_PASSWORD}</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>argocd</code> key should be at the same indentation level as the <code>catalog</code> and <code>integrations</code> keys in the <strong>app-config.yaml</strong>.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </li>
 <li>
@@ -511,20 +540,15 @@ stringData:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_configure_entity_annotations"><a class="anchor" href="#_configure_entity_annotations"></a>Configure Entity Annotations</h2>
+<h2 id="_verify_argo_cd_integration"><a class="anchor" href="#_verify_argo_cd_integration"></a>Verify Argo CD Integration</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_configure_and_verify_entity_annotations_and_application_labels"><a class="anchor" href="#_configure_and_verify_entity_annotations_and_application_labels"></a>Configure and Verify Entity Annotations and Application Labels</h3>
 <div class="paragraph">
 <p>For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.</p>
 </div>
 <div class="paragraph">
-<p>Add the following annotation to your <code>catalog-info.yaml</code> files or entity definitions:</p>
-</div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">metadata:
-  annotations:
-    argocd/app-selector: app.kubernetes.io/name=YOUR_APP_NAME</code></pre>
-</div>
+<p>Your environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> - find it in the GitLab repository named <a href="https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example">m2/argocd-example</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -534,38 +558,40 @@ stringData:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Replace <code>YOUR_APP_NAME</code> with the actual application name used in your Argo CD application labels. The selector should match the labels configured on your Argo CD applications.</p>
+<p>Normally the <strong>catalog-info.yaml</strong> file will live alongside source code, or in a dedicated repository for catalog files. This module places it in the same repository as the deployment manifests for convenience.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_verify_argo_cd_integration"><a class="anchor" href="#_verify_argo_cd_integration"></a>Verify Argo CD Integration</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>After the new Backstage pod has started:</p>
+<p>In this case you can see that the <a href="https://github.com/redhat-ads-tech/m2-argocd-example/blob/main/catalog-info.yaml#L8"><strong>argocd/app-selector</strong> annotation</a> is set on the Component - this tells the Argo CD plugin for Red Hat Developer Hub to query the configured Argo CD instance for Applications with a label matching that selector. Your <a href="https://github.com/redhat-ads-tech/m2-argocd-example/blob/main/application.yaml#L7">httpsink Application has a matching label</a>; there&#8217;s no action required on your part in this section!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_an_argo_cd_application"><a class="anchor" href="#_create_an_argo_cd_application"></a>Create an Argo CD Application</h3>
+<div class="paragraph">
+<p>A sample Argo CD Application definition is <a href="https://raw.githubusercontent.com/redhat-ads-tech/m2-argocd-example/refs/heads/main/application.yaml">hosted on GitHub</a> - you&#8217;ll use this to test the integration.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Check the Backstage pod logs to confirm successful connection to Argo CD.</p>
+<p>Visit the OpenShift Web Console and ensure you&#8217;re logged in as the <strong>admin</strong> user.</p>
 </li>
 <li>
-<p>Log in to your Red Hat Developer Hub instance.</p>
+<p>Click the plus icon in the top-right corner and select <strong>Import YAML</strong>.</p>
 </li>
 <li>
-<p>Navigate to the <strong>Catalog</strong> and select a component that has the <code>argocd/app-selector</code> annotation.</p>
-</li>
-<li>
-<p>You should now see a <strong>CD</strong> tab in the component view displaying deployment status from Argo CD.</p>
-</li>
-</ol>
+<p>Paste the following YAML and click <strong>Create</strong> to create a namespace the Argo CD Application can deploy resources into.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    argocd.argoproj.io/managed-by: tssc-gitops
+  name: httpsink</code></pre>
 </div>
-<div class="paragraph">
-<p>The entity that was imported by the GitLab plugin in the previous section will now display a "CD" tab in the Component view in Red Hat Developer Hub, showing real-time deployment status and details from Argo CD.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -575,11 +601,131 @@ stringData:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The Argo CD integration requires proper network connectivity between Red Hat Developer Hub and the Argo CD server. Ensure that the Argo CD server URL is accessible from the Red Hat Developer Hub pod and that the service account has the necessary permissions to read application information.</p>
+<p>The <code>argocd.argoproj.io/managed-by</code> label is essential. It tells the Argo CD operator that the Argo CD named <strong>tssc-gitops</strong> can manage Kubernetes resources in this namespace.</p>
 </div>
 </td>
 </tr>
 </table>
+</div>
+</li>
+<li>
+<p>Next, create an Argo CD Application using the same <strong>Import YAML</strong> flow as you did for the namespace:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: httpsink
+  namespace: tssc-gitops
+  labels:
+    app.kubernetes.io/name: httpsink
+    backstage.io/app: httpsink
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab-gitlab.{cluster_apps_domain}/m2/argocd-example
+    targetRevision: HEAD
+    path: k8s
+  destination:
+    name: in-cluster
+    namespace: httpsink
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The Application you created is a simple example, but notably it has a <code>app.kubernetes.io/name: httpsink</code> label. Recall that the Argo CD plugin uses a selector to query information from Argo CD for a given Backstage Entity - this is the label your Component uses as the selector.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_view_the_application_in_argo_cd_and_developer_hub"><a class="anchor" href="#_view_the_application_in_argo_cd_and_developer_hub"></a>View the Application in Argo CD and Developer Hub</h3>
+<div class="paragraph">
+<p>First, perform a sanity check by viewing your new application in the Argo CD dashboard.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the <a href="https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}/"><strong>ns_tssc_gitops</strong> Argo CD dashboard</a>.</p>
+</li>
+<li>
+<p>Login as:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>developer-hub</code></p>
+</li>
+<li>
+<p>Password: <code>d3v3l0p3rs</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Confirm that the application named <strong>httpsink</strong> is listed and marked as <strong>Healthy</strong> and <strong>Synced</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-application.png" alt="argocd application">
+</div>
+</div>
+</li>
+<li>
+<p>Next, return to <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}">Red Hat Developer Hub</a>.</p>
+</li>
+<li>
+<p>Login as:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>user1</code></p>
+</li>
+<li>
+<p>Password: <code>{common_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Visit the <strong>Catalog</strong> by clicking the link on the left menu, ensure <strong>Kind</strong> is set to <strong>Component</strong> and search for <code>httpsink</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-httpsink-search.png" alt="argocd httpsink search">
+</div>
+</div>
+</li>
+<li>
+<p>Select the <strong>HTTP Sink Application</strong> from the list, then view the <strong>CD</strong> tab for the Component.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-httpsink-cd.png" alt="argocd httpsink cd">
+</div>
+</div>
+</li>
+<li>
+<p>Click on the listed application to view more information on the managed Kubernetes resources.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-httpsink-app-info.png" alt="argocd httpsink app info">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Nice work! Developers can now view the continuous delivery status of their applications directly in Red Hat Developer Hub without needing to access Argo CD directly. In this instance, just one environment&#8217;s information is shown, but the application could be deployed in multiple environments, and a card for each would be listed in the Argo CD tab.</p>
+</div>
 </div>
 </div>
 </div>
