@@ -200,6 +200,8 @@ Your environment has been pre-configured with a repository that contains a sampl
 Normally the *catalog-info.yaml* file will live alongside source code, or in a dedicated repository for catalog files. This module places it in the same repository as the deployment manifests for convenience.
 ====
 
+// TODO - remove GitHub refs once GitLab import is ready
+
 In this case you can see that the https://github.com/redhat-ads-tech/m2-argocd-example/blob/main/catalog-info.yaml#L8[*argocd/app-selector* annotation] is set on the Component - this tells the Argo CD plugin for {product_rhdh_name} to query the configured Argo CD instance for Applications with a label matching that selector. Your https://github.com/redhat-ads-tech/m2-argocd-example/blob/main/application.yaml#L7[httpsink Application has a matching label]; there's no action required on your part in this section!
 
 === Create an Argo CD Application

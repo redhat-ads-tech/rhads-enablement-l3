@@ -1,4 +1,6 @@
-= Configure your First Plugin (Single Sign-On)
+= Configure your First Plugin (Authentication)
+
+In this section you'll learn how to enable authentication for {product_rhdh_name} using Keycloak as an OpenID Connect provider. Various authentication providers are supported and can be found in the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/authentication_in_red_hat_developer_hub/index[{product_rhdh_name} documentation].
 
 == Plugin Architecture
 
@@ -20,7 +22,7 @@ While these plugins are pre-installed with {product_rhdh_name}, most must be exp
 Third-party plugins can also be integrated with {product_rhdh_name}, but they require proper packaging and configuration. For more information on working with third-party plugins, refer to the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/installing_and_viewing_plugins_in_red_hat_developer_hub/assembly-third-party-plugins#proc-export-third-party-plugins-rhdh_assembly-third-party-plugins[official documentation].
 ====
 
-== Prepare the Keycloak Realm
+== Prepare a Keycloak Realm
 
 The Keycloak plugin enables {product_rhdh_name} to integrate with Keycloak for authentication and to import User and Group entities into the Backstage catalog. The presence of User and Group entities in the Software Catalog is essential for assigning ownership to other entities, and to facilitate user login. A user's login attempt to {product_rhdh_name} will fail if a corresponding User entity matching their email/username doesn't exist in the Software Catalog.
 
