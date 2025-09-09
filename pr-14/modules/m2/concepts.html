@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Enable Dynamic Plugin Caching :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
-    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m2/plugin-cache.html">
-    <link rel="prev" href="configure-your-first-plugin.html">
-    <link rel="next" href="connect-gitlab-scm.html">
+    <title>Backstage Concepts :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m2/concepts.html">
+    <link rel="prev" href="introduction.html">
+    <link rel="next" href="setup-rhdh.html">
     <meta name="generator" content="Antora 3.1.12">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -53,7 +53,7 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html">Introduction</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="2">
     <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -62,7 +62,7 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -168,144 +168,86 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="setup-rhdh.html">Module 2: Install &amp; Administer</a></li>
-    <li><a href="plugin-cache.html">Plugin Caching</a></li>
+    <li><a href="concepts.html">Backstage Concepts &amp; Features</a></li>
   </ul>
 </nav>
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Enable Dynamic Plugin Caching</h1>
+<h1 class="page">Backstage Concepts</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>You might have noticed that the <strong>install-dynamic-plugins</strong> container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your Red Hat Developer Hub deployment by storing plugin packages in a <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">persistent volume</a>. This provides several benefits:</p>
+<p>Red Hat Developer Hub, and internal developer portals in general, can be thought of as a modular system where you aggregate and display data related to the software within an organization.</p>
+</div>
+<div class="paragraph">
+<p>The core features of Red Hat Developer Hub are the:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Faster deployments</strong>: Plugins are cached locally and don&#8217;t need to be downloaded when pods start</p>
+<p>Software Catalog</p>
 </li>
 <li>
-<p><strong>Reduced bandwidth consumption</strong>: Plugin packages are only downloaded once and reused across deployments</p>
+<p>Software Templates</p>
 </li>
 <li>
-<p><strong>Improved reliability</strong>: Reduces dependency on external registries during pod startup</p>
+<p>TechDocs</p>
 </li>
 <li>
-<p><strong>Better resource utilization</strong>: Reduces CPU and memory usage during plugin installation by avoiding repeated downloads</p>
+<p>Kubernetes Integration</p>
+</li>
+<li>
+<p>Dynamic Plugins</p>
+</li>
+<li>
+<p>Role-Based Access Control (RBAC)</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>Without dynamic plugin caching, the Red Hat Developer Hub downloads and installs plugins fresh with each pod restart. This process can be slow and bandwidth-intensive, especially in environments with many plugins and frequent deployments.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_create_a_persistentvolumeclaim"><a class="anchor" href="#_create_a_persistentvolumeclaim"></a>Create a PersistentVolumeClaim</h2>
+<h2 id="_software_templates"><a class="anchor" href="#_software_templates"></a>Software Templates</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>First, create a PersistentVolumeClaim that will store the cached plugin packages. This PVC will be mounted into the Red Hat Developer Hub pods to provide persistent storage for downloaded plugins.</p>
+<p>Software Templates have been referred to as "Golden Paths" in the past. These templates are designed and curated by platform engineers to provide a starting point for new software components that adhere to best practices within an organization. Templates can also be used to patch and update existing source code repositories, and provide general automation and self-service for developer chores.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Navigate to <strong>Storage &gt; PersistentVolumeClaims</strong> in the OpenShift Web Console.</p>
-</li>
-<li>
-<p>Ensure the <code>setup-rhdh</code> project is selected.</p>
-</li>
-<li>
-<p>Click the <strong>Create PersistentVolumeClaim</strong> button and select <strong>With Form</strong>.</p>
-</li>
-<li>
-<p>Use the following settings:</p>
+<div class="paragraph">
+<p>In-depth guides and examples of Software Templates are provided in later modules.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_software_catalog"><a class="anchor" href="#_software_catalog"></a>Software Catalog</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Software Catalog is a centralised asset tracker for all of the software in an organization. It stores and tracks <strong>Entities</strong>:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>StorageClass</strong>: Use the default value</p>
+<p>Components: Units of software, e.g. microservices, websites, libraries.</p>
 </li>
 <li>
-<p><strong>Name</strong>: <code>dynamic-plugins-root</code></p>
+<p>Resources: Databases, S3 buckets, brokers.</p>
 </li>
 <li>
-<p><strong>Access mode</strong>: Single-user RWO</p>
+<p>APIs: Represent interfaces such as REST, gRPC, and GraphQL APIs.</p>
 </li>
 <li>
-<p><strong>Size</strong>: 5Gi</p>
+<p>Systems: Collections of Components that make up an application or platform.</p>
 </li>
 <li>
-<p><strong>Volume mode</strong>: Filesystem</p>
-<div class="imageblock">
-<div class="content">
-<img src="../_images/setup-rhdh/plugin-cache-pvc.png" alt="plugin cache pvc">
-</div>
-</div>
+<p>Domains: A higher-level grouping of Systems and Entities.</p>
+</li>
+<li>
+<p>User: Individual users that are part of an organization.</p>
+</li>
+<li>
+<p>Group: Groups of Users.</p>
 </li>
 </ul>
-</div>
-</li>
-<li>
-<p>Click <strong>Create</strong> to create the PersistentVolumeClaim.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>The 5GiB storage allocation provides sufficient space for caching multiple plugins while maintaining reasonable resource consumption. The <code>ReadWriteOnce</code> access mode is appropriate since the cache will be accessed by a single Red Hat Developer Hub pod at a time.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_patch_the_red_hat_developer_hub_cr"><a class="anchor" href="#_patch_the_red_hat_developer_hub_cr"></a>Patch the Red Hat Developer Hub CR</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Next, update your Backstage Custom Resource to mount a volume. This configuration uses the Red Hat Developer Hub Operator&#8217;s patch functionality to modify the underlying Deployment.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Navigate to <strong>Operators &gt; Installed Operators</strong> in the OpenShift Web Console.</p>
-</li>
-<li>
-<p>Click on <strong>Red Hat Developer Hub</strong>.</p>
-</li>
-<li>
-<p>Select the <strong>Backstage</strong> tab, then click on your <code>rhdh</code> instance.</p>
-</li>
-<li>
-<p>Click the <strong>YAML</strong> tab to edit the resource.</p>
-</li>
-<li>
-<p>Add the following <code>deployment.patch</code> configuration to your Backstage CR&#8217;s <code>spec</code> field:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
-  # Add this deployment patch configuration
-  deployment:
-    patch:
-      spec:
-        template:
-          spec:
-            volumes:
-              - $patch: replace
-                name: dynamic-plugins-root
-                persistentVolumeClaim:
-                  claimName: dynamic-plugins-root</code></pre>
-</div>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Do not remove or overwrite existing sections. Only add the new <code>deployment</code> field to the existing <code>spec</code> with other the fields inside <code>spec</code>.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -314,86 +256,207 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p>The <code>$patch: replace</code> directive tells the operator to replace the existing <code>dynamic-plugins-root</code> volume (which is an <a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir">emptyDir</a> by default) with a PersistentVolumeClaim-backed volume. This ensures that plugin cache data persists across pod restarts.</p>
-</div>
+Custom Entity types can be defined and added to the Software Catalog using plugins. We&#8217;ll talk more about on plugins in subsequent sections.
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Entities are typically imported and synchronized in one of three ways:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Using plugins that automatically find and import them.</p>
 </li>
 <li>
-<p>Click <strong>Save</strong> to apply the changes.</p>
+<p>Manually registering entities via the UI by providing a link to a repository containing them.</p>
+</li>
+<li>
+<p>Declaring them in the Backstage configuration.</p>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>In all cases, the Entities will be synchronized on a regular schedule to ensure the information in the Software Catalog remains up to date. You&#8217;ll utilize all three methods throughout this workshop.</p>
+</div>
+<div class="paragraph">
+<p>If Entity information is stored in a Git repository, the convention is to place them in a <strong>catalog-info.yaml</strong>. This file will look similar to the following example, albeit with changes relevant to the entity being described:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-amazing-microservice
+  description: A microservice written to do amazing things
+
+  # Annotations are typically used to provide extra context to plugins, e.g TechDocs
+  annotations:
+    # Tells the TechDocs plugin where to find documentation sources. In this case
+    # "dir:." means in the root of the repo containing this catalog-info.yaml
+    backstage.io/techdocs-ref: dir:.
+
+  # Arbitrary list of string that can be used to filter Entities in the Software Catalog
+  tags:
+    - docs
+
+spec:
+  type: Documentation
+  lifecycle: development
+
+  # Reference to the User or Group Entity that is responsible this Component
+  owner: "pe1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Users and Groups can be specified as owners of other Entities. If this seems abstract, don&#8217;t worry, you&#8217;ll see it in definitive terms shortly. A well curated Software Catalog enables developers to find API documentation and teams that are responsible for the Components powering those APIs, for example.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_verify_plugin_cache_configuration"><a class="anchor" href="#_verify_plugin_cache_configuration"></a>Verify Plugin Cache Configuration</h2>
+<h2 id="_plugins"><a class="anchor" href="#_plugins"></a>Plugins</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After updating the Backstage CR, a new pod will be created with the persistent volume mounted for plugin caching.</p>
+<p>Backstage - and by extension Red Hat Developer Hub - supports the concept of plugins. Utilizing plugins is a critical part of enabling the desired functionality for an IDP based on Backstage.</p>
+</div>
+<div class="sect2">
+<h3 id="_why_a_plugin_architecture"><a class="anchor" href="#_why_a_plugin_architecture"></a>Why a Plugin Architecture?</h3>
+<div class="sect3">
+<h4 id="_modularity_and_extensibility"><a class="anchor" href="#_modularity_and_extensibility"></a>Modularity and Extensibility</h4>
+<div class="paragraph">
+<p>You can add or modify features without altering the core Backstage application. This modular approach makes it easier to extend functionality as needs evolve. Additionally, you can deploy the updates or new features independently of the main Backstage codebase, reducing the risks and efforts associated with maintaining and updating the platform.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_customization"><a class="anchor" href="#_customization"></a>Customization</h4>
+<div class="paragraph">
+<p>You can tailor Backstage to fit specific workflows and use cases, enhancing the overall user experience.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_faster_iteration"><a class="anchor" href="#_faster_iteration"></a>Faster Iteration</h4>
+<div class="paragraph">
+<p>You can create and test new features more rapidly as plugins, encouraging experimentation and enabling you to quickly iterate based on feedback.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_improved_collaboration"><a class="anchor" href="#_improved_collaboration"></a>Improved Collaboration</h4>
+<div class="paragraph">
+<p>You can share plugins across teams or even externally. This sharing can foster collaboration and reduce duplication of effort, as well as help establish best practices across an organization.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scalability"><a class="anchor" href="#_scalability"></a>Scalability</h4>
+<div class="paragraph">
+<p>As organizations grow, their needs become complex. Plugins enable Backstage to scale alongside such complex needs, accommodating an increasing number of users and services.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ecosystem_growth"><a class="anchor" href="#_ecosystem_growth"></a>Ecosystem Growth</h4>
+<div class="paragraph">
+<p>Fostering the development of plugins can create a dynamic ecosystem around Backstage. This community can contribute to plugins that cater to different needs, thereby enhancing the platform.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_security_and_compliance"><a class="anchor" href="#_security_and_compliance"></a>Security and Compliance</h4>
+<div class="paragraph">
+<p>You can develop plugins with specific security and compliance requirements in mind, ensuring that Backstage installations meet the necessary standards without compromising the core application.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plugins_with_upstream_backstage"><a class="anchor" href="#_plugins_with_upstream_backstage"></a>Plugins with Upstream Backstage</h3>
+<div class="paragraph">
+<p>Currently, running an instance of upstream Backstage and adding plugins requires a platform engineer to:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to <strong>Workloads &gt; Pods</strong> and select the latest Backstage pod.</p>
+<p>Create a Backstage project using Node.js and npm.</p>
 </li>
 <li>
-<p>Click the <strong>Details</strong> tab and scroll down to the <strong>Volumes</strong> section.</p>
+<p>Manage new releases and updates via Backstage CLI.</p>
 </li>
 <li>
-<p>Verify that the <code>dynamic-plugins-root</code> volume shows a <strong>PersistentVolumeClaim</strong> source instead of <strong>EmptyDir</strong>.</p>
+<p>Install plugin(s) from npm.</p>
 </li>
 <li>
-<p>Select the <strong>Events</strong> tab and you&#8217;ll notice an event that references <code>AttachVolume.Attach</code> for your new volume.</p>
-<div class="imageblock">
-<div class="content">
-<img src="../_images/setup-rhdh/plugin-cache-attached.png" alt="plugin cache attached">
-</div>
-</div>
+<p>Edit the Backstage React and Node.js source code to load plugins, and add customizations.</p>
+</li>
+<li>
+<p>Test their changes.</p>
+</li>
+<li>
+<p>Build a container image and deploy it.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Next, you&#8217;ll observe just how much faster a new pod starts with plugin caching enabled.</p>
+<p>This is a tedious and time consuming process that requires JavaScript expertise and an end-to-end SDLC for releasing your new version of Backstage</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Wait for the new deployment&#8217;s <code>backstage-backend</code> container to start.</p>
-</li>
-<li>
-<p>Return to the <strong>Workloads &gt; Pods</strong> list and locate the <code>backstage-rhdh</code> pod.</p>
-</li>
-<li>
-<p>Click the three dots to the right of the table and delete the pod - a new pod will immediately be created to replace the missing Backstage pod.</p>
-<div class="imageblock">
+</div>
+<div class="sect2">
+<h3 id="_dynamic_plugins_in_red_hat_developer_hub"><a class="anchor" href="#_dynamic_plugins_in_red_hat_developer_hub"></a>Dynamic Plugins in Red Hat Developer Hub</h3>
+<div class="paragraph">
+<p>The ability to load plugins dynamically is a value added feature included in Red Hat Developer Hub that&#8217;s currently unavailable in upstream Backstage - you can read more about it in the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/introduction_to_plugins/index#con-rhdh-plugins" target="content">Red Hat Developer Hub documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>The dynamic plugin support in Red Hat Developer Hub means that new plugins can be installed without the need to edit code and rebuild the Red Hat Developer Hub container image. For example, installing the <a href="https://backstage.io/docs/integrations/gitlab/discovery">GitLab plugin with upstream Backstage</a> requires adding a new dependency and editing your Backstage installation&#8217;s source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With Red Hat Developer Hub you can simply toggle plugins on or off, and they&#8217;re tested and guaranteed to be compatible with your version of Red Hat Developer Hub.</p>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll see dynamic plugins in action shortly.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_understanding_the_red_hat_developer_hub_configuration"><a class="anchor" href="#_understanding_the_red_hat_developer_hub_configuration"></a>Understanding the Red Hat Developer Hub Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Upstream Backstage uses an <a href="https://backstage.io/docs/conf/" target="content">app-config.yaml</a> file to define configuration values. Red Hat Developer Hub is no different.</p>
+</div>
+<div class="paragraph">
+<p>A simple Backstage configuration file looks similar to the following example:</p>
+</div>
+<div class="listingblock">
 <div class="content">
-<img src="../_images/setup-rhdh/plugin-cache-delete-pod.png" alt="plugin cache delete pod">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Define authentication configuration (this example is for testing only!)
+auth:
+  providers:
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
+
+# Static configuration for the Software Catalog. Can be used to import
+# entities on startup, and restrict the entity types that can be imported.
+catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, Template]
+  locations:
+    - type: file
+      target: https://github.com/org-name/repo-name/entities.yaml
+
+# A configuration for the TechDocs plugin. This example instructs the plugin to
+# build documentation at runtime, instead of pulling prebuilt HTML from S3
+techdocs:
+  builder: 'local'
+  publisher:
+    type: 'local'
+  generator:
+    runIn: local</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>Visit the logs for the new pod and you&#8217;ll find that the <strong>install-dynamic-plugins</strong> container reports that it&#8217;s not downloading previously installed plugins.</p>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/setup-rhdh/plugin-cache-install-skip.png" alt="plugin cache install skip"></span></p>
-</div>
-</li>
-</ol>
+<p>You&#8217;ll be using the Red Hat Developer Hub operator to install and manage a Backstage instance - this means your <strong>app-config.yaml</strong> will be stored in a <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMap on OpenShift</a>.</p>
 </div>
 <div class="paragraph">
-<p>Did you notice how much faster the plugin installation process has become?</p>
-</div>
-<div class="paragraph">
-<p>With dynamic plugin caching enabled, subsequent deployments will continue to use cached plugin packages, significantly improving startup performance and reducing external dependencies during pod initialization.</p>
+<p>Time to get started - proceed to the next section to deploy a basic Red Hat Developer Hub instance.</p>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="configure-your-first-plugin.html" class="query-params-link">Configure your First Plugin (Authentication)</a></span>
-  <span class="next"><a href="connect-gitlab-scm.html" class="query-params-link">GitLab Integration</a></span>
+  <span class="prev"><a href="introduction.html" class="query-params-link">Introduction</a></span>
+  <span class="next"><a href="setup-rhdh.html" class="query-params-link">Installation &amp; Base Configuration</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
