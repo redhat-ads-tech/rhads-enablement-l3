@@ -112,7 +112,8 @@
     "virtualization",
     "containerization",
     "roadiehq",
-    "scaffolder"
+    "scaffolder",
+    "techdocs"
   ],
   "ignoreWords": [
     "adoc",
