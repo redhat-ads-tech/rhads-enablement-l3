@@ -95,11 +95,11 @@ image::setup-rhdh/security-deny-by-default.png[]
 . Log in again, but as:
     * *Username*: `admin`
     * *Password*: `{common_password}`
-. Select *Catalog* from the sidemenu.
+. Select *Catalog* from the side menu.
 . This *admin* user should have full access to entities in the Software Catalog, as shown.
 +
 image::setup-rhdh/security-admin-catalog-access.png[]
-. Next, select *Administration > RBAC* item in the sidemenu - the RBAC UI should be displayed.
+. Next, select *Administration > RBAC* item in the side menu - the RBAC UI should be displayed.
 +
 image::setup-rhdh/security-rbac-view-admin.png[]
 
@@ -131,7 +131,7 @@ image::setup-rhdh/security-rbac-policy-name-desc.png[]
 +
 [NOTE]
 ====
-You can verify that the `tssc` group exists by navigating to the Software Catalog and filtering by *Kind: Group*. Group entity references follow the format `group:[namespace]/[group-name]`, e.g `group:default/tssc`. The *tssc* group has one memeber: *user1*.
+You can verify that the `tssc` group exists by navigating to the Software Catalog and filtering by *Kind: Group*. Group entity references follow the format `group:[namespace]/[group-name]`, e.g `group:default/tssc`. The *tssc* group has one member: *user1*.
 
 image::setup-rhdh/security-tssc-group.png[]
 ====
@@ -188,7 +188,7 @@ Different {product_rhdh_name} features and plugins require specific permissions.
 
 == Using Casbin Files for RBAC Management
 
-Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment apporach are all good reasons to consider using a configuration as code apporach for managing RBAC policies. {product_rhdh_name} supports a policy-as-code approach for RBAC via https://casbin.org/docs/policy-storage/[Casbin files].
+Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment approach are all good reasons to consider using a configuration as code approach for managing RBAC policies. {product_rhdh_name} supports a policy-as-code approach for RBAC via https://casbin.org/docs/policy-storage/[Casbin files].
 
 In this section you'll learn how to define policies using Casbin and load them into {product_rhdh_name}.
 
@@ -307,4 +307,4 @@ image::setup-rhdh/security-casbin-role.png[]
 
 == Conclusion
 
-You're now equipped to apply RBAC policies to {product_rhdh_name} instances. 
+You're now equipped to apply RBAC policies to {product_rhdh_name} instances. This is a critical capability for organizations to ensure only designated individuals can make changes to their internal developer portal, and developers only see what's relevant to their team and role.
