@@ -186,40 +186,29 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Software Catalog</p>
+<p>Software Catalog and Entities</p>
 </li>
 <li>
 <p>Software Templates</p>
 </li>
 <li>
+<p>Plugins</p>
+</li>
+<li>
 <p>TechDocs</p>
-</li>
-<li>
-<p>Kubernetes Integration</p>
-</li>
-<li>
-<p>Dynamic Plugins</p>
 </li>
 <li>
 <p>Role-Based Access Control (RBAC)</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_software_templates"><a class="anchor" href="#_software_templates"></a>Software Templates</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>Software Templates have been referred to as "Golden Paths" in the past. These templates are designed and curated by platform engineers to provide a starting point for new software components that adhere to best practices within an organization. Templates can also be used to patch and update existing source code repositories, and provide general automation and self-service for developer chores.</p>
-</div>
-<div class="paragraph">
-<p>In-depth guides and examples of Software Templates are provided in later modules.</p>
+<p>Each of these are discussed in detail below, or in a subsequent section of this module.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_software_catalog"><a class="anchor" href="#_software_catalog"></a>Software Catalog</h2>
+<h2 id="_software_catalog_and_entities"><a class="anchor" href="#_software_catalog_and_entities"></a>Software Catalog and Entities</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Software Catalog is a centralized asset tracker for all of the software in an organization. It stores and tracks <strong>Entities</strong>:</p>
@@ -310,7 +299,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Users and Groups can be specified as owners of other Entities. If this seems abstract, don&#8217;t worry, you&#8217;ll see it in definitive terms shortly. A well curated Software Catalog enables developers to find API documentation and teams that are responsible for the Components powering those APIs, for example.</p>
+<p>Users and Groups can be specified as owners of other Entities. If this seems abstract, don&#8217;t worry, you&#8217;ll see it in definitive terms shortly. A well curated Software Catalog enables developers to find API documentation, teams that are responsible for the Components powering those APIs, and even. view a rich dependency graph showing how various services interact with one another.</p>
 </div>
 </div>
 </div>
@@ -318,7 +307,7 @@ spec:
 <h2 id="_plugins"><a class="anchor" href="#_plugins"></a>Plugins</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Backstage - and by extension Red Hat Developer Hub - supports the concept of plugins. Utilizing plugins is a critical part of enabling the desired functionality for an IDP based on Backstage.</p>
+<p>Backstage - and by extension Red Hat Developer Hub - supports the concept of plugins. Utilizing plugins is a critical part of enabling the desired functionality for an IDP based on Backstage. For example, plugins exist to integrate with and show data from Quay or GitHub directly in Backstage. Instead of including functionality like this directly in the core Backstage project, the plugins enable platform engineering teams to customize their Backstage deployment to include only the specific functionality they need.</p>
 </div>
 <div class="sect2">
 <h3 id="_why_a_plugin_architecture"><a class="anchor" href="#_why_a_plugin_architecture"></a>Why a Plugin Architecture?</h3>
@@ -405,6 +394,12 @@ spec:
 <p>The dynamic plugin support in Red Hat Developer Hub means that new plugins can be installed without the need to edit code and rebuild the Red Hat Developer Hub container image. For example, installing the <a href="https://backstage.io/docs/integrations/gitlab/discovery">GitLab plugin with upstream Backstage</a> requires adding a new dependency and editing your Backstage installation&#8217;s source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With Red Hat Developer Hub you can simply toggle plugins on or off, and they&#8217;re tested and guaranteed to be compatible with your version of Red Hat Developer Hub.</p>
 </div>
 <div class="paragraph">
+<p>Given the vast ecosystem of Backstage plugins, the Red Hat Developer Hub team needs to be selective about which specific plugins to package and support.</p>
+</div>
+<div class="paragraph">
+<p>Officially supported plugins and technology preview plugins (available but without support SLAs) can be seen found the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins">plugins documentation</a>.</p>
+</div>
+<div class="paragraph">
 <p>You&#8217;ll see dynamic plugins in action shortly.</p>
 </div>
 </div>
@@ -417,11 +412,11 @@ spec:
 <p>Upstream Backstage uses an <a href="https://backstage.io/docs/conf/" target="content">app-config.yaml</a> file to define configuration values. Red Hat Developer Hub is no different.</p>
 </div>
 <div class="paragraph">
-<p>A simple Backstage configuration file looks similar to the following example:</p>
+<p>A simple Backstage configuration file looks similar to the following example. Top-level keys generally corresponds to a feature or plugin. The values provided for a given key specify the configuration for that plugin or Backstage feature.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Define authentication configuration (this example is for testing only!)
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Define authentication configuration (the "guest" example is for testing only)
 auth:
   providers:
     guest:
@@ -449,8 +444,195 @@ techdocs:
 <div class="paragraph">
 <p>You&#8217;ll be using the Red Hat Developer Hub operator to install and manage a Backstage instance - this means your <strong>app-config.yaml</strong> will be stored in a <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMap on OpenShift</a>.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_software_templates"><a class="anchor" href="#_software_templates"></a>Software Templates</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Time to get started - proceed to the next section to deploy a basic Red Hat Developer Hub instance.</p>
+<p>Software templates in Red Hat Developer Hub enable your team(s) to create Entities, such as new Components, and - through the use of "actions" provided by plugins - create resources in other systems such as your GitLab, GitHub, and OpenShift GitOps instances. Templates themselves are represented as Entities in the Software Catalog, meaning you can import them similar to any other Entity!</p>
+</div>
+<div class="paragraph">
+<p>Platform Engineers will often be the authors of Templates, and use them to create "golden paths" that follow best-practices and use approved processes and tooling. Development teams will be the consumers of Templates to create new software and automate their tasks. Using Templates reduces cognitive load on the development teams by allowing them to focus on development tasks, while platform concerns are addressed by the template.</p>
+</div>
+<div class="paragraph">
+<p>Templates are defined using YAML, but are rendered as a rich form in the Red Hat Developer Hub UI when used by development teams.</p>
+</div>
+<div class="sect2">
+<h3 id="_software_template_structure"><a class="anchor" href="#_software_template_structure"></a>Software Template Structure</h3>
+<div class="paragraph">
+<p>At a basic level, the Template Entity is similar to the Component Entity you encountered in the <strong>catalog-info.yaml</strong> in the prior module; resembling a Kubernetes Custom Resource.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: quarkus-web-template
+  title: Quarkus Service
+  description: Creates Quarkus microservice. Uses Tekton and Argo CD for CI/CD
+  tags:
+    - recommended
+    - java
+    - quarkus
+    - maven
+spec:
+  owner: tssc
+  type: service
+  # other fields removed for brevity</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where the Template Entity differs is that it contains additional fields in its <code>spec</code>. Let&#8217;s examine each in more detail:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>spec.parameters</code> (Parameters)</p>
+</li>
+<li>
+<p><code>spec.steps</code> (Steps)</p>
+</li>
+<li>
+<p><code>spec.output</code> (Output)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="paragraph">
+<p>The <em>spec.parameters</em> field is used by platform engineers to enable developers to pass values (parameters) to the Template. Typically this will be parameters such as the name of the Component, a Java package name, repository name, etc.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example of the parameters:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
+  parameters:
+    # Parameters can be spread across multiple forms/pages, each
+    # with unique titles and set of applicable parameters
+    - title: Provide Information for Application
+      required:
+        - component_id
+        - java_package_name
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          default: my-quarkus-app
+          ui:field: EntityNamePicker
+          ui:autofocus: true
+          maxLength: 18
+        group_id:
+          title: Group Id
+          type: string
+          default: com.redhat.rhdh
+          description: Maven Group Id</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You might have recognized this as a <a href="https://json-schema.org/">JSON Schema</a> structure. By using JSON Schema you can define the parameters that are supported by the template, and, more importantly, enforce validation on those parameters. The rendering of the form in the Red Hat Developer Hub UI is managed by the <a href="https://github.com/rjsf-team/react-jsonschema-form" target="content">react-jsonschema-form</a> library.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>react-jsonschema-form</code> is a set of React components for building web forms from JSON Schema. It is core to Backstage&#8217;s scaffolder plugin&#8217;s frontend functionality, i.e the Software Template form rendering. These React components are responsible for rendering the form in which developers and end users fill out data needed to use the Software Template.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The properties that have a <code>ui</code> prefix might have piqued your interest. These are special properties that provide instructions to the form, for example, to enable autocomplete or autofocus certain form fields when it is displayed in the Red Hat Developer Hub UI.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_steps"><a class="anchor" href="#_steps"></a>Steps</h3>
+<div class="paragraph">
+<p>Once a developer has entered and confirmed their parameters, the Template is executed by the scaffolder - a service within the Red Hat Developer Hub backend.</p>
+</div>
+<div class="paragraph">
+<p>The scaffolder executes the actions defined in <em>spec.steps</em>, for example, to publish code to a Git repository and register it in the Software Catalog:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
+  steps:
+  - id: publish
+    name: Publish
+    # Use the publish action provided by the GitLab plugin
+    action: publish:gitlab
+    input:
+      # Construct a URL to the repository using the provided hostname, logged in
+      # username, and provided component_id
+      repoUrl: "${{ parameters.repo.host }}?owner=${{ user.entity.metadata.name }}&amp;repo=${{parameters.component_id}}"
+      repoVisibility: public
+      defaultBranch: main
+      sourcePath: ./${{ user.entity.metadata.name }}-${{parameters.component_id}}
+  - id: register
+    name: Register
+    # Register a new component using the built-in register action
+    action: catalog:register
+    input:
+      repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+      catalogInfoPath: "/catalog-info.yaml"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice how the <code>parameters</code> are referenced and used in the <code>steps</code>? Another point of note is that a <code>user</code> variable is available to access data related to the user that&#8217;s using the Template, and subsequent <code>steps</code> can access <code>output</code> from prior steps.</p>
+</div>
+<div class="paragraph">
+<p>The <code>output</code> values are documented on a per plugin basis. You can find the values for the specific version of your installed plugins by accessing the <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}/create/actions">/create/actions</a> endpoint on your Red Hat Developer Hub instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_output"><a class="anchor" href="#_output"></a>Output</h3>
+<div class="paragraph">
+<p>The <em>spec.output</em> can use of the outputs from the <code>steps</code> to do display useful information such as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Links to newly created Components</p>
+</li>
+<li>
+<p>Source code repository links</p>
+</li>
+<li>
+<p>Links to Git Merge Requests that are needed etc</p>
+</li>
+<li>
+<p>Markdown text blobs</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">  output:
+    links:
+      - title: Source Code Repository
+        url: {{ '${{ steps.publish.output.remoteUrl }}' }}
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: {{ '${{ steps.register.output.entityRef }}' }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>That was a barrage of information, but it will serve you well in future sections and modules. Proceed to the next section to deploy your very own instance of Red Hat Developer Hub.</p>
 </div>
 </div>
 </div>
