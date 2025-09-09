@@ -5,20 +5,15 @@
 
 The core features of {product_rhdh_name} are the:
 
-* Software Catalog
+* Software Catalog and Entities
 * Software Templates
+* Plugins
 * TechDocs
-* Kubernetes Integration
-* Dynamic Plugins
 * Role-Based Access Control (RBAC)
 
-== Software Templates
+Each of these are discussed in detail below, or in a subsequent section of this module.
 
-Software Templates have been referred to as "Golden Paths" in the past. These templates are designed and curated by platform engineers to provide a starting point for new software components that adhere to best practices within an organization. Templates can also be used to patch and update existing source code repositories, and provide general automation and self-service for developer chores.
-
-In-depth guides and examples of Software Templates are provided in later modules.
-
-== Software Catalog
+== Software Catalog and Entities
 
 The Software Catalog is a centralized asset tracker for all of the software in an organization. It stores and tracks *Entities*:
 
@@ -67,11 +62,11 @@ spec:
   owner: "pe1"
 ```
 
-Users and Groups can be specified as owners of other Entities. If this seems abstract, don't worry, you'll see it in definitive terms shortly. A well curated Software Catalog enables developers to find API documentation and teams that are responsible for the Components powering those APIs, for example.
+Users and Groups can be specified as owners of other Entities. If this seems abstract, don't worry, you'll see it in definitive terms shortly. A well curated Software Catalog enables developers to find API documentation, teams that are responsible for the Components powering those APIs, and even. view a rich dependency graph showing how various services interact with one another.
 
 == Plugins
 
-Backstage - and by extension {product_rhdh_name} - supports the concept of plugins. Utilizing plugins is a critical part of enabling the desired functionality for an IDP based on Backstage.
+Backstage - and by extension {product_rhdh_name} - supports the concept of plugins. Utilizing plugins is a critical part of enabling the desired functionality for an IDP based on Backstage. For example, plugins exist to integrate with and show data from Quay or GitHub directly in Backstage. Instead of including functionality like this directly in the core Backstage project, the plugins enable platform engineering teams to customize their Backstage deployment to include only the specific functionality they need.
 
 === Why a Plugin Architecture?
 
@@ -115,16 +110,20 @@ The ability to load plugins dynamically is a value added feature included in {pr
 
 The dynamic plugin support in {product_rhdh_name} means that new plugins can be installed without the need to edit code and rebuild the {product_rhdh_name} container image. For example, installing the https://backstage.io/docs/integrations/gitlab/discovery[GitLab plugin with upstream Backstage] requires adding a new dependency and editing your Backstage installation's source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With {product_rhdh_name} you can simply toggle plugins on or off, and they're tested and guaranteed to be compatible with your version of {product_rhdh_name}.
 
+Given the vast ecosystem of Backstage plugins, the {product_rhdh_name} team needs to be selective about which specific plugins to package and support. 
+
+Officially supported plugins and technology preview plugins (available but without support SLAs) can be seen found the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins[plugins documentation].
+
 You'll see dynamic plugins in action shortly.
 
 == Understanding the {product_rhdh_name} Configuration
 
 Upstream Backstage uses an https://backstage.io/docs/conf/[app-config.yaml^, window="content"] file to define configuration values. {product_rhdh_name} is no different.
 
-A simple Backstage configuration file looks similar to the following example:
+A simple Backstage configuration file looks similar to the following example. Top-level keys generally corresponds to a feature or plugin. The values provided for a given key specify the configuration for that plugin or Backstage feature.
 
 ```yaml
-# Define authentication configuration (this example is for testing only!)
+# Define authentication configuration (the "guest" example is for testing only)
 auth:
   providers:
     guest:
@@ -151,4 +150,134 @@ techdocs:
 
 You'll be using the {product_rhdh_name} operator to install and manage a Backstage instance - this means your *app-config.yaml* will be stored in a https://kubernetes.io/docs/concepts/configuration/configmap/[ConfigMap on OpenShift].
 
-Time to get started - proceed to the next section to deploy a basic {product_rhdh_name} instance.
+== Software Templates
+
+Software templates in {product_rhdh_name} enable your team(s) to create Entities, such as new Components, and - through the use of "actions" provided by plugins - create resources in other systems such as your GitLab, GitHub, and OpenShift GitOps instances. Templates themselves are represented as Entities in the Software Catalog, meaning you can import them similar to any other Entity!
+
+Platform Engineers will often be the authors of Templates, and use them to create "golden paths" that follow best-practices and use approved processes and tooling. Development teams will be the consumers of Templates to create new software and automate their tasks. Using Templates reduces cognitive load on the development teams by allowing them to focus on development tasks, while platform concerns are addressed by the template.
+
+Templates are defined using YAML, but are rendered as a rich form in the {product_rhdh_name} UI when used by development teams.
+
+=== Software Template Structure
+
+At a basic level, the Template Entity is similar to the Component Entity you encountered in the *catalog-info.yaml* in the prior module; resembling a Kubernetes Custom Resource.
+
+```yaml
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: quarkus-web-template
+  title: Quarkus Service
+  description: Creates Quarkus microservice. Uses Tekton and Argo CD for CI/CD
+  tags:
+    - recommended
+    - java
+    - quarkus
+    - maven
+spec:
+  owner: tssc
+  type: service
+  # other fields removed for brevity
+```
+
+Where the Template Entity differs is that it contains additional fields in its `spec`. Let's examine each in more detail:
+
+* `spec.parameters` (Parameters)
+* `spec.steps` (Steps)
+* `spec.output` (Output)
+
+=== Parameters
+
+The _spec.parameters_ field is used by platform engineers to enable developers to pass values (parameters) to the Template. Typically this will be parameters such as the name of the Component, a Java package name, repository name, etc.
+
+Here's an example of the parameters:
+
+```yaml
+spec:
+  parameters:
+    # Parameters can be spread across multiple forms/pages, each
+    # with unique titles and set of applicable parameters
+    - title: Provide Information for Application
+      required:
+        - component_id
+        - java_package_name
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          default: my-quarkus-app
+          ui:field: EntityNamePicker
+          ui:autofocus: true
+          maxLength: 18
+        group_id:
+          title: Group Id
+          type: string
+          default: com.redhat.rhdh
+          description: Maven Group Id
+```
+
+You might have recognized this as a https://json-schema.org/[JSON Schema] structure. By using JSON Schema you can define the parameters that are supported by the template, and, more importantly, enforce validation on those parameters. The rendering of the form in the {product_rhdh_name} UI is managed by the https://github.com/rjsf-team/react-jsonschema-form[react-jsonschema-form^, window="content"] library.
+
+[NOTE]
+====
+`react-jsonschema-form` is a set of React components for building web forms from JSON Schema. It is core to Backstage's scaffolder plugin's frontend functionality, i.e the Software Template form rendering. These React components are responsible for rendering the form in which developers and end users fill out data needed to use the Software Template.
+====
+
+The properties that have a `ui` prefix might have piqued your interest. These are special properties that provide instructions to the form, for example, to enable autocomplete or autofocus certain form fields when it is displayed in the {product_rhdh_name} UI.
+
+=== Steps
+
+Once a developer has entered and confirmed their parameters, the Template is executed by the scaffolder - a service within the {product_rhdh_name} backend.
+
+The scaffolder executes the actions defined in _spec.steps_, for example, to publish code to a Git repository and register it in the Software Catalog:
+
+```yaml
+spec:
+  steps:
+  - id: publish
+    name: Publish
+    # Use the publish action provided by the GitLab plugin
+    action: publish:gitlab
+    input:
+      # Construct a URL to the repository using the provided hostname, logged in
+      # username, and provided component_id
+      repoUrl: "${{ parameters.repo.host }}?owner=${{ user.entity.metadata.name }}&repo=${{parameters.component_id}}"
+      repoVisibility: public
+      defaultBranch: main
+      sourcePath: ./${{ user.entity.metadata.name }}-${{parameters.component_id}}
+  - id: register
+    name: Register
+    # Register a new component using the built-in register action
+    action: catalog:register
+    input:
+      repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+      catalogInfoPath: "/catalog-info.yaml"
+```
+
+Notice how the `parameters` are referenced and used in the `steps`? Another point of note is that a `user` variable is available to access data related to the user that's using the Template, and subsequent `steps` can access `output` from prior steps. 
+
+The `output` values are documented on a per plugin basis. You can find the values for the specific version of your installed plugins by accessing the https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/create/actions[/create/actions] endpoint on your {product_rhdh_name} instance.
+
+=== Output
+
+The _spec.output_ can use of the outputs from the `steps` to do display useful information such as: 
+
+* Links to newly created Components
+* Source code repository links
+* Links to Git Merge Requests that are needed etc
+* Markdown text blobs
+
+```yaml
+  output:
+    links:
+      - title: Source Code Repository
+        url: {{ '${{ steps.publish.output.remoteUrl }}' }}
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: {{ '${{ steps.register.output.entityRef }}' }}
+```
+
+== Conclusion
+
+That was a barrage of information, but it will serve you well in future sections and modules. Proceed to the next section to deploy your very own instance of {product_rhdh_name}.
