@@ -113,7 +113,8 @@
     "containerization",
     "roadiehq",
     "scaffolder",
-    "techdocs"
+    "techdocs",
+    "quarkus"
   ],
   "ignoreWords": [
     "adoc",
