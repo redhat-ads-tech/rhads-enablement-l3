@@ -1,4 +1,4 @@
-== Enable Dynamic Plugin Caching
+= Enable Dynamic Plugin Caching
 
 You might have noticed that the *install-dynamic-plugins* container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your {product_rhdh_name} deployment by storing plugin packages in a https://kubernetes.io/docs/concepts/storage/persistent-volumes/[persistent volume]. This provides several benefits:
 
@@ -9,7 +9,7 @@ You might have noticed that the *install-dynamic-plugins* container can take a f
 
 Without dynamic plugin caching, the {product_rhdh_name} downloads and installs plugins fresh with each pod restart. This process can be slow and bandwidth-intensive, especially in environments with many plugins and frequent deployments.
 
-=== Create a PersistentVolumeClaim
+== Create a PersistentVolumeClaim
 
 First, create a PersistentVolumeClaim that will store the cached plugin packages. This PVC will be mounted into the {product_rhdh_name} pods to provide persistent storage for downloaded plugins.
 
@@ -28,7 +28,7 @@ image::setup-rhdh/plugin-cache-pvc.png[]
 
 The 5GiB storage allocation provides sufficient space for caching multiple plugins while maintaining reasonable resource consumption. The `ReadWriteOnce` access mode is appropriate since the cache will be accessed by a single {product_rhdh_name} pod at a time.
 
-=== Patch the {product_rhdh_name} CR
+== Patch the {product_rhdh_name} CR
 
 Next, update your Backstage Custom Resource to mount a volume. This configuration uses the {product_rhdh_name} Operator's patch functionality to modify the underlying Deployment.
 
@@ -66,7 +66,7 @@ The `$patch: replace` directive tells the operator to replace the existing `dyna
 ====
 . Click *Save* to apply the changes.
 
-=== Verify Plugin Cache Configuration
+== Verify Plugin Cache Configuration
 
 After updating the Backstage CR, a new pod will be created with the persistent volume mounted for plugin caching.
 

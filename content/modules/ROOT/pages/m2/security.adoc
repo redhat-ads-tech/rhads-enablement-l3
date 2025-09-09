@@ -1,4 +1,4 @@
-== Configure Role-Based Access Control (RBAC)
+= Configure Role-Based Access Control (RBAC)
 
 Role-Based Access Control (RBAC) enables fine-grained permission management in {product_rhdh_name}, allowing you to control user access to specific features, views, and catalog entities based on their roles, group, and other properties. This integration provides administrators with the ability to enforce security policies and ensure users only access resources appropriate for their roles.
 
