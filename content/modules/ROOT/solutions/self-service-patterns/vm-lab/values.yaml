@@ -5,7 +5,7 @@ app:
   name: ${{values.component_id}}
   namespace: ${{values.namespace}}
   rhel:
-    version: : ${{values.rhel_version}} 
+    version: ${{values.rhel_version}} 
 
 git:
   branch: main

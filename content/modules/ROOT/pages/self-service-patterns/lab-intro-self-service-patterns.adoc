@@ -1,4 +1,4 @@
-= Hands-on Lab Software Template Patterns for Self-service (Building VMs)
+= Hands-on Lab: Software Template Patterns for Self-service
 
 [#introduction]
 == Introduction

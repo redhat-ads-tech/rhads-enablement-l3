@@ -7,7 +7,9 @@ metadata:
     {{- include "backstage.labels" . | nindent 4 }}
 spec:
   replicas: 2
-  expose:
-    type: Route
   service:
     type: DataGrid
+  expose:
+    type: Route
+  security:
+    endpointSecretName: connect-secret

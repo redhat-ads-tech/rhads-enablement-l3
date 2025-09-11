@@ -8,7 +8,7 @@ metadata:
     - vm
     - workshop
 spec:
-  owner: legacy-backend-team
+  owner: tssc
   type: VM
   parameters:
     - title: Provide information about the new component
@@ -23,21 +23,25 @@ spec:
           description: The RHEL version for the VM
           default: 10
           enum:
-            - 9
-            - 10
+            - '9'
+            - '10'
           enumNames:
             - 'RHEL9'
             - 'RHEL10'
-        namespace: 
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          default: legacy-vm
+          ui:field: EntityNamePicker
+          maxLength: 23
+        namespace:
           title: Namespace
           type: string
-          description: Namespace
+          description: Namespace of the component
           default: legacy-vm
-        component_id:
-          title: Component ID
-          default: legacy-vm
-          type: string
-          description: Comp Id
+          ui:field: EntityNamePicker
+          maxLength: 23
   steps:
     - id: fetch-provision-data
       name: Fetch Provision Data
@@ -53,23 +57,21 @@ spec:
         targetPath: ./source
         values:
           rhel_version: ${{parameters.rhel_version}}
-          owner: ${{ user.entity.metadata.name }}
+          owner: rhdh
           namespace: ${{parameters.namespace}}
           component_id: ${{parameters.component_id}}
           cluster_id: ${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           host: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           repoName: ${{parameters.component_id}}
-          user_id: ${{ user.entity.metadata.name }}
-          destination: ${{ user.entity.metadata.name }}/${{ parameters.component_id }}
+          user_id: rhdh
+          destination: rhdh/${{ parameters.component_id }}
     - id: publishSource
       name: Publishing to Source Code Repository
       action: publish:gitlab
       input:
         sourcePath: ./source
         description: ${{parameters.description}}
-        repoUrl: 'gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}?owner=${{ user.entity.metadata.name }}&repo=${{parameters.component_id}}
-        defaultBranch: main
-        protectDefaultBranch: false
+        repoUrl: 'gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}?owner=rhdh&repo=${{parameters.component_id}}'
         repoVisibility: public    
     - id: registerSource
       name: Registering the Source Code Component
@@ -87,13 +89,13 @@ spec:
           rhel_version: ${{parameters.rhel_version}}
           component_id: ${{parameters.component_id}}
           description: ${{parameters.description}}
-          destination:  https://gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/${{ user.entity.metadata.name }}/${{parameters.component_id}}-gitops.git
-          source_repository: https://gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/${{ user.entity.metadata.name }}}/${{parameters.component_id}}.git
+          destination:  https://gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/rhdh/${{parameters.component_id}}-gitops.git
+          source_repository: https://gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/rhdh/${{parameters.component_id}}.git
           repository_name: ${{parameters.component_id}}
           git_host: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           cluster: ${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           namespace: ${{parameters.namespace}}
-          user_id: ${{ user.entity.metadata.name }}
+          user_id: rhdh
         targetPath: ./tenant-gitops
     - id: publishGitops
       name: Publishing to Deployment Resource Repository
@@ -111,9 +113,9 @@ spec:
       action: argocd:create-resources
       input:
         appName: ${{parameters.component_id}}-gitops
-        argoInstance: main
-        namespace: janus-argocd
-        repoUrl: https://gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/${{ user.entity.metadata.name }}/${{parameters.component_id}}-gitops.git
+        argoInstance: default
+        namespace: tssc-gitops
+        repoUrl: https://gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/rhdh/${{parameters.component_id}}-gitops.git
         path: 'argocd/'
   output:
     links:

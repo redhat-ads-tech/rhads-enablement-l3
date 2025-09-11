@@ -124,7 +124,8 @@
     "TODO",
     "FIXME",
     "webkitallowfullscreen",
-    "mozallowfullscreen"
+    "mozallowfullscreen",
+    "rhdatagrid"
   ],
   "ignorePaths": [
     "node_modules/**",
