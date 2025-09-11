@@ -1,0 +1,274 @@
+= Database as a service using Software Template Patterns
+== A self-service approach to deploy Databases
+== Prerequisites
+
+* link:https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/operator[Understanding Data Grid,window='_blank']
+
+== Introduction
+Welcome to this lab, where you will have the chance to learn how to work with Software templates in Red Hat Developer Hub, and create a new instance of Red Hat Data Grid with Infinispan from Red Hat Developer Hub.
+
+This lab will use creating the instance in an existent, not yet ready template. You will be working to adding the infinispan instance as part of this new template. During this lab, you will have the opportunity to explore how to build clusters for Data Grid, with main goal of learning the different options to build and bring new components into OpenShift in a self-service approach.
+
+*Explore RH Data Grid* 
+
+image:self-service-patterns/db-lab/datagrid-cr.png[RH Data Grid Catalog]
+
+[#lab]
+== Scenario
+Now, imagine for a moment that you need to fullfil a need for the Java Development team. The Java Team's responsibility is to connect a new application with Data Grid, for now, only for the development environment.
+
+
+== Explore the RH Data Grid template in GitLab
+. Take the time to review the source code to get familiarize with the content.
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/
+----
+
+** Login with your user credentials:
+
+    ** *Username*: {gitlab_user}
+    ** *Password*: {gitlab_user_password}
+
+* Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.
++
+image:self-service-patterns/db-lab/source-code-catalog-info.png[RH Data Grid Catalog]
+
+* Developer Hub, powered by GitOps, maintains the desired state as the actual state in the cluster for any template definitions, ensuring system stability.
++
+image:self-service-patterns/db-lab/source-code-manifests.png[RH Data Grid Manifests]
+
+* GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Data Grid manifest's folder.
+
++
+image:self-service-patterns/db-lab/source-code-argocd.png[RH Data Grid GitOps]
+
+* Helm Charts are great for templating. In this case, the Data Grid manifests are implemented using Helm.
++
+image:self-service-patterns/db-lab/source-code-helm.png[RH Data Grid Helm Charts]
+
+* template.yaml file: Defines the UI experience for the end user and the desired steps to get the software templates, create repositories, create GitOps objects, and more. 
++
+image:self-service-patterns/db-lab/source-code-template.png[RH Data Grid template.yaml]
+
+ 
+=== Explore the RH Data Grid template in RHDH
+
+* Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
+
++
+image:self-service-patterns/db-lab/rhdh-create-icon.png[Create UI] 
+
+
+* Click the *Register Existing Component* button.
+
++
+image:self-service-patterns/db-lab/rhdh-register-component.png[Create UI] 
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+{rhdh_url}/catalog-import
+----
+
+* Enter the following URL in the *Select URL* field and click *Analyze*:
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/template.yaml
+----
+
+
+* Click on the *Import* button
+
+image:self-service-patterns/db-lab/rhdh-register-component-finish.png[width=60%] 
+
+*Congratulations!* You now have a new Software template in RHDH. Now, end-users can *self-provision RH Data Grid*.
+
+* We'll explore the end-user experience by accessing the Software Templates view.
+* From *catalog*, select *Self-service*
+
++
+image:self-service-patterns/db-lab/datagrid-catalog.png[width=60%]
+
+*Let's explore the current catalog:*
+
+* Click on the *Choose*
+* Review and fill out the information with dummy data until you reach the review screen, **without creating the RH Data Grid**. **DO NOT CLICK ON CREATE** 
++
+image:self-service-patterns/db-lab/datagrid-sample.png[width=120%]
+
+
+== Implement changes in Software Templates.
+
+To accomplish the requirement, you need to update the *infinispan.yaml* file right now is blank.
+
+The Java Team can access RH Data Grid by creating an Infinispan cluster from RHDH. After this, Developer Hub will use the power of GitOps to create a new Data Grid cluster in OpenShift. 
+
+** Click on *Catalog* on the RHDH menu
+** Next, select the filters: *Kind:Template* and *Tags: self-service*
+As shown in the following picture:
+
+image:self-service-patterns/db-lab/self-service-catalog.png[width=40%]
+
+** Select the **Red Hat Data Grid infinispan**
+
+** Access the Source code by clicking on *View Source*
+
++
+image:self-service-patterns/db-lab/db-edit-catalog.png[width=60%]
+
+
+Or directly to the URL:
+
+[source, bash,role=execute,subs=attributes+]
+----
+{rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance
+----
+
+* We need to update the RH Data Grid instance, go to manifests/helm/app/templates/infinispan.yaml
++
+[source,bash,role=execute,subs=attributes+]
+----
+{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
+----
+
+* Create a new file: 
+
++
+image:self-service-patterns/db-lab/gitlab-newfile.png[width=100%]
+
+
+We'll update this file with the information from the Operator official documentation.
+
+* Review the official documentation: 
+** link:https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters[Creating Data Grid infinispan,window='_blank']
+
+
+* Copy the infinispan definition
++
+image:self-service-patterns/db-lab/datagrid-doc.png[width=100%]
+
+* Paste the content on the Software templates:
+
++
+[source,bash,role=execute,subs=attributes+]
+----
+{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
+----
+
+
+*Take the time to review your file with the solution file provided here:*
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml
+----
+
+* Note that your file needs to be ready to be used with *Helm*. In the following solution, you will find the name was updated to be a variable, and labels were included.
+
++
+image:self-service-patterns/db-lab/datagrid-changes.png[width=80%]
+
+* Note: The file also contains a definition to expose the deployment with a *Route*: link:https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services[Exposing Data Grid through a Route,window='_blank'] and we added the custom *credentials* as well as defined on the documentation link:https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn[Configuring authentication,window='_blank']
+
+* Copy the content from the solution provided.
+* Name your file as *infinispan.yaml*
+
+*Note*: Don't forget to commit your changes. 
+
+
+* Ensure the template has the latest changes.
+
+** On RHDH, in the Data Grid template:
+
+[source, bash,role=execute,subs=attributes+]
+----
+{rhdh_url}/create/templates/default/rhdatagrid-infinispan-instance/
+----
+
+* Click on the *entity refresh* icon
+
++
+image:self-service-patterns/db-lab/rhdh-refresh-catalog.png[width=70%]
+
+=== Test your changes: Explore the user experience as Developer
+
+Let's create an instance of the RH Data Grid defined in the software templates.
+
+* From *catalog*, select *Self-service* and find the *Red Hat Data Grid infinispan*
+* Click on the *Choose*
+
++
+image:self-service-patterns/db-lab/datagrid-catalog.png[width=50%]
+
+* Click on the *Choose*
+* Review the information until you complete the flow and click on *Create*.
+
+image:self-service-patterns/db-lab/datagrid-created.png[width=100%]
+
+* Open the catalog from the component's creation page:
+
+image:self-service-patterns/db-lab/datagrid-open.png[width=100%]
+
+* The component is created, and you should see a screen like this one:
+
++
+image:self-service-patterns/db-lab/datagrid-component.png[width=100%]
+
+* Click on *Data Grid URL* from the component's overview
+* Access *RH Data Grid* with the credentials listed on the identity file:
+
+*user*: user1
+
+*password*: openshift!3415@
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml
+----
+
+* Click on *Open the console*
+
+image:self-service-patterns/db-lab/datagrid-open-console.png[width=100%]
+
+
+* You should see only one screen, like this one:
+
+*Note*: The infinispan might take a few minutes to complete provisioning.
+
+
+image:self-service-patterns/db-lab/datagrid-working.png[width=100%]
+
+* In case you want to log in to the OpenShift Cluster{openshift_console_url}[Web Console^]
+
+** Use your user credentials:
+
+    *** *Username*: {openshift_cluster_admin_username}
+    *** *Password*: {openshift_cluster_admin_password}
+
+
+*Note:* In a production environment, the security setup and user creation will not be managed in this identity yaml file. Explore the RH Data Grid documentation to learn more about best practices.
+link:https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/configuring-authentication[Configuring Authentication,window='_blank']
+
+
+
+=== Conclusion
+
+You have updated the RH Data Grid software template by adding the infinispan instance to fulfill the requirement from the Java Development team. After this process, other configurations can be applied to the cluster. Explore more at link:https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/configuring-clusters[Configuring Clusters,window='_blank']
+
+
+
+
+
+
+
+
+
+
+

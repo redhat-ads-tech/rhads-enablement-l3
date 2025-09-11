@@ -1,0 +1,30 @@
+# Default values for tomcat-vm
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+app:
+  name: ${{values.component_id}}
+  namespace: ${{values.namespace}}
+  rhel:
+    version: ${{values.rhel_version}} 
+
+git:
+  branch: main
+  repo: ${{values.source_repository}}
+  org: ${{values.org}}
+  name: ${{values.repository_name}}
+
+nameOverride: ""
+fullnameOverride: ""
+
+
+targetEnvironment: dev
+env: []
+
+
+resources:
+  requests:
+    memory: 4Gi
+    cpu: 2
+vm:
+  nodeSelector: {}
+  tolerations: []
