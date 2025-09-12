@@ -255,11 +255,10 @@
 <ol class="arabic">
 <li>
 <p>Take the time to review the source code to get familiarize with the content.</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/</code></pre>
-</div>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan,window=_blank]</p>
 <div class="ulist">
 <ul>
 <li>
@@ -270,8 +269,10 @@
 </li>
 <li>
 <p><strong>Password</strong>: {gitlab_user_password}</p>
-<div class="ulist">
-<ul>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.</p>
 <div class="paragraph">
@@ -286,9 +287,6 @@
 </li>
 <li>
 <p>GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Data Grid manifest&#8217;s folder.</p>
-</li>
-</ul>
-</div>
 </li>
 </ul>
 </div>
@@ -329,12 +327,14 @@
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/catalog-import</code></pre>
-</div>
-</div>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p>{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
 <div class="listingblock execute">
@@ -361,8 +361,11 @@
 </li>
 <li>
 <p>From <strong>catalog</strong>, select <strong>Self-service</strong></p>
+</li>
+<li>
+<p>Look for the <strong>RH Data Grid infinispan</strong> catalog</p>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-catalog.png" alt="datagrid catalog" width="60%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-catalog.png" alt="datagrid catalog" width="40%"></span></p>
 </div>
 </li>
 </ul>
@@ -376,7 +379,7 @@
 <p>Click on the <strong>Choose</strong></p>
 </li>
 <li>
-<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the RH Data Grid</strong>. <strong>DO NOT CLICK ON CREATE</strong></p>
+<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the RH Data Grid</strong>. <strong>DO NOT CLICK ON CREATE.</strong></p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-sample.png" alt="datagrid sample" width="120%"></span></p>
 </div>
@@ -419,29 +422,19 @@ As shown in the following picture:</p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/db-edit-catalog.png" alt="db edit catalog" width="60%"></span></p>
 </div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Or directly to the URL:</p>
-</div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance</code></pre>
-</div>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>We need to update the RH Data Grid instance, go to manifests/helm/app/templates/infinispan.yaml</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml</code></pre>
-</div>
-</div>
+<p>We need to update the RH Data Grid instance.</p>
+</li>
+<li>
+<p>Go to manifests/helm/app/templates/ or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^]</p>
 </li>
 <li>
 <p>Create a new file:</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/gitlab-newfile.png" alt="gitlab newfile" width="100%"></span></p>
 </div>
@@ -449,7 +442,7 @@ As shown in the following picture:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>We&#8217;ll update this file with the information from the Operator official documentation.</p>
+<p>We&#8217;ll review the configuration needed from the Operator official documentation.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -470,22 +463,15 @@ As shown in the following picture:</p>
 </div>
 </li>
 <li>
-<p>Paste the content on the Software templates:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml</code></pre>
-</div>
-</div>
+<p>Paste the content on new file</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><strong>Take the time to review your file with the solution file provided here:</strong></p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml</code></pre>
-</div>
+<div class="paragraph">
+<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml" target="_blank" rel="noopener">infinispan.yaml solution file</a></p>
 </div>
 <div class="ulist">
 <ul>
@@ -498,8 +484,15 @@ As shown in the following picture:</p>
 <li>
 <p>Note: The file also contains a definition to expose the deployment with a <strong>Route</strong>: <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services" target="_blank" rel="noopener">Exposing Data Grid through a Route</a> and we added the custom <strong>credentials</strong> as well as defined on the documentation <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn" target="_blank" rel="noopener">Configuring authentication</a></p>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As we had modified the content, use the solution provided for this configuration:</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
-<p>Copy the content from the solution provided.</p>
+<p><strong>Copy the content from the solution provided.</strong></p>
 </li>
 <li>
 <p>Name your file as <strong>infinispan.yaml</strong></p>
@@ -523,10 +516,8 @@ As shown in the following picture:</p>
 </li>
 </ul>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/create/templates/default/rhdatagrid-infinispan-instance/</code></pre>
-</div>
+<div class="paragraph">
+<p>{rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance/[Red Hat Developer Hub UI Template^]</p>
 </div>
 <div class="ulist">
 <ul>
@@ -587,7 +578,7 @@ As shown in the following picture:</p>
 <p>Click on <strong>Data Grid URL</strong> from the component&#8217;s overview</p>
 </li>
 <li>
-<p>Access <strong>RH Data Grid</strong> with the credentials listed on the identity file:</p>
+<p>Access <strong>RH Data Grid</strong> with the credentials listed on the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml[identity file^]</p>
 </li>
 </ul>
 </div>
@@ -597,15 +588,13 @@ As shown in the following picture:</p>
 <div class="paragraph">
 <p><strong>password</strong>: openshift!3415@</p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml</code></pre>
-</div>
+<div class="paragraph">
+<p><strong>Note</strong>: The infinispan might take a few minutes to complete provisioning.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Open the console</strong></p>
+<p>Click on <strong>Proceed</strong>, next click on <strong>Open the console</strong></p>
 </li>
 </ul>
 </div>
@@ -618,9 +607,6 @@ As shown in the following picture:</p>
 <p>You should see only one screen, like this one:</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong>: The infinispan might take a few minutes to complete provisioning.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-working.png" alt="datagrid working" width="100%"></span></p>
@@ -636,10 +622,10 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Username</strong>: {openshift_cluster_admin_username}</p>
+<p><strong>Username</strong>: {openshift_admin_user}</p>
 </li>
 <li>
-<p><strong>Password</strong>: {openshift_cluster_admin_password}</p>
+<p><strong>Password</strong>: {openshift_admin_password}</p>
 </li>
 </ul>
 </div>

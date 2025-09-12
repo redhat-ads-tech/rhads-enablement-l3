@@ -253,28 +253,34 @@ During this lab, you will have the opportunity to explore different techniques t
 </div>
 <div class="sect2">
 <h3 id="_explore_the_vm_template_in_gitlab"><a class="anchor" href="#_explore_the_vm_template_in_gitlab"></a>Explore the VM template in GitLab</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Take the time to review the source code to get familiarize with the content.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/,window=_blank]</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Login with your user credentials:</p>
+<p>Take the time to review the source code to get familiarize with the content.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Explore the <strong>Software templates</strong> in <strong>GitLab</strong>:</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/,window=_blank]</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Login in GitLab with your user credentials:</p>
 </li>
 <li>
 <p><strong>Username</strong>: {gitlab_user}</p>
 </li>
 <li>
 <p><strong>Password</strong>: {gitlab_user_password}</p>
-<div class="ulist">
-<ul>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Component/catalog-info.yaml: This file will represent the object in Developer Hub,  such as name and links.</p>
 <div class="paragraph">
@@ -307,9 +313,6 @@ During this lab, you will have the opportunity to explore different techniques t
 </li>
 </ul>
 </div>
-</li>
-</ul>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_explore_the_vm_template_in_rhdh"><a class="anchor" href="#_explore_the_vm_template_in_rhdh"></a>Explore the VM template in RHDH</h3>
@@ -329,19 +332,23 @@ During this lab, you will have the opportunity to explore different techniques t
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/catalog-import</code></pre>
-</div>
-</div>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p>{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml</code></pre>
+</div>
 </div>
 <div class="ulist">
 <ul>
@@ -381,7 +388,7 @@ During this lab, you will have the opportunity to explore different techniques t
 <p>Click on the <strong>Choose</strong></p>
 </li>
 <li>
-<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the VM</strong>. <strong>DO NOT CLICK ON CREATE</strong></p>
+<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the VM</strong>. <strong>DO NOT CLICK ON CREATE.</strong></p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-sample.png" alt="vm sample" width="100%"></span></p>
 </div>
@@ -420,7 +427,7 @@ This VM will first be used as experimentation, but there is a new version of RHE
 <p>When artifacts/components are very different or configurations are so dissimilar, they require many logic or variables to keep them on the same configuration. The main goal is to keep it as simple as possible to reduce maintenance.</p>
 </div>
 <div class="paragraph">
-<p><strong>The solution</strong>
+<p><strong>The solution:</strong>
 We&#8217;ll choose the second option, update the current software template to support different RHEL versions. This will also help to reduce maintenance when a new version needs to be supported.</p>
 </div>
 </div>
@@ -443,10 +450,10 @@ We&#8217;ll choose the second option, update the current software template to su
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Username</strong>: {openshift_cluster_admin_username}</p>
+<p><strong>Username</strong>: {openshift_admin_user}</p>
 </li>
 <li>
-<p><strong>Password</strong>: {openshift_cluster_admin_password}</p>
+<p><strong>Password</strong>: {openshift_admin_password}</p>
 </li>
 </ul>
 </div>
@@ -568,23 +575,31 @@ As shown in the following picture:</p>
 <ul>
 <li>
 <p>Select the <strong>RHEL9 VM Medium Template</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>The current template needs to be deleted since we&#8217;ll be creating a new template with a new name.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
-<p>Access the Source code by clicking on <strong>View Source</strong></p>
+<p>Click on the <strong>three dots</strong> under Owner, next click on <strong>Unregister entity</strong></p>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-edit-catalog.png" alt="vm edit catalog" width="60%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/template-unregister.png" alt="template unregister" width="60%"></span></p>
+</div>
+</li>
+<li>
+<p>Confirm the action.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/confirm-unregister.png" alt="confirm unregister" width="60%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Go to manifests/helm/app/templates/vm.yaml</p>
+<p>Go to manifests/helm/app/templates/vm.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]</p>
 </li>
 </ul>
-</div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml</code></pre>
-</div>
 </div>
 </li>
 <li>
@@ -630,10 +645,8 @@ As shown in the following picture:</p>
 <div class="paragraph">
 <p>Take the time to review your file with the solution file provided here:</p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/vm.yaml</code></pre>
-</div>
+<div class="paragraph">
+<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/vm.yaml" target="_blank" rel="noopener">VM.yaml solution file</a></p>
 </div>
 <div class="paragraph">
 <p><strong>Note</strong>: Don&#8217;t forget to commit your changes.</p>
@@ -652,13 +665,11 @@ As shown in the following picture:</p>
 </li>
 </ul>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/values.yaml</code></pre>
-</div>
-</div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml" target="_blank" rel="noopener">values.yaml solution file</a></p>
 </div>
 <div class="paragraph">
 <p><strong>Note</strong>: Don&#8217;t forget to commit your changes.</p>
@@ -691,7 +702,7 @@ As shown in the following picture:</p>
 </div>
 </li>
 <li>
-<p>Update the <strong>template.yaml</strong> file to ensure the RHEL version <strong>9 is not part of the template</strong>. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.</p>
+<p>Update the <strong>rhel-vm-medium/template.yaml</strong> file to ensure the RHEL version <strong>9 is not part of the template</strong>. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.</p>
 </li>
 </ul>
 </div>
@@ -732,39 +743,56 @@ As shown in the following picture:</p>
 </li>
 <li>
 <p>Ensure you have applied the changes to your repository. <strong>Take the time to review</strong> your file with the solution file provided here:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml</code></pre>
-</div>
-</div>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml" target="_blank" rel="noopener">template.yaml solution file</a></p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Proceed to <strong>save your changes</strong>.</p>
 </li>
 <li>
 <p>Ensure the template has the latest changes.</p>
-<div class="ulist">
-<ul>
+</li>
 <li>
-<p>On RHDH, in the VM template:</p>
+<p>Proceed to register the new template</p>
+</li>
+<li>
+<p>Select the <strong>plus icon</strong> on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-create-icon.png" alt="Create UI"></span></p>
+</div>
+</li>
+<li>
+<p>Click the <strong>Register Existing Component</strong> button.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-register-component.png" alt="Create UI"></span></p>
+</div>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/create/templates/default/rhel9-vm-medium-template/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml</code></pre>
 </div>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>entity refresh</strong> icon</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-refresh-catalog.png" alt="rhdh refresh catalog" width="70%"></span></p>
-</div>
+<p>Click on the <strong>Import</strong> button</p>
 </li>
 </ul>
 </div>
@@ -816,10 +844,10 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Username</strong>: {openshift_cluster_admin_username}</p>
+<p><strong>Username</strong>: {openshift_admin_user}</p>
 </li>
 <li>
-<p><strong>Password</strong>: {openshift_cluster_admin_password}</p>
+<p><strong>Password</strong>: {openshift_admin_password}</p>
 </li>
 </ul>
 </div>
