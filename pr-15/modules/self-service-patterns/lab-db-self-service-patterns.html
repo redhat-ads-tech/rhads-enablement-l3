@@ -228,11 +228,10 @@
 <ol class="arabic">
 <li>
 <p>Take the time to review the source code to get familiarize with the content.</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/</code></pre>
-</div>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan,window=_blank]</p>
 <div class="ulist">
 <ul>
 <li>
@@ -243,8 +242,10 @@
 </li>
 <li>
 <p><strong>Password</strong>: {gitlab_user_password}</p>
-<div class="ulist">
-<ul>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.</p>
 <div class="paragraph">
@@ -259,9 +260,6 @@
 </li>
 <li>
 <p>GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Data Grid manifest&#8217;s folder.</p>
-</li>
-</ul>
-</div>
 </li>
 </ul>
 </div>
@@ -302,12 +300,14 @@
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/catalog-import</code></pre>
-</div>
-</div>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p>{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
 <div class="listingblock execute">
@@ -406,12 +406,10 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>We need to update the RH Data Grid instance, go to manifests/helm/app/templates/infinispan.yaml</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml</code></pre>
-</div>
-</div>
+<p>We need to update the RH Data Grid instance.</p>
+</li>
+<li>
+<p>Go to manifests/helm/app/templates/ or click on {gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/[template folder^]</p>
 </li>
 <li>
 <p>Create a new file:</p>
@@ -443,22 +441,15 @@ As shown in the following picture:</p>
 </div>
 </li>
 <li>
-<p>Paste the content on the Software templates:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml</code></pre>
-</div>
-</div>
+<p>Paste the content on new file</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><strong>Take the time to review your file with the solution file provided here:</strong></p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml</code></pre>
-</div>
+<div class="paragraph">
+<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml" target="_blank" rel="noopener">infinispan.yaml solution file</a></p>
 </div>
 <div class="ulist">
 <ul>
@@ -496,10 +487,8 @@ As shown in the following picture:</p>
 </li>
 </ul>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/create/templates/default/rhdatagrid-infinispan-instance/</code></pre>
-</div>
+<div class="paragraph">
+<p>{rhdh_url}/create/templates/default/rhdatagrid-infinispan-instance/[Red Hat Developer Hub UI Template^]</p>
 </div>
 <div class="ulist">
 <ul>

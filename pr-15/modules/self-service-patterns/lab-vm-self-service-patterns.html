@@ -557,9 +557,9 @@ As shown in the following picture:</p>
 </div>
 </li>
 <li>
-<p>Click on the three dots under Owner, next click on <strong>Unregister entity</strong></p>
+<p>Click on the <strong>three dots</strong> under Owner, next click on <strong>Unregister entity</strong></p>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="self-service-patterns/vm-lab/template-unregister.png" alt="template unregister" width="60%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/template-unregister.png" alt="template unregister" width="60%"></span></p>
 </div>
 </li>
 <li>
@@ -570,18 +570,11 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Go to manifests/helm/app/templates/vm.yaml or click on the following URL:</p>
+<p>Go to manifests/helm/app/templates/vm.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]</p>
 </li>
 </ul>
 </div>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]</p>
-</div>
-<div class="ulist">
-<ul>
 <li>
 <p>Review the vm definition and compare it with the one provided by <strong>OpenShift Virtualization</strong></p>
 </li>
@@ -682,7 +675,7 @@ As shown in the following picture:</p>
 </div>
 </li>
 <li>
-<p>Update the <strong>template.yaml</strong> file to ensure the RHEL version <strong>9 is not part of the template</strong>. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.</p>
+<p>Update the <strong>rhel-vm-medium/template.yaml</strong> file to ensure the RHEL version <strong>9 is not part of the template</strong>. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.</p>
 </li>
 </ul>
 </div>
@@ -755,7 +748,7 @@ As shown in the following picture:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]</p>
+<p>{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]</p>
 </div>
 <div class="ulist">
 <ul>
@@ -824,10 +817,10 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Username</strong>: {openshift_cluster_admin_username}</p>
+<p><strong>Username</strong>: {openshift_admin_user}</p>
 </li>
 <li>
-<p><strong>Password</strong>: {openshift_cluster_admin_password}</p>
+<p><strong>Password</strong>: {openshift_admin_password}</p>
 </li>
 </ul>
 </div>

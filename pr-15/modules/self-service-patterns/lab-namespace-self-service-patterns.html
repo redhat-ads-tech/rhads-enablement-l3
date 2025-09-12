@@ -223,11 +223,10 @@ During this lab, you will have the opportunity to explore different projects' cu
 <ol class="arabic">
 <li>
 <p>Take the time to review the source code to get familiarize with the content.</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium</code></pre>
-</div>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium,window=_blank]</p>
 <div class="ulist">
 <ul>
 <li>
@@ -238,8 +237,10 @@ During this lab, you will have the opportunity to explore different projects' cu
 </li>
 <li>
 <p><strong>Password</strong>: {gitlab_user_password}</p>
-<div class="ulist">
-<ul>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.</p>
 <div class="paragraph">
@@ -254,9 +255,6 @@ During this lab, you will have the opportunity to explore different projects' cu
 </li>
 <li>
 <p>GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Namespace manifest&#8217;s folder.</p>
-</li>
-</ul>
-</div>
 </li>
 </ul>
 </div>
@@ -297,12 +295,14 @@ During this lab, you will have the opportunity to explore different projects' cu
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/catalog-import</code></pre>
-</div>
-</div>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p>{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
 <div class="listingblock execute">
@@ -389,29 +389,19 @@ As shown in the following picture:</p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/namespace-edit-catalog.png" alt="namespace edit catalog" width="60%"></span></p>
 </div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Or directly to the URL:</p>
-</div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/catalog/default/template/project-medium-template</code></pre>
-</div>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>This action will take you to the template.yaml file. We need to update the Project instance, go to manifests/helm/app/templates/quota.yaml</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml</code></pre>
-</div>
-</div>
+<p>This action will take you to the template.yaml file. We need to update the Project instance</p>
+</li>
+<li>
+<p>Go to manifests/helm/app/templates/quota.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml[quota.yaml file^]</p>
 </li>
 <li>
 <p>Increase the quota limit to <strong>2 CPU and memory 2Gi</strong> in the current quota.yaml file.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/project-file-changes.png" alt="project file changes" width="60%"></span></p>
 </div>
@@ -421,10 +411,8 @@ As shown in the following picture:</p>
 <div class="paragraph">
 <p><strong>Take the time to review your file with the solution file provided here:</strong></p>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml</code></pre>
-</div>
+<div class="paragraph">
+<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/self-service-patterns/project-lab/quota.yaml" target="_blank" rel="noopener">quota.yaml solution file</a></p>
 </div>
 <div class="ulist">
 <ul>
@@ -443,10 +431,8 @@ As shown in the following picture:</p>
 </li>
 </ul>
 </div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{rhdh_url}/create/templates/default/project-medium-template/</code></pre>
-</div>
+<div class="paragraph">
+<p>{rhdh_url}/create/templates/default/project-medium-template/[Red Hat Developer Hub UI Template^]</p>
 </div>
 <div class="ulist">
 <ul>
