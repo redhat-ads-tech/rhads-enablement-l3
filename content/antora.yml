@@ -15,7 +15,7 @@ asciidoc:
     ssh_password: devops
     ssh_command: ssh someone@example.com
     product_rhdh_name: Red Hat Developer Hub
-    product_rhdh_version: "1.7"
+    product_rhdh_version: "1.6"
     product_gitops_name: Red Hat OpenShift GitOps
 
     ns_tssc_gitops: tssc-gitops
