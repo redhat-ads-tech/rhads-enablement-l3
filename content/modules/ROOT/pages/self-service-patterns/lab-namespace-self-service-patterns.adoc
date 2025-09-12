@@ -95,7 +95,7 @@ image:self-service-patterns/namespace-lab/project-template.png[width=60%]
 *Let's explore the current catalog:*
 
 * Click on the *Choose*
-* Review and fill out the information with dummy data until you reach the review screen, **without creating the Namespace**. **DO NOT CLICK ON CREATE** 
+* Review and fill out the information with dummy data until you reach the review screen, **without creating the Namespace**. **DO NOT CLICK ON CREATE.** 
 +
 image:self-service-patterns/namespace-lab/project-sample.png[width=120%]
 
@@ -187,8 +187,8 @@ image:self-service-patterns/namespace-lab/namespace-updated.png[]
 
 ** Use your user credentials:
 
-    *** *Username*: {openshift_cluster_admin_username}
-    *** *Password*: {openshift_cluster_admin_password}
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
 
 * Watch the following arcade, to explore a similar experience:
 ++++

@@ -97,7 +97,7 @@ image:self-service-patterns/db-lab/datagrid-catalog.png[width=60%]
 *Let's explore the current catalog:*
 
 * Click on the *Choose*
-* Review and fill out the information with dummy data until you reach the review screen, **without creating the RH Data Grid**. **DO NOT CLICK ON CREATE** 
+* Review and fill out the information with dummy data until you reach the review screen, **without creating the RH Data Grid**. **DO NOT CLICK ON CREATE.** 
 +
 image:self-service-patterns/db-lab/datagrid-sample.png[width=120%]
 
@@ -249,8 +249,8 @@ image:self-service-patterns/db-lab/datagrid-working.png[width=100%]
 
 ** Use your user credentials:
 
-    *** *Username*: {openshift_cluster_admin_username}
-    *** *Password*: {openshift_cluster_admin_password}
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
 
 
 *Note:* In a production environment, the security setup and user creation will not be managed in this identity yaml file. Explore the RH Data Grid documentation to learn more about best practices.
