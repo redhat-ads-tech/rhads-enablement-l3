@@ -82,9 +82,10 @@ image:self-service-patterns/namespace-lab/rhdh-register-component-finish.png[wid
 
 * We'll explore the end-user experience by accessing the Software Templates view.
 * From *catalog*, select *Self-service*
+* Look for the *OpenShift Project Medium Size* catalog
 
 +
-image:self-service-patterns/namespace-lab/project-template.png[width=60%]
+image:self-service-patterns/namespace-lab/project-template.png[width=40%]
 
 *Let's explore the current catalog:*
 
@@ -129,7 +130,7 @@ image:self-service-patterns/namespace-lab/project-file-changes.png[width=60%]
 
 *Take the time to review your file with the solution file provided here:*
 
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/self-service-patterns/project-lab/quota.yaml[quota.yaml solution file^]
+https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml[quota.yaml solution file^]
 
 * Proceed to *save your changes*.
 
@@ -137,7 +138,7 @@ https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules
 
 ** On RHDH, in the Project template:
 
-{rhdh_url}/create/templates/default/project-medium-template/[Red Hat Developer Hub UI Template^]
+{rhdh_url}/catalog/default/template/rhel-vm-medium-template/[Red Hat Developer Hub UI Template^]
 
 * Click on the *entity refresh* icon
 
@@ -160,12 +161,15 @@ image:self-service-patterns/namespace-lab/project-template.png[width=50%]
 +
 image:self-service-patterns/namespace-lab/namespace-updated.png[]
 
-* In case you want to log in to the OpenShift Cluster {openshift_console_url}[Web Console^]
+* Open the catalog from the component's creation page:
 
-** Use your user credentials:
+image:self-service-patterns/db-lab/catalog-open.png[width=100%]
 
-    *** *Username*: {openshift_admin_user}
-    *** *Password*: {openshift_admin_password}
+* Now, a new component has being created and you should a screen similar like this:
+
+
+image:self-service-patterns/db-lab/namespace-created.png[width=100%]
+
 
 * Watch the following arcade, to explore a similar experience:
 ++++
@@ -180,6 +184,13 @@ allow="clipboard-write"
 muted>
 </iframe>
 ++++
+
+* In case you need to log in to the OpenShift Cluster {openshift_console_url}[Web Console^]
+
+** Use your user credentials:
+
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
 
 === Conclusion
 
