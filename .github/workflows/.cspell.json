@@ -117,7 +117,8 @@
     "quarkus",
     "architecting",
     "kubevirt",
-    "infinispan"
+    "infinispan",
+    "opeanapi"
   ],
   "ignoreWords": [
     "adoc",

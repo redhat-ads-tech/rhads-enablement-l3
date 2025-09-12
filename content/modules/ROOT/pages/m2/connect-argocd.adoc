@@ -193,7 +193,7 @@ image::setup-rhdh/argocd-plugin-logs.png[]
 
 For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.
 
-Recall that yoiur environment has been pre-configured with a repository that contains a sample *catalog-info.yaml* in GitLab - https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example[module-2-assets/discovery-example].
+Recall that your environment has been pre-configured with a repository that contains a sample *catalog-info.yaml* in GitLab - https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example[module-2-assets/discovery-example].
 
 [NOTE]
 ====
