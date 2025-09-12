@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m2/connect-argocd.html">
+    <link rel="prev" href="connect-gitlab-scm.html">
+    <link rel="next" href="security.html">
+    <meta name="generator" content="Antora 3.1.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="connect-argocd.html">Argo CD Integration</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="_configure_the_argo_cd_integration"><a class="anchor" href="#_configure_the_argo_cd_integration"></a>Configure the Argo CD Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Argo CD plugin enables Red Hat Developer Hub to display deployment status and continuous delivery information directly within the Software Catalog. This integration provides real-time visibility into application deployments managed by Argo CD.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Display deployment status information in the Software Catalog</p>
+</li>
+<li>
+<p>Show application health and sync status from Argo CD</p>
+</li>
+<li>
+<p>Provide direct links to Argo CD application views</p>
+</li>
+<li>
+<p>Enable developers to monitor their application deployments without leaving the developer portal</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Configuring the integration requires:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Creating a dedicated readonly user account in Argo CD for secure API access</p>
+</li>
+<li>
+<p>Storing Argo CD credentials in a Secret and loading it into the Red Hat Developer Hub pod</p>
+</li>
+<li>
+<p>Adding the Argo CD dynamic plugin to your Red Hat Developer Hub plugin configuration</p>
+</li>
+<li>
+<p>Configuring entity annotations to link entities with <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications">Argo CD Applications</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_the_argo_cd_service_account_and_credentials"><a class="anchor" href="#_create_the_argo_cd_service_account_and_credentials"></a>Create the Argo CD Service Account and Credentials</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To facilitate secure communication between Red Hat Developer Hub and Argo CD, you should create a dedicated readonly user account. It&#8217;s possible to use the existing <strong>admin</strong> user account, however using the principle of least privilege is the best practice.</p>
+</div>
+<div class="paragraph">
+<p>Your cluster has been pre-configured with an Argo CD instance that&#8217;s managed by Red Hat OpenShift GitOps. You&#8217;ll update this instance to support the integration between it and Red Hat Developer Hub.</p>
+</div>
+<div class="sect2">
+<h3 id="_create_a_readonly_argo_cd_user"><a class="anchor" href="#_create_a_readonly_argo_cd_user"></a>Create a Readonly Argo CD User</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Navigate to <strong>Operators &gt; Installed Operators</strong> and search for "gitops" to find the Red Hat OpenShift GitOps operator.</p>
+</li>
+<li>
+<p>Select the operator then the <strong>Argo CD</strong> tab.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-operator.png" alt="argocd operator">
+</div>
+</div>
+</li>
+<li>
+<p>Select the <strong>tssc-gitops</strong> instance, and then <strong>Actions &gt; Edit Argo CD</strong>.</p>
+</li>
+<li>
+<p>Edit the <code>extraConfig</code> section to include the following line that adds the <strong>developer-hub</strong> user:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">accounts.developer-hub: 'apiKey, login'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Edit the <code>rbac.policy</code> section to grant readonly permissions to the new user:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">policy: |
+  g, system:cluster-admins, role:admin
+  g, cluster-admins, role:admin
+  g, developer-hub, role:readonly</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The resulting configuration will resemble the following screenshot.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-operator-config.png" alt="argocd operator config">
+</div>
+</div>
+</li>
+<li>
+<p>Scroll down and click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The operator will update the necessary Argo CD ConfigMaps to enable the new <strong>developer-hub</strong> user account.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_set_the_readonly_argo_cd_users_password"><a class="anchor" href="#_set_the_readonly_argo_cd_users_password"></a>Set the Readonly Argo CD User&#8217;s Password</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Workloads &gt; Secrets</strong> in the <strong>tssc-gitops</strong> project.</p>
+</li>
+<li>
+<p>Select the <code>argocd-secret</code> Secret, and use the <strong>Actions</strong> dropdown to select <strong>Edit Secret</strong>.</p>
+</li>
+<li>
+<p>Scroll down and click <strong>Add key/value</strong>.</p>
+</li>
+<li>
+<p>Supply the following <strong>Key</strong>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">accounts.developer-hub.password</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Supply the following <strong>Value</strong>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">$2y$10$KnsgxceFRwN15iVJ3BxskuIJ2/qUqzaLs8.Oea1WzyvBraZxdG.eu</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-secret.png" alt="argocd secret">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The new password is <code>d3v3l0p3rs</code>, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above were generated using htpasswd like so: <code>htpasswd -bnBC 10 "" 'd3v3l0p3rs'</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_verify_the_argo_cd_user_account_is_active"><a class="anchor" href="#_verify_the_argo_cd_user_account_is_active"></a>Verify the Argo CD User Account is Active</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-gitops/route.openshift.io<sub>v1</sub>Route"><strong>Networksing &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
+</li>
+<li>
+<p>Click the link in the <strong>Location</strong> column to access Argo CD.</p>
+</li>
+<li>
+<p>Login using the username <code>developer-hub</code> and password <code>d3v3l0p3rs</code> - an empty application list will be displayed.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-dashboard.png" alt="argocd dashboard">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you can&#8217;t login, review the Argo CD ConfigMap and Secret changes you made for accuracy.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_update_the_red_hat_developer_hub_configuration"><a class="anchor" href="#_update_the_red_hat_developer_hub_configuration"></a>Update the Red Hat Developer Hub Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that Argo CD is configured with a readonly user, you&#8217;ll update the Red Hat Developer Hub configuration to enable the Argo CD integration. The procedure is similar to the previous plugins you added, so you&#8217;re probably becoming familiar with it by now.</p>
+</div>
+<div class="sect2">
+<h3 id="_create_a_secret_for_argo_cd_credentials"><a class="anchor" href="#_create_a_secret_for_argo_cd_credentials"></a>Create a Secret for Argo CD Credentials</h3>
+<div class="paragraph">
+<p>Create a Secret in your Red Hat Developer Hub namespace to store the <strong>developer-hub</strong> Argo CD credentials:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Workloads &gt; Secrets</strong> and click <strong>Create &gt; From YAML</strong>.</p>
+</li>
+<li>
+<p>Ensure that the <code>setup-rhdh</code> project is selected.</p>
+</li>
+<li>
+<p>Replace the content in the YAML editor with the following:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-secrets
+  namespace: setup-rhdh
+type: Opaque
+stringData:
+  # Warning: Remove trailing slashes or the plugin will throw "method not allowed" errors
+  ARGOCD_URL: https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}
+  ARGOCD_USERNAME: developer-hub
+  ARGOCD_PASSWORD: d3v3l0p3rs</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_add_argo_cd_secrets_to_the_backstage_cr"><a class="anchor" href="#_add_argo_cd_secrets_to_the_backstage_cr"></a>Add Argo CD Secrets to the Backstage CR</h3>
+<div class="paragraph">
+<p>Update your Backstage CR to include the Argo CD secret:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to your <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh">Backstage CR in the OpenShift Web Console</a> and switch to the <strong>YAML</strong> view.</p>
+</li>
+<li>
+<p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>argocd-secrets</strong> Secret you created:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">extraEnvs:
+  secrets:
+    - name: keycloak-secrets
+    - name: gitlab-secrets
+    # Inject the ARGOCD_URL, ARGOCD_USERNAME,
+    # and ARGOCD_PASSWORD into the pod as environment variables
+    - name: argocd-secrets</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enable_the_argo_cd_dynamic_plugin"><a class="anchor" href="#_enable_the_argo_cd_dynamic_plugin"></a>Enable the Argo CD Dynamic Plugin</h3>
+<div class="paragraph">
+<p>Enable the Argo CD plugin by updating your <strong>dynamic-plugins-rhdh</strong> ConfigMap:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> and click on <code>dynamic-plugins-rhdh</code>.</p>
+</li>
+<li>
+<p>Click <strong>Edit ConfigMap</strong>.</p>
+</li>
+<li>
+<p>Update the <code>dynamic-plugins.yaml</code> content to include the Argo CD plugin:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
+  disabled: false
+- package: ./dynamic-plugins/dist/backstage-community-plugin-redhat-argocd
+  disabled: false</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Verify that your indentation is correct by aligning it with the existing plugins.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_the_argo_cd_plugin"><a class="anchor" href="#_configure_the_argo_cd_plugin"></a>Configure the Argo CD Plugin</h3>
+<div class="paragraph">
+<p>Update your <strong>app-config.yaml</strong> to include Argo CD integration configuration:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> and click on <code>rhdh-config</code>.</p>
+</li>
+<li>
+<p>Click <strong>Edit ConfigMap</strong>.</p>
+</li>
+<li>
+<p>Add the following <code>argocd</code> configuration at the root level of the <strong>app-config.yaml</strong>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">argocd:
+  appLocatorMethods:
+    - type: config
+      instances:
+        - name: argocd
+          url: ${ARGOCD_URL}
+          username: ${ARGOCD_USERNAME}
+          password: ${ARGOCD_PASSWORD}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>argocd</code> key should be at the same indentation level as the <code>catalog</code> and <code>integrations</code> keys in the <strong>app-config.yaml</strong>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong> to update the <strong>app-config.yaml</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Wait for the new Backstage pod to start, and check the <strong>backstage-backend</strong> logs for the Argo CD plugin initializing messages.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-plugin-logs.png" alt="argocd plugin logs">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verify_argo_cd_integration"><a class="anchor" href="#_verify_argo_cd_integration"></a>Verify Argo CD Integration</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_configure_and_verify_entity_annotations_and_application_labels"><a class="anchor" href="#_configure_and_verify_entity_annotations_and_application_labels"></a>Configure and Verify Entity Annotations and Application Labels</h3>
+<div class="paragraph">
+<p>For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.</p>
+</div>
+<div class="paragraph">
+<p>Recall that your environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> in GitLab - <a href="https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example">module-2-assets/discovery-example</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Normally the <strong>catalog-info.yaml</strong> file will live alongside source code, or in a dedicated repository for catalog files. This module places it in the same repository as the deployment manifests for convenience.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this case you can see that the <a href="https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets/-/blob/main/discovery-example/catalog-info.yaml?ref_type=heads"><strong>argocd/app-selector</strong> annotation</a> is set on the Component. This tells the Argo CD plugin for Red Hat Developer Hub to query the configured Argo CD instance for Applications with a label matching that selector.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_an_argo_cd_application"><a class="anchor" href="#_create_an_argo_cd_application"></a>Create an Argo CD Application</h3>
+<div class="paragraph">
+<p>Earlier, you logged into Argo CD and confirmed that no Applications existed; it&#8217;s time to create one.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the OpenShift Web Console and ensure you&#8217;re logged in as the <strong>admin</strong> user.</p>
+</li>
+<li>
+<p>Click the plus icon in the top-right corner and select <strong>Import YAML</strong> to create the Application using this YAML.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: httpsink
+  namespace: tssc-gitops
+  labels:
+    app.kubernetes.io/name: httpsink
+    backstage.io/app: httpsink
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets.git
+    targetRevision: HEAD
+    path: argocd-example/k8s
+  destination:
+    name: in-cluster
+    namespace: httpsink
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The Application you created is a simple example, but notably it has a <code>app.kubernetes.io/name: httpsink</code> label. Recall that the Argo CD plugin uses a selector to query information from Argo CD for a given Backstage Entity - this is the label your Component uses as the selector.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_view_the_application_in_argo_cd_and_developer_hub"><a class="anchor" href="#_view_the_application_in_argo_cd_and_developer_hub"></a>View the Application in Argo CD and Developer Hub</h3>
+<div class="paragraph">
+<p>First, perform a sanity check by viewing your new application in the Argo CD dashboard.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the <a href="https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}/"><strong>tssc-gitops</strong> Argo CD dashboard</a>.</p>
+</li>
+<li>
+<p>Login as:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>developer-hub</code></p>
+</li>
+<li>
+<p>Password: <code>d3v3l0p3rs</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Confirm that the application named <strong>httpsink</strong> is listed and marked as <strong>Healthy</strong> and <strong>Synced</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-application.png" alt="argocd application">
+</div>
+</div>
+</li>
+<li>
+<p>Next, return to <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}">Red Hat Developer Hub</a>.</p>
+</li>
+<li>
+<p>Login as:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{rhdh_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{rhdh_user_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Visit the <strong>Catalog</strong> by clicking the link on the left menu, ensure <strong>Kind</strong> is set to <strong>Component</strong> and search for <code>httpsink</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-httpsink-search.png" alt="argocd httpsink search">
+</div>
+</div>
+</li>
+<li>
+<p>Select the <strong>HTTP Sink Application</strong> from the list, then view the <strong>CD</strong> tab for the Component.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-httpsink-cd.png" alt="argocd httpsink cd">
+</div>
+</div>
+</li>
+<li>
+<p>Click on the listed application to view more information on the managed Kubernetes resources.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-httpsink-app-info.png" alt="argocd httpsink app info">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Nice work! Developers can now view the continuous delivery status of their applications directly in Red Hat Developer Hub without needing to access Argo CD directly. In this instance, just one environment&#8217;s information is shown, but the application could be deployed in multiple environments, and a card for each would be listed in the Argo CD tab.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="connect-gitlab-scm.html" class="query-params-link">GitLab Integration</a></span>
+  <span class="next"><a href="security.html" class="query-params-link">Enable Role-Based Access Control</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
