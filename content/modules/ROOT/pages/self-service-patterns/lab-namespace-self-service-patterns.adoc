@@ -163,12 +163,12 @@ image:self-service-patterns/namespace-lab/namespace-updated.png[]
 
 * Open the catalog from the component's creation page:
 
-image:self-service-patterns/db-lab/catalog-open.png[width=100%]
+image:self-service-patterns/namespace-lab/catalog-open.png[width=100%]
 
 * Now, a new component has being created and you should a screen similar like this:
 
 
-image:self-service-patterns/db-lab/namespace-created.png[width=100%]
+image:self-service-patterns/namespace-lab/namespace-created.png[width=100%]
 
 
 * Watch the following arcade, to explore a similar experience:

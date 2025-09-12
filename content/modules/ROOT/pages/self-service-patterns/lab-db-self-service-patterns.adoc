@@ -118,7 +118,7 @@ image:self-service-patterns/db-lab/db-edit-catalog.png[width=60%]
 
 * We need to update the RH Data Grid instance.
 
-* Go to manifests/helm/app/templates/ or click on {gitlab_url}rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^]
+* Go to manifests/helm/app/templates/ or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^]
 
 
 * Create a new file: 
@@ -195,7 +195,7 @@ image:self-service-patterns/db-lab/datagrid-open.png[width=100%]
 image:self-service-patterns/db-lab/datagrid-component.png[width=100%]
 
 * Click on *Data Grid URL* from the component's overview
-* Access *RH Data Grid* with the credentials listed on the link:{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml[identity file]
+* Access *RH Data Grid* with the credentials listed on the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml[identity file]
 
 *user*: user1
 
