@@ -115,6 +115,9 @@
     "scaffolder",
     "techdocs",
     "quarkus"
+    "architecting",
+    "kubevirt",
+    "infinispan"
   ],
   "ignoreWords": [
     "adoc",
@@ -128,6 +131,9 @@
     "platformengineer",
     "httpsink",
     "Backstages"
+    "webkitallowfullscreen",
+    "mozallowfullscreen",
+    "rhdatagrid"
   ],
   "ignorePaths": [
     "node_modules/**",
@@ -154,6 +160,7 @@
         "^<.*>$",
         "xref:.*\\[.*\\]",
         "image::.*\\[.*\\]",
+        "image:.*\\[.*\\]",
         "include::.*\\[.*\\]",
         "link:.*\\[.*\\]",
         "ifdef::.*\\[\\]",
