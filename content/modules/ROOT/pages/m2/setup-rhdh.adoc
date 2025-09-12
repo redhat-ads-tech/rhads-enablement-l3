@@ -83,9 +83,7 @@ Before creating a Backstage CR, we need to satisfy some prerequisites. So don't 
 
 === Create a Project/Namespace
 
-. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
-    * Username: `{openshift_admin_user}`
-    * Password: `{common_password}`
+. Visist the {openshift_console_url}[OpenShift Web Console].
 . Click the *Cluster Selector* in the top-left, and select *local-cluster*.
 . Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Navigate to *Home > Projects*, then click the *Create project* button. 
@@ -93,7 +91,7 @@ Before creating a Backstage CR, we need to satisfy some prerequisites. So don't 
 image::setup-rhdh/create-project.png[]
 . Enter the name `{m2_rhdh_project}` in the popup that appears, then click *Create*.
 
-You'll use this project throughout this module.
+You'll use this project throughout this module - it's essential that you use the name *{m2_rhdh_project}* or subsequent exercises won't work as expected.
 
 === Defining a Backstage Configuration
 
@@ -169,7 +167,7 @@ spec:
 +
 image::setup-rhdh/backstage-cr.png[]
 
-This Backstage CR will be detected by the {product_rhdh_name} Operator. The Operator will deploy Postgres and Backstage Pods in the `{m2_rhdh_project}` namespace. Verify the status of the Pods by visiting *Workloads > Pods* and checking that both Pods are marked as running and ready.
+This Backstage CR will be detected by the {product_rhdh_name} Operator. The Operator will deploy Postgres and Backstage Pods in the `{m2_rhdh_project}` namespace. Verify the status of the Pods by visiting *Workloads > Pods* and checking that both Pods are marked as running and ready - this will take a minute or two.
 
 image::setup-rhdh/backstage-pods.png[]
 
@@ -185,6 +183,8 @@ image::setup-rhdh/backstage-route.png[]
 . Select the *Guest* sign-in option. You'll automatically be logged in as a *Guest* user, and the home page will be displayed.
 +
 image::setup-rhdh/rhdh-homepage.png[]
+
+NOTE: If an *Application is not available* message is displayed when you click the Location, wait another minute. This simply means the Pod readiness check has not passed yet, but will soon.
 
 Nice work! You deployed an instance of {product_rhdh_name} with a minimal *app-config.yaml*. An internal developer portal is only valuable when it has been connected to sources of data and configured with templates. In the following sections you'll learn how to connect {product_rhdh_name} to:
 

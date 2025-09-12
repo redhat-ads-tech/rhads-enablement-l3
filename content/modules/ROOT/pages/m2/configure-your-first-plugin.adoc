@@ -32,16 +32,18 @@ Your environment includes a preconfigured Keycloak instance with a `{keycloak_re
 
 Keycloak has been pre-deployed on your OpenShift cluster in the `tssc-keycloak` project. Accessing Keycloak requires its URL and admin password:
 
-. Visit the https://console-openshift-console.apps.cluster-6zqmr.dynamic.redhatworkshops.io/k8s/ns/tssc-keycloak/core~v1~Secret[Secrets screen in the tssc-keycloak] namespace.
+. Visit the https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-keycloak/core~v1~Secret[Secrets screen in the tssc-keycloak] namespace.
 . Click the `keycloak-initial-admin` Secret to view it.
 . Copy the `password` value from the Secret.
-. View the https://sso.apps.cluster-6zqmr.dynamic.redhatworkshops.io/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm] in Keycloak - login as *admin* using the password you copied from the Secret.
+. View the https://sso.apps.{cluster_apps_domain}/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm] in Keycloak - login as *admin* using the password you copied from the Secret.
 + 
 [NOTE]
 ====
 You can find the Keycloak URL by visiting the *Networking > Routes* screen in the OpenShift Web Console and making sure that the `tssc-keycloak` project is selected, but the link above is provided for convenience.
 ====
 . Click the `rhdh` client.
++
+image::setup-rhdh/keycloak-client-list.png[]
 
 The *General settings* screen for the client will be displayed. You need to add your {product_rhdh_name} URL to the *Web origins* and *Valid redirect URIs*.
 
@@ -204,7 +206,7 @@ image::setup-rhdh/keycloak-secret.png[]
 |`{keycloak_client_id}`
 
 |`KEYCLOAK_CLIENT_SECRET`
-|`\{common_password}`
+|`\{openshift_admin_password}`
 |===
 . Click *Create*.
 
@@ -236,6 +238,7 @@ auth:
         metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
         clientId: $\{KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        prompt: auto
 
 backend:
   baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
@@ -313,8 +316,8 @@ Next, verify the new OpenID Connect login flow is working:
 +
 image::setup-rhdh/rhdh-oidc-signin.png[]
 . Click *Sign In* and use the following credentials in the popup that appears:
-  * Username: `user1`
-  * Password: {common_password}
+  * Username: `{rhdh_user}`
+  * Password: {rhdh_user_password}
 . Once logged in, go to the *Catalog* set the *Kind* dropdown to *User* or *Group*. Imported User or Group entities will be displayed.
 + 
 image::setup-rhdh/users-in-catalog.png[]

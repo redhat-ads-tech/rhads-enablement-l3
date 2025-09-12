@@ -40,7 +40,7 @@ The permission plugin provides the RBAC functionality for {product_rhdh_name}. Y
 
 . Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
   * Username: `{openshift_admin_user}`
-  * Password: `{common_password}`
+  * Password: `{openshift_admin_password}`
 . Navigate to *Workloads > ConfigMaps* and select the *{m2_rhdh_plugins_cm_name}* ConfigMap.
 . Edit the ConfigMap to include the RBAC plugin in the `plugins` entry.
 +
@@ -93,8 +93,8 @@ image::setup-rhdh/security-deny-by-default.png[]
 
 . Log out from {product_rhdh_name}.
 . Log in again, but as:
-    * *Username*: `admin`
-    * *Password*: `{common_password}`
+    * *Username*: `{openshift_admin_user}`
+    * *Password*: `{openshift_admin_password}`
 . Select *Catalog* from the side menu.
 . This *admin* user should have full access to entities in the Software Catalog, as shown.
 +
