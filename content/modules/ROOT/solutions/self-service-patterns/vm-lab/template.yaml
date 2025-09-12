@@ -11,7 +11,7 @@ spec:
   owner: tssc
   type: VM
   parameters:
-    - title: Provide information about the new component
+    - title: Provide information for the VM
       required:
         - namespace
         - component_id
@@ -66,7 +66,7 @@ spec:
           user_id: rhdh
           destination: rhdh/${{ parameters.component_id }}
     - id: publishSource
-      name: Publishing to Source Code Repository
+      name: Publish
       action: publish:gitlab
       input:
         sourcePath: ./source
@@ -101,7 +101,7 @@ spec:
       name: Publishing to Deployment Resource Repository
       action: publish:gitlab
       input:
-        repoUrl: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}?owner=${{ user.entity.metadata.name }}&repo=${{parameters.component_id}}-gitops
+        repoUrl: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}?owner=rhdh&repo=${{parameters.component_id}}-gitops
         title: gitops resources for ${{parameters.namespace}}-gitops
         description: gitops resources for ${{parameters.namespace}}-gitops
         sourcePath: ./tenant-gitops
