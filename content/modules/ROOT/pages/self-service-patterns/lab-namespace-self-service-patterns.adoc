@@ -20,11 +20,9 @@ Now, imagine for a moment that you need to fullfil a need for the Python Develop
 == Explore the Project template in GitLab
 . Take the time to review the source code to get familiarize with the content.
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium
-----
+
+* {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium,window=_blank]
+
 ** Login with your user credentials:
 
     ** *Username*: {gitlab_user}
@@ -66,11 +64,7 @@ image:self-service-patterns/namespace-lab/rhdh-create-icon.png[Create UI]
 +
 image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI] 
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/catalog-import
-----
+{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -100,7 +94,6 @@ image:self-service-patterns/namespace-lab/project-template.png[width=60%]
 image:self-service-patterns/namespace-lab/project-sample.png[width=120%]
 
 
-
 == Implement changes in Software Templates.
 
 To accomplish the requirement, we will be updating the quotas definition in the *quota.yaml* file.
@@ -124,20 +117,10 @@ image:self-service-patterns/namespace-lab/self-service-catalog.png[width=40%]
 +
 image:self-service-patterns/namespace-lab/namespace-edit-catalog.png[width=60%]
 
+* This action will take you to the template.yaml file. We need to update the Project instance
 
-Or directly to the URL:
 
-[source, bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/catalog/default/template/project-medium-template
-----
-
-* This action will take you to the template.yaml file. We need to update the Project instance, go to manifests/helm/app/templates/quota.yaml
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml
-----
+* Go to manifests/helm/app/templates/quota.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml[quota.yaml file^]
 
 * Increase the quota limit to *2 CPU and memory 2Gi* in the current quota.yaml file.
 
@@ -146,10 +129,7 @@ image:self-service-patterns/namespace-lab/project-file-changes.png[width=60%]
 
 *Take the time to review your file with the solution file provided here:*
 
-[source,bash,role=execute,subs=attributes+]
-----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml
-----
+https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/self-service-patterns/project-lab/quota.yaml[quota.yaml solution file^]
 
 * Proceed to *save your changes*.
 
@@ -157,10 +137,7 @@ https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules
 
 ** On RHDH, in the Project template:
 
-[source, bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/create/templates/default/project-medium-template/
-----
+{rhdh_url}/create/templates/default/project-medium-template/[Red Hat Developer Hub UI Template^]
 
 * Click on the *entity refresh* icon
 

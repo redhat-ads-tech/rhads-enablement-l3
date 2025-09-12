@@ -186,7 +186,7 @@ image:self-service-patterns/vm-lab/self-service-catalog.png[width=40%]
 
 * The current template needs to be deleted since we'll be creating a new template with a new name.
 
-** Click on the three dots under Owner, next click on *Unregister entity*
+** Click on the *three dots* under Owner, next click on *Unregister entity*
 
 +
 image:self-service-patterns/vm-lab/template-unregister.png[width=60%]
@@ -197,9 +197,7 @@ image:self-service-patterns/vm-lab/template-unregister.png[width=60%]
 image:self-service-patterns/vm-lab/confirm-unregister.png[width=60%]
 
 
-* Go to manifests/helm/app/templates/vm.yaml or click on the following URL: 
-
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]
+* Go to manifests/helm/app/templates/vm.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]
 
 ** Review the vm definition and compare it with the one provided by *OpenShift Virtualization*
 
@@ -250,7 +248,7 @@ Let's make the following changes to update the template based on the new RHEL ve
 ** Ensure variables are sent to the helm charts.
 
 
-* Update the *template.yaml* file to ensure the RHEL version *9 is not part of the template*. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.
+* Update the *rhel-vm-medium/template.yaml* file to ensure the RHEL version *9 is not part of the template*. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.
 
 [source, bash,role=execute,subs=attributes+]
 ----
@@ -298,7 +296,7 @@ image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI]
 +
 image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
 
-{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
+{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -336,8 +334,8 @@ image:self-service-patterns/vm-lab/vm-rhel-updated.png[width=120%]
 
 ** Use your user credentials:
 
-    *** *Username*: {openshift_cluster_admin_username}
-    *** *Password*: {openshift_cluster_admin_password}
+   *** *Username*: {openshift_admin_user}
+   *** *Password*: {openshift_admin_password}
 
 ++++
 <iframe 

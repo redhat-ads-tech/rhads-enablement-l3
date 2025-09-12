@@ -21,11 +21,8 @@ Now, imagine for a moment that you need to fullfil a need for the Java Developme
 == Explore the RH Data Grid template in GitLab
 . Take the time to review the source code to get familiarize with the content.
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/
-----
+* {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan,window=_blank]
+
 
 ** Login with your user credentials:
 
@@ -67,11 +64,7 @@ image:self-service-patterns/db-lab/rhdh-create-icon.png[Create UI]
 +
 image:self-service-patterns/db-lab/rhdh-register-component.png[Create UI] 
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/catalog-import
-----
+{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -129,12 +122,10 @@ Or directly to the URL:
 {rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance
 ----
 
-* We need to update the RH Data Grid instance, go to manifests/helm/app/templates/infinispan.yaml
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
-----
+* We need to update the RH Data Grid instance.
+
+* Go to manifests/helm/app/templates/ or click on {gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/[template folder^]
+
 
 * Create a new file: 
 
@@ -152,22 +143,12 @@ We'll update this file with the information from the Operator official documenta
 +
 image:self-service-patterns/db-lab/datagrid-doc.png[width=100%]
 
-* Paste the content on the Software templates:
-
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
-----
+* Paste the content on new file
 
 
 *Take the time to review your file with the solution file provided here:*
 
-
-[source,bash,role=execute,subs=attributes+]
-----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml
-----
+https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml[infinispan.yaml solution file^]
 
 * Note that your file needs to be ready to be used with *Helm*. In the following solution, you will find the name was updated to be a variable, and labels were included.
 
@@ -186,10 +167,7 @@ image:self-service-patterns/db-lab/datagrid-changes.png[width=80%]
 
 ** On RHDH, in the Data Grid template:
 
-[source, bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/create/templates/default/rhdatagrid-infinispan-instance/
-----
+{rhdh_url}/create/templates/default/rhdatagrid-infinispan-instance/[Red Hat Developer Hub UI Template^]
 
 * Click on the *entity refresh* icon
 
