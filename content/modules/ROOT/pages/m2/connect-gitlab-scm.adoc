@@ -1,0 +1,188 @@
+= Configure the GitLab Integration
+
+[NOTE]
+====
+{product_rhdh_name} can integrate with various source control solutions. A self-hosted instance of GitLab is used in this coursework to ensure stability and accuracy of the content, since managed solutions are subject to changes outside of our control.
+====
+
+The GitLab plugin enables {product_rhdh_name} to integrate with GitLab to enable the following functionality:
+
+* Discover and import `catalog-info.yaml` files from GitLab repositories.
+* Enable Software Templates to create new repositories and automate opening pull/merge requests.
+* Display open issues, merge requests, scorecards, and CI status directly in {product_rhdh_name}.
+
+Configuring the integration requires:
+
+. Generating an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token] in GitLab.
+. Creating a Secret to store the access token, and loading it into the {product_rhdh_name} pod.
+. Adding the access token and GitLab hostname to the `integrations` section of {product_rhdh_name}'s *app-config.yaml*.
+. Registering a new `gitlab` provider in `catalog.providers` in the *app-config.yaml*.
+
+== Create the GitLab Token and Credentials Secret
+
+=== Create the GitLab Token
+
+To facilitate secure communication between {product_rhdh_name} and the GitLab API, you need to generate an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token]:
+
+. Visit the https://gitlab-gitlab.{cluster_apps_domain}[GitLab instance] deployed in your environment.
++
+[NOTE]
+====
+You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console] and viewing the `gitlab` project. Do not edit or delete anything in this project!
+====
+. Login using the root credentials:
+  * Username: `root`
+  * Password: {gitlab_user_password}
+. Click on your user's profile picture, select *Edit profile*, then *Access tokens*.
+. Click the *Add new token* button, then set the following values for the token:
+  * *Token name*: `developer-hub-integration`
+  * *Scopes*: `api`, `read_repository`, `write_repository`
++
+image::setup-rhdh/gitlab-create-token.png[]
+. Scroll down and click *Create personal access token*.
+. Once the token is created, copy it someplace safe - you'll need it in the next section.
++
+image::setup-rhdh/gitlab-token-created.png[]
+
+=== Create the GitLab Secret
+
+Create a Secret to store the GitLab token and hostname:
+
+. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
+  * Username: `{openshift_admin_user}`
+  * Password: `{openshift_admin_password}`
+. Navigate to *Workloads > Secrets* and click *Create > From YAML*.
+. Ensure that the `{m2_rhdh_project}` project is selected.
+. Replace the content in the YAML editor with the following:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlab-secrets
+  namespace: setup-rhdh
+type: Opaque
+stringData:
+  GITLAB_HOST: gitlab-gitlab.{cluster_apps_domain}
+  GITLAB_TOKEN: YOUR_TOKEN
+----
++
+[WARNING]
+====
+Make sure to replace the `YOUR_TOKEN` placeholder with the token you generated in GitLab.
+====
+. Click *Create*.
+
+Similar to the *{m2_keycloak_secret_name}* you created in the previous section, you need to tell {product_rhdh_name} to actually read the new Secret.
+
+== Update the {product_rhdh_name} Configuration
+
+=== Add GitLab Secrets to the Backstage CR
+
+Update your Backstage CR to include the GitLab secret:
+
+. Navigate to your https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and change to the *YAML* view.
+. Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+extraEnvs:
+  secrets:
+    - name: {m2_keycloak_secret_name}
+    # Inject the GITLAB_HOST and GITLAB_TOKEN into
+    # the pod as environment variables
+    - name: gitlab-secrets
+----
+. Click *Save*.
+
+=== Add the GitLab Dynamic Plugin
+
+Enable the GitLab plugin by updating your *{m2_rhdh_plugins_cm_name}* ConfigMap:
+
+. Navigate to *Workloads > ConfigMaps* and click on `{m2_rhdh_plugins_cm_name}`.
+. Click *Edit ConfigMap*.
+. Update the `dynamic-plugins.yaml` content to include GitLab catalog backend plugin:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+- package: ./dynamic-plugins/dist/backstage-plugin-catalog-backend-module-gitlab-dynamic
+  disabled: false
+----
++
+[NOTE]
+====
+Verify that your indentation is correct by aligning it with the existing Keycloak plugin.
+====
+. Click *Save*.
+
+=== Update Backstage Configuration to Enable GitLab Integration
+
+Update your *app-config.yaml* to include GitLab integration and provider configurations:
+
+. Navigate to *Workloads > ConfigMaps* and click on `{m2_rhdh_cm_name}`.
+. Click *Edit ConfigMap*.
+. Add the following `gitlab` configuration to the `catalog.providers` section of your *app-config.yaml*:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+catalog:
+  providers:
+    # ...existing providers, e.g keycloak
+    # ...................................
+    # Our new GitLab provider that will synchronize catalog-info.yaml
+    # from our repositories in GitLab to the Software Catalog
+    gitlab:
+      yourProviderId:
+        host: ${GITLAB_HOST}
+        orgEnabled: true
+        group: rhdh
+        # Normally the entity filename is just set to catalog-info.yaml
+        # In this case we're hardcoding a path to a specific example file
+        entityFilename: discovery-example/catalog-info.yaml
+        schedule:
+          frequency:
+            minutes: 5
+          timeout:
+            minutes: 3
+----
+. Additionally, add a new `integrations` section at the root level of the *app-config.yaml*, i.e. the same indentation level as the `catalog` and `app` keys:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+integrations:
+  gitlab:
+    - host: ${GITLAB_HOST}
+      baseUrl: https://${GITLAB_HOST}
+      apiBaseUrl: https://${GITLAB_HOST}/api/v4
+      token: ${GITLAB_TOKEN}
+----
+. The resulting configuration should resemble this screenshot.
++ 
+image::setup-rhdh/app-config-gitlab.png[]
+. Click *Save* to update the *app-config.yaml*.
+
+== Verify GitLab Integration
+
+After the new Backstage pod has started:
+
+. Check the Backstage pod logs to confirm successful synchronization with GitLab.
++
+image::setup-rhdh/gitlab-discovery-log.png[]
+. Next, log in to your {product_rhdh_name} instance.
+. Navigate to the *Catalog* to see imported items of *Kind* Component from GitLab repositories - specifically a *HTTP Sink Application*.
++
+image::setup-rhdh/gitlab-component-httpsink.png[]
+. Visit the *APIs* screen using the link in the side menu and you'll find a matching API Entity. Click it.
+. A *Relations* pane shows that the API is provided by the *HTTP Sink Application*.
+. Click the *Definition* tab - an Swagger UI is rendered from the OpenAPI Spec.
++
+image::setup-rhdh/gitlab-api-httpsink.png[]
+. Return to the *Overview* tab and click *View Source*. You'll see the *catalog-info.yaml* and *opeanapi.yaml* that the GitLab plugin discovered to generate these entities.
+
+The system automatically discovers and imports `catalog-info.yaml` files from repositories in the configured GitLab group, so long as they match the https://backstage.io/docs/integrations/gitlab/discovery/#configuration[specified search parameters].
+
+[NOTE]
+====
+The GitLab integration will scan the specified group (`rhdh` in this example) for repositories containing `discovery-example/catalog-info.yaml` files and automatically import them into the Backstage catalog. Normally the `discovery-example/` prefix is not used, but to avoid cluttering the software catalog, it's used to narrow the scope in this example.
+====

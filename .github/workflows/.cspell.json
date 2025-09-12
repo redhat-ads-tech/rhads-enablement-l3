@@ -31,6 +31,7 @@
     "microservices",
     "API",
     "APIs",
+    "Casbin",
     "CI",
     "CD",
     "GitOps",
@@ -110,9 +111,14 @@
     "datacenters",
     "virtualization",
     "containerization",
+    "roadiehq",
+    "scaffolder",
+    "techdocs",
+    "quarkus",
     "architecting",
     "kubevirt",
-    "infinispan"
+    "infinispan",
+    "opeanapi"
   ],
   "ignoreWords": [
     "adoc",
@@ -123,6 +129,9 @@
     "asciidoc",
     "TODO",
     "FIXME",
+    "platformengineer",
+    "httpsink",
+    "Backstages",
     "webkitallowfullscreen",
     "mozallowfullscreen",
     "rhdatagrid"

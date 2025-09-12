@@ -1,0 +1,324 @@
+= Configure your First Plugin (Authentication)
+
+In this section you'll learn how to enable authentication for {product_rhdh_name} using Keycloak as an OpenID Connect provider. Various authentication providers are supported and can be found in the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/authentication_in_red_hat_developer_hub/index[{product_rhdh_name} documentation].
+
+== Plugin Architecture
+
+{product_rhdh_name} includes a comprehensive set of pre-installed dynamic plugins that extend its functionality beyond the core Backstage capabilities. These plugins are based on the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins[dynamic plugin architecture] and provide integrations with various tools and services commonly used in enterprise development environments.
+
+Pre-installed dynamic plugins include integrations for:
+
+* Authentication providers (Keycloak, GitHub, GitLab)
+* Source control systems (GitHub, GitLab, Bitbucket)
+* CI/CD platforms (Jenkins, Tekton, GitHub Actions)
+* Container registries and Kubernetes
+* Monitoring and observability tools
+* Documentation platforms
+
+While these plugins are pre-installed with {product_rhdh_name}, most must be explicitly enabled and configured to function properly. This design allows administrators to selectively activate only the integrations needed for their specific environment.
+
+[NOTE]
+====
+Third-party plugins can also be integrated with {product_rhdh_name}, but they require proper packaging and configuration. For more information on working with third-party plugins, refer to the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/installing_and_viewing_plugins_in_red_hat_developer_hub/assembly-third-party-plugins#proc-export-third-party-plugins-rhdh_assembly-third-party-plugins[official documentation].
+====
+
+== Prepare a Keycloak Realm
+
+The Keycloak plugin enables {product_rhdh_name} to integrate with Keycloak for authentication and to import User and Group entities into the Backstage catalog. The presence of User and Group entities in the Software Catalog is essential for assigning ownership to other entities, and to facilitate user login. A user's login attempt to {product_rhdh_name} will fail if a corresponding User entity matching their email/username doesn't exist in the Software Catalog.
+
+Your environment includes a preconfigured Keycloak instance with a `{keycloak_realm_name}` https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms[realm] and `{keycloak_client_id}` client that acts as an OpenID Connect authentication provider already set up for {product_rhdh_name} integration, however you need to make sure it's configured with the correct redirect URL for authentication to be successful.
+
+=== Accessing Keycloak
+
+Keycloak has been pre-deployed on your OpenShift cluster in the `tssc-keycloak` project. Accessing Keycloak requires its URL and admin password:
+
+. Visit the https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-keycloak/core~v1~Secret[Secrets screen in the tssc-keycloak] namespace.
+. Click the `keycloak-initial-admin` Secret to view it.
+. Copy the `password` value from the Secret.
+. View the https://sso.apps.{cluster_apps_domain}/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm] in Keycloak - login as *admin* using the password you copied from the Secret.
++ 
+[NOTE]
+====
+You can find the Keycloak URL by visiting the *Networking > Routes* screen in the OpenShift Web Console and making sure that the `tssc-keycloak` project is selected, but the link above is provided for convenience.
+====
+. Click the `rhdh` client.
++
+image::setup-rhdh/keycloak-client-list.png[]
+
+The *General settings* screen for the client will be displayed. You need to add your {product_rhdh_name} URL to the *Web origins* and *Valid redirect URIs*.
+
+=== Update the Redirect URLs and Web Origins
+
+Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with {product_rhdh_name}. This is because Keycloak will not recognise your {product_rhdh_name} hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behavior.
+
+. Add the following value to *Web origins*
++
+[.wrap,source,role=execute,text]
+----
+https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+----
+. Add the following value to *Valid redirect URIs*:
++
+[.wrap,source,role=execute,text]
+----
+https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api/auth/oidc/handler/frame
+----
++
+[WARNING]
+====
+Do not delete the existing *Web origins* and *Valid redirect URIs*!
+====
+. Your result should resemble this screenshot, albeit with different URL values.
++
+image::setup-rhdh/keycloak-valid-urls.png[]
+. Click *Save*.
+
+The path for the redirect URL is `/api/auth/oidc/handler/frame` as documented in https://backstage.io/docs/auth/oidc/#the-api-reference[Backstage's OIDC reference] and our https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html-single/authentication_in_red_hat_developer_hub/index#assembly-authenticating-with-rhbk[{product_rhdh_name} documentation].
+
+== Install a Dynamic Plugin
+
+Dynamic plugins in operator-based deployments of {product_rhdh_name} are configured using a dedicated ConfigMap. This ConfigMap defines which plugins should be enabled and their specific configuration parameters.
+
+=== Understanding Plugin Configuration
+
+The {product_rhdh_name} Operator reads plugin configurations from a ConfigMap that contains a `dynamic-plugins.yaml` file. This configuration file specifies:
+
+* Which plugins to enable or disable
+* Plugin-specific configuration parameters
+* Dependencies and package information
+
+For detailed information on configuring dynamic plugins with the operator, refer to the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/installing_and_viewing_plugins_in_red_hat_developer_hub/rhdh-installing-rhdh-plugins_title-plugins-rhdh-about#proc-config-dynamic-plugins-rhdh-operator_rhdh-installing-rhdh-plugins[official plugin configuration guide].
+
+=== Create the Dynamic Plugins ConfigMap
+
+As mentioned earlier, certain plugins are preinstalled in the {product_rhdh_name}. These plugins have gone through our productisation process to verify they're compatible with the specific version of Backstage that {product_rhdh_name} is built from, and to facilitate installation at runtime. Using upstream Backstage requires plugins to be installed from a registry. For example, upstream Backstage would require a platform engineer to install a compatible version of https://www.npmjs.com/package/@backstage-community/plugin-catalog-backend-module-keycloak[@backstage-community/plugin-catalog-backend-module-keycloak from npm] and make code changes to their Backstage instance. With {product_rhdh_name} no such code changes or version matrix concerns are necessary. 
+
+Get started by creating a minimal `{m2_rhdh_plugins_cm_name}` ConfigMap that enables the Keycloak plugin. 
+
+. Log in to the {openshift_console_url}[OpenShift Web Console].
+. Ensure you're in the `{m2_rhdh_project}` project.
+. Navigate to *Workloads > ConfigMaps*.
+. Click the *Create ConfigMap* button.
+. Switch to the YAML view and paste the following configuration:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {m2_rhdh_plugins_cm_name}
+  namespace: {m2_rhdh_project}
+data:
+  dynamic-plugins.yaml: |
+    includes:
+      - dynamic-plugins.default.yaml
+    plugins:
+      - package: ./dynamic-plugins/dist/backstage-community-plugin-catalog-backend-module-keycloak-dynamic
+        disabled: false
+----
+. Click *Create* to create the ConfigMap.
+
+=== Update the Backstage Custom Resource
+
+Now you need to update your Backstage CR to reference the dynamic plugins ConfigMap.
+
+. Navigate to *Operators > Installed Operators* in the OpenShift Web Console.
+. Click on *{product_rhdh_name}*.
+. Select the *Backstage* tab, then click on your `{m2_rhdh_instance}` instance.
+. Click the *YAML* tab to edit the resource.
+. Update the `spec.application` section to include the dynamic plugins configuration:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+spec:
+  application:
+    appConfig:
+      mountPath: /opt/app-root/src
+      configMaps:
+        - name: {m2_rhdh_cm_name}
+    # Add this line to your existing Backstage CR
+    dynamicPluginsConfigMapName: {m2_rhdh_plugins_cm_name}
+    route:
+      enabled: true
+----
++
+[NOTE]
+====
+The Backstage CR might show additional properties not listed in the example above - do not delete these. Simply add the new `dynamicPluginsConfigMapName: {m2_rhdh_plugins_cm_name}` line as shown.
+====
+. Click *Save* to apply the changes.
+
+=== Verify Plugin Installation
+
+A new Backstage pod was created after you updated the CR. Check the pod logs to view the plugin installation process:
+
+. Visit *Workloads > Pods* and select the latest Backstage pod - it will most likely be showing an `Init` status.
++
+image::setup-rhdh/rhdh-pod-init.png[]
+. Select the *Logs* tab and select the *install-dynamic-plugins* container.
+. Find log lines that state `Installing dynamic plugin` - these should match the plugins you enabled in your ConfigMap.
++
+image::setup-rhdh/plugins-installing.png[]
+. Wait for the installation process to finish (`Removed lock file` will be printed in the logs)
+
+After the installation process is complete, you'll notice that the new pod crashes. Change the selected container in the *Logs* screen from `install-dynamic-plugins` to `backstage-backend`. You'll see an error stating that a required configuration for the Keycloak plugin is missing.
+
+[.wrap,text]
+----
+ForwardedError: Module 'catalog-backend-module-keycloak' for plugin 'catalog' startup failed; caused by Error: Missing required config value at 'catalog.providers.keycloakOrg.default.baseUrl' in 'app-config.dynamic-plugins.yaml'
+----
+
+Fret not! Your previous {product_rhdh_name} pod is still healthy and serving your developers. You'll address the missing Keycloak configuration in the next section.
+
+== Configure the Keycloak Plugin
+
+// . Visit your {product_rhdh_name} instance URL.
+// . Navigate to link:/api/dynamic-plugins-info/loaded-plugins[/api/dynamic-plugins-info/loaded-plugins] to view the loaded plugins API endpoint.
+// . Alternatively, log in to {product_rhdh_name} as an administrator and visit *Administration > Plugins* to view enabled plugins through the UI.
+
+
+=== Create Keycloak Integration Secret
+
+First, create a Secret to store Keycloak connection details:
+
+. In the OpenShift Web Console, navigate to *Workloads > Secrets*.
+. Ensure the `{m2_rhdh_project}` project is selected.
+. Click *Create > Key/value secret*.
+. Set the secret name to `{m2_keycloak_secret_name}`.
++
+image::setup-rhdh/keycloak-secret.png[]
+. Add the following key-value pairs:
++
+[cols="1,1"]
+|===
+|Key |Value
+
+|`KEYCLOAK_BASE_URL`
+|`\https://sso.{cluster_apps_domain}`
+
+|`KEYCLOAK_LOGIN_REALM`
+|`{keycloak_realm_name}`
+
+|`KEYCLOAK_REALM`
+|`{keycloak_realm_name}`
+
+|`KEYCLOAK_CLIENT_ID`
+|`{keycloak_client_id}`
+
+|`KEYCLOAK_CLIENT_SECRET`
+|`\{openshift_admin_password}`
+|===
+. Click *Create*.
+
+Both a `KEYCLOAK_LOGIN_REALM` and `KEYCLOAK_REALM` are defined so it's possible that the realm used for login is not the same as the realm used to source Users and Groups for the Software Catalog.
+
+=== Update the Backstage Configuration
+
+Update your *app-config.yaml* to include Keycloak integration:
+
+. Navigate to *Workloads > ConfigMaps* and click on `{m2_rhdh_cm_name}`.
+. Ensure the `{m2_rhdh_project}` project is selected.
+. Click *Edit ConfigMap*.
+. Replace the `app-config.yaml` content with:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+app:
+  title: Red Hat Developer Hub
+  baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+
+signInPage: oidc
+auth:
+  environment: production
+  session:
+    secret: ${BACKEND_SECRET}
+  providers:
+    oidc:
+      production:
+        metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
+        clientId: $\{KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        prompt: auto
+
+backend:
+  baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+  cors:
+    origin: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+
+catalog:
+  providers:
+    keycloakOrg:
+      default:
+        baseUrl: ${KEYCLOAK_BASE_URL}
+        loginRealm: ${KEYCLOAK_REALM}
+        realm: ${KEYCLOAK_REALM}
+        clientId: $\{KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        schedule:
+          frequency:
+            minutes: 5
+          timeout:
+            minutes: 3
+          initialDelay:
+            seconds: 15
+----
+. Click *Save*.
+
+This configuration replaces the Guest authentication provider with a production-ready OpenID Connect authentication flow. 
+
+Additionally, you added a new `catalog.providers` configuration. As a reminder, the Software Catalog in Backstage (and thus {product_rhdh_name}) contains entities that represent your deployed software, services, APIs, and resources such as file storage, databases, and message queues. It's possible to point to https://backstage.io/docs/conf/[static locations] (YAML files available over HTTPS) that contain the description and relationships between these entities. Providers are https://backstage.io/docs/features/software-catalog/external-integrations[plugins that provide an integration] to dynamically fetch entities from external sources. The Keycloak plugin will fetch Users and Groups from a configured realm, and add them to the Software Catalog as entities.
+
+=== Update Backstage CR with Secret References
+
+Update your Backstage CR to reference the Keycloak secrets:
+
+. Navigate to your Backstage CR and click the *YAML* tab.
+. Update the `spec.application` section to inject the keys and values from the secret into the pod's environment using the `extraEnvs.secrets` array:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+spec:
+  application:
+    appConfig:
+      mountPath: /opt/app-root/src
+      configMaps:
+        - name: {m2_rhdh_cm_name}
+    dynamicPluginsConfigMapName: {m2_rhdh_plugins_cm_name}
+    # This new property will read the listed secret(s) and inject
+    # their key-value pairs as environment variables in the pod 
+    extraEnvs:
+      secrets:
+        - name: {m2_keycloak_secret_name}
+    route:
+      enabled: true
+----
+. Click *Save* to trigger a new deployment of your {product_rhdh_name} instance.
+
+More information on custom configurations that load data from Secrets and ConfigMaps can be found in the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html-single/configuring_red_hat_developer_hub/index#using-the-operator-to-run-rhdh-with-your-custom-configuration[configuring {product_rhdh_name} documentation].
+
+=== Verify Keycloak Integration
+
+A new {product_rhdh_name} pod will be created. Wait for it to start and the old pod to be deleted, then:
+
+. Select *Workloads > Pods* in the OpenShift Web Console. 
+. Ensure the `{m2_rhdh_project}` project is selected.
+. View the *Logs* for the *backstage-backend* container in the Backstage pod.
+. Search for "keycloak" in the log output.
+
+You should find numerous references, including a line that mentions that users and groups will be ingested.
+
+image::setup-rhdh/keycloak-plugin-logs.png[]
+
+Next, verify the new OpenID Connect login flow is working:
+
+. Visit your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}[{product_rhdh_name} instance].
+. You should now see an OIDC sign-in option.
++
+image::setup-rhdh/rhdh-oidc-signin.png[]
+. Click *Sign In* and use the following credentials in the popup that appears:
+  * Username: `{rhdh_user}`
+  * Password: {rhdh_user_password}
+. Once logged in, go to the *Catalog* set the *Kind* dropdown to *User* or *Group*. Imported User or Group entities will be displayed.
++ 
+image::setup-rhdh/users-in-catalog.png[]
+
