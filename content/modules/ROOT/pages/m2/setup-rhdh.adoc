@@ -83,7 +83,7 @@ Before creating a Backstage CR, we need to satisfy some prerequisites. So don't 
 
 === Create a Project/Namespace
 
-. Visist the {openshift_console_url}[OpenShift Web Console].
+. Visit the {openshift_console_url}[OpenShift Web Console].
 . Click the *Cluster Selector* in the top-left, and select *local-cluster*.
 . Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Navigate to *Home > Projects*, then click the *Create project* button. 
