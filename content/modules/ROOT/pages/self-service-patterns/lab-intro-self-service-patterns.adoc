@@ -17,7 +17,7 @@ In this lab we will be gain hands-on experience to work with Software Templates 
 
 * Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
 
-** Login with your user credentials:
+** Login with your user administrator credentials:
 
-    ** *Username*: {gitlab_user}
-    ** *Password*: {gitlab_user_password}
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}

@@ -25,11 +25,13 @@ The team will create the VM from RHDH. After this, Developer Hub will use the po
 image:self-service-patterns/vm-lab/vm-architecture.jpg[Red Hat Developer Hub as part of the VM creation process.]
 
 === Explore the VM template in GitLab
-. Take the time to review the source code to get familiarize with the content.
+* Take the time to review the source code to get familiarize with the content.
 
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/,window=_blank]
+** Explore the *Software templates* in *GitLab*:
 
-** Login with your user credentials:
+* {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/,window=_blank]
+
+** Login in GitLab with your user credentials:
 
     ** *Username*: {gitlab_user}
     ** *Password*: {gitlab_user_password}
@@ -66,15 +68,15 @@ image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI]
 +
 image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/catalog-import
-----
+{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
+[source, bash,role=execute,subs=attributes+]
+----
 {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
+----
+
 
 * Click on the *Import* button
 
@@ -92,7 +94,7 @@ image:self-service-patterns/vm-lab/rhdh-register-component-finish.png[width=60%]
 image:self-service-patterns/vm-lab/vm-catalog.png[width=60%]
 
 * Click on the *Choose*
-* Review and fill out the information with dummy data until you reach the review screen, **without creating the VM**. **DO NOT CLICK ON CREATE** 
+* Review and fill out the information with dummy data until you reach the review screen, **without creating the VM**. **DO NOT CLICK ON CREATE.** 
 +
 image:self-service-patterns/vm-lab/vm-sample.png[width=100%]
 
@@ -114,7 +116,7 @@ We need to explore how many changes we must include in this new version to decid
 When artifacts/components are very different or configurations are so dissimilar, they require many logic or variables to keep them on the same configuration. The main goal is to keep it as simple as possible to reduce maintenance.
 
 
-*The solution* 
+*The solution:* 
 We'll choose the second option, update the current software template to support different RHEL versions. This will also help to reduce maintenance when a new version needs to be supported.
 
 === Explore VMs creation with OpenShift Virtualization
@@ -126,8 +128,8 @@ Let's explore what type of VMs I can create in OpenShift. Imagine that you are n
 
 ** Use your user credentials:
 
-    *** *Username*: {openshift_cluster_admin_username}
-    *** *Password*: {openshift_cluster_admin_password}
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
 
 * Click on the *Virtual Machine* menu, then click on *Overview*.
 
@@ -182,19 +184,20 @@ image:self-service-patterns/vm-lab/self-service-catalog.png[width=40%]
 
 ** Select the **RHEL9 VM Medium Template**
 
-** Access the Source code by clicking on *View Source*
+* The current template needs to be deleted since we'll be creating a new template with a new name.
+
+** Click on the *three dots* under Owner, next click on *Unregister entity*
 
 +
-image:self-service-patterns/vm-lab/vm-edit-catalog.png[width=60%]
+image:self-service-patterns/vm-lab/template-unregister.png[width=60%]
 
-
-* Go to manifests/helm/app/templates/vm.yaml
+** Confirm the action.
 
 +
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml
-----
+image:self-service-patterns/vm-lab/confirm-unregister.png[width=60%]
+
+
+* Go to manifests/helm/app/templates/vm.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]
 
 ** Review the vm definition and compare it with the one provided by *OpenShift Virtualization*
 
@@ -216,10 +219,8 @@ image:self-service-patterns/vm-lab/vm-file-changes.png[width=60%]
 
 Take the time to review your file with the solution file provided here:
 
-[source,bash,role=execute,subs=attributes+]
-----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/vm.yaml
-----
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/vm.yaml[VM.yaml solution file^]
+
 *Note*: Don't forget to commit your changes. 
 
 ** Update the *values.yaml* file to include the RHEL version ensuring that is listed as a variable. This value must match the value you added to the vm.yaml file.
@@ -230,11 +231,8 @@ image:self-service-patterns/vm-lab/vm-valuesfile-changes.png[width=60%]
 
 * Ensure you have applied the changes to your repository. Take the time to review your file with the solution file provided here:
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/values.yaml
-----
+
+https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml[values.yaml solution file^]
 
 *Note*: Don't forget to commit your changes. 
 
@@ -250,7 +248,7 @@ Let's make the following changes to update the template based on the new RHEL ve
 ** Ensure variables are sent to the helm charts.
 
 
-* Update the *template.yaml* file to ensure the RHEL version *9 is not part of the template*. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.
+* Update the *rhel-vm-medium/template.yaml* file to ensure the RHEL version *9 is not part of the template*. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.
 
 [source, bash,role=execute,subs=attributes+]
 ----
@@ -281,27 +279,33 @@ image:self-service-patterns/vm-lab/vm-template-step2.png[width=50%]
 
 * Ensure you have applied the changes to your repository. *Take the time to review* your file with the solution file provided here:
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml
-----
+https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml[template.yaml solution file^]
+
 
 * Proceed to *save your changes*.
 
 * Ensure the template has the latest changes.
 
-** On RHDH, in the VM template:
+* Proceed to register the new template
+
+* Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
++
+image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI] 
+
+* Click the *Register Existing Component* button.
++
+image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
+
+{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]
+
+* Enter the following URL in the *Select URL* field and click *Analyze*:
 
 [source, bash,role=execute,subs=attributes+]
 ----
-{rhdh_url}/create/templates/default/rhel9-vm-medium-template/
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
 ----
 
-* Click on the *entity refresh* icon
-
-+
-image:self-service-patterns/vm-lab/rhdh-refresh-catalog.png[width=70%]
+* Click on the *Import* button
 
 
 === Test your changes: Explore the user experience as Developer
@@ -330,8 +334,8 @@ image:self-service-patterns/vm-lab/vm-rhel-updated.png[width=120%]
 
 ** Use your user credentials:
 
-    *** *Username*: {openshift_cluster_admin_username}
-    *** *Password*: {openshift_cluster_admin_password}
+   *** *Username*: {openshift_admin_user}
+   *** *Password*: {openshift_admin_password}
 
 ++++
 <iframe 

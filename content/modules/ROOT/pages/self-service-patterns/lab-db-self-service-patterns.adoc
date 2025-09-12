@@ -21,11 +21,8 @@ Now, imagine for a moment that you need to fullfil a need for the Java Developme
 == Explore the RH Data Grid template in GitLab
 . Take the time to review the source code to get familiarize with the content.
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/
-----
+* {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan,window=_blank]
+
 
 ** Login with your user credentials:
 
@@ -67,11 +64,7 @@ image:self-service-patterns/db-lab/rhdh-create-icon.png[Create UI]
 +
 image:self-service-patterns/db-lab/rhdh-register-component.png[Create UI] 
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/catalog-import
-----
+{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -90,14 +83,15 @@ image:self-service-patterns/db-lab/rhdh-register-component-finish.png[width=60%]
 
 * We'll explore the end-user experience by accessing the Software Templates view.
 * From *catalog*, select *Self-service*
+* Look for the *RH Data Grid infinispan* catalog
 
 +
-image:self-service-patterns/db-lab/datagrid-catalog.png[width=60%]
+image:self-service-patterns/db-lab/datagrid-catalog.png[width=40%]
 
 *Let's explore the current catalog:*
 
 * Click on the *Choose*
-* Review and fill out the information with dummy data until you reach the review screen, **without creating the RH Data Grid**. **DO NOT CLICK ON CREATE** 
+* Review and fill out the information with dummy data until you reach the review screen, **without creating the RH Data Grid**. **DO NOT CLICK ON CREATE.** 
 +
 image:self-service-patterns/db-lab/datagrid-sample.png[width=120%]
 
@@ -122,19 +116,10 @@ image:self-service-patterns/db-lab/self-service-catalog.png[width=40%]
 image:self-service-patterns/db-lab/db-edit-catalog.png[width=60%]
 
 
-Or directly to the URL:
+* We need to update the RH Data Grid instance.
 
-[source, bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance
-----
+* Go to manifests/helm/app/templates/ or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^]
 
-* We need to update the RH Data Grid instance, go to manifests/helm/app/templates/infinispan.yaml
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
-----
 
 * Create a new file: 
 
@@ -142,7 +127,7 @@ Or directly to the URL:
 image:self-service-patterns/db-lab/gitlab-newfile.png[width=100%]
 
 
-We'll update this file with the information from the Operator official documentation.
+We'll review the configuration needed from the Operator official documentation.
 
 * Review the official documentation: 
 ** link:https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters[Creating Data Grid infinispan,window='_blank']
@@ -152,22 +137,12 @@ We'll update this file with the information from the Operator official documenta
 +
 image:self-service-patterns/db-lab/datagrid-doc.png[width=100%]
 
-* Paste the content on the Software templates:
-
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/self-service/rhdatagrid_infinispan/manifests/helm/app/templates/infinispan.yaml
-----
+* Paste the content on new file
 
 
 *Take the time to review your file with the solution file provided here:*
 
-
-[source,bash,role=execute,subs=attributes+]
-----
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml
-----
+https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml[infinispan.yaml solution file^]
 
 * Note that your file needs to be ready to be used with *Helm*. In the following solution, you will find the name was updated to be a variable, and labels were included.
 
@@ -176,7 +151,9 @@ image:self-service-patterns/db-lab/datagrid-changes.png[width=80%]
 
 * Note: The file also contains a definition to expose the deployment with a *Route*: link:https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services[Exposing Data Grid through a Route,window='_blank'] and we added the custom *credentials* as well as defined on the documentation link:https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn[Configuring authentication,window='_blank']
 
-* Copy the content from the solution provided.
+As we had modified the content, use the solution provided for this configuration:
+
+* *Copy the content from the solution provided.*
 * Name your file as *infinispan.yaml*
 
 *Note*: Don't forget to commit your changes. 
@@ -186,10 +163,7 @@ image:self-service-patterns/db-lab/datagrid-changes.png[width=80%]
 
 ** On RHDH, in the Data Grid template:
 
-[source, bash,role=execute,subs=attributes+]
-----
-{rhdh_url}/create/templates/default/rhdatagrid-infinispan-instance/
-----
+{rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance/[Red Hat Developer Hub UI Template^]
 
 * Click on the *entity refresh* icon
 
@@ -221,26 +195,23 @@ image:self-service-patterns/db-lab/datagrid-open.png[width=100%]
 image:self-service-patterns/db-lab/datagrid-component.png[width=100%]
 
 * Click on *Data Grid URL* from the component's overview
-* Access *RH Data Grid* with the credentials listed on the identity file:
+* Access *RH Data Grid* with the credentials listed on the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml[identity file^]
 
 *user*: user1
 
 *password*: openshift!3415@
 
 
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml
-----
+*Note*: The infinispan might take a few minutes to complete provisioning.
 
-* Click on *Open the console*
+
+* Click on *Proceed*, next click on *Open the console*
 
 image:self-service-patterns/db-lab/datagrid-open-console.png[width=100%]
 
 
 * You should see only one screen, like this one:
 
-*Note*: The infinispan might take a few minutes to complete provisioning.
 
 
 image:self-service-patterns/db-lab/datagrid-working.png[width=100%]
@@ -249,8 +220,8 @@ image:self-service-patterns/db-lab/datagrid-working.png[width=100%]
 
 ** Use your user credentials:
 
-    *** *Username*: {openshift_cluster_admin_username}
-    *** *Password*: {openshift_cluster_admin_password}
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
 
 
 *Note:* In a production environment, the security setup and user creation will not be managed in this identity yaml file. Explore the RH Data Grid documentation to learn more about best practices.
