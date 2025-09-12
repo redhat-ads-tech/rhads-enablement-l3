@@ -48,7 +48,7 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="setup-rhdh.html">Module 2: Install &amp; Administer</a>
+    <a class="nav-link" href="introduction.html">Module 2: Install &amp; Administer</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html">Introduction</a>
@@ -167,7 +167,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
-    <li><a href="setup-rhdh.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
     <li><a href="connect-gitlab-scm.html">GitLab Integration</a></li>
   </ul>
 </nav>
@@ -263,7 +263,7 @@
 <p>Username: <code>root</code></p>
 </li>
 <li>
-<p>Password: {common_password}</p>
+<p>Password: {gitlab_user_password}</p>
 </li>
 </ul>
 </div>
@@ -318,7 +318,7 @@
 <p>Username: <code>{openshift_admin_user}</code></p>
 </li>
 <li>
-<p>Password: <code>{common_password}</code></p>
+<p>Password: <code>{openshift_admin_password}</code></p>
 </li>
 </ul>
 </div>
@@ -471,7 +471,10 @@ stringData:
       yourProviderId:
         host: ${GITLAB_HOST}
         orgEnabled: true
-        group: development
+        group: rhdh
+        # Normally the entity filename is just set to catalog-info.yaml
+        # In this case we're hardcoding a path to a specific example file
+        entityFilename: discovery-example/catalog-info.yaml
         schedule:
           frequency:
             minutes: 5
@@ -529,15 +532,34 @@ stringData:
 <p>Next, log in to your Red Hat Developer Hub instance.</p>
 </li>
 <li>
-<p>Navigate to the <strong>Catalog</strong> to see imported items of <strong>Kind</strong> Component from GitLab repositories.</p>
+<p>Navigate to the <strong>Catalog</strong> to see imported items of <strong>Kind</strong> Component from GitLab repositories - specifically a <strong>HTTP Sink Application</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/gitlab-component-httpsink.png" alt="gitlab component httpsink">
+</div>
+</div>
 </li>
 <li>
-<p>TODO: add some default entities to the development group as part of cluster setup</p>
+<p>Visit the <strong>APIs</strong> screen using the link in the side menu and you&#8217;ll find a matching API Entity. Click it.</p>
+</li>
+<li>
+<p>A <strong>Relations</strong> pane shows that the API is provided by the <strong>HTTP Sink Application</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>Definition</strong> tab - an Swagger UI is rendered from the OpenAPI Spec.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/gitlab-api-httpsink.png" alt="gitlab api httpsink">
+</div>
+</div>
+</li>
+<li>
+<p>Return to the <strong>Overview</strong> tab and click <strong>View Source</strong>. You&#8217;ll see the <strong>catalog-info.yaml</strong> and <strong>opeanapi.yaml</strong> that the GitLab plugin discovered to generate these entities.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>The system automatically discovers and imports <code>catalog-info.yaml</code> files from repositories in the configured GitLab group.</p>
+<p>The system automatically discovers and imports <code>catalog-info.yaml</code> files from repositories in the configured GitLab group, so long as they match the <a href="https://backstage.io/docs/integrations/gitlab/discovery/#configuration">specified search parameters</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -547,7 +569,7 @@ stringData:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The GitLab integration will scan the specified group (<code>development</code> in this example) for repositories containing <code>catalog-info.yaml</code> files and automatically import them into the Backstage catalog.</p>
+<p>The GitLab integration will scan the specified group (<code>rhdh</code> in this example) for repositories containing <code>discovery-example/catalog-info.yaml</code> files and automatically import them into the Backstage catalog. Normally the <code>discovery-example/</code> prefix is not used, but to avoid cluttering the software catalog, it&#8217;s used to narrow the scope in this example.</p>
 </div>
 </td>
 </tr>

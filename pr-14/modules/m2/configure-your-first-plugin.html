@@ -48,7 +48,7 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="setup-rhdh.html">Module 2: Install &amp; Administer</a>
+    <a class="nav-link" href="introduction.html">Module 2: Install &amp; Administer</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html">Introduction</a>
@@ -167,7 +167,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
-    <li><a href="setup-rhdh.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
     <li><a href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a></li>
   </ul>
 </nav>
@@ -249,7 +249,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://console-openshift-console.apps.cluster-6zqmr.dynamic.redhatworkshops.io/k8s/ns/tssc-keycloak/core<sub>v1</sub>Secret">Secrets screen in the tssc-keycloak</a> namespace.</p>
+<p>Visit the <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-keycloak/core<sub>v1</sub>Secret">Secrets screen in the tssc-keycloak</a> namespace.</p>
 </li>
 <li>
 <p>Click the <code>keycloak-initial-admin</code> Secret to view it.</p>
@@ -258,7 +258,7 @@
 <p>Copy the <code>password</code> value from the Secret.</p>
 </li>
 <li>
-<p>View the <a href="https://sso.apps.cluster-6zqmr.dynamic.redhatworkshops.io/admin/master/console/#/trusted-artifact-signer/clients">clients list in the <code>trusted-artifact-signer</code> realm</a> in Keycloak - login as <strong>admin</strong> using the password you copied from the Secret.</p>
+<p>View the <a href="https://sso.apps.{cluster_apps_domain}/admin/master/console/#/trusted-artifact-signer/clients">clients list in the <code>trusted-artifact-signer</code> realm</a> in Keycloak - login as <strong>admin</strong> using the password you copied from the Secret.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -276,6 +276,11 @@
 </li>
 <li>
 <p>Click the <code>rhdh</code> client.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/keycloak-client-list.png" alt="keycloak client list">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -536,9 +541,9 @@ data:
 </li>
 <li>
 <p>Set the secret name to <code>keycloak-secrets</code>.</p>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="setup-rhdh/keycloak-secret.png" alt="keycloak secret">
+<img src="../_images/setup-rhdh/keycloak-secret.png" alt="keycloak secret">
 </div>
 </div>
 </li>
@@ -574,7 +579,7 @@ data:
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>KEYCLOAK_CLIENT_SECRET</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{common_password}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{openshift_admin_password}</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -623,6 +628,7 @@ auth:
         metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        prompt: auto
 
 backend:
   baseUrl: https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}
@@ -750,10 +756,10 @@ catalog:
 <div class="ulist">
 <ul>
 <li>
-<p>Username: <code>user1</code></p>
+<p>Username: <code>{rhdh_user}</code></p>
 </li>
 <li>
-<p>Password: {common_password}</p>
+<p>Password: {rhdh_user_password}</p>
 </li>
 </ul>
 </div>

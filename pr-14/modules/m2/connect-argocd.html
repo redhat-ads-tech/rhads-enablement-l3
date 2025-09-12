@@ -48,7 +48,7 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="setup-rhdh.html">Module 2: Install &amp; Administer</a>
+    <a class="nav-link" href="introduction.html">Module 2: Install &amp; Administer</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html">Introduction</a>
@@ -167,7 +167,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
-    <li><a href="setup-rhdh.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
     <li><a href="connect-argocd.html">Argo CD Integration</a></li>
   </ul>
 </nav>
@@ -238,7 +238,7 @@
 <p>Username: <code>{openshift_admin_user}</code></p>
 </li>
 <li>
-<p>Password: <code>{common_password}</code></p>
+<p>Password: <code>{openshift_admin_password}</code></p>
 </li>
 </ul>
 </div>
@@ -341,7 +341,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-gitops/route.openshift.io<sub>v1</sub>Route"><strong>Routes</strong> in the tssc-gitops</a> namespace.</p>
+<p>Visit <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-gitops/route.openshift.io<sub>v1</sub>Route"><strong>Networksing &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
 </li>
 <li>
 <p>Click the link in the <strong>Location</strong> column to access Argo CD.</p>
@@ -557,7 +557,7 @@ stringData:
 <p>For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.</p>
 </div>
 <div class="paragraph">
-<p>Your environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> - find it in the GitLab repository named <a href="https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example">m2/argocd-example</a>.</p>
+<p>Recall that yoiur environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> in GitLab - <a href="https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example">module-2-assets/discovery-example</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -574,13 +574,13 @@ stringData:
 </table>
 </div>
 <div class="paragraph">
-<p>In this case you can see that the <a href="https://github.com/redhat-ads-tech/m2-argocd-example/blob/main/catalog-info.yaml#L8"><strong>argocd/app-selector</strong> annotation</a> is set on the Component - this tells the Argo CD plugin for Red Hat Developer Hub to query the configured Argo CD instance for Applications with a label matching that selector. Your <a href="https://github.com/redhat-ads-tech/m2-argocd-example/blob/main/application.yaml#L7">httpsink Application has a matching label</a>; there&#8217;s no action required on your part in this section!</p>
+<p>In this case you can see that the <a href="https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets/-/blob/main/discovery-example/catalog-info.yaml?ref_type=heads"><strong>argocd/app-selector</strong> annotation</a> is set on the Component. This tells the Argo CD plugin for Red Hat Developer Hub to query the configured Argo CD instance for Applications with a label matching that selector.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_create_an_argo_cd_application"><a class="anchor" href="#_create_an_argo_cd_application"></a>Create an Argo CD Application</h3>
 <div class="paragraph">
-<p>A sample Argo CD Application definition is <a href="https://raw.githubusercontent.com/redhat-ads-tech/m2-argocd-example/refs/heads/main/application.yaml">hosted on GitHub</a> - you&#8217;ll use this to test the integration.</p>
+<p>Earlier, you logged into Argo CD and confirmed that no Applications existed; it&#8217;s time to create one.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -588,37 +588,7 @@ stringData:
 <p>Visit the OpenShift Web Console and ensure you&#8217;re logged in as the <strong>admin</strong> user.</p>
 </li>
 <li>
-<p>Click the plus icon in the top-right corner and select <strong>Import YAML</strong>.</p>
-</li>
-<li>
-<p>Paste the following YAML and click <strong>Create</strong> to create a namespace the Argo CD Application can deploy resources into.</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    argocd.argoproj.io/managed-by: tssc-gitops
-  name: httpsink</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The <code>argocd.argoproj.io/managed-by</code> label is essential. It tells the Argo CD operator that the Argo CD named <strong>tssc-gitops</strong> can manage Kubernetes resources in this namespace.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Next, create an Argo CD Application using the same <strong>Import YAML</strong> flow as you did for the namespace:</p>
+<p>Click the plus icon in the top-right corner and select <strong>Import YAML</strong> to create the Application using this YAML.</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
@@ -632,9 +602,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab-gitlab.{cluster_apps_domain}/m2/argocd-example
+    repoURL: https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets.git
     targetRevision: HEAD
-    path: k8s
+    path: argocd-example/k8s
   destination:
     name: in-cluster
     namespace: httpsink
@@ -667,7 +637,7 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}/"><strong>ns_tssc_gitops</strong> Argo CD dashboard</a>.</p>
+<p>Visit the <a href="https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}/"><strong>tssc-gitops</strong> Argo CD dashboard</a>.</p>
 </li>
 <li>
 <p>Login as:</p>
@@ -698,10 +668,10 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p>Username: <code>user1</code></p>
+<p>Username: <code>{rhdh_user}</code></p>
 </li>
 <li>
-<p>Password: <code>{common_password}</code></p>
+<p>Password: <code>{rhdh_user_password}</code></p>
 </li>
 </ul>
 </div>
