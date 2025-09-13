@@ -4,12 +4,12 @@
 == Prerequisites
 For this lab, you are required to install and set up Podman Desktop and ensure you have enabled the Podman AI extension.
 
-* Podman is installed in your local environment. Follow the Podman official documentation: link:https://podman-desktop.io/i[Podman Download,window='_blank']
+* Podman is installed in your local environment. 
+** Follow the Podman official documentation: link:https://podman-desktop.io/downloads[Podman Download,window='_blank']
 * Podman AI Lab extension is installed. Follow the Podman AI Lab installation guide link:https://podman-desktop.io/docs/ai-lab/installing[Podman AI Lab extension,window='_blank']
 
 == Introduction
-Welcome to this lab, where you will have the chance to learn how to build AI applications using Podman AI Lab in your local environment.
-Additionally, you will be exploring different AI applications, including integrations with *Llama Stack*.
+Welcome to this lab, where you will have the chance to learn how to build AI applications using Podman AI Lab in your local environment. You will also explore different AI applications, including integrations with *Llama Stack*.
 
 == Explore Podman 
 * Now, you are ready to start building AI applications locally. 
@@ -50,7 +50,7 @@ image:rhads-ai/local-lab/podman-serving-playgrounds.png[width=100%]
 * Click on *New Model Service*
 +
 image:rhads-ai/local-lab/new-model-service.png[width=100%]
-* Once review the information, Click on *Create Service* 
+* Once you review the information, click on *Create Service* 
 
 +
 image:rhads-ai/local-lab/create-model-service.png[width=100%]
@@ -87,24 +87,24 @@ image:rhads-ai/local-lab/llama-stack-running-container.png[width=100%]
 +
 image:rhads-ai/local-lab/llama-stack-explore.png[Podman LLama Stack Explore]
 
-* Explore the *Llama Stack UI* and enter the example in the chat box: 
+* Explore the *Llama Stack UI* and enter the question, *"What is an AI agent"* in the chat box: 
 
 image:rhads-ai/local-lab/llama-stack-chat.png[LLama Stack UI]
 
 
 == Use the Podman AI Lab recipe to build a chatbot
-Podman AI Lab provides many recipes you can leverage as a starting point to build your own, explore AI tools, or learn about AI Lab.
+Podman AI Lab provides many recipes you can leverage as a starting point to build your own, explore AI tools, or learn about the AI Lab.
 
 
 image:rhads-ai/local-lab/anatomy-recipe.png[width=70%]
 
 
-* Go to the Podman AI Lab and click on *Recipe Catalogue*.
+* Go to the Podman AI Lab and click on *Recipe Catalog*.
 
 image:rhads-ai/local-lab/recipe-click.png[width=30%]
 
 
-* Explore the different recipes available *Recipe Catalogue* and select the *chatbot using LLama Stack* by clicking on *More Details*
+* Explore the different recipes available *Recipe Catalog* and select the *ChatBot using Llama Stack* by clicking on *More Details*
 
 image:rhads-ai/local-lab/podman-recipe-list.png[width=100%]
 
@@ -122,7 +122,12 @@ image:rhads-ai/local-lab/start-recipe.png[width=100%]
 
 image:rhads-ai/local-lab/podman-recipe-starting.png[width=100%]
 
-* Once the chatbot is ready to be used, click on the *Open AI App* icon.
+* Once the chatbot is ready to be used, click on *Open Details*
+
+image:rhads-ai/local-lab/chatbot-ready.png[width=90%]
+
+
+* Lets' explore the chatbot, click on the *Open AI App* icon.
 
 image:rhads-ai/local-lab/open-chatbot.png[width=90%]
 
@@ -141,7 +146,7 @@ image:rhads-ai/local-lab/ailab-running.png[width=40%]
 
 * Then, click on *Open Recipe*
 
-image:rhads-ai/local-lab/open-recipe.png[width=90%]
+image:rhads-ai/local-lab/chatbot-recipe.png[width=90%]
 
 * Take the time to review the *Summary* section
 

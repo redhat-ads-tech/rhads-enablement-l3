@@ -17,8 +17,8 @@ Learn more about link:https://www.redhat.com/en/products/ai[Red Hat AI,window='_
 
 
 === RHADS integrations with other tools
-Red Hat Advanced Developer Suite integrates with over 100 plugins, including many other integrations such as accessing Red Hat Dev Spaces from the component's overview.
-Next, we'll explore key integrations for building AI applications and models.
+Red Hat Advanced Developer Suite integrates with over 100 plugins, including many other integrations such as accessing Red Hat OpenShift Dev Spaces from the component's overview.
+Next, we'll explore key integrations for building AI applications and models including security best practices to build, deploy AI applications.
 
 === RHDH integration with OpenShift AI
 Red Hat Developer Hub can integrate with OpenShift AI through Software Templates. These can be created to facilitate the model development lifecycle and ensure best practices are in place, such as security and scalability. It can provision Notebooks, create Serving Runtimes, create an inference server, Pipeline configurations, and more. Additionally, from the component’s overview, AI Engineers can access many OpenShift AI features.
@@ -27,7 +27,7 @@ Red Hat Developer Hub can integrate with OpenShift AI through Software Templates
 
 [#other-devtools]
 == Other Developer tools
-=== Intro to Podman Desktop as part of the Developer tools
+=== Introduction to Podman Desktop as part of the Developer tools
 To build an AI application, developers must access their tools locally. Thanks to the *Podman AI Lab extension*, developers can leverage different models, try recipes, playgrounds, and more to learn, experiment, and develop AI applications.  
 
 === Podman AI Lab extension
@@ -46,7 +46,7 @@ Red Hat OpenShift Dev Spaces integrates with different extensions that allow Sof
 link:https://developers.redhat.com/articles/2024/08/12/integrate-private-ai-coding-assistant-ollama#the_devfile_and_how_it_works[Integrate a private AI coding assistant into your CDE using Ollama, Continue, and OpenShift Dev Spaces,window='_blank']
 
 
-== Intro to Llama Stack Operator
+== Introduction to Llama Stack Operator
 
 The Llama Stack Operator allows you to access LLama Stack functionalities on a Kubernetes cluster. In our case, in OpenShift. Team will be able to leverage LLama Stack to build their AI applications on OpenShift, simplifying the user experience and standardizing AI application development.
 
@@ -55,6 +55,12 @@ The Llama Stack is an community project responsible for creating and managing th
 === Including MCP integrations
 
 The Llama Stack Operator organizations can access many MCP servers through MCP clients.
+
+
+
+== References:
+
+* link: https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Building enterprise-ready AI agents: Streamlined development with Red Hat AI, window='_blank']
 
 
 
