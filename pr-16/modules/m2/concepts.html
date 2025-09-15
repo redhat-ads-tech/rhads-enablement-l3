@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Backstage Concepts :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m2/concepts.html">
+    <link rel="prev" href="introduction.html">
+    <link rel="next" href="setup-rhdh.html">
+    <meta name="generator" content="Antora 3.1.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="concepts.html">Backstage Concepts &amp; Features</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Backstage Concepts</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat Developer Hub, and internal developer portals in general, can be thought of as a modular system where you aggregate and display data related to the software within an organization.</p>
+</div>
+<div class="paragraph">
+<p>The core features of Red Hat Developer Hub are the:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Software Catalog and Entities</p>
+</li>
+<li>
+<p>Software Templates</p>
+</li>
+<li>
+<p>Plugins</p>
+</li>
+<li>
+<p>TechDocs</p>
+</li>
+<li>
+<p>Role-Based Access Control (RBAC)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each of these are discussed in detail below, or in a subsequent section of this module.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_software_catalog_and_entities"><a class="anchor" href="#_software_catalog_and_entities"></a>Software Catalog and Entities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Software Catalog is a centralized asset tracker for all of the software in an organization. It stores and tracks <strong>Entities</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Components: Units of software, e.g. microservices, websites, libraries.</p>
+</li>
+<li>
+<p>Resources: Databases, S3 buckets, brokers.</p>
+</li>
+<li>
+<p>APIs: Represent interfaces such as REST, gRPC, and GraphQL APIs.</p>
+</li>
+<li>
+<p>Systems: Collections of Components that make up an application or platform.</p>
+</li>
+<li>
+<p>Domains: A higher-level grouping of Systems and Entities.</p>
+</li>
+<li>
+<p>User: Individual users that are part of an organization.</p>
+</li>
+<li>
+<p>Group: Groups of Users.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Custom Entity types can be defined and added to the Software Catalog using plugins. We&#8217;ll talk more about on plugins in subsequent sections.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Entities are typically imported and synchronized in one of three ways:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Using plugins that automatically find and import them.</p>
+</li>
+<li>
+<p>Manually registering entities via the UI by providing a link to a repository containing them.</p>
+</li>
+<li>
+<p>Declaring them in the Backstage configuration.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In all cases, the Entities will be synchronized on a regular schedule to ensure the information in the Software Catalog remains up to date. You&#8217;ll utilize all three methods throughout this workshop.</p>
+</div>
+<div class="paragraph">
+<p>If Entity information is stored in a Git repository, the convention is to place them in a <strong>catalog-info.yaml</strong>. This file will look similar to the following example, albeit with changes relevant to the entity being described:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-amazing-microservice
+  description: A microservice written to do amazing things
+
+  # Annotations are typically used to provide extra context to plugins, e.g TechDocs
+  annotations:
+    # Tells the TechDocs plugin where to find documentation sources. In this case
+    # "dir:." means in the root of the repo containing this catalog-info.yaml
+    backstage.io/techdocs-ref: dir:.
+
+  # Arbitrary list of string that can be used to filter Entities in the Software Catalog
+  tags:
+    - docs
+
+spec:
+  type: Documentation
+  lifecycle: development
+
+  # Reference to the User or Group Entity that is responsible this Component
+  owner: "pe1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Users and Groups can be specified as owners of other Entities. If this seems abstract, don&#8217;t worry, you&#8217;ll see it in definitive terms shortly. A well curated Software Catalog enables developers to find API documentation, teams that are responsible for the Components powering those APIs, and even. view a rich dependency graph showing how various services interact with one another.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_plugins"><a class="anchor" href="#_plugins"></a>Plugins</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Backstage - and by extension Red Hat Developer Hub - supports the concept of plugins. Utilizing plugins is a critical part of enabling the desired functionality for an IDP based on Backstage. For example, plugins exist to integrate with and show data from Quay or GitHub directly in Backstage. Instead of including functionality like this directly in the core Backstage project, the plugins enable platform engineering teams to customize their Backstage deployment to include only the specific functionality they need.</p>
+</div>
+<div class="sect2">
+<h3 id="_why_a_plugin_architecture"><a class="anchor" href="#_why_a_plugin_architecture"></a>Why a Plugin Architecture?</h3>
+<div class="sect3">
+<h4 id="_modularity_and_extensibility"><a class="anchor" href="#_modularity_and_extensibility"></a>Modularity and Extensibility</h4>
+<div class="paragraph">
+<p>You can add or modify features without altering the core Backstage application. This modular approach makes it easier to extend functionality as needs evolve. Additionally, you can deploy the updates or new features independently of the main Backstage codebase, reducing the risks and efforts associated with maintaining and updating the platform.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_customization"><a class="anchor" href="#_customization"></a>Customization</h4>
+<div class="paragraph">
+<p>You can tailor Backstage to fit specific workflows and use cases, enhancing the overall user experience.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_faster_iteration"><a class="anchor" href="#_faster_iteration"></a>Faster Iteration</h4>
+<div class="paragraph">
+<p>You can create and test new features more rapidly as plugins, encouraging experimentation and enabling you to quickly iterate based on feedback.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_improved_collaboration"><a class="anchor" href="#_improved_collaboration"></a>Improved Collaboration</h4>
+<div class="paragraph">
+<p>You can share plugins across teams or even externally. This sharing can foster collaboration and reduce duplication of effort, as well as help establish best practices across an organization.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scalability"><a class="anchor" href="#_scalability"></a>Scalability</h4>
+<div class="paragraph">
+<p>As organizations grow, their needs become complex. Plugins enable Backstage to scale alongside such complex needs, accommodating an increasing number of users and services.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ecosystem_growth"><a class="anchor" href="#_ecosystem_growth"></a>Ecosystem Growth</h4>
+<div class="paragraph">
+<p>Fostering the development of plugins can create a dynamic ecosystem around Backstage. This community can contribute to plugins that cater to different needs, thereby enhancing the platform.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_security_and_compliance"><a class="anchor" href="#_security_and_compliance"></a>Security and Compliance</h4>
+<div class="paragraph">
+<p>You can develop plugins with specific security and compliance requirements in mind, ensuring that Backstage installations meet the necessary standards without compromising the core application.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plugins_with_upstream_backstage"><a class="anchor" href="#_plugins_with_upstream_backstage"></a>Plugins with Upstream Backstage</h3>
+<div class="paragraph">
+<p>Currently, running an instance of upstream Backstage and adding plugins requires a platform engineer to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create a Backstage project using Node.js and npm.</p>
+</li>
+<li>
+<p>Manage new releases and updates via Backstage CLI.</p>
+</li>
+<li>
+<p>Install plugin(s) from npm.</p>
+</li>
+<li>
+<p>Edit the Backstage React and Node.js source code to load plugins, and add customizations.</p>
+</li>
+<li>
+<p>Test their changes.</p>
+</li>
+<li>
+<p>Build a container image and deploy it.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This is a tedious and time consuming process that requires JavaScript expertise and an end-to-end SDLC for releasing your new version of Backstage</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dynamic_plugins_in_red_hat_developer_hub"><a class="anchor" href="#_dynamic_plugins_in_red_hat_developer_hub"></a>Dynamic Plugins in Red Hat Developer Hub</h3>
+<div class="paragraph">
+<p>The ability to load plugins dynamically is a value added feature included in Red Hat Developer Hub that&#8217;s currently unavailable in upstream Backstage - you can read more about it in the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/introduction_to_plugins/index#con-rhdh-plugins" target="content">Red Hat Developer Hub documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>The dynamic plugin support in Red Hat Developer Hub means that new plugins can be installed without the need to edit code and rebuild the Red Hat Developer Hub container image. For example, installing the <a href="https://backstage.io/docs/integrations/gitlab/discovery">GitLab plugin with upstream Backstage</a> requires adding a new dependency and editing your Backstage installation&#8217;s source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With Red Hat Developer Hub you can simply toggle plugins on or off, and they&#8217;re tested and guaranteed to be compatible with your version of Red Hat Developer Hub.</p>
+</div>
+<div class="paragraph">
+<p>Given the vast ecosystem of Backstage plugins, the Red Hat Developer Hub team needs to be selective about which specific plugins to package and support.</p>
+</div>
+<div class="paragraph">
+<p>Officially supported plugins and technology preview plugins (available but without support SLAs) can be seen found the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins">plugins documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll see dynamic plugins in action shortly.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_understanding_the_red_hat_developer_hub_configuration"><a class="anchor" href="#_understanding_the_red_hat_developer_hub_configuration"></a>Understanding the Red Hat Developer Hub Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Upstream Backstage uses an <a href="https://backstage.io/docs/conf/" target="content">app-config.yaml</a> file to define configuration values. Red Hat Developer Hub is no different.</p>
+</div>
+<div class="paragraph">
+<p>A simple Backstage configuration file looks similar to the following example. Top-level keys generally corresponds to a feature or plugin. The values provided for a given key specify the configuration for that plugin or Backstage feature.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Define authentication configuration (the "guest" example is for testing only)
+auth:
+  providers:
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
+
+# Static configuration for the Software Catalog. Can be used to import
+# entities on startup, and restrict the entity types that can be imported.
+catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, Template]
+  locations:
+    - type: file
+      target: https://github.com/org-name/repo-name/entities.yaml
+
+# A configuration for the TechDocs plugin. This example instructs the plugin to
+# build documentation at runtime, instead of pulling prebuilt HTML from S3
+techdocs:
+  builder: 'local'
+  publisher:
+    type: 'local'
+  generator:
+    runIn: local</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll be using the Red Hat Developer Hub operator to install and manage a Backstage instance - this means your <strong>app-config.yaml</strong> will be stored in a <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMap on OpenShift</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_software_templates"><a class="anchor" href="#_software_templates"></a>Software Templates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Software templates in Red Hat Developer Hub enable your team(s) to create Entities, such as new Components, and - through the use of "actions" provided by plugins - create resources in other systems such as your GitLab, GitHub, and OpenShift GitOps instances. Templates themselves are represented as Entities in the Software Catalog, meaning you can import them similar to any other Entity!</p>
+</div>
+<div class="paragraph">
+<p>Platform Engineers will often be the authors of Templates, and use them to create "golden paths" that follow best-practices and use approved processes and tooling. Development teams will be the consumers of Templates to create new software and automate their tasks. Using Templates reduces cognitive load on the development teams by allowing them to focus on development tasks, while platform concerns are addressed by the template.</p>
+</div>
+<div class="paragraph">
+<p>Templates are defined using YAML, but are rendered as a rich form in the Red Hat Developer Hub UI when used by development teams.</p>
+</div>
+<div class="sect2">
+<h3 id="_software_template_structure"><a class="anchor" href="#_software_template_structure"></a>Software Template Structure</h3>
+<div class="paragraph">
+<p>At a basic level, the Template Entity is similar to the Component Entity you encountered in the <strong>catalog-info.yaml</strong> in the prior module; resembling a Kubernetes Custom Resource.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: quarkus-web-template
+  title: Quarkus Service
+  description: Creates Quarkus microservice. Uses Tekton and Argo CD for CI/CD
+  tags:
+    - recommended
+    - java
+    - quarkus
+    - maven
+spec:
+  owner: tssc
+  type: service
+  # other fields removed for brevity</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where the Template Entity differs is that it contains additional fields in its <code>spec</code>. Let&#8217;s examine each in more detail:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>spec.parameters</code> (Parameters)</p>
+</li>
+<li>
+<p><code>spec.steps</code> (Steps)</p>
+</li>
+<li>
+<p><code>spec.output</code> (Output)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h3>
+<div class="paragraph">
+<p>The <em>spec.parameters</em> field is used by platform engineers to enable developers to pass values (parameters) to the Template. Typically this will be parameters such as the name of the Component, a Java package name, repository name, etc.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example of the parameters:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
+  parameters:
+    # Parameters can be spread across multiple forms/pages, each
+    # with unique titles and set of applicable parameters
+    - title: Provide Information for Application
+      required:
+        - component_id
+        - java_package_name
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          default: my-quarkus-app
+          ui:field: EntityNamePicker
+          ui:autofocus: true
+          maxLength: 18
+        group_id:
+          title: Group Id
+          type: string
+          default: com.redhat.rhdh
+          description: Maven Group Id</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You might have recognized this as a <a href="https://json-schema.org/">JSON Schema</a> structure. By using JSON Schema you can define the parameters that are supported by the template, and, more importantly, enforce validation on those parameters. The rendering of the form in the Red Hat Developer Hub UI is managed by the <a href="https://github.com/rjsf-team/react-jsonschema-form" target="content">react-jsonschema-form</a> library.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>react-jsonschema-form</code> is a set of React components for building web forms from JSON Schema. It is core to Backstage&#8217;s scaffolder plugin&#8217;s frontend functionality, i.e the Software Template form rendering. These React components are responsible for rendering the form in which developers and end users fill out data needed to use the Software Template.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The properties that have a <code>ui</code> prefix might have piqued your interest. These are special properties that provide instructions to the form, for example, to enable autocomplete or autofocus certain form fields when it is displayed in the Red Hat Developer Hub UI.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_steps"><a class="anchor" href="#_steps"></a>Steps</h3>
+<div class="paragraph">
+<p>Once a developer has entered and confirmed their parameters, the Template is executed by the scaffolder - a service within the Red Hat Developer Hub backend.</p>
+</div>
+<div class="paragraph">
+<p>The scaffolder executes the actions defined in <em>spec.steps</em>, for example, to publish code to a Git repository and register it in the Software Catalog:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
+  steps:
+  - id: publish
+    name: Publish
+    # Use the publish action provided by the GitLab plugin
+    action: publish:gitlab
+    input:
+      # Construct a URL to the repository using the provided hostname, logged in
+      # username, and provided component_id
+      repoUrl: "${{ parameters.repo.host }}?owner=${{ user.entity.metadata.name }}&amp;repo=${{parameters.component_id}}"
+      repoVisibility: public
+      defaultBranch: main
+      sourcePath: ./${{ user.entity.metadata.name }}-${{parameters.component_id}}
+  - id: register
+    name: Register
+    # Register a new component using the built-in register action
+    action: catalog:register
+    input:
+      repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+      catalogInfoPath: "/catalog-info.yaml"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice how the <code>parameters</code> are referenced and used in the <code>steps</code>? Another point of note is that a <code>user</code> variable is available to access data related to the user that&#8217;s using the Template, and subsequent <code>steps</code> can access <code>output</code> from prior steps.</p>
+</div>
+<div class="paragraph">
+<p>The <code>output</code> values are documented on a per plugin basis. You can find the values for the specific version of your installed plugins by accessing the <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}/create/actions">/create/actions</a> endpoint on your Red Hat Developer Hub instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_output"><a class="anchor" href="#_output"></a>Output</h3>
+<div class="paragraph">
+<p>The <em>spec.output</em> can use of the outputs from the <code>steps</code> to do display useful information such as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Links to newly created Components</p>
+</li>
+<li>
+<p>Source code repository links</p>
+</li>
+<li>
+<p>Links to Git Merge Requests that are needed etc</p>
+</li>
+<li>
+<p>Markdown text blobs</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">  output:
+    links:
+      - title: Source Code Repository
+        url: {{ '${{ steps.publish.output.remoteUrl }}' }}
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: {{ '${{ steps.register.output.entityRef }}' }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>That was a barrage of information, but it will serve you well in future sections and modules. Proceed to the next section to deploy your very own instance of Red Hat Developer Hub.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="introduction.html" class="query-params-link">Module 2: Install &amp; Administer</a></span>
+  <span class="next"><a href="setup-rhdh.html" class="query-params-link">Installation &amp; Base Configuration</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

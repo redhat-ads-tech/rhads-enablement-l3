@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Software Template Patterns for Self-service :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/self-service-patterns/self-service-patterns.html">
+    <link rel="prev" href="../tssc-3rdparty-ci.html">
+    <link rel="next" href="lab-intro-self-service-patterns.html">
+    <meta name="generator" content="Antora 3.1.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m2/introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/concepts.html">Backstage Concepts &amp; Features</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Software Template Patterns for Self-service</h1>
+<div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Software templates are the heart of Red Hat Developer Hub (RHDH). This section will explore leveraging software templates to enable self-service integration of third-party tools and platform capabilities.
+During this session, you will explore the different patterns and self-service approach to reduce cognitive load, scale operations, and promote best practices across the organization.</p>
+</div>
+<div class="paragraph">
+<p>For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems to self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing up databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team&#8217;s needs. Now, let&#8217;s explore the different architectures and designs for self-service.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops" target="_blank" rel="noopener">OpenShift GitOps</a></p>
+</li>
+<li>
+<p><a href="https://www.redhat.com/en/topics/devops/what-is-helm" target="_blank" rel="noopener">What is Helm</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="architecting-software-templates"><a class="anchor" href="#architecting-software-templates"></a>Architecting Software Templates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Architecting software templates is essential for implementing Platform Engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to advancing a successful self-service approach.</p>
+</div>
+<div class="paragraph">
+<p><strong>Let&#8217;s review the core structure of software templates:</strong></p>
+</div>
+<div class="sect3">
+<h4 id="_software_templates_structure"><a class="anchor" href="#_software_templates_structure"></a><strong>Software Templates Structure</strong></h4>
+<div class="paragraph">
+<p>The software templates' structure in folders and files will vary depending on the component&#8217;s type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each component.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_folder_for_skeleton"><a class="anchor" href="#_folder_for_skeleton"></a><strong>Folder for skeleton</strong></h4>
+<div class="paragraph">
+<p>This folder contains the application source code and catalog file, including the information to be displayed on the component&#8217;s UI in RHDH.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_folder_for_manifests"><a class="anchor" href="#_folder_for_manifests"></a><strong>Folder for manifests</strong></h4>
+<div class="paragraph">
+<p>This folder contains the application Kubernetes manifests and additional files that enable RHDH to build and deploy that component in a Kubernetes cluster.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_template_yaml"><a class="anchor" href="#_template_yaml"></a><strong>Template.yaml</strong></h4>
+<div class="paragraph">
+<p>The template yaml file defines how the component creation will interact with RHDH by defining the UI experience for the end-user, including fields, inputs, and workflow for the end user. Additionally, it describes the backend interactions and activities after the end user clicks on the create button, including creating repositories, creating GitOps objects, etc.</p>
+</div>
+<div class="paragraph">
+<p><strong>Template actions</strong></p>
+</div>
+<div class="paragraph">
+<p>The following actions can be used to define the steps and actions in the template.yaml representing the backend tasks required.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>fetch:template</strong>: Retrieves and processes template files</p>
+</li>
+<li>
+<p><strong>publish:github</strong>: Creates repositories in version control</p>
+</li>
+<li>
+<p><strong>register:catalog</strong>: Adds the new component to the service catalog</p>
+</li>
+<li>
+<p><strong>Custom actions</strong>: Organization-specific automation</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_mechanics_of_software_templates"><a class="anchor" href="#_the_mechanics_of_software_templates"></a>The mechanics of Software Templates</h3>
+<div class="paragraph">
+<p>We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm will use variables in the Helm Charts received from the RHDH UI to build the chart.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/self-service-patterns/software_templates_flow.jpg" alt="software templates flow">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="patterns"><a class="anchor" href="#patterns"></a>Patterns for third-party tools integrations using software templates for self-service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Different patterns can be created to accomplish business and technical needs according to your organization&#8217;s guidelines.
+As a Platform Architect, you want to identify these specific patterns and how they will be customized according to the Software Development Lifecycle.</p>
+</div>
+<div class="paragraph">
+<p>Here are some potential integrations that you will explore:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/self-service-patterns/pe_integrations.png" alt="pe integrations">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_patterns"><a class="anchor" href="#_building_patterns"></a>Building Patterns</h3>
+<div class="paragraph">
+<p>When building different patterns, it is critical to understand the main key points:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>The use case:</strong> What is the use case for this component? When and why should it be created, updated, or removed?</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Example:</strong> An in-memory database will be created only on the development environment for development purposes.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Who is the end-user?</strong> This is a key question to grant access to specific users and understand how much "power" and flexibility we will grant to end users, such as developers, data scientists, and AI engineers.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Example:</strong> In this case, the Java team will be the only ones creating this component. However, the legacy team wants to have read access.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>The technology required</strong> (database, VM): understanding which database and how this can be customized/configured. Mainly learning about basic vs custom configurations and how these configurations can fulfill the end-user needs. Which information will be filled out by the user, default values, which information is mandatory vs optional, and which data will be part of the manifests and not customized by the end-user.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Example:</strong> Many configurations could arise, from knowing the type of database, origin (vendor, community), version, and any specifics such as storage, etc.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Environments required for the components</strong>, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with the development environment. Additionally, understanding who and how the promotion to different environments will happen, and who will have access to read or update this process.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Example:</strong> If a component needs to be created in production, this could only be managed by the Platform Engineering team, yet visible to the development team.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s explore some potential configurations you will create during the hands-on lab, from building a database to namespace as a service or VM.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/self-service-patterns/database.png" alt="database">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/self-service-patterns/namespace_service.png" alt="namespace service">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/self-service-patterns/vm.png" alt="vm">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_virtual_machines_vm"><a class="anchor" href="#_building_virtual_machines_vm"></a>Building Virtual Machines (VM)</h3>
+<div class="paragraph">
+<p><strong>Defining the steps for the VM creation:</strong></p>
+</div>
+<div class="paragraph">
+<p>After the user clicks the <strong>Create button</strong>, a series of actions will happen that are all part of the VM&#8217;s creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub. These steps are customizable and will be defined on the <strong>template.yaml</strong> file as part of the Software templates.</p>
+</div>
+<div class="paragraph">
+<p><strong>Using OpenShift GitOps to create a VM</strong></p>
+</div>
+<div class="paragraph">
+<p>The OpenShift GitOps controller will ensure that the desired state defined on the project and application are applied into the cluster. The OpenShift Virtualization operator will ensure that the VMs are being created, pods are running, and the VNC Console is accessible.</p>
+</div>
+<div class="paragraph">
+<p><strong>Building VMs Helm charts</strong></p>
+</div>
+<div class="paragraph">
+<p>Below, we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).</p>
+</div>
+<div class="paragraph">
+<p><strong>Using VMs from instance types</strong></p>
+</div>
+<div class="paragraph">
+<p>You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM&#8217;s manifest. You can customize the Helm Charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types.</p>
+</div>
+<div class="paragraph">
+<p>Your Helm chart files can represent all the virtual machine definitions. For this use case, the Helm charts are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>_template/helpers.tpl: to hold the variables such as labels, annotations to be used on the manifest files.</p>
+</li>
+<li>
+<p>template/vm.yaml: kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.</p>
+</li>
+<li>
+<p>chart.yaml: Including the Chart&#8217;s definition, such as name and version.</p>
+</li>
+<li>
+<p>values.yaml: Variables coming from the template.yaml provided by RHDH.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Building the template.yaml file</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Step 1:</strong> Generating the source code component</p>
+</div>
+<div class="paragraph">
+<p>Developer Hub reads from the parameters coming from the UI and software templates definitions:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: fetch:template</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 2:</strong> Publishing to source code repository</p>
+</div>
+<div class="paragraph">
+<p>From there, it clones the repo with a new source code representing the VM source code. In this case, we only have one file, the catalog-info.yaml:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: publish:gitlab</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 3:</strong> Registering the source code component</p>
+</div>
+<div class="paragraph">
+<p>Using the catalog-info.yaml file, Developer Hub will register this component, making it available in the Developer Hub UI:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: catalog:register</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 4:</strong> Generating the deployment resources and artifacts</p>
+</div>
+<div class="paragraph">
+<p>Building the templates using the software templates defined in the manifest folder and reading from the template.yaml file to create the manifests in a new repository representing the values required to build the VM:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: fetch:template</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 5:</strong> Publishing to deployment resource repository</p>
+</div>
+<div class="paragraph">
+<p>Publish the templated source code into the GitLab repository:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: publish:gitlab</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 6:</strong> Create Argo CD resources</p>
+</div>
+<div class="paragraph">
+<p>Request Argo CD  to create a GitOps application based on the previous source repository published in the last step:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: argocd:create-resources</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h3>
+<div class="paragraph">
+<p>Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will benefit any organization. In the next labs, you will explore how to put this module into practice.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resources"><a class="anchor" href="#_resources"></a>Resources</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://developers.redhat.com/articles/2025/03/17/10-tips-better-backstage-software-templates" target="_blank" rel="noopener">10 tips for better Backstage Software Templates</a></p>
+</li>
+<li>
+<p><a href="https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how" target="_blank" rel="noopener">Building virtual machines with Red Hat Developer Hub: The what</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../tssc-3rdparty-ci.html" class="query-params-link">Module 13: Trusted Software Supply Chain with other CIs</a></span>
+  <span class="next"><a href="lab-intro-self-service-patterns.html" class="query-params-link">Hands-on Lab</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
