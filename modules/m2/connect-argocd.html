@@ -614,6 +614,51 @@ stringData:
 </div>
 </div>
 <div class="sect2">
+<h3 id="_create_a_namespace"><a class="anchor" href="#_create_a_namespace"></a>Create a Namespace</h3>
+<div class="paragraph">
+<p>In this section you&#8217;ll create an Argo CD Application. This Application will manage resources in a specific namespace. You&#8217;ll pre-create this namespace with a specific label that ensures the <strong>tssc-gitops</strong> Argo CD instance can manage resources inside that namespace. The OpenShift GitOps operator detects this label and updates the Argo CD permissions accordingly.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the OpenShift Web Console and ensure you&#8217;re logged in as the <strong>admin</strong> user.</p>
+</li>
+<li>
+<p>Click the plus icon in the top-right corner and select <strong>Import YAML</strong>.</p>
+</li>
+<li>
+<p>Paste the following to create the namespace:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: Namespace
+apiVersion: v1
+metadata:
+  name: httpsink
+  labels:
+    # Provide the tssc-gitops instance with permission to
+    # manage kubernetes resources in this namespace
+    argocd.argoproj.io/managed-by: tssc-gitops</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>Confirm the namespace is managed by <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters">viewing the clusters screen in Argo CD</a>, then selecting the <strong>in-cluster</strong> item.</p>
+</li>
+<li>
+<p>Your new <strong>httpsink</strong> namespace should be listed in the <strong>Namespaces</strong> field.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/argocd-cluster-details.png" alt="argocd cluster details">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_create_an_argo_cd_application"><a class="anchor" href="#_create_an_argo_cd_application"></a>Create an Argo CD Application</h3>
 <div class="paragraph">
 <p>Earlier, you logged into Argo CD and confirmed that no Applications existed; it&#8217;s time to create one.</p>
