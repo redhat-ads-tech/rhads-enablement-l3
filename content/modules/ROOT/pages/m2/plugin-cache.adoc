@@ -17,11 +17,17 @@ First, create a PersistentVolumeClaim that will store the cached plugin packages
 . Ensure the `{m2_rhdh_project}` project is selected.
 . Click the *Create PersistentVolumeClaim* button and select *With Form*.
 . Use the following settings:
-    * *StorageClass*: Use the default value 
-    * *Name*: `dynamic-plugins-root`
-    * *Access mode*: Single-user RWO
-    * *Size*: 5Gi
-    * *Volume mode*: Filesystem
++
+* *StorageClass*: Use the default value 
+* *Name*:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+dynamic-plugins-root
+----
+* *Access mode*: Single-user RWO
+* *Size*: 5Gi
+* *Volume mode*: Filesystem
 +
 image::setup-rhdh/plugin-cache-pvc.png[]
 . Click *Create* to create the PersistentVolumeClaim.
