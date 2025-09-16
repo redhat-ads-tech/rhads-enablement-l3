@@ -200,9 +200,32 @@ Recall that your environment has been pre-configured with a repository that cont
 Normally the *catalog-info.yaml* file will live alongside source code, or in a dedicated repository for catalog files. This module places it in the same repository as the deployment manifests for convenience.
 ====
 
-// TODO - remove GitHub refs once GitLab import is ready
-
 In this case you can see that the https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets/-/blob/main/discovery-example/catalog-info.yaml?ref_type=heads[*argocd/app-selector* annotation] is set on the Component. This tells the Argo CD plugin for {product_rhdh_name} to query the configured Argo CD instance for Applications with a label matching that selector.
+
+=== Create a Namespace
+
+In this section you'll create an Argo CD Application. This Application will manage resources in a specific namespace. You'll pre-create this namespace with a specific label that ensures the *tssc-gitops* Argo CD instance can manage resources inside that namespace. The OpenShift GitOps operator detects this label and updates the Argo CD permissions accordingly.
+
+. Visit the OpenShift Web Console and ensure you're logged in as the *admin* user.
+. Click the plus icon in the top-right corner and select *Import YAML*.
+. Paste the following to create the namespace:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: httpsink
+  labels:
+    # Provide the tssc-gitops instance with permission to
+    # manage kubernetes resources in this namespace
+    argocd.argoproj.io/managed-by: tssc-gitops
+----
+. Click *Create*.
+. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD], then selecting the *in-cluster* item.
+. Your new *httpsink* namespace should be listed in the *Namespaces* field.
++
+image::setup-rhdh/argocd-cluster-details.png[]
 
 === Create an Argo CD Application
 
@@ -259,7 +282,7 @@ First, perform a sanity check by viewing your new application in the Argo CD das
 image::setup-rhdh/argocd-application.png[]
 
 . Next, return to https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}[{product_rhdh_name}].
-. Login as:
+. Login as:./
     * Username: `{rhdh_user}`
     * Password: `{rhdh_user_password}`
 . Visit the *Catalog* by clicking the link on the left menu, ensure *Kind* is set to *Component* and search for `httpsink`.
