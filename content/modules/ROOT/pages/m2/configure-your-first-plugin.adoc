@@ -32,10 +32,10 @@ Your environment includes a preconfigured Keycloak instance with a `{keycloak_re
 
 Keycloak has been pre-deployed on your OpenShift cluster in the `tssc-keycloak` project. Accessing Keycloak requires its URL and admin password:
 
-. Visit the https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-keycloak/core~v1~Secret[Secrets screen in the tssc-keycloak] namespace.
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core~v1~Secret[Secrets screen in the tssc-keycloak] namespace.
 . Click the `keycloak-initial-admin` Secret to view it.
 . Copy the `password` value from the Secret.
-. View the https://sso.apps.{cluster_apps_domain}/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm] in Keycloak - login as *admin* using the password you copied from the Secret.
+. View the https://sso.apps.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm] in Keycloak - login as *admin* using the password you copied from the Secret.
 + 
 [NOTE]
 ====
@@ -55,13 +55,13 @@ Failure to set a valid redirect URL will result in login failures when you attem
 +
 [.wrap,source,role=execute,text,subs=attributes+]
 ----
-https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 ----
 . Add the following value to *Valid redirect URIs*:
 +
 [.wrap,source,role=execute,text,subs=attributes+]
 ----
-https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api/auth/oidc/handler/frame
+https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}/api/auth/oidc/handler/frame
 ----
 +
 [WARNING]
@@ -194,7 +194,7 @@ image::setup-rhdh/keycloak-secret.png[]
 |Key |Value
 
 |`KEYCLOAK_BASE_URL`
-|`\https://sso.{cluster_apps_domain}`
+|`\https://sso.{openshift_cluster_ingress_domain}`
 
 |`KEYCLOAK_LOGIN_REALM`
 |`{keycloak_realm_name}`
@@ -225,7 +225,7 @@ Update your *app-config.yaml* to include Keycloak integration:
 ----
 app:
   title: Red Hat Developer Hub
-  baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+  baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 
 signInPage: oidc
 auth:
@@ -241,9 +241,9 @@ auth:
         prompt: auto
 
 backend:
-  baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+  baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
   cors:
-    origin: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+    origin: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 
 catalog:
   providers:
@@ -311,7 +311,7 @@ image::setup-rhdh/keycloak-plugin-logs.png[]
 
 Next, verify the new OpenID Connect login flow is working:
 
-. Visit your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}[{product_rhdh_name} instance].
+. Visit your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}[{product_rhdh_name} instance].
 . You should now see an OIDC sign-in option.
 +
 image::setup-rhdh/rhdh-oidc-signin.png[]

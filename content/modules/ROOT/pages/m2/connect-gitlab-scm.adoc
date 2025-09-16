@@ -24,7 +24,7 @@ Configuring the integration requires:
 
 To facilitate secure communication between {product_rhdh_name} and the GitLab API, you need to generate an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token]:
 
-. Visit the https://gitlab-gitlab.{cluster_apps_domain}[GitLab instance] deployed in your environment.
+. Visit the https://gitlab-gitlab.{openshift_cluster_ingress_domain}[GitLab instance] deployed in your environment.
 +
 [NOTE]
 ====
@@ -64,7 +64,7 @@ metadata:
   namespace: setup-rhdh
 type: Opaque
 stringData:
-  GITLAB_HOST: gitlab-gitlab.{cluster_apps_domain}
+  GITLAB_HOST: gitlab-gitlab.{openshift_cluster_ingress_domain}
   GITLAB_TOKEN: YOUR_TOKEN
 ----
 +
@@ -82,7 +82,7 @@ Similar to the *{m2_keycloak_secret_name}* you created in the previous section, 
 
 Update your Backstage CR to include the GitLab secret:
 
-. Navigate to your https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and change to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and change to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]

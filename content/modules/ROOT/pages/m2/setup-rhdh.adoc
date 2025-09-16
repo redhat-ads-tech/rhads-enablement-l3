@@ -117,7 +117,7 @@ data:
   app-config.yaml: |
     app:
       title: Red Hat Developer Hub
-      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 
     # Enable guest sign-in without user validation. This configuration
     # is unsafe - only use it for testing when Developer Hub is not
@@ -127,15 +127,15 @@ data:
         guest:
           dangerouslyAllowOutsideDevelopment: true
     backend:
-      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
       cors:
-        origin: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
+        origin: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 ----
 . Click *Create* to create the ConfigMap containing your *app-config.yaml*.
 
 [NOTE]
 ====
-The URL referenced in the ConfigMap is determined by combining the Backstage CR name with "backstage" and the namespace name. For example, your namespace is `{m2_rhdh_project}` and the Backstage CR will be named `{m2_rhdh_instance}`, so the URL is https://{m2_rhdh_instance}-backstage-{m2_rhdh_project}.{cluster_apps_domain}.
+The URL referenced in the ConfigMap is determined by combining the Backstage CR name with "backstage" and the namespace name. For example, your namespace is `{m2_rhdh_project}` and the Backstage CR will be named `{m2_rhdh_instance}`, so the URL is https://{m2_rhdh_instance}-backstage-{m2_rhdh_project}.{openshift_cluster_ingress_domain}.
 ====
 
 === Deploy a {product_rhdh_name} Instance
