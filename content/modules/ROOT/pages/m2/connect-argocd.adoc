@@ -282,7 +282,7 @@ First, perform a sanity check by viewing your new application in the Argo CD das
 image::setup-rhdh/argocd-application.png[]
 
 . Next, return to https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}[{product_rhdh_name}].
-. Login as:./
+. Login as:
     * Username: `{rhdh_user}`
     * Password: `{rhdh_user_password}`
 . Visit the *Catalog* by clicking the link on the left menu, ensure *Kind* is set to *Component* and search for `httpsink`.
