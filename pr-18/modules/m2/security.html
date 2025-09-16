@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Configure Role-Based Access Control (RBAC) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m2/security.html">
+    <link rel="prev" href="connect-argocd.html">
+    <link rel="next" href="../setup-tpa.html">
+    <meta name="generator" content="Antora 3.1.12">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="security.html">Enable Role-Based Access Control</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Configure Role-Based Access Control (RBAC)</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Role-Based Access Control (RBAC) enables fine-grained permission management in Red Hat Developer Hub, allowing you to control user access to specific features, views, and catalog entities based on their roles, group, and other properties. This integration provides administrators with the ability to enforce security policies and ensure users only access resources appropriate for their roles.</p>
+</div>
+<div class="paragraph">
+<p>RBAC in Red Hat Developer Hub enables:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Control access to specific features and functionality, including plugin-provided capabilities</p>
+</li>
+<li>
+<p>Restrict access to particular views and interfaces within the developer portal</p>
+</li>
+<li>
+<p>Limit visibility to subsets of entities in the Software Catalog</p>
+</li>
+<li>
+<p>Define granular permissions for different user groups and individual users</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Configuring RBAC requires:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Enabling the permission plugin in your Red Hat Developer Hub configuration</p>
+</li>
+<li>
+<p>Designating RBAC administrators with policy management privileges</p>
+</li>
+<li>
+<p>Creating and configuring role-based policies for users and groups</p>
+</li>
+<li>
+<p>Testing and validating the policies</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_understanding_rbac_policies"><a class="anchor" href="#_understanding_rbac_policies"></a>Understanding RBAC Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RBAC rules in Red Hat Developer Hub are applied to both individual <strong>Users</strong> and <strong>Groups</strong>. The system follows a <strong>deny by default</strong> security policy, meaning that once RBAC is enabled, users will have no access to any resources unless explicitly granted through RBAC policies.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enabling RBAC will immediately restrict feature access for all users except designated administrators. In production scenarios, make sure to define your policies ahead of time using the declarative option or at a time that minimizes end-user impact.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>RBAC policies can be managed in two ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Through the UI</strong>: Designated administrators can create and manage policies using the Administration interface</p>
+</li>
+<li>
+<p><strong>Through configuration files</strong>: Policies can be defined using Casbin rules in CSV format and mounted as volumes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This exercise will initially utilize the UI-based approach so you can become familiar with RBAC concepts, then the configuration file approach will be used.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_enable_and_configure_the_permission_plugin"><a class="anchor" href="#_enable_and_configure_the_permission_plugin"></a>Enable and Configure the Permission Plugin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The permission plugin provides the RBAC functionality for Red Hat Developer Hub. You&#8217;ll need to add this plugin to your dynamic plugin configuration.</p>
+</div>
+<div class="sect2">
+<h3 id="_add_the_rbac_dynamic_plugin"><a class="anchor" href="#_add_the_rbac_dynamic_plugin"></a>Add the RBAC Dynamic Plugin</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> and select the <strong>dynamic-plugins-rhdh</strong> ConfigMap.</p>
+</li>
+<li>
+<p>Edit the ConfigMap to include the RBAC plugin in the <code>plugins</code> entry.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- package: ./dynamic-plugins/dist/backstage-community-plugin-rbac
+  disabled: false</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_the_rbac_plugin"><a class="anchor" href="#_configure_the_rbac_plugin"></a>Configure the RBAC Plugin</h3>
+<div class="paragraph">
+<p>To manage RBAC policies though the Red Hat Developer Hub UI, you must designate specific users as RBAC administrators. These users will have permission to create, modify, and delete access policies through the <strong>Administration &gt; RBAC</strong> view in the UI.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In your Red Hat Developer Hub <strong>rhdh-config</strong> ConfigMap, add the permission plugin settings to the <strong>app-config.yaml</strong>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">permission:
+  enabled: true
+  rbac:
+    admin:
+      users:
+        - name: user:default/admin</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In this exercise you&#8217;re using <code>user:default/admin</code> since this is the administrative user in the lab environment. Replace this with a valid user entity reference in real-world scenarios - you can view valid user entities in the Red Hat Developer Hub Software Catalog by filtering by <strong>Kind: User</strong>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Save the configuration changes and wait for the Red Hat Developer Hub instance to restart and apply the new configuration.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verify_rbac_is_enabled"><a class="anchor" href="#_verify_rbac_is_enabled"></a>Verify RBAC is Enabled</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once RBAC is enabled, you&#8217;ll verify that the deny-by-default policy is working correctly and that administrator access is properly configured.</p>
+</div>
+<div class="sect2">
+<h3 id="_verify_initial_access_restrictions"><a class="anchor" href="#_verify_initial_access_restrictions"></a>Verify Initial Access Restrictions</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to your Red Hat Developer Hub instance and log as <strong>user1</strong>.</p>
+</li>
+<li>
+<p>Observe that access is now restricted:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>No entities are visible in the Software Catalog</p>
+</li>
+<li>
+<p>Self-service templates are not accessible</p>
+</li>
+<li>
+<p>Entity import functionality is disabled</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This confirms that the deny-by-default policy is in effect. You can see that no entities are visible to <strong>user1</strong> in the following screenshot.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-deny-by-default.png" alt="security deny by default">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_confirm_administrator_access"><a class="anchor" href="#_confirm_administrator_access"></a>Confirm Administrator Access</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log out from Red Hat Developer Hub.</p>
+</li>
+<li>
+<p>Log in again, but as:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Select <strong>Catalog</strong> from the side menu.</p>
+</li>
+<li>
+<p>This <strong>admin</strong> user should have full access to entities in the Software Catalog, as shown.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-admin-catalog-access.png" alt="security admin catalog access">
+</div>
+</div>
+</li>
+<li>
+<p>Next, select <strong>Administration &gt; RBAC</strong> item in the side menu - the RBAC UI should be displayed.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-rbac-view-admin.png" alt="security rbac view admin">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now that you&#8217;ve confirmed RBAC is enabled, and that the <strong>admin</strong> user can access the RBAC administration view, it&#8217;s time to manage RBAC policies.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_rbac_policies"><a class="anchor" href="#_create_rbac_policies"></a>Create RBAC Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With RBAC enabled and administrator access confirmed, you can now create policies to grant appropriate access to users and groups.</p>
+</div>
+<div class="sect2">
+<h3 id="_access_the_rbac_management_interface"><a class="anchor" href="#_access_the_rbac_management_interface"></a>Access the RBAC Management Interface</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>While logged in as an administrator, navigate to <strong>Administration &gt; RBAC</strong> in the Red Hat Developer Hub interface.</p>
+</li>
+<li>
+<p>This interface displays existing policies and provides options to create, modify, and delete access policies.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-rbac-view-admin.png" alt="security rbac view admin">
+</div>
+</div>
+</li>
+<li>
+<p>Click the pre-existing <strong>rbac_admin</strong> policy and confirm that your <strong>admin</strong> user is a member.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_a_group_based_access_policy"><a class="anchor" href="#_create_a_group_based_access_policy"></a>Create a Group-Based Access Policy</h3>
+<div class="paragraph">
+<p>You&#8217;ll create a policy that grants basic catalog viewing permissions to users in the <code>tssc</code> group. Recall that the <strong>Group</strong> entities in your Software Catalog have been synchronized from Keycloak.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click <strong>Create</strong> to start creating a new policy.</p>
+</li>
+<li>
+<p>Configure the policy with the following settings:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Policy Name</strong>: <code>tssc-catalog-view</code></p>
+</li>
+<li>
+<p><strong>Description</strong>: <code>Grants basic catalog viewing permissions to TSSC group members</code></p>
+</li>
+<li>
+<p><strong>Owner</strong>: Empty</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-rbac-policy-name-desc.png" alt="security rbac policy name desc">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can verify that the <code>tssc</code> group exists by navigating to the Software Catalog and filtering by <strong>Kind: Group</strong>. Group entity references follow the format <code>group:[namespace]/[group-name]</code>, e.g <code>group:default/tssc</code>. The <strong>tssc</strong> group has one member: <strong>user1</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-tssc-group.png" alt="security tssc group">
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Select the <code>tssc</code> group to apply this policy to.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-rbac-policy-group.png" alt="security rbac policy group">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Next</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_policy_permissions"><a class="anchor" href="#_configure_policy_permissions"></a>Configure Policy Permissions</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the <strong>Add permission policies</strong>, select the <strong>Catalog</strong> plugin.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-rbac-policy-plugins.png" alt="security rbac policy plugins">
+</div>
+</div>
+</li>
+<li>
+<p>Expand</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>catalog.entity.read</code> - Allows reading catalog entities</p>
+</li>
+<li>
+<p><code>catalog.entity.refresh</code> - Allows refreshing entity data</p>
+</li>
+<li>
+<p><code>catalog.location.read</code> - Allows reading location information</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Confirm that your selections match the following screenshot.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-rbac-policy-plugin-settings.png" alt="security rbac policy plugin settings">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Next</strong> to review your new policy.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-rbac-policy-review.png" alt="security rbac policy review">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Create</strong> to save the policy.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Nice work! You created your first RBAC policy - time to validate it&#8217;s working as intended.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validate_policy_implementation"><a class="anchor" href="#_validate_policy_implementation"></a>Validate Policy Implementation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Test the newly created policy to ensure it grants the expected access while maintaining appropriate restrictions.</p>
+</div>
+<div class="sect2">
+<h3 id="_test_group_member_access"><a class="anchor" href="#_test_group_member_access"></a>Test Group Member Access</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log out from the <strong>admin</strong> account.</p>
+</li>
+<li>
+<p>Log in as a user who is a member of the <code>tssc</code> group (such as <strong>user1</strong>).</p>
+</li>
+<li>
+<p>Visit the Software Catalog to confirm that entities are visible.</p>
+</li>
+<li>
+<p>Select the <strong>HTTP Sink Application</strong> to confirm <strong>user1</strong> can view it.</p>
+</li>
+<li>
+<p>Navigate to the <strong>CD</strong> tab - you should notice a permission error.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-restricted-user1.png" alt="security restricted user1">
+</div>
+</div>
+</li>
+<li>
+<p>Additionally, click the three dots in the top-right to confirm you cannot click the <strong>Unregister entity</strong> action.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You just witnessed RBAC in action. Access to Argo CD information is restricted separate to the entities themselves, enabling fine-grained access control.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The user cannot access the <strong>CD</strong> tab (this requires separate continuous delivery permissions)</p>
+</li>
+<li>
+<p>The user cannot unregister or delete entities</p>
+</li>
+<li>
+<p>The user cannot import new entities or create new locations</p>
+</li>
+<li>
+<p>Administrative functions remain inaccessible</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Different Red Hat Developer Hub features and plugins require specific permissions. You&#8217;ll need to create additional policies to grant access to features like continuous delivery views, template creation, or entity management as needed for your organization.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_casbin_files_for_rbac_management"><a class="anchor" href="#_using_casbin_files_for_rbac_management"></a>Using Casbin Files for RBAC Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment approach are all good reasons to consider using a configuration as code approach for managing RBAC policies. Red Hat Developer Hub supports a policy-as-code approach for RBAC via <a href="https://casbin.org/docs/policy-storage/">Casbin files</a>.</p>
+</div>
+<div class="paragraph">
+<p>In this section you&#8217;ll learn how to define policies using Casbin and load them into Red Hat Developer Hub.</p>
+</div>
+<div class="sect2">
+<h3 id="_create_a_casbin_rules_configmap"><a class="anchor" href="#_create_a_casbin_rules_configmap"></a>Create a Casbin Rules ConfigMap</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login to the OpenShift Web Console.</p>
+</li>
+<li>
+<p>Ensure the <strong>setup-rhdh</strong> is selected in the project selector.</p>
+</li>
+<li>
+<p>Expand <strong>Workloads &gt;ConfigMaps</strong> and click <strong>Create ConfigMap</strong>.</p>
+</li>
+<li>
+<p>Set the <strong>Name</strong> to <code>rbac-policies</code>.</p>
+</li>
+<li>
+<p>Set the <strong>Key</strong> to <code>rbac-policies.csv</code>.</p>
+</li>
+<li>
+<p>Enter the following value in the text field:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-csv hljs" data-lang="csv">p, role:default/location_read, catalog.entity.read, read, allow
+p, role:default/location_read, catalog.location.read, read, allow
+
+p, role:default/platformengineer, catalog.entity.create, create, allow
+p, role:default/platformengineer, catalog.entity.refresh, update, allow
+p, role:default/platformengineer, catalog.entity.delete, delete, allow
+p, role:default/platformengineer, catalog.location.create, create, allow
+p, role:default/platformengineer, catalog.location.delete, delete, allow
+
+p, role:default/scaffolder_execute, scaffolder.action.execute, use, allow
+p, role:default/scaffolder_execute, scaffolder.template.parameter.read, read, allow
+p, role:default/scaffolder_execute, scaffolder.template.step.read, read, allow
+p, role:default/scaffolder_execute, scaffolder.task.create, create, allow
+p, role:default/scaffolder_execute, scaffolder.task.cancel, use, allow
+p, role:default/scaffolder_execute, scaffolder.task.read, read, allow
+p, role:default/scaffolder_execute, catalog.location.create, create, allow
+
+p, role:default/plugins, topology.view.read, read, allow
+p, role:default/plugins, tekton.view.read, read, allow
+p, role:default/plugins, argocd.view.read, read, allow
+p, role:default/plugins, kubernetes.proxy, use, allow
+
+g, user:default/admin, role:default/location_read
+g, user:default/admin, role:default/platformengineer
+g, user:default/admin, role:default/scaffolder_execute
+g, user:default/admin, role:default/plugins
+
+g, group:default/tssc, role:default/location_read
+g, group:default/tssc, role:default/scaffolder_execute
+g, group:default/tssc, role:default/plugins</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Scroll down and click <strong>Create</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You created a ConfigMap named <strong>rbac-policies</strong> that contains a file named <strong>rbac-policies.csv</strong>. The Casbin rules create numerous policies that apply to specific roles. For example, the following block creates a role named <strong>location_read</strong> that enables assigned groups and users to read general catalog entities and locations entities:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-csv hljs" data-lang="csv">p, role:default/location_read, catalog.entity.read, read, allow
+p, role:default/location_read, catalog.location.read, read, allow</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This role is later assigned to groups (the <strong>tssc</strong> group) and users (the <strong>admin</strong> user):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-csv hljs" data-lang="csv">g, user:default/admin, role:default/location_read
+g, group:default/tssc, role:default/location_read</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_update_red_hat_developer_hub_rbac_configurations"><a class="anchor" href="#_update_red_hat_developer_hub_rbac_configurations"></a>Update Red Hat Developer Hub RBAC Configurations</h3>
+<div class="paragraph">
+<p>To actually use your new RBAC policies you&#8217;ll need to load the ConfigMap into the Red Hat Developer Hub pod, and update the <code>permissions</code> block in the <strong>app-config.yaml</strong> to use it.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> in the <strong>setup-rhdh</strong> project.</p>
+</li>
+<li>
+<p>Select the <strong>rhdh-config</strong> ConfigMap.</p>
+</li>
+<li>
+<p>Choose <strong>Actions &gt; Edit ConfigMap</strong> and select the YAML editor.</p>
+</li>
+<li>
+<p>Update the <code>permissions</code> section to include a <code>policies-csv-file</code> key that reads the loaded <code>rbac-policies.csv</code>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">permission:
+  enabled: true
+  rbac:
+    policies-csv-file: /opt/app-root/src/rbac-policies.csv
+    admin:
+      users:
+        - name: user:default/admin</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Next, update the Backstage CR to load the new ConfigMap:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select <strong>Home &gt; Search</strong> in the OpenShift Web Console.</p>
+</li>
+<li>
+<p>Ensure the <strong>setup-rhdh</strong> is selected in the project selector.</p>
+</li>
+<li>
+<p>Use the search box to find the <code>Backstage</code> CR.</p>
+</li>
+<li>
+<p>Select the <strong>rhdh</strong> entry in the <strong>Backstages</strong> list.</p>
+</li>
+<li>
+<p>Switch to the YAML view and add the <strong>rbac-policies</strong> ConfigMap to the <code>spec.application.extraFiles</code> section.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">application:
+  extraFiles:
+    mountPath: /opt/app-root/src
+    configMaps:
+      - name: rbac-policies</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-casbin-cr.png" alt="security casbin cr">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+<li>
+<p>Navigate to <strong>Workloads &gt; Pods</strong> in the OpenShift Web Console and wait for the new Red Hat Developer Hub pod to report readiness.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_verify_the_casbin_based_policies"><a class="anchor" href="#_verify_the_casbin_based_policies"></a>Verify the Casbin-based Policies</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login to Red Hat Developer Hub as the <strong>admin</strong> user.</p>
+</li>
+<li>
+<p>Visit the <strong>Administration &gt; RBAC</strong> screen.</p>
+</li>
+<li>
+<p>Your new roles should be listed, and reflect the values in the ConfigMap.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-casbin-roles-list.png" alt="security casbin roles list">
+</div>
+</div>
+</li>
+<li>
+<p>Click on the <code>location_read</code> policy and confirm that the <strong>Modified by</strong> column states that it&#8217;s managed by the policy file.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/security-casbin-role.png" alt="security casbin role">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You&#8217;re now equipped to apply RBAC policies to Red Hat Developer Hub instances. This is a critical capability for organizations to ensure only designated individuals can make changes to their internal developer portal, and developers only see what&#8217;s relevant to their team and role.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="connect-argocd.html" class="query-params-link">Argo CD Integration</a></span>
+  <span class="next"><a href="../setup-tpa.html" class="query-params-link">Module 3: Setup TPA</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
