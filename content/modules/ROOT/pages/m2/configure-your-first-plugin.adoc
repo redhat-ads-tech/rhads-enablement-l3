@@ -53,13 +53,13 @@ Failure to set a valid redirect URL will result in login failures when you attem
 
 . Add the following value to *Web origins*
 +
-[.wrap,source,role=execute,text]
+[.wrap,source,role=execute,text,subs=attributes+]
 ----
 https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}
 ----
 . Add the following value to *Valid redirect URIs*:
 +
-[.wrap,source,role=execute,text]
+[.wrap,source,role=execute,text,subs=attributes+]
 ----
 https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api/auth/oidc/handler/frame
 ----
@@ -231,12 +231,12 @@ signInPage: oidc
 auth:
   environment: production
   session:
-    secret: ${BACKEND_SECRET}
+    secret: replace-with-a-random-value
   providers:
     oidc:
       production:
         metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
-        clientId: $\{KEYCLOAK_CLIENT_ID}
+        clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         prompt: auto
 
