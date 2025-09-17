@@ -249,7 +249,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Generating an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/">access token</a> in GitLab.</p>
+<p>Generating an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" target="_blank" rel="noopener">access token</a> in GitLab.</p>
 </li>
 <li>
 <p>Creating a Secret to store the access token, and loading it into the Red Hat Developer Hub pod.</p>
@@ -270,12 +270,12 @@
 <div class="sect2">
 <h3 id="_create_the_gitlab_token"><a class="anchor" href="#_create_the_gitlab_token"></a>Create the GitLab Token</h3>
 <div class="paragraph">
-<p>To facilitate secure communication between Red Hat Developer Hub and the GitLab API, you need to generate an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/">access token</a>:</p>
+<p>To facilitate secure communication between Red Hat Developer Hub and the GitLab API, you need to generate an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" target="_blank" rel="noopener">access token</a>:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}">GitLab instance</a> deployed in your environment.</p>
+<p>Visit the <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}" target="_blank" rel="noopener">GitLab instance</a> deployed in your environment.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -417,7 +417,7 @@ stringData:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>gitlab-secrets</strong> Secret you created:</p>
@@ -595,7 +595,7 @@ stringData:
 </ol>
 </div>
 <div class="paragraph">
-<p>The system automatically discovers and imports <code>catalog-info.yaml</code> files from repositories in the configured GitLab group, so long as they match the <a href="https://backstage.io/docs/integrations/gitlab/discovery/#configuration">specified search parameters</a>.</p>
+<p>The system automatically discovers and imports <code>catalog-info.yaml</code> files from repositories in the configured GitLab group, so long as they match the <a href="https://backstage.io/docs/integrations/gitlab/discovery/#configuration" target="_blank" rel="noopener">specified search parameters</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>

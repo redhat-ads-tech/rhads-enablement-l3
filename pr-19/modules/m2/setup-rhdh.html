@@ -218,7 +218,7 @@
 <p>This guide follows an Operator-based installation method for Red Hat Developer Hub. A Helm-based installation option is also available, but is outside the scope of this module.</p>
 </div>
 <div class="paragraph">
-<p>Refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/">latest Red Hat Developer Hub documentation</a> for up-to-date installation requirements.</p>
+<p>Refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/" target="_blank" rel="noopener">latest Red Hat Developer Hub documentation</a> for up-to-date installation requirements.</p>
 </div>
 <div class="paragraph">
 <p>For Red Hat Developer Hub version 1.6, the following hardware resources are recommended:</p>
@@ -237,7 +237,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>OpenShift versions 4.16 through 4.19 are supported. Visit the <a href="https://access.redhat.com/support/policy/updates/developerhub">Red Hat Developer Hub Life Cycle page</a> for the latest information.</p>
+<p>OpenShift versions 4.16 through 4.19 are supported. Visit the <a href="https://access.redhat.com/support/policy/updates/developerhub" target="_blank" rel="noopener">Red Hat Developer Hub Life Cycle page</a> for the latest information.</p>
 </div>
 </div>
 </div>
@@ -306,7 +306,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Ensure <strong>All projects</strong> is selected in the <strong>Project</strong> selector - <a href="https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/">cluster-scoped</a> operators will be listed.</p>
+<p>Ensure <strong>All projects</strong> is selected in the <strong>Project</strong> selector - <a href="https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/" target="_blank" rel="noopener">cluster-scoped</a> operators will be listed.</p>
 </li>
 <li>
 <p>Select <strong>Red Hat Developer Hub</strong> from the listed operators.</p>
@@ -341,7 +341,7 @@
 <div class="sect2">
 <h3 id="_the_backstage_custom_resource"><a class="anchor" href="#_the_backstage_custom_resource"></a>The Backstage Custom Resource</h3>
 <div class="paragraph">
-<p>The Red Hat Developer Hub Operator provides a Backstage <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resource Definition (CRD)</a> for Kubernetes. This CRD is used to provision new instances of Red Hat Developer Hub on OpenShift clusters.</p>
+<p>The Red Hat Developer Hub Operator provides a Backstage <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/" target="_blank" rel="noopener">Custom Resource Definition (CRD)</a> for Kubernetes. This CRD is used to provision new instances of Red Hat Developer Hub on OpenShift clusters.</p>
 </div>
 <div class="paragraph">
 <p>A minimal Backstage CR resembles the following YAML:</p>
@@ -414,7 +414,7 @@ spec:
 <div class="sect2">
 <h3 id="_defining_a_backstage_configuration"><a class="anchor" href="#_defining_a_backstage_configuration"></a>Defining a Backstage Configuration</h3>
 <div class="paragraph">
-<p>As mentioned earlier, Red Hat Developer Hub is based on the Backstage CNCF project. Backstage requires an <a href="https://backstage.io/docs/conf/">app-config.yaml</a> to define its configuration. The <strong>app-config.yaml</strong> can be mounted as a <a href="https://kubernetes.io/docs/concepts/storage/volumes/">volume</a> in Backstage Pods that are created by the Red Hat Developer Hub Operator.</p>
+<p>As mentioned earlier, Red Hat Developer Hub is based on the Backstage CNCF project. Backstage requires an <a href="https://backstage.io/docs/conf/" target="_blank" rel="noopener">app-config.yaml</a> to define its configuration. The <strong>app-config.yaml</strong> can be mounted as a <a href="https://kubernetes.io/docs/concepts/storage/volumes/" target="_blank" rel="noopener">volume</a> in Backstage Pods that are created by the Red Hat Developer Hub Operator.</p>
 </div>
 <div class="paragraph">
 <p>In this section you&#8217;ll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the <code>setup-rhdh</code> namespace.</p>
@@ -537,7 +537,7 @@ spec:
 <div class="sect2">
 <h3 id="_visit_your_red_hat_developer_hub_instance"><a class="anchor" href="#_visit_your_red_hat_developer_hub_instance"></a>Visit your Red Hat Developer Hub Instance</h3>
 <div class="paragraph">
-<p>You can access your instance of Red Hat Developer Hub using a <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking">Route</a> that was created by the Operator.</p>
+<p>You can access your instance of Red Hat Developer Hub using a <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking" target="_blank" rel="noopener">Route</a> that was created by the Operator.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">

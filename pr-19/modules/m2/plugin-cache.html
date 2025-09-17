@@ -214,7 +214,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>You might have noticed that the <strong>install-dynamic-plugins</strong> container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your Red Hat Developer Hub deployment by storing plugin packages in a <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">persistent volume</a>. This provides several benefits:</p>
+<p>You might have noticed that the <strong>install-dynamic-plugins</strong> container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your Red Hat Developer Hub deployment by storing plugin packages in a <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank" rel="noopener">persistent volume</a>. This provides several benefits:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -356,7 +356,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The <code>$patch: replace</code> directive tells the operator to replace the existing <code>dynamic-plugins-root</code> volume (which is an <a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir">emptyDir</a> by default) with a PersistentVolumeClaim-backed volume. This ensures that plugin cache data persists across pod restarts.</p>
+<p>The <code>$patch: replace</code> directive tells the operator to replace the existing <code>dynamic-plugins-root</code> volume (which is an <a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir" target="_blank" rel="noopener">emptyDir</a> by default) with a PersistentVolumeClaim-backed volume. This ensures that plugin cache data persists across pod restarts.</p>
 </div>
 </td>
 </tr>
