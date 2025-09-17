@@ -407,7 +407,7 @@ So before deploying the workflow itself, we need to import the software template
 <p>Click <strong>Import</strong> when prompted.</p>
 </li>
 <li>
-<p>Select the <span class="image"><img src="_images/orchestrator-overview/plus-icon.png" alt="plus icon" width="15px"></span> icon on the top navigation barto see the new templates.</p>
+<p>Select the <span class="image"><img src="_images/orchestrator-overview/plus-icon.png" alt="plus icon" width="15px"></span> icon on the top navigation bar to see the new templates.</p>
 <div class="paragraph">
 <p><span class="image"><img src="_images/orchestrator-overview/rhdh-developer-self-service-templates.png" alt="Developer Self Service Software Templates"></span></p>
 </div>
@@ -466,13 +466,13 @@ roleEntityRef: role:default/location_read_developer</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This rule states that users with the role <code>default/location_read_developer</code> can see all catalog entities, except those with an annotation <code>backstage.io/managed-by</code> and value <code>orchestrator</code>. The <code>developers</code> group (to which the <code>dev1</code> user belongs) has the role <code>default/location_read_developer</code> as can be seen in the <code>rbac-policy.csv</code> file in the Configmap.</p>
+<p>This rule states that users with the role <code>default/location_read_developer</code> can see all catalog entities, except those with an annotation <code>backstage.io/managed-by</code> and value <code>orchestrator</code>. The <code>developers</code> group (to which the <code>dev1</code> user belongs) has the role <code>default/location_read_developer</code> as can be seen in the <code>rbac-policy.csv</code> file in the ConfigMap.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_deploy_the_serverless_workflow"><a class="anchor" href="#_deploy_the_serverless_workflow"></a>Deploy the Serverless Workflow</h3>
 <div class="paragraph">
-<p>A Serverless Worflow is deployed through a <code>SonataFlow</code> Custom Resource. As with the other deployments in this workshop, we use GitOps and ArgoCD to deploy the Serverless Workflow.</p>
+<p>A Serverless Workflow is deployed through a <code>SonataFlow</code> Custom Resource. As with the other deployments in this workshop, we use GitOps and ArgoCD to deploy the Serverless Workflow.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -689,7 +689,7 @@ roleEntityRef: role:default/location_read_developer</pre>
 </div>
 </li>
 <li>
-<p>GitLab is not a ticketing system. To mimic the behaviour of a ticketing system, we use labels on the issue to mark the request as approved or denied.</p>
+<p>GitLab is not a ticketing system. To mimic the behavior of a ticketing system, we use labels on the issue to mark the request as approved or denied.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
