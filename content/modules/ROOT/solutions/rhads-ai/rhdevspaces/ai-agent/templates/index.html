@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Research Agent</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; background-color: #f4f4f9; }
+        h1 { color: #333; }
+        textarea { width: 100%; height: 100px; margin-bottom: 1em; }
+        input[type="submit"] { background-color: #007bff; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        .result { margin-top: 2em; padding: 1em; background-color: white; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Web Research Agent 🤖</h1>
+    <form action="/ask" method="post">
+        <label for="prompt">Enter your research question:</label><br>
+        <textarea id="prompt" name="prompt" required></textarea><br>
+        <input type="submit" value="Ask Agent">
+    </form>
+
+    {% if prompt and result %}
+    <div class="result">
+        <h2>Question:</h2>
+        <p>{{ prompt }}</p>
+        <h2>Answer:</h2>
+        <pre><code>{{ result }}</code></pre>
+    </div>
+    {% endif %}
+</body>
+</html>
