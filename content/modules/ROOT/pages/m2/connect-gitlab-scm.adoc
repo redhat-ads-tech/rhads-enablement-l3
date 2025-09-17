@@ -13,7 +13,7 @@ The GitLab plugin enables {product_rhdh_name} to integrate with GitLab to enable
 
 Configuring the integration requires:
 
-. Generating an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token] in GitLab.
+. Generating an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token^] in GitLab.
 . Creating a Secret to store the access token, and loading it into the {product_rhdh_name} pod.
 . Adding the access token and GitLab hostname to the `integrations` section of {product_rhdh_name}'s *app-config.yaml*.
 . Registering a new `gitlab` provider in `catalog.providers` in the *app-config.yaml*.
@@ -22,9 +22,9 @@ Configuring the integration requires:
 
 === Create the GitLab Token
 
-To facilitate secure communication between {product_rhdh_name} and the GitLab API, you need to generate an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token]:
+To facilitate secure communication between {product_rhdh_name} and the GitLab API, you need to generate an https://docs.gitlab.com/user/profile/personal_access_tokens/[access token^]:
 
-. Visit the https://gitlab-gitlab.{openshift_cluster_ingress_domain}[GitLab instance] deployed in your environment.
+. Visit the https://gitlab-gitlab.{openshift_cluster_ingress_domain}[GitLab instance^] deployed in your environment.
 +
 [NOTE]
 ====
@@ -82,7 +82,7 @@ Similar to the *{m2_keycloak_secret_name}* you created in the previous section, 
 
 Update your Backstage CR to include the GitLab secret:
 
-. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and change to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and change to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -180,7 +180,7 @@ image::setup-rhdh/gitlab-component-httpsink.png[]
 image::setup-rhdh/gitlab-api-httpsink.png[]
 . Return to the *Overview* tab and click *View Source*. You'll see the *catalog-info.yaml* and *opeanapi.yaml* that the GitLab plugin discovered to generate these entities.
 
-The system automatically discovers and imports `catalog-info.yaml` files from repositories in the configured GitLab group, so long as they match the https://backstage.io/docs/integrations/gitlab/discovery/#configuration[specified search parameters].
+The system automatically discovers and imports `catalog-info.yaml` files from repositories in the configured GitLab group, so long as they match the https://backstage.io/docs/integrations/gitlab/discovery/#configuration[specified search parameters^].
 
 [NOTE]
 ====

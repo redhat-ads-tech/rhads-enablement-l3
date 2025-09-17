@@ -5,7 +5,7 @@
 
 This guide follows an Operator-based installation method for {product_rhdh_name}. A Helm-based installation option is also available, but is outside the scope of this module.
 
-Refer to the https://docs.redhat.com/en/documentation/red_hat_developer_hub/[latest {product_rhdh_name} documentation] for up-to-date installation requirements.
+Refer to the https://docs.redhat.com/en/documentation/red_hat_developer_hub/[latest {product_rhdh_name} documentation^] for up-to-date installation requirements.
 
 For {product_rhdh_name} version {product_rhdh_version}, the following hardware resources are recommended:
 
@@ -13,7 +13,7 @@ For {product_rhdh_name} version {product_rhdh_version}, the following hardware r
 * 26 GiB Memory
 * 23 GiB Storage
 
-OpenShift versions 4.16 through 4.19 are supported. Visit the https://access.redhat.com/support/policy/updates/developerhub[{product_rhdh_name} Life Cycle page] for the latest information.
+OpenShift versions 4.16 through 4.19 are supported. Visit the https://access.redhat.com/support/policy/updates/developerhub[{product_rhdh_name} Life Cycle page^] for the latest information.
 
 == Operator Install & Verification
 
@@ -40,7 +40,7 @@ You're now viewing the operators that have been preinstalled in your environment
 
 === Confirm {product_rhdh_name} Operator is Installed
 
-. Ensure *All projects* is selected in the *Project* selector - https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/[cluster-scoped] operators will be listed.
+. Ensure *All projects* is selected in the *Project* selector - https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/[cluster-scoped^] operators will be listed.
 . Select *{product_rhdh_name}* from the listed operators.
 +
 image::setup-rhdh/view-operator.png[]
@@ -54,7 +54,7 @@ Contact a lab administrator if the {product_rhdh_name} Operator is not listed.
 
 === The Backstage Custom Resource
 
-The {product_rhdh_name} Operator provides a Backstage https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resource Definition (CRD)] for Kubernetes. This CRD is used to provision new instances of {product_rhdh_name} on OpenShift clusters.
+The {product_rhdh_name} Operator provides a Backstage https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resource Definition (CRD)^] for Kubernetes. This CRD is used to provision new instances of {product_rhdh_name} on OpenShift clusters.
 
 A minimal Backstage CR resembles the following YAML:
 
@@ -95,7 +95,7 @@ You'll use this project throughout this module - it's essential that you use the
 
 === Defining a Backstage Configuration
 
-As mentioned earlier, {product_rhdh_name} is based on the Backstage CNCF project. Backstage requires an https://backstage.io/docs/conf/[app-config.yaml] to define its configuration. The *app-config.yaml* can be mounted as a https://kubernetes.io/docs/concepts/storage/volumes/[volume] in Backstage Pods that are created by the {product_rhdh_name} Operator.
+As mentioned earlier, {product_rhdh_name} is based on the Backstage CNCF project. Backstage requires an https://backstage.io/docs/conf/[app-config.yaml^] to define its configuration. The *app-config.yaml* can be mounted as a https://kubernetes.io/docs/concepts/storage/volumes/[volume^] in Backstage Pods that are created by the {product_rhdh_name} Operator.
 
 In this section you'll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the `{m2_rhdh_project}` namespace.
 
@@ -173,7 +173,7 @@ image::setup-rhdh/backstage-pods.png[]
 
 === Visit your {product_rhdh_name} Instance
 
-You can access your instance of {product_rhdh_name} using a https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route] that was created by the Operator.
+You can access your instance of {product_rhdh_name} using a https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] that was created by the Operator.
 
 . Select *Networking > Routes* in the side menu of the OpenShift Web Console.
 . Ensure that the *{m2_rhdh_project}* project is selected in the project selector.

@@ -1,6 +1,6 @@
 = Enable Dynamic Plugin Caching
 
-You might have noticed that the *install-dynamic-plugins* container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your {product_rhdh_name} deployment by storing plugin packages in a https://kubernetes.io/docs/concepts/storage/persistent-volumes/[persistent volume]. This provides several benefits:
+You might have noticed that the *install-dynamic-plugins* container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your {product_rhdh_name} deployment by storing plugin packages in a https://kubernetes.io/docs/concepts/storage/persistent-volumes/[persistent volume^]. This provides several benefits:
 
 * *Faster deployments*: Plugins are cached locally and don't need to be downloaded when pods start
 * *Reduced bandwidth consumption*: Plugin packages are only downloaded once and reused across deployments  
@@ -68,7 +68,7 @@ Do not remove or overwrite existing sections. Only add the new `deployment` fiel
 +
 [NOTE]
 ====
-The `$patch: replace` directive tells the operator to replace the existing `dynamic-plugins-root` volume (which is an https://kubernetes.io/docs/concepts/storage/volumes/#emptydir[emptyDir] by default) with a PersistentVolumeClaim-backed volume. This ensures that plugin cache data persists across pod restarts.
+The `$patch: replace` directive tells the operator to replace the existing `dynamic-plugins-root` volume (which is an https://kubernetes.io/docs/concepts/storage/volumes/#emptydir[emptyDir^] by default) with a PersistentVolumeClaim-backed volume. This ensures that plugin cache data persists across pod restarts.
 ====
 . Click *Save* to apply the changes.
 
