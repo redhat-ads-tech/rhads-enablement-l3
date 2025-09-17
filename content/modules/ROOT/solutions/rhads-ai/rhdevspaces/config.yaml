@@ -1,0 +1,26 @@
+name: Local Assistant
+version: 1.0.0
+schema: v1
+models:
+  - name: llama-3-2-3b
+    provider: openai
+    model: llama-3-2-3b
+    apiBase: ""
+    apiKey: ""
+    roles:
+      - chat
+      - edit
+      - apply
+tabAutocompleteModel:
+  title: RamaLama (AutoComplete)
+  provider: custom
+  model: default
+allowAnonymousTelemetry: false
+context:
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+  - provider: problems
+  - provider: folder
+  - provider: codebase
