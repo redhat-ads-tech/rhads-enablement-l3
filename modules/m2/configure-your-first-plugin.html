@@ -54,25 +54,46 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="3">
     <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -204,6 +225,7 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="setup-rhdh.html">Hands-on Lab</a></li>
     <li><a href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a></li>
   </ul>
 </nav>
@@ -214,7 +236,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section you&#8217;ll learn how to enable authentication for Red Hat Developer Hub using Keycloak as an OpenID Connect provider. Various authentication providers are supported and can be found in the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/authentication_in_red_hat_developer_hub/index">Red Hat Developer Hub documentation</a>.</p>
+<p>In this section you&#8217;ll learn how to enable authentication for Red Hat Developer Hub using Keycloak as an OpenID Connect provider. Various authentication providers are supported and can be found in the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/authentication_in_red_hat_developer_hub/index" target="_blank" rel="noopener">Red Hat Developer Hub documentation</a>.</p>
 </div>
 </div>
 </div>
@@ -222,7 +244,7 @@
 <h2 id="_plugin_architecture"><a class="anchor" href="#_plugin_architecture"></a>Plugin Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Red Hat Developer Hub includes a comprehensive set of pre-installed dynamic plugins that extend its functionality beyond the core Backstage capabilities. These plugins are based on the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins">dynamic plugin architecture</a> and provide integrations with various tools and services commonly used in enterprise development environments.</p>
+<p>Red Hat Developer Hub includes a comprehensive set of pre-installed dynamic plugins that extend its functionality beyond the core Backstage capabilities. These plugins are based on the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins" target="_blank" rel="noopener">dynamic plugin architecture</a> and provide integrations with various tools and services commonly used in enterprise development environments.</p>
 </div>
 <div class="paragraph">
 <p>Pre-installed dynamic plugins include integrations for:</p>
@@ -260,7 +282,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Third-party plugins can also be integrated with Red Hat Developer Hub, but they require proper packaging and configuration. For more information on working with third-party plugins, refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/installing_and_viewing_plugins_in_red_hat_developer_hub/assembly-third-party-plugins#proc-export-third-party-plugins-rhdh_assembly-third-party-plugins">official documentation</a>.</p>
+<p>Third-party plugins can also be integrated with Red Hat Developer Hub, but they require proper packaging and configuration. For more information on working with third-party plugins, refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/installing_and_viewing_plugins_in_red_hat_developer_hub/assembly-third-party-plugins#proc-export-third-party-plugins-rhdh_assembly-third-party-plugins" target="_blank" rel="noopener">official documentation</a>.</p>
 </div>
 </td>
 </tr>
@@ -275,7 +297,7 @@
 <p>The Keycloak plugin enables Red Hat Developer Hub to integrate with Keycloak for authentication and to import User and Group entities into the Backstage catalog. The presence of User and Group entities in the Software Catalog is essential for assigning ownership to other entities, and to facilitate user login. A user&#8217;s login attempt to Red Hat Developer Hub will fail if a corresponding User entity matching their email/username doesn&#8217;t exist in the Software Catalog.</p>
 </div>
 <div class="paragraph">
-<p>Your environment includes a preconfigured Keycloak instance with a <code>trusted-artifact-signer</code> <a href="https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms">realm</a> and <code>rhdh</code> client that acts as an OpenID Connect authentication provider already set up for Red Hat Developer Hub integration, however you need to make sure it&#8217;s configured with the correct redirect URL for authentication to be successful.</p>
+<p>Your environment includes a preconfigured Keycloak instance with a <code>trusted-artifact-signer</code> <a href="https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms" target="_blank" rel="noopener">realm</a> and <code>rhdh</code> client that acts as an OpenID Connect authentication provider already set up for Red Hat Developer Hub integration, however you need to make sure it&#8217;s configured with the correct redirect URL for authentication to be successful.</p>
 </div>
 <div class="sect2">
 <h3 id="_accessing_keycloak"><a class="anchor" href="#_accessing_keycloak"></a>Accessing Keycloak</h3>
@@ -285,7 +307,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-keycloak/core<sub>v1</sub>Secret">Secrets screen in the tssc-keycloak</a> namespace.</p>
+<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core<sub>v1</sub>Secret" target="_blank" rel="noopener">Secrets screen in the tssc-keycloak</a> namespace.</p>
 </li>
 <li>
 <p>Click the <code>keycloak-initial-admin</code> Secret to view it.</p>
@@ -294,7 +316,7 @@
 <p>Copy the <code>password</code> value from the Secret.</p>
 </li>
 <li>
-<p>View the <a href="https://sso.apps.{cluster_apps_domain}/admin/master/console/#/trusted-artifact-signer/clients">clients list in the <code>trusted-artifact-signer</code> realm</a> in Keycloak - login as <strong>admin</strong> using the password you copied from the Secret.</p>
+<p>View the <a href="https://sso.apps.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients" target="_blank" rel="noopener">clients list in the <code>trusted-artifact-signer</code> realm</a> in Keycloak - login as <strong>admin</strong> using the password you copied from the Secret.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -335,7 +357,7 @@
 <p>Add the following value to <strong>Web origins</strong></p>
 <div class="listingblock execute wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-source hljs" data-lang="source">https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}</code></pre>
+<pre class="highlightjs highlight"><code class="language-source hljs" data-lang="source">https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}</code></pre>
 </div>
 </div>
 </li>
@@ -343,7 +365,7 @@
 <p>Add the following value to <strong>Valid redirect URIs</strong>:</p>
 <div class="listingblock execute wrap">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-source hljs" data-lang="source">https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/api/auth/oidc/handler/frame</code></pre>
+<pre class="highlightjs highlight"><code class="language-source hljs" data-lang="source">https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}/api/auth/oidc/handler/frame</code></pre>
 </div>
 </div>
 <div class="admonitionblock warning">
@@ -375,7 +397,7 @@
 </ol>
 </div>
 <div class="paragraph">
-<p>The path for the redirect URL is <code>/api/auth/oidc/handler/frame</code> as documented in <a href="https://backstage.io/docs/auth/oidc/#the-api-reference">Backstage&#8217;s OIDC reference</a> and our <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html-single/authentication_in_red_hat_developer_hub/index#assembly-authenticating-with-rhbk">Red Hat Developer Hub documentation</a>.</p>
+<p>The path for the redirect URL is <code>/api/auth/oidc/handler/frame</code> as documented in <a href="https://backstage.io/docs/auth/oidc/#the-api-reference" target="_blank" rel="noopener">Backstage&#8217;s OIDC reference</a> and our <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html-single/authentication_in_red_hat_developer_hub/index#assembly-authenticating-with-rhbk" target="_blank" rel="noopener">Red Hat Developer Hub documentation</a>.</p>
 </div>
 </div>
 </div>
@@ -405,13 +427,13 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>For detailed information on configuring dynamic plugins with the operator, refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/installing_and_viewing_plugins_in_red_hat_developer_hub/rhdh-installing-rhdh-plugins_title-plugins-rhdh-about#proc-config-dynamic-plugins-rhdh-operator_rhdh-installing-rhdh-plugins">official plugin configuration guide</a>.</p>
+<p>For detailed information on configuring dynamic plugins with the operator, refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/installing_and_viewing_plugins_in_red_hat_developer_hub/rhdh-installing-rhdh-plugins_title-plugins-rhdh-about#proc-config-dynamic-plugins-rhdh-operator_rhdh-installing-rhdh-plugins" target="_blank" rel="noopener">official plugin configuration guide</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_create_the_dynamic_plugins_configmap"><a class="anchor" href="#_create_the_dynamic_plugins_configmap"></a>Create the Dynamic Plugins ConfigMap</h3>
 <div class="paragraph">
-<p>As mentioned earlier, certain plugins are preinstalled in the Red Hat Developer Hub. These plugins have gone through our productisation process to verify they&#8217;re compatible with the specific version of Backstage that Red Hat Developer Hub is built from, and to facilitate installation at runtime. Using upstream Backstage requires plugins to be installed from a registry. For example, upstream Backstage would require a platform engineer to install a compatible version of <a href="https://www.npmjs.com/package/@backstage-community/plugin-catalog-backend-module-keycloak">@backstage-community/plugin-catalog-backend-module-keycloak from npm</a> and make code changes to their Backstage instance. With Red Hat Developer Hub no such code changes or version matrix concerns are necessary.</p>
+<p>As mentioned earlier, certain plugins are preinstalled in the Red Hat Developer Hub. These plugins have gone through our productisation process to verify they&#8217;re compatible with the specific version of Backstage that Red Hat Developer Hub is built from, and to facilitate installation at runtime. Using upstream Backstage requires plugins to be installed from a registry. For example, upstream Backstage would require a platform engineer to install a compatible version of <a href="https://www.npmjs.com/package/@backstage-community/plugin-catalog-backend-module-keycloak" target="_blank" rel="noopener">@backstage-community/plugin-catalog-backend-module-keycloak from npm</a> and make code changes to their Backstage instance. With Red Hat Developer Hub no such code changes or version matrix concerns are necessary.</p>
 </div>
 <div class="paragraph">
 <p>Get started by creating a minimal <code>dynamic-plugins-rhdh</code> ConfigMap that enables the Keycloak plugin.</p>
@@ -599,7 +621,7 @@ data:
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>KEYCLOAK_BASE_URL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>https://sso.{cluster_apps_domain}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>https://sso.{openshift_cluster_ingress_domain}</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>KEYCLOAK_LOGIN_REALM</code></p></td>
@@ -651,25 +673,25 @@ data:
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">app:
   title: Red Hat Developer Hub
-  baseUrl: https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}
+  baseUrl: https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}
 
 signInPage: oidc
 auth:
   environment: production
   session:
-    secret: ${BACKEND_SECRET}
+    secret: replace-with-a-random-value
   providers:
     oidc:
       production:
         metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
-        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientId: $rhdh
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         prompt: auto
 
 backend:
-  baseUrl: https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}
+  baseUrl: https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}
   cors:
-    origin: https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}
+    origin: https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}
 
 catalog:
   providers:
@@ -699,7 +721,7 @@ catalog:
 <p>This configuration replaces the Guest authentication provider with a production-ready OpenID Connect authentication flow.</p>
 </div>
 <div class="paragraph">
-<p>Additionally, you added a new <code>catalog.providers</code> configuration. As a reminder, the Software Catalog in Backstage (and thus Red Hat Developer Hub) contains entities that represent your deployed software, services, APIs, and resources such as file storage, databases, and message queues. It&#8217;s possible to point to <a href="https://backstage.io/docs/conf/">static locations</a> (YAML files available over HTTPS) that contain the description and relationships between these entities. Providers are <a href="https://backstage.io/docs/features/software-catalog/external-integrations">plugins that provide an integration</a> to dynamically fetch entities from external sources. The Keycloak plugin will fetch Users and Groups from a configured realm, and add them to the Software Catalog as entities.</p>
+<p>Additionally, you added a new <code>catalog.providers</code> configuration. As a reminder, the Software Catalog in Backstage (and thus Red Hat Developer Hub) contains entities that represent your deployed software, services, APIs, and resources such as file storage, databases, and message queues. It&#8217;s possible to point to <a href="https://backstage.io/docs/conf/" target="_blank" rel="noopener">static locations</a> (YAML files available over HTTPS) that contain the description and relationships between these entities. Providers are <a href="https://backstage.io/docs/features/software-catalog/external-integrations" target="_blank" rel="noopener">plugins that provide an integration</a> to dynamically fetch entities from external sources. The Keycloak plugin will fetch Users and Groups from a configured realm, and add them to the Software Catalog as entities.</p>
 </div>
 </div>
 <div class="sect2">
@@ -739,7 +761,7 @@ catalog:
 </ol>
 </div>
 <div class="paragraph">
-<p>More information on custom configurations that load data from Secrets and ConfigMaps can be found in the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html-single/configuring_red_hat_developer_hub/index#using-the-operator-to-run-rhdh-with-your-custom-configuration">configuring Red Hat Developer Hub documentation</a>.</p>
+<p>More information on custom configurations that load data from Secrets and ConfigMaps can be found in the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html-single/configuring_red_hat_developer_hub/index#using-the-operator-to-run-rhdh-with-your-custom-configuration" target="_blank" rel="noopener">configuring Red Hat Developer Hub documentation</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -777,7 +799,7 @@ catalog:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit your <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}">Red Hat Developer Hub instance</a>.</p>
+<p>Visit your <a href="https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}" target="_blank" rel="noopener">Red Hat Developer Hub instance</a>.</p>
 </li>
 <li>
 <p>You should now see an OIDC sign-in option.</p>
@@ -814,7 +836,7 @@ catalog:
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="setup-rhdh.html" class="query-params-link">Installation &amp; Base Configuration</a></span>
+  <span class="prev"><a href="setup-rhdh.html" class="query-params-link">Hands-on Lab</a></span>
   <span class="next"><a href="plugin-cache.html" class="query-params-link">Plugin Caching</a></span>
 </nav>
 </article>

@@ -54,25 +54,46 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="3">
     <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -204,7 +225,7 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
-    <li><a href="setup-rhdh.html">Installation &amp; Base Configuration</a></li>
+    <li><a href="setup-rhdh.html">Hands-on Lab</a></li>
   </ul>
 </nav>
 </div>
@@ -218,7 +239,7 @@
 <p>This guide follows an Operator-based installation method for Red Hat Developer Hub. A Helm-based installation option is also available, but is outside the scope of this module.</p>
 </div>
 <div class="paragraph">
-<p>Refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/">latest Red Hat Developer Hub documentation</a> for up-to-date installation requirements.</p>
+<p>Refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/" target="_blank" rel="noopener">latest Red Hat Developer Hub documentation</a> for up-to-date installation requirements.</p>
 </div>
 <div class="paragraph">
 <p>For Red Hat Developer Hub version 1.6, the following hardware resources are recommended:</p>
@@ -237,7 +258,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>OpenShift versions 4.16 through 4.19 are supported. Visit the <a href="https://access.redhat.com/support/policy/updates/developerhub">Red Hat Developer Hub Life Cycle page</a> for the latest information.</p>
+<p>OpenShift versions 4.16 through 4.19 are supported. Visit the <a href="https://access.redhat.com/support/policy/updates/developerhub" target="_blank" rel="noopener">Red Hat Developer Hub Life Cycle page</a> for the latest information.</p>
 </div>
 </div>
 </div>
@@ -306,7 +327,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Ensure <strong>All projects</strong> is selected in the <strong>Project</strong> selector - <a href="https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/">cluster-scoped</a> operators will be listed.</p>
+<p>Ensure <strong>All projects</strong> is selected in the <strong>Project</strong> selector - <a href="https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/" target="_blank" rel="noopener">cluster-scoped</a> operators will be listed.</p>
 </li>
 <li>
 <p>Select <strong>Red Hat Developer Hub</strong> from the listed operators.</p>
@@ -341,7 +362,7 @@
 <div class="sect2">
 <h3 id="_the_backstage_custom_resource"><a class="anchor" href="#_the_backstage_custom_resource"></a>The Backstage Custom Resource</h3>
 <div class="paragraph">
-<p>The Red Hat Developer Hub Operator provides a Backstage <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resource Definition (CRD)</a> for Kubernetes. This CRD is used to provision new instances of Red Hat Developer Hub on OpenShift clusters.</p>
+<p>The Red Hat Developer Hub Operator provides a Backstage <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/" target="_blank" rel="noopener">Custom Resource Definition (CRD)</a> for Kubernetes. This CRD is used to provision new instances of Red Hat Developer Hub on OpenShift clusters.</p>
 </div>
 <div class="paragraph">
 <p>A minimal Backstage CR resembles the following YAML:</p>
@@ -414,7 +435,7 @@ spec:
 <div class="sect2">
 <h3 id="_defining_a_backstage_configuration"><a class="anchor" href="#_defining_a_backstage_configuration"></a>Defining a Backstage Configuration</h3>
 <div class="paragraph">
-<p>As mentioned earlier, Red Hat Developer Hub is based on the Backstage CNCF project. Backstage requires an <a href="https://backstage.io/docs/conf/">app-config.yaml</a> to define its configuration. The <strong>app-config.yaml</strong> can be mounted as a <a href="https://kubernetes.io/docs/concepts/storage/volumes/">volume</a> in Backstage Pods that are created by the Red Hat Developer Hub Operator.</p>
+<p>As mentioned earlier, Red Hat Developer Hub is based on the Backstage CNCF project. Backstage requires an <a href="https://backstage.io/docs/conf/" target="_blank" rel="noopener">app-config.yaml</a> to define its configuration. The <strong>app-config.yaml</strong> can be mounted as a <a href="https://kubernetes.io/docs/concepts/storage/volumes/" target="_blank" rel="noopener">volume</a> in Backstage Pods that are created by the Red Hat Developer Hub Operator.</p>
 </div>
 <div class="paragraph">
 <p>In this section you&#8217;ll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the <code>setup-rhdh</code> namespace.</p>
@@ -448,7 +469,7 @@ data:
   app-config.yaml: |
     app:
       title: Red Hat Developer Hub
-      baseUrl: https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}
+      baseUrl: https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}
 
     # Enable guest sign-in without user validation. This configuration
     # is unsafe - only use it for testing when Developer Hub is not
@@ -458,9 +479,9 @@ data:
         guest:
           dangerouslyAllowOutsideDevelopment: true
     backend:
-      baseUrl: https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}
+      baseUrl: https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}
       cors:
-        origin: https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}</code></pre>
+        origin: https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}</code></pre>
 </div>
 </div>
 </li>
@@ -477,7 +498,7 @@ data:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The URL referenced in the ConfigMap is determined by combining the Backstage CR name with "backstage" and the namespace name. For example, your namespace is <code>setup-rhdh</code> and the Backstage CR will be named <code>rhdh</code>, so the URL is <a href="https://rhdh-backstage-setup-rhdh.{cluster_apps_domain}" class="bare">https://rhdh-backstage-setup-rhdh.{cluster_apps_domain}</a>.</p>
+<p>The URL referenced in the ConfigMap is determined by combining the Backstage CR name with "backstage" and the namespace name. For example, your namespace is <code>setup-rhdh</code> and the Backstage CR will be named <code>rhdh</code>, so the URL is <a href="https://rhdh-backstage-setup-rhdh.{openshift_cluster_ingress_domain}" class="bare">https://rhdh-backstage-setup-rhdh.{openshift_cluster_ingress_domain}</a>.</p>
 </div>
 </td>
 </tr>
@@ -537,7 +558,7 @@ spec:
 <div class="sect2">
 <h3 id="_visit_your_red_hat_developer_hub_instance"><a class="anchor" href="#_visit_your_red_hat_developer_hub_instance"></a>Visit your Red Hat Developer Hub Instance</h3>
 <div class="paragraph">
-<p>You can access your instance of Red Hat Developer Hub using a <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking">Route</a> that was created by the Operator.</p>
+<p>You can access your instance of Red Hat Developer Hub using a <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking" target="_blank" rel="noopener">Route</a> that was created by the Operator.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -613,7 +634,7 @@ If an <strong>Application is not available</strong> message is displayed when yo
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="concepts.html" class="query-params-link">Backstage Concepts &amp; Features</a></span>
+  <span class="prev"><a href="concepts.html" class="query-params-link">Foundations</a></span>
   <span class="next"><a href="configure-your-first-plugin.html" class="query-params-link">Configure your First Plugin (Authentication)</a></span>
 </nav>
 </article>

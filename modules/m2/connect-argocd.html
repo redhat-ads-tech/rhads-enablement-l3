@@ -54,25 +54,46 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="3">
     <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -204,6 +225,7 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="setup-rhdh.html">Hands-on Lab</a></li>
     <li><a href="connect-argocd.html">Argo CD Integration</a></li>
   </ul>
 </nav>
@@ -247,7 +269,7 @@
 <p>Adding the Argo CD dynamic plugin to your Red Hat Developer Hub plugin configuration</p>
 </li>
 <li>
-<p>Configuring entity annotations to link entities with <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications">Argo CD Applications</a></p>
+<p>Configuring entity annotations to link entities with <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications" target="_blank" rel="noopener">Argo CD Applications</a></p>
 </li>
 </ol>
 </div>
@@ -377,7 +399,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-gitops/route.openshift.io<sub>v1</sub>Route"><strong>Networksing &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
+<p>Visit <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io<sub>v1</sub>Route" target="_blank" rel="noopener"><strong>Networksing &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
 </li>
 <li>
 <p>Click the link in the <strong>Location</strong> column to access Argo CD.</p>
@@ -440,7 +462,7 @@ metadata:
 type: Opaque
 stringData:
   # Warning: Remove trailing slashes or the plugin will throw "method not allowed" errors
-  ARGOCD_URL: https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}
+  ARGOCD_URL: https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}
   ARGOCD_USERNAME: developer-hub
   ARGOCD_PASSWORD: d3v3l0p3rs</code></pre>
 </div>
@@ -460,7 +482,7 @@ stringData:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh">Backstage CR in the OpenShift Web Console</a> and switch to the <strong>YAML</strong> view.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and switch to the <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>argocd-secrets</strong> Secret you created:</p>
@@ -593,7 +615,7 @@ stringData:
 <p>For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.</p>
 </div>
 <div class="paragraph">
-<p>Recall that your environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> in GitLab - <a href="https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example">module-2-assets/discovery-example</a>.</p>
+<p>Recall that your environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> in GitLab - <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/development/argocd-example" target="_blank" rel="noopener">module-2-assets/discovery-example</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -610,7 +632,7 @@ stringData:
 </table>
 </div>
 <div class="paragraph">
-<p>In this case you can see that the <a href="https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets/-/blob/main/discovery-example/catalog-info.yaml?ref_type=heads"><strong>argocd/app-selector</strong> annotation</a> is set on the Component. This tells the Argo CD plugin for Red Hat Developer Hub to query the configured Argo CD instance for Applications with a label matching that selector.</p>
+<p>In this case you can see that the <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/module-2-assets/-/blob/main/discovery-example/catalog-info.yaml?ref_type=heads" target="_blank" rel="noopener"><strong>argocd/app-selector</strong> annotation</a> is set on the Component. This tells the Argo CD plugin for Red Hat Developer Hub to query the configured Argo CD instance for Applications with a label matching that selector.</p>
 </div>
 </div>
 <div class="sect2">
@@ -645,7 +667,7 @@ metadata:
 <p>Click <strong>Create</strong>.</p>
 </li>
 <li>
-<p>Confirm the namespace is managed by <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters">viewing the clusters screen in Argo CD</a>, then selecting the <strong>in-cluster</strong> item.</p>
+<p>Confirm the namespace is managed by <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters" target="_blank" rel="noopener">viewing the clusters screen in Argo CD</a>, then selecting the <strong>in-cluster</strong> item.</p>
 </li>
 <li>
 <p>Your new <strong>httpsink</strong> namespace should be listed in the <strong>Namespaces</strong> field.</p>
@@ -683,7 +705,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets.git
+    repoURL: https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/module-2-assets.git
     targetRevision: HEAD
     path: argocd-example/k8s
   destination:
@@ -718,7 +740,7 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://tssc-gitops-server-tssc-gitops.{cluster_apps_domain}/"><strong>tssc-gitops</strong> Argo CD dashboard</a>.</p>
+<p>Visit the <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/" target="_blank" rel="noopener"><strong>tssc-gitops</strong> Argo CD dashboard</a>.</p>
 </li>
 <li>
 <p>Login as:</p>
@@ -742,7 +764,7 @@ spec:
 </div>
 </li>
 <li>
-<p>Next, return to <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}">Red Hat Developer Hub</a>.</p>
+<p>Next, return to <a href="https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}" target="_blank" rel="noopener">Red Hat Developer Hub</a>.</p>
 </li>
 <li>
 <p>Login as:</p>

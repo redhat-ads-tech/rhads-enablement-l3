@@ -54,25 +54,46 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -204,7 +225,7 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
-    <li><a href="concepts.html">Backstage Concepts &amp; Features</a></li>
+    <li><a href="concepts.html">Foundations</a></li>
   </ul>
 </nav>
 </div>
@@ -427,13 +448,13 @@ spec:
 <p>The ability to load plugins dynamically is a value added feature included in Red Hat Developer Hub that&#8217;s currently unavailable in upstream Backstage - you can read more about it in the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/introduction_to_plugins/index#con-rhdh-plugins" target="content">Red Hat Developer Hub documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>The dynamic plugin support in Red Hat Developer Hub means that new plugins can be installed without the need to edit code and rebuild the Red Hat Developer Hub container image. For example, installing the <a href="https://backstage.io/docs/integrations/gitlab/discovery">GitLab plugin with upstream Backstage</a> requires adding a new dependency and editing your Backstage installation&#8217;s source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With Red Hat Developer Hub you can simply toggle plugins on or off, and they&#8217;re tested and guaranteed to be compatible with your version of Red Hat Developer Hub.</p>
+<p>The dynamic plugin support in Red Hat Developer Hub means that new plugins can be installed without the need to edit code and rebuild the Red Hat Developer Hub container image. For example, installing the <a href="https://backstage.io/docs/integrations/gitlab/discovery" target="_blank" rel="noopener">GitLab plugin with upstream Backstage</a> requires adding a new dependency and editing your Backstage installation&#8217;s source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With Red Hat Developer Hub you can simply toggle plugins on or off, and they&#8217;re tested and guaranteed to be compatible with your version of Red Hat Developer Hub.</p>
 </div>
 <div class="paragraph">
 <p>Given the vast ecosystem of Backstage plugins, the Red Hat Developer Hub team needs to be selective about which specific plugins to package and support.</p>
 </div>
 <div class="paragraph">
-<p>Officially supported plugins and technology preview plugins (available but without support SLAs) can be seen found the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins">plugins documentation</a>.</p>
+<p>Officially supported plugins and technology preview plugins (available but without support SLAs) can be seen found the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins" target="_blank" rel="noopener">plugins documentation</a>.</p>
 </div>
 <div class="paragraph">
 <p>You&#8217;ll see dynamic plugins in action shortly.</p>
@@ -478,7 +499,7 @@ techdocs:
 </div>
 </div>
 <div class="paragraph">
-<p>You&#8217;ll be using the Red Hat Developer Hub operator to install and manage a Backstage instance - this means your <strong>app-config.yaml</strong> will be stored in a <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMap on OpenShift</a>.</p>
+<p>You&#8217;ll be using the Red Hat Developer Hub operator to install and manage a Backstage instance - this means your <strong>app-config.yaml</strong> will be stored in a <a href="https://kubernetes.io/docs/concepts/configuration/configmap/" target="_blank" rel="noopener">ConfigMap on OpenShift</a>.</p>
 </div>
 </div>
 </div>
@@ -570,7 +591,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>You might have recognized this as a <a href="https://json-schema.org/">JSON Schema</a> structure. By using JSON Schema you can define the parameters that are supported by the template, and, more importantly, enforce validation on those parameters. The rendering of the form in the Red Hat Developer Hub UI is managed by the <a href="https://github.com/rjsf-team/react-jsonschema-form" target="content">react-jsonschema-form</a> library.</p>
+<p>You might have recognized this as a <a href="https://json-schema.org/" target="_blank" rel="noopener">JSON Schema</a> structure. By using JSON Schema you can define the parameters that are supported by the template, and, more importantly, enforce validation on those parameters. The rendering of the form in the Red Hat Developer Hub UI is managed by the <a href="https://github.com/rjsf-team/react-jsonschema-form" target="content">react-jsonschema-form</a> library.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -626,7 +647,7 @@ spec:
 <p>Notice how the <code>parameters</code> are referenced and used in the <code>steps</code>? Another point of note is that a <code>user</code> variable is available to access data related to the user that&#8217;s using the Template, and subsequent <code>steps</code> can access <code>output</code> from prior steps.</p>
 </div>
 <div class="paragraph">
-<p>The <code>output</code> values are documented on a per plugin basis. You can find the values for the specific version of your installed plugins by accessing the <a href="https://backstage-rhdh-setup-rhdh.{cluster_apps_domain}/create/actions">/create/actions</a> endpoint on your Red Hat Developer Hub instance.</p>
+<p>The <code>output</code> values are documented on a per plugin basis. You can find the values for the specific version of your installed plugins by accessing the <a href="https://backstage-rhdh-setup-rhdh.{openshift_cluster_ingress_domain}/create/actions" target="_blank" rel="noopener">/create/actions</a> endpoint on your Red Hat Developer Hub instance.</p>
 </div>
 </div>
 <div class="sect2">
@@ -674,7 +695,7 @@ spec:
 </div>
 <nav class="pagination">
   <span class="prev"><a href="introduction.html" class="query-params-link">Module 2: Install &amp; Administer</a></span>
-  <span class="next"><a href="setup-rhdh.html" class="query-params-link">Installation &amp; Base Configuration</a></span>
+  <span class="next"><a href="setup-rhdh.html" class="query-params-link">Hands-on Lab</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

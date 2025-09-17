@@ -54,25 +54,46 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="3">
     <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -204,6 +225,7 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="setup-rhdh.html">Hands-on Lab</a></li>
     <li><a href="connect-gitlab-scm.html">GitLab Integration</a></li>
   </ul>
 </nav>
@@ -249,7 +271,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Generating an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/">access token</a> in GitLab.</p>
+<p>Generating an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" target="_blank" rel="noopener">access token</a> in GitLab.</p>
 </li>
 <li>
 <p>Creating a Secret to store the access token, and loading it into the Red Hat Developer Hub pod.</p>
@@ -270,12 +292,12 @@
 <div class="sect2">
 <h3 id="_create_the_gitlab_token"><a class="anchor" href="#_create_the_gitlab_token"></a>Create the GitLab Token</h3>
 <div class="paragraph">
-<p>To facilitate secure communication between Red Hat Developer Hub and the GitLab API, you need to generate an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/">access token</a>:</p>
+<p>To facilitate secure communication between Red Hat Developer Hub and the GitLab API, you need to generate an <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" target="_blank" rel="noopener">access token</a>:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://gitlab-gitlab.{cluster_apps_domain}">GitLab instance</a> deployed in your environment.</p>
+<p>Visit the <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}" target="_blank" rel="noopener">GitLab instance</a> deployed in your environment.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -376,7 +398,7 @@ metadata:
   namespace: setup-rhdh
 type: Opaque
 stringData:
-  GITLAB_HOST: gitlab-gitlab.{cluster_apps_domain}
+  GITLAB_HOST: gitlab-gitlab.{openshift_cluster_ingress_domain}
   GITLAB_TOKEN: YOUR_TOKEN</code></pre>
 </div>
 </div>
@@ -417,7 +439,7 @@ stringData:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your <a href="https://console-openshift-console.{cluster_apps_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>gitlab-secrets</strong> Secret you created:</p>
@@ -595,7 +617,7 @@ stringData:
 </ol>
 </div>
 <div class="paragraph">
-<p>The system automatically discovers and imports <code>catalog-info.yaml</code> files from repositories in the configured GitLab group, so long as they match the <a href="https://backstage.io/docs/integrations/gitlab/discovery/#configuration">specified search parameters</a>.</p>
+<p>The system automatically discovers and imports <code>catalog-info.yaml</code> files from repositories in the configured GitLab group, so long as they match the <a href="https://backstage.io/docs/integrations/gitlab/discovery/#configuration" target="_blank" rel="noopener">specified search parameters</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>

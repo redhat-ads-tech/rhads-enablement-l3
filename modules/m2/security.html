@@ -54,25 +54,46 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="concepts.html">Backstage Concepts &amp; Features</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="3">
     <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -204,6 +225,7 @@
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="introduction.html">Module 2: Install &amp; Administer</a></li>
+    <li><a href="setup-rhdh.html">Hands-on Lab</a></li>
     <li><a href="security.html">Enable Role-Based Access Control</a></li>
   </ul>
 </nav>
@@ -688,7 +710,7 @@
 <h2 id="_using_casbin_files_for_rbac_management"><a class="anchor" href="#_using_casbin_files_for_rbac_management"></a>Using Casbin Files for RBAC Management</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment approach are all good reasons to consider using a configuration as code approach for managing RBAC policies. Red Hat Developer Hub supports a policy-as-code approach for RBAC via <a href="https://casbin.org/docs/policy-storage/">Casbin files</a>.</p>
+<p>Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment approach are all good reasons to consider using a configuration as code approach for managing RBAC policies. Red Hat Developer Hub supports a policy-as-code approach for RBAC via <a href="https://casbin.org/docs/policy-storage/" target="_blank" rel="noopener">Casbin files</a>.</p>
 </div>
 <div class="paragraph">
 <p>In this section you&#8217;ll learn how to define policies using Casbin and load them into Red Hat Developer Hub.</p>
