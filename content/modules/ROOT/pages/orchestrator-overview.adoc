@@ -94,7 +94,7 @@ Three Software Templates will be imported: `namespace-small`,`namespace-large` a
 
 . Click *Import* when prompted.
 
-. Select the image:orchestrator-overview/plus-icon.png[width=15px] icon on the top navigation barto see the new templates.
+. Select the image:orchestrator-overview/plus-icon.png[width=15px] icon on the top navigation bar to see the new templates.
 +
 image:orchestrator-overview/rhdh-developer-self-service-templates.png[Developer Self Service Software Templates]
 
@@ -132,11 +132,11 @@ result: CONDITIONAL
 roleEntityRef: role:default/location_read_developer
 ----
 
-This rule states that users with the role `default/location_read_developer` can see all catalog entities, except those with an annotation `backstage.io/managed-by` and value `orchestrator`. The `developers` group (to which the `dev1` user belongs) has the role `default/location_read_developer` as can be seen in the `rbac-policy.csv` file in the Configmap.
+This rule states that users with the role `default/location_read_developer` can see all catalog entities, except those with an annotation `backstage.io/managed-by` and value `orchestrator`. The `developers` group (to which the `dev1` user belongs) has the role `default/location_read_developer` as can be seen in the `rbac-policy.csv` file in the ConfigMap.
 
 === Deploy the Serverless Workflow
 
-A Serverless Worflow is deployed through a `SonataFlow` Custom Resource. As with the other deployments in this workshop, we use GitOps and ArgoCD to deploy the Serverless Workflow.
+A Serverless Workflow is deployed through a `SonataFlow` Custom Resource. As with the other deployments in this workshop, we use GitOps and ArgoCD to deploy the Serverless Workflow.
 
 . Open the https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/orchestrator-workflows/-/blob/main/manifests/create-ocp-namespace-swt/application.yaml?ref_type=heads[ArgoCD Application manifest in GitLab^, window="gitlab"]
 . Click on the *Copy file contents* button on the top right menu.
@@ -231,7 +231,7 @@ image:orchestrator-overview/orchestrator-workflow-run-3.png[]
 . Click on the link of the notification. This opens the issue in GitLab.
 +
 image:orchestrator-overview/gitlab-issue-1.png[]
-. GitLab is not a ticketing system. To mimic the behaviour of a ticketing system, we use labels on the issue to mark the request as approved or denied.
+. GitLab is not a ticketing system. To mimic the behavior of a ticketing system, we use labels on the issue to mark the request as approved or denied.
 +
 .. Make sure you are logged in into GitLab as `pe1` / `{common_password}`.
 .. Click on the *Edit* button next to *Labels* on the right.
