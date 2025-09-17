@@ -188,7 +188,7 @@ Different {product_rhdh_name} features and plugins require specific permissions.
 
 == Using Casbin Files for RBAC Management
 
-Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment approach are all good reasons to consider using a configuration as code approach for managing RBAC policies. {product_rhdh_name} supports a policy-as-code approach for RBAC via https://casbin.org/docs/policy-storage/[Casbin files].
+Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment approach are all good reasons to consider using a configuration as code approach for managing RBAC policies. {product_rhdh_name} supports a policy-as-code approach for RBAC via https://casbin.org/docs/policy-storage/[Casbin files^].
 
 In this section you'll learn how to define policies using Casbin and load them into {product_rhdh_name}.
 

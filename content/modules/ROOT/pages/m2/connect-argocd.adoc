@@ -12,7 +12,7 @@ Configuring the integration requires:
 . Creating a dedicated readonly user account in Argo CD for secure API access
 . Storing Argo CD credentials in a Secret and loading it into the {product_rhdh_name} pod
 . Adding the Argo CD dynamic plugin to your {product_rhdh_name} plugin configuration
-. Configuring entity annotations to link entities with https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications[Argo CD Applications]
+. Configuring entity annotations to link entities with https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications[Argo CD Applications^]
 
 == Create the Argo CD Service Account and Credentials
 
@@ -77,7 +77,7 @@ The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt gene
 
 === Verify the Argo CD User Account is Active
 
-. Visit https://console-openshift-console.{cluster_apps_domain}/k8s/ns/tssc-gitops/route.openshift.io~v1~Route[*Networksing > Routes* in the {ns_tssc_gitops}] namespace.
+. Visit https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io~v1~Route[*Networksing > Routes* in the {ns_tssc_gitops}^] namespace.
 . Click the link in the *Location* column to access Argo CD.
 . Login using the username `{m2_argocd_user}` and password `{m2_argocd_pass}` - an empty application list will be displayed.
 
@@ -110,7 +110,7 @@ metadata:
 type: Opaque
 stringData:
   # Warning: Remove trailing slashes or the plugin will throw "method not allowed" errors
-  ARGOCD_URL: https://{ns_tssc_gitops}-server-{ns_tssc_gitops}.{cluster_apps_domain}
+  ARGOCD_URL: https://{ns_tssc_gitops}-server-{ns_tssc_gitops}.{openshift_cluster_ingress_domain}
   ARGOCD_USERNAME: {m2_argocd_user}
   ARGOCD_PASSWORD: {m2_argocd_pass}
 ----
@@ -120,7 +120,7 @@ stringData:
 
 Update your Backstage CR to include the Argo CD secret:
 
-. Navigate to your https://console-openshift-console.{cluster_apps_domain}/k8s/ns/{m2_rhdh_project}/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console] and switch to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{m2_rhdh_project}/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and switch to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *argocd-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -193,14 +193,14 @@ image::setup-rhdh/argocd-plugin-logs.png[]
 
 For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.
 
-Recall that your environment has been pre-configured with a repository that contains a sample *catalog-info.yaml* in GitLab - https://gitlab-gitlab.{cluster_apps_domain}/development/argocd-example[module-2-assets/discovery-example].
+Recall that your environment has been pre-configured with a repository that contains a sample *catalog-info.yaml* in GitLab - https://gitlab-gitlab.{openshift_cluster_ingress_domain}/development/argocd-example[module-2-assets/discovery-example^].
 
 [NOTE]
 ====
 Normally the *catalog-info.yaml* file will live alongside source code, or in a dedicated repository for catalog files. This module places it in the same repository as the deployment manifests for convenience.
 ====
 
-In this case you can see that the https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets/-/blob/main/discovery-example/catalog-info.yaml?ref_type=heads[*argocd/app-selector* annotation] is set on the Component. This tells the Argo CD plugin for {product_rhdh_name} to query the configured Argo CD instance for Applications with a label matching that selector.
+In this case you can see that the https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/module-2-assets/-/blob/main/discovery-example/catalog-info.yaml?ref_type=heads[*argocd/app-selector* annotation^] is set on the Component. This tells the Argo CD plugin for {product_rhdh_name} to query the configured Argo CD instance for Applications with a label matching that selector.
 
 === Create a Namespace
 
@@ -222,7 +222,7 @@ metadata:
     argocd.argoproj.io/managed-by: tssc-gitops
 ----
 . Click *Create*.
-. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD], then selecting the *in-cluster* item.
+. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD^], then selecting the *in-cluster* item.
 . Your new *httpsink* namespace should be listed in the *Namespaces* field.
 +
 image::setup-rhdh/argocd-cluster-details.png[]
@@ -247,7 +247,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab-gitlab.{cluster_apps_domain}/rhdh/module-2-assets.git
+    repoURL: https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/module-2-assets.git
     targetRevision: HEAD
     path: argocd-example/k8s
   destination:
@@ -273,7 +273,7 @@ The Application you created is a simple example, but notably it has a `app.kuber
 
 First, perform a sanity check by viewing your new application in the Argo CD dashboard.
 
-. Visit the https://{ns_tssc_gitops}-server-{ns_tssc_gitops}.{cluster_apps_domain}/[*{ns_tssc_gitops}* Argo CD dashboard].
+. Visit the https://{ns_tssc_gitops}-server-{ns_tssc_gitops}.{openshift_cluster_ingress_domain}/[*{ns_tssc_gitops}* Argo CD dashboard^].
 . Login as:
     * Username: `{m2_argocd_user}`
     * Password: `{m2_argocd_pass}`
@@ -281,7 +281,7 @@ First, perform a sanity check by viewing your new application in the Argo CD das
 +
 image::setup-rhdh/argocd-application.png[]
 
-. Next, return to https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}[{product_rhdh_name}].
+. Next, return to https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}[{product_rhdh_name}^].
 . Login as:
     * Username: `{rhdh_user}`
     * Password: `{rhdh_user_password}`

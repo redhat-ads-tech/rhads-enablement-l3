@@ -108,11 +108,11 @@ This is a tedious and time consuming process that requires JavaScript expertise 
 
 The ability to load plugins dynamically is a value added feature included in {product_rhdh_name} that's currently unavailable in upstream Backstage - you can read more about it in the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/introduction_to_plugins/index#con-rhdh-plugins[{product_rhdh_name} documentation^, window="content"]. 
 
-The dynamic plugin support in {product_rhdh_name} means that new plugins can be installed without the need to edit code and rebuild the {product_rhdh_name} container image. For example, installing the https://backstage.io/docs/integrations/gitlab/discovery[GitLab plugin with upstream Backstage] requires adding a new dependency and editing your Backstage installation's source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With {product_rhdh_name} you can simply toggle plugins on or off, and they're tested and guaranteed to be compatible with your version of {product_rhdh_name}.
+The dynamic plugin support in {product_rhdh_name} means that new plugins can be installed without the need to edit code and rebuild the {product_rhdh_name} container image. For example, installing the https://backstage.io/docs/integrations/gitlab/discovery[GitLab plugin with upstream Backstage^] requires adding a new dependency and editing your Backstage installation's source code. Then you need to rebuild and test to ensure the plugin and Backstage versions are compatible. With {product_rhdh_name} you can simply toggle plugins on or off, and they're tested and guaranteed to be compatible with your version of {product_rhdh_name}.
 
 Given the vast ecosystem of Backstage plugins, the {product_rhdh_name} team needs to be selective about which specific plugins to package and support. 
 
-Officially supported plugins and technology preview plugins (available but without support SLAs) can be seen found the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins[plugins documentation].
+Officially supported plugins and technology preview plugins (available but without support SLAs) can be seen found the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins[plugins documentation^].
 
 You'll see dynamic plugins in action shortly.
 
@@ -148,7 +148,7 @@ techdocs:
     runIn: local
 ```
 
-You'll be using the {product_rhdh_name} operator to install and manage a Backstage instance - this means your *app-config.yaml* will be stored in a https://kubernetes.io/docs/concepts/configuration/configmap/[ConfigMap on OpenShift].
+You'll be using the {product_rhdh_name} operator to install and manage a Backstage instance - this means your *app-config.yaml* will be stored in a https://kubernetes.io/docs/concepts/configuration/configmap/[ConfigMap on OpenShift^].
 
 == Software Templates
 
@@ -217,7 +217,7 @@ spec:
           description: Maven Group Id
 ```
 
-You might have recognized this as a https://json-schema.org/[JSON Schema] structure. By using JSON Schema you can define the parameters that are supported by the template, and, more importantly, enforce validation on those parameters. The rendering of the form in the {product_rhdh_name} UI is managed by the https://github.com/rjsf-team/react-jsonschema-form[react-jsonschema-form^, window="content"] library.
+You might have recognized this as a https://json-schema.org/[JSON Schema^] structure. By using JSON Schema you can define the parameters that are supported by the template, and, more importantly, enforce validation on those parameters. The rendering of the form in the {product_rhdh_name} UI is managed by the https://github.com/rjsf-team/react-jsonschema-form[react-jsonschema-form^, window="content"] library.
 
 [NOTE]
 ====
@@ -257,7 +257,7 @@ spec:
 
 Notice how the `parameters` are referenced and used in the `steps`? Another point of note is that a `user` variable is available to access data related to the user that's using the Template, and subsequent `steps` can access `output` from prior steps. 
 
-The `output` values are documented on a per plugin basis. You can find the values for the specific version of your installed plugins by accessing the https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{cluster_apps_domain}/create/actions[/create/actions] endpoint on your {product_rhdh_name} instance.
+The `output` values are documented on a per plugin basis. You can find the values for the specific version of your installed plugins by accessing the https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}/create/actions[/create/actions^] endpoint on your {product_rhdh_name} instance.
 
 === Output
 
