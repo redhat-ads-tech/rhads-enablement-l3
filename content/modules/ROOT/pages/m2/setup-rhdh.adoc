@@ -1,0 +1,199 @@
+
+= Install and Configure {product_rhdh_name}
+
+== Installation Requirements
+
+This guide follows an Operator-based installation method for {product_rhdh_name}. A Helm-based installation option is also available, but is outside the scope of this module.
+
+Refer to the https://docs.redhat.com/en/documentation/red_hat_developer_hub/[latest {product_rhdh_name} documentation^] for up-to-date installation requirements.
+
+For {product_rhdh_name} version {product_rhdh_version}, the following hardware resources are recommended:
+
+* 7 vCPU
+* 26 GiB Memory
+* 23 GiB Storage
+
+OpenShift versions 4.16 through 4.19 are supported. Visit the https://access.redhat.com/support/policy/updates/developerhub[{product_rhdh_name} Life Cycle page^] for the latest information.
+
+== Operator Install & Verification
+
+Your environment has been preconfigured with the {product_rhdh_name} Operator preinstalled. You'll verify that the Operator is installed and running in this section.
+
+=== Access OperatorHub and Installed Operators
+
+. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
+    * Username: `{openshift_admin_user}`
+    * Password: `{openshift_admin_password}`
+. Dismiss any popups that appear.
+. Click the *Cluster Selector* in the top-left and select *local-cluster*.
++
+image::setup-rhdh/select-cluster.png[]
++
+[NOTE]
+====
+Your environment is equipped with Red Hat Advanced Cluster Management, hence the requirement to select a cluster context. In a real-world scenario, you'd have multiple clusters to choose from, but your environment is limited to a single OpenShift cluster.
+====
+. Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
+. Expand *Operators* section in the side menu and click the *Installed Operators* link.
+
+You're now viewing the operators that have been preinstalled in your environment.
+
+=== Confirm {product_rhdh_name} Operator is Installed
+
+. Ensure *All projects* is selected in the *Project* selector - https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/[cluster-scoped^] operators will be listed.
+. Select *{product_rhdh_name}* from the listed operators.
++
+image::setup-rhdh/view-operator.png[]
+
+[WARNING]
+====
+Contact a lab administrator if the {product_rhdh_name} Operator is not listed.
+====
+
+== Create a {product_rhdh_name} Instance
+
+=== The Backstage Custom Resource
+
+The {product_rhdh_name} Operator provides a Backstage https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resource Definition (CRD)^] for Kubernetes. This CRD is used to provision new instances of {product_rhdh_name} on OpenShift clusters.
+
+A minimal Backstage CR resembles the following YAML:
+
+```yaml
+apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+  name: my-rhdh-instance
+spec:
+  # define application specific configurations, e.g create an OpenShift Route
+  application:
+    route:
+      enabled: true
+  # Provision a Postgres database for storage. In production scenarios, it's
+  # recommended to use a Postgres instance that's managed and configured for HA
+  database:
+    enableLocalDb: true
+```
+
+Once this CR is applied to the OpenShift cluster, the {product_rhdh_name} Operator will provision a new instance of {product_rhdh_name} in the namespace where the CR was created.
+
+[WARNING]
+====
+Before creating a Backstage CR, we need to satisfy some prerequisites. So don't apply that YAML to your environment just yet!
+====
+
+=== Create a Project/Namespace
+
+. Visit the {openshift_console_url}[OpenShift Web Console].
+. Click the *Cluster Selector* in the top-left, and select *local-cluster*.
+. Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
+. Navigate to *Home > Projects*, then click the *Create project* button. 
++
+image::setup-rhdh/create-project.png[]
+. Enter the name `{m2_rhdh_project}` in the popup that appears, then click *Create*.
+
+You'll use this project throughout this module - it's essential that you use the name *{m2_rhdh_project}* or subsequent exercises won't work as expected.
+
+=== Defining a Backstage Configuration
+
+As mentioned earlier, {product_rhdh_name} is based on the Backstage CNCF project. Backstage requires an https://backstage.io/docs/conf/[app-config.yaml^] to define its configuration. The *app-config.yaml* can be mounted as a https://kubernetes.io/docs/concepts/storage/volumes/[volume^] in Backstage Pods that are created by the {product_rhdh_name} Operator.
+
+In this section you'll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the `{m2_rhdh_project}` namespace.
+
+. Login to the {openshift_console_url}[OpenShift Web Console].
+. Go to *Workloads > ConfigMaps* using the side navigation.
+. Click the *Create ConfigMap* button on the *ConfigMaps* screen.
++
+image::setup-rhdh/create-rhdh-configmap.png[]
+. Switch to the YAML view and paste the following into the editor:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {m2_rhdh_cm_name}
+  namespace: {m2_rhdh_project}
+data:
+  app-config.yaml: |
+    app:
+      title: Red Hat Developer Hub
+      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
+
+    # Enable guest sign-in without user validation. This configuration
+    # is unsafe - only use it for testing when Developer Hub is not
+    # connected to upstream sources of data!
+    auth:
+      providers:
+        guest:
+          dangerouslyAllowOutsideDevelopment: true
+    backend:
+      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
+      cors:
+        origin: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
+----
+. Click *Create* to create the ConfigMap containing your *app-config.yaml*.
+
+[NOTE]
+====
+The URL referenced in the ConfigMap is determined by combining the Backstage CR name with "backstage" and the namespace name. For example, your namespace is `{m2_rhdh_project}` and the Backstage CR will be named `{m2_rhdh_instance}`, so the URL is https://{m2_rhdh_instance}-backstage-{m2_rhdh_project}.{openshift_cluster_ingress_domain}.
+====
+
+=== Deploy a {product_rhdh_name} Instance
+
+. Click the plus (`+`) icon in the top-right corner of the OpenShift Web Console, then select the *Import YAML* option.
+. Paste the following YAML into the editor:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+  name: {m2_rhdh_instance}
+  namespace: {m2_rhdh_project}
+spec:
+  application:
+    appConfig:
+      mountPath: /opt/app-root/src
+      # This instructs the operator to mount the ConfigMap
+      # that you created into the Backstage Pods
+      configMaps:
+        - name: {m2_rhdh_cm_name}
+    route:
+      enabled: true
+  database:
+    enableLocalDb: true
+----
+. Click *Create*. You will be redirected to a screen showing your new Backstage CR.
++
+image::setup-rhdh/backstage-cr.png[]
+
+This Backstage CR will be detected by the {product_rhdh_name} Operator. The Operator will deploy Postgres and Backstage Pods in the `{m2_rhdh_project}` namespace. Verify the status of the Pods by visiting *Workloads > Pods* and checking that both Pods are marked as running and ready - this will take a minute or two.
+
+image::setup-rhdh/backstage-pods.png[]
+
+=== Visit your {product_rhdh_name} Instance
+
+You can access your instance of {product_rhdh_name} using a https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] that was created by the Operator.
+
+. Select *Networking > Routes* in the side menu of the OpenShift Web Console.
+. Ensure that the *{m2_rhdh_project}* project is selected in the project selector.
+. Click the URL in the *Location* column on the *Routes* page. The {product_rhdh_name} sign-in page will appear.
++
+image::setup-rhdh/backstage-route.png[]
+. Select the *Guest* sign-in option. You'll automatically be logged in as a *Guest* user, and the home page will be displayed.
++
+image::setup-rhdh/rhdh-homepage.png[]
+
+NOTE: If an *Application is not available* message is displayed when you click the Location, wait another minute. This simply means the Pod readiness check has not passed yet, but will soon.
+
+Nice work! You deployed an instance of {product_rhdh_name} with a minimal *app-config.yaml*. An internal developer portal is only valuable when it has been connected to sources of data and configured with templates. In the following sections you'll learn how to connect {product_rhdh_name} to:
+
+* Source Control (GitLab in this environment)
+* Single Sign-On (Keycloak in this environment)
+* Continuous Delivery (Argo CD in this environment)
+
+Additionally, you'll learn how to:
+
+* Safely include sensitive information in your *app-config.yaml* using Secrets
+* Manage plugins and plugin configuration
+* Enable role-based access control (RBAC)

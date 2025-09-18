@@ -1,0 +1,23 @@
+= Hands-on Lab: Software Template Patterns for Self-service
+
+[#introduction]
+== Introduction
+
+In this lab we will be gain hands-on experience to work with Software Templates to build new integrations into OpenShift, including:
+
+* Deploy a Database, Red Hat Data Grid
+
+* Create a VM using OpenShift Virtualization
+
+* Software template to create a namespace configured
+
+* Software template to setup Observability
+
+== Getting started
+
+* Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
+
+** Login with your user administrator credentials:
+
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
