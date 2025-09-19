@@ -1,0 +1,86 @@
+= Overview and Installation
+
+== What is Orchestrator for {product_rhdh_name}
+
+You've already learned how to use Software Templates as a means for developers to scaffold new codebases that follow organisational standards, or self-servce certain aspects of their daily activities. 
+
+However, developer self-service requests might require more than what a Software Template can provide. For example,certain activities require an approval step, or involve long-running stateful processes - this is where the Orchestrator can help. 
+
+The Orchestrator plugins act as an interface between {product_rhdh_name} and https://serverlessworkflow.io/[Serverless Workflow^]. Serverless Workflow is a cloud-native workflow engine which allows teams to design, deploy and execute arbitrarily complex workflows which can integrate with external systems through several mechanisms.
+
+The Orchestrator plugin is also integrated with the https://backstage.io/docs/notifications/[Backstage Notifications^] plugin, which allows users or groups to be notified of milestones in the workflow execution.
+
+This is a high level architectural overview of the Orchestrator:
+
+image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[]
+
+== Installing Orchestrator
+
+=== Prerequisites
+
+Before continuing, please complete module 2.
+
+
+=== Install the Serverless and Serverless Workflow Operators
+
+The Orchestrator depends on two Operators to provide it's core functionality to {product_rhdh_name}:
+
+* OpenShift Serverless Operator
+* OpenShift Serverless Logic Operator
+
+These Operators provide essential *Knative* and *SonataFlow* Custom Resources for that Orchestrator uses to facilitate the execution of custom workflows.
+
+Confirm that both Operators are installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com\~v1alpha1\~ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
+
+image:orchestrator-overview/install-operators.png[]
+
+If either Operator is missing, use Operator Hub to install the stable release.
+
+=== Install the Orchestrator Plugins
+
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/core~v1~ConfigMap[ConfigMaps^] screen for the *{m2_rhdh_project}* project.
+. Select and edit the *{m2_rhdh_plugins_cm_name}* using the YAML view.
+. Add the following plugins to the existing `plugins` array:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+- package: "@redhat/backstage-plugin-orchestrator@1.6.0"
+  disabled: false
+  integrity: sha512-fOSJv2PgtD2urKwBM7p9W6gV/0UIHSf4pkZ9V/wQO0eg0Zi5Mys/CL1ba3nO9x9l84MX11UBZ2r7PPVJPrmOtw==
+  pluginConfig:
+    dynamicPlugins:
+      frontend:
+        red-hat-developer-hub.backstage-plugin-orchestrator:
+          appIcons:
+            - importName: OrchestratorIcon
+              name: orchestratorIcon
+          dynamicRoutes:
+            - importName: OrchestratorPage
+              menuItem:
+                icon: orchestratorIcon
+                text: Orchestrator
+              path: /orchestrator
+- package: "@redhat/backstage-plugin-orchestrator-backend-dynamic@1.6.0"
+  disabled: false
+  integrity: sha512-Kr55YbuVwEADwGef9o9wyimcgHmiwehPeAtVHa9g2RQYoSPEa6BeOlaPzB6W5Ke3M2bN/0j0XXtpLuvrlXQogA==
+  dependencies:
+    - ref: sonataflow
+- package: "@redhat/backstage-plugin-scaffolder-backend-module-orchestrator-dynamic@1.6.0"
+  disabled: false
+  integrity: sha512-Bueeix4661fXEnfJ9y31Yw91LXJgw6hJUG7lPVdESCi9VwBCjDB9Rm8u2yPqP8sriwr0OMtKtqD+Odn3LOPyVw==
+  pluginConfig:
+    orchestrator:
+      dataIndexService:
+        url: http://sonataflow-platform-data-index-service.setup-rhdh
+- package: "@redhat/backstage-plugin-orchestrator-form-widgets@1.6.0"
+  integrity: sha512-Tqn6HO21Q1TQ7TFUoRhwBVCtSBzbQYz+OaanzzIB0R24O6YtVx3wR7Chtr5TzC05Vz5GkBO1+FZid8BKpqljgA==
+  disabled: false
+  pluginConfig:
+    dynamicPlugins:
+      frontend:
+        red-hat-developer-hub.backstage-plugin-orchestrator-form-widgets: {}  
+----
+. Scroll down and click *Save*.
+
+=== Verify the SonataFlow Platform
+

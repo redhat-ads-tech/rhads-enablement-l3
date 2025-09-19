@@ -1,21 +1,4 @@
-:imagesdir: ../assets/images
 
-== Platform Engineer Activity: Enable The Orchestrator Plugin and Developer Self-Service
-
-Until now we have discussed Software Templates as a means for developers to accelerate their daily inner-loop activities. But Software Templates can do a lot more, like allowing developers to provision and deploy infrastructural components (like virtual machines and even complete OpenShift clusters) and application middleware components like message brokers and databases. 
-
-Software templates can achieve this through custom plugins that interact with tools like Ansible and OpenShift API servers. 
-
-
-But, in real life, these developer self-service requests might require more than what a Software Template can provide. For example, for certain activities an approval step might be required. This is where the Orchestrator plugin comes in. 
-
-The Orchestrator plugin acts as an interface between {product_name_rhdh} and Serverless Workflow. Serverless Workflow is a cloud-native workflow engine which allows to design, deploy and execute arbitrarily complex workflows which can integrate with external systems through several mechanisms.
-
-The Orchestrator plugin is also integrated with the Notifications plugin, which allows users or groups to be notified of milestones in the workflow execution.
-
-This is a high level architectural overview of the Orchestrator:
-
-image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[]
 
 As a use case for Developer Self-Service we are going to look at a pretty simple use case: a Developer can request a namespace on an OpenShift cluster. The namespace has limited resources, defined by resource quota and limit ranges. In our case, the namespaces come in two sizes, small and large. Large namespaces however require an approval. 
 
