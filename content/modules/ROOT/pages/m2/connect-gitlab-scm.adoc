@@ -142,7 +142,7 @@ catalog:
         entityFilename: discovery-example/catalog-info.yaml
         schedule:
           frequency:
-            minutes: 5
+            minutes: 1
           timeout:
             minutes: 3
 ----
@@ -173,6 +173,11 @@ image::setup-rhdh/gitlab-discovery-log.png[]
 . Navigate to the *Catalog* to see imported items of *Kind* Component from GitLab repositories - specifically a *HTTP Sink Application*.
 +
 image::setup-rhdh/gitlab-component-httpsink.png[]
++
+[NOTE]
+====
+If the HTTP Sink Application isn't listed in the Catalog, wait a minute or two and refresh the Catalog page.
+====
 . Visit the *APIs* screen using the link in the side menu and you'll find a matching API Entity. Click it.
 . A *Relations* pane shows that the API is provided by the *HTTP Sink Application*.
 . Click the *Definition* tab - an Swagger UI is rendered from the OpenAPI Spec.

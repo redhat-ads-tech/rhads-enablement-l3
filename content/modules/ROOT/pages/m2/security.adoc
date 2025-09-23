@@ -121,6 +121,7 @@ image::setup-rhdh/security-rbac-view-admin.png[]
 
 You'll create a policy that grants basic catalog viewing permissions to users in the `tssc` group. Recall that the *Group* entities in your Software Catalog have been synchronized from Keycloak.
 
+. Return to the  *Administration > RBAC* screen.
 . Click *Create* to start creating a new policy.
 . Configure the policy with the following settings:
   * *Policy Name*: `tssc-catalog-view`

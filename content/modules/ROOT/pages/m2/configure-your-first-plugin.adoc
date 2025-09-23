@@ -125,6 +125,11 @@ Now you need to update your Backstage CR to reference the dynamic plugins Config
 . Navigate to *Operators > Installed Operators* in the OpenShift Web Console.
 . Click on *{product_rhdh_name}*.
 . Select the *Backstage* tab, then click on your `{m2_rhdh_instance}` instance.
++
+[WARNING]
+====
+Be sure to select the *{m2_rhdh_instance}* instance from the list. Modifying other listed Backstage instances could impact future modules.
+====
 . Click the *YAML* tab to edit the resource.
 . Update the `spec.application` section to include the dynamic plugins configuration:
 +
@@ -221,6 +226,11 @@ Update your *app-config.yaml* to include Keycloak integration:
 . Click *Edit ConfigMap*.
 . Replace the `app-config.yaml` content with:
 +
+[WARNING]
+====
+Replace just the contents of `app-config.yaml` in the ConfigMap. Do not overwrite the entire ConfigMap. Make sure you indent the new configuration correctly - you can highlight multiple lines in the editor and press TAB to indent them.
+====
++
 [source,yaml,role=execute,subs=attributes+]
 ----
 app:
@@ -236,7 +246,7 @@ auth:
     oidc:
       production:
         metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
-        clientId: \${KEYCLOAK_CLIENT_ID}
+        clientId: $\{KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         prompt: auto
 
