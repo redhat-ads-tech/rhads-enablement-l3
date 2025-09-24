@@ -1,0 +1,9 @@
+= Setup Trusted Artifact Signer on RHEL
+
+== Overview
+
+This guide covers the installation and configuration of Trusted Artifact Signer (TAS) on Red Hat Enterprise Linux (RHEL) systems. This installation method is ideal for organizations that prefer traditional server deployments or need to integrate TAS with existing non-OpenShift Kubernetes platforms.
+
+== TBD
+
+// TODO: Add content for TAS installation and setup on RHEL
