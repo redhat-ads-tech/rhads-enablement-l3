@@ -31,6 +31,7 @@
     "microservices",
     "API",
     "APIs",
+    "Casbin",
     "CI",
     "CD",
     "GitOps",
@@ -111,7 +112,15 @@
     "virtualization",
     "containerization",
     "llamastack",
-    "GGUF"
+    "GGUF",
+    "roadiehq",
+    "scaffolder",
+    "techdocs",
+    "quarkus",
+    "architecting",
+    "kubevirt",
+    "infinispan",
+    "opeanapi"
   ],
   "ignoreWords": [
     "adoc",
@@ -121,7 +130,13 @@
     "ifdef",
     "asciidoc",
     "TODO",
-    "FIXME"
+    "FIXME",
+    "platformengineer",
+    "httpsink",
+    "Backstages",
+    "webkitallowfullscreen",
+    "mozallowfullscreen",
+    "rhdatagrid"
   ],
   "ignorePaths": [
     "node_modules/**",
