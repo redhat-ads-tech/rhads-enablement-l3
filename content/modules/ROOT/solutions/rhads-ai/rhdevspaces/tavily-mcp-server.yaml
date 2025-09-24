@@ -1,0 +1,11 @@
+name: Tavily MCP
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Tavily MCP server
+    command: npx
+    args:
+      - -y
+      - mcp-remote 
+      - https://mcp.tavily.com/mcp/?tavilyApiKey=
+    env: {}

@@ -1,0 +1,58 @@
+= Build an Agent with RHADS with security integrated
+
+== Introduction
+
+This lab provides the opportunity to explore how Red Hat Advanced Developer Suite integrates enables teams to easily start building AI applications with best practices from the start. 
+
+== Objectives
+This Lab will showcase how to start with a blank software template and bring an AI Agent to production using Red Hat Advanced Developer Suite right from the start to ensure organizations include best practices and company guidelines from the beginning. 
+
+Let's get started.
+
+== Scenario
+Now, for this lab, you are part of the AI Platform Engineering team and your responsibility is to provide the tools and best practices with your organization's guidelines for the AI team to build an AI agent in OpenShift.
+
+== Getting started
+
+** Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
+
+** Login with your user administrator credentials:
+
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
+
+
+== Create the Software Template in Red Hat Developer Hub (RHDH)
+
+For this lab, you will be using a skeleton template that can serve multiple purposes.  Your team will ensure that the software template will be adapted to build and deploy an AI Agent using the skeleton template you will make the updates to fullfil the requirements from the AI team.
+
+* Now, let's bring the skeleton to Red Hat Developer Hub.
+
+* Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
+
+//TODO REPLACE IMAGE
++
+image:self-service-patterns/namespace-lab/rhdh-create-icon.png[Create UI] 
+
+
+* Click the *Register Existing Component* button.
+//TODO REPLACE IMAGE
++
+image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI] 
+
+{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
+
+* Enter the following URL in the *Select URL* field and click *Analyze*:
+
+//TODO REPLACE URL
++
+[source,bash,role=execute,subs=attributes+]
+----
+{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/template.yaml
+----
+
+* Click on the *Import* button
+
+image:self-service-patterns/namespace-lab/rhdh-register-component-finish.png[width=60%] 
+
+*Congratulations!* You now have a new Software template in RHDH.
