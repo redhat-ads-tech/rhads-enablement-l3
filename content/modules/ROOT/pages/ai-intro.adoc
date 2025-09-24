@@ -78,11 +78,11 @@ AI Agent Frameworks help developers to build AI agents by reducing boilerplate c
 * Retain context from previous interactions
 
 === Agent Protocols
-
 === Agent2Agent(A2A)
 
 Agent2Agent is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. Provides security and agent discovery using Agent cards to access detailed information about an agent.
 
+This is one of the most well-known agent protocols within their respective domains. While there are other competing protocols, these represent the current leading standards. Red Hat is not backing a specific protocol, but watching the market and will continually evaluate each protocol for market efficacy.
 
 === Overview Model Context Protocol (MCP) 
 

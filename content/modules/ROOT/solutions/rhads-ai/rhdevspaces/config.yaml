@@ -5,7 +5,7 @@ models:
   - name: llama-3-2-3b
     provider: openai
     model: llama-3-2-3b
-    apiBase: ""
+    apiBase: 
     apiKey: ""
     roles:
       - chat

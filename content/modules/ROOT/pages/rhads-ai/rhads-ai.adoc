@@ -41,7 +41,9 @@ image:rhads-ai/local-dev.png[Podman AI Lab]
 
 
 === RH OpenShift Dev Spaces with AI assistant 
-Red Hat OpenShift Dev Spaces integrates with different extensions that allow Software and AI Engineers to connect with diverse AI assistance to facilitate software development, such as reducing the code for repetitive patterns, and helps troubleshoot issues. 
+Red Hat OpenShift Dev Spaces integrates with different extensions that allow Software and AI Engineers to connect with diverse AI assistance to facilitate software development, such as reducing the code for repetitive patterns, and helps troubleshoot issues.  Additionally, it can be used to integrate with MCP Servers to learn how to interact with other systems, such as APIs and third-party tools.
+
+
 
 link:https://developers.redhat.com/articles/2024/08/12/integrate-private-ai-coding-assistant-ollama#the_devfile_and_how_it_works[Integrate a private AI coding assistant into your CDE using Ollama, Continue, and OpenShift Dev Spaces,window='_blank']
 
@@ -60,7 +62,7 @@ The Llama Stack Operator organizations can access many MCP servers through MCP c
 
 == References:
 
-* link: https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Building enterprise-ready AI agents: Streamlined development with Red Hat AI, window='_blank']
+* https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Building enterprise-ready AI agents: Streamlined development with Red Hat AI, window='_blank']
 
 
 

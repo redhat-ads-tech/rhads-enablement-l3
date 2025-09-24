@@ -5,6 +5,7 @@
 
 In this lab, we will gain hands-on experience working with RHADS and Developer tools to build AI applications, including:
 
-* Build an AI application locally with Podman AI Lab
-* Build an Agent with RHDH from Red Hat OpenShift Dev Spaces
+* Experiment with an AI application locally using Podman AI Lab
 * Build an Agent with RHADS with security integrated
+* Build an Agent with RHDH from Red Hat OpenShift Dev Spaces
+

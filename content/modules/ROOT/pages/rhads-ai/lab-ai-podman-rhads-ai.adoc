@@ -1,4 +1,4 @@
-= Build an AI application locally with Podman AI Lab
+= Experiment with an AI application locally using Podman AI Lab
 
 
 == Prerequisites
@@ -9,10 +9,14 @@ For this lab, you are required to install and set up Podman Desktop and ensure y
 * Podman AI Lab extension is installed. Follow the Podman AI Lab installation guide link:https://podman-desktop.io/docs/ai-lab/installing[Podman AI Lab extension,window='_blank']
 
 == Introduction
-Welcome to this lab, where you will have the chance to learn how to build AI applications using Podman AI Lab in your local environment. You will also explore different AI applications, including integrations with *Llama Stack*.
+Welcome to this lab, where you can experiment with AI applications using Podman AI Lab in your local environment. You will also explore different AI applications, including integrations with *Llama Stack*.
+
+== Scenario
+Now, imagine for a moment that you are part of the Python AI Development team. The AI Team's responsibility is to experiment with AI applications using Podman AI Lab to finally build an AI agent in an enterprise environment.
+
 
 == Explore Podman 
-* Now, you are ready to start building AI applications locally. 
+* Now, you are ready to start experimenting with AI applications locally. 
 
 
 *Take the time to explore Podman AI Lab*
@@ -167,7 +171,10 @@ image:rhads-ai/local-lab/ailab-recipes.png[width=80%]
 
 
 == Conclusion
-*Podman AI Lab* is a great resource for experimenting and building AI applications. Next, you will explore how to bring AI applications from Podman to OpenShift with RHDH.
+*Podman AI Lab* is a great resource for experimenting with AI applications, from learning from recipes, testing locally and try different models. 
+
+== Next
+Next, you will learn how to start building AI applications such as an AI agent on an enterprise environment. This environment needs to include best practices starting with security and continue with organization guidelines in OpenShift.
 
 == Resources
 

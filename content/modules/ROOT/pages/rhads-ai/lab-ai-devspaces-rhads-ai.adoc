@@ -1,0 +1,264 @@
+= Build an Agent with Red Hat Advanced Developer Suite
+
+== Introduction
+
+This lab provides the opportunity to explore how Red Hat Advanced Developer Suite integrates with other products and third-party tools to bring AI into the developers' daily activities, but also how other developer tools, such as RH OpenShift Dev Spaces, provide an opportunity to adopt AI practices. 
+
+== Objectives
+This Lab will showcase how to start building an AI application from a blank software template using Red Hat Advanced Developer Suite right from the start to ensure organizations include best practices and company guidelines from the beginning. 
+Additionally, you will be setting up a Red Hat OpenShift Dev Spaces as a development environment, leveraging AI tools.
+
+Let's get started.
+
+== Scenario
+Now, imagine for a moment that you are part of the Python AI Development team. The AI Team's responsibility is to build an AI agent with best practices and organization guardrails using RHADS and integrations with OpenShift AI.
+
+== Getting started
+
+* Access the Red Hat OpenShift Dev Spaces from the template already created in Red Hat Developer Hub:
+
+** Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
+
+** Login with your user administrator credentials:
+
+    *** *Username*: {openshift_admin_user}
+    *** *Password*: {openshift_admin_password}
+
+** Next, click on the component's *Python Web AI*
+** From the component's overview, *click on* the *Red Hat OpenShift Dev Spaces*
+
+** Login with your user administrator credentials:
+
+ *** *Username*: {devspaces_user}
+ *** *Password*: {devspaces_user_password}
+
+== Getting started with Red Hat OpenShift Dev Spaces
+
+*Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing the repository, Dev Spaces will attempt to select a suitable development environment. OpenShift Dev Spaces will read from the *dev.yaml* file and automatically configure the workspace with the specified container image, tools, and commands. 
+
+Once it finishes creating the workspace, you will see an environment similar to this:
+
+image:rhads-ai/rhdevspaces/devspaces-newenv.png[width=100%]
+
+
+== AI Agent Overview
+An AI agent needs the following things:
+
+* *Planning and Reasoning*: The AI agent uses an LLM for reasoning. For this module, we are using a Red Hat self-hosted module.
+* *Tools and Actions*: An AI Engineer can build their own tools and integrations; however, there are many tools available that organizations can take advantage of. Additional integrations with custom systems are also possible.
+* *Memory*, understanding context, such as short-term or long-term memory, is the ability to store data and learn more from it.
+* *Input* could be a website or any device that provides input information to the agent. *Guardrails/Safety Layer: The rules that keep the agent's actions in check.
+
+== Explore the AI Agent
+Our AI Agent is a Search Agent that will search information on the Internet and specific websites, depending on the prompt send by the user. The agent will decide which tool to use to return the information you require.
+
+== AI Agent Characteristics
+
+* *Planning and Reasoning:* We are using a Red Hat self-hosted module for this module.
+* *Tools and Actions:* This agent, is using the tools provided by *https://www.tavily.com[tavily^]*. Tavily provides tools, including Web Search to search information on the Internet, TavilyExtract to extract specific information on web pages, and TavilyCrawl to discover new pages and index their content, helping agents find content.
+* *Memory:* Short memory is used for this AI agent.
+* *Input:* This solution includes a website to interact with the agent.
+* *Guardrails/Security:* Start with the prompt provided to the agent. And follows with Red Hat Advanced Developer Suite security integrated, including image scanning, policy.  
+
+== AI Agent Architecture
+The following image describes the AI agent architecture, including the Red Hat products interacting directly with the application through the Software Development Lifecycle.
+
+image:rhads-ai/rhdevspaces/architecture.png[width=100%]
+
+== AI Agent Use Cases
+
+Many use cases that an AI Agent can fulfil, some of them are:
+
+* Web Search
+* Planning / Coordinator
+* Fraud Prevention
+* Events Manager
+* Automated Code Generation & Testing
+* Customer support
+
+== Configure the *AI Assistant in Red Hat OpenShift Dev Spaces*
+We want to take advantage of an AI assistant using OpenShift Dev Spaces. For this Lab, we'll use *https://www.continue.dev[Continue^]*. However, many organizations might use others, such as *Claude from Anthropic *, *Microsoft Copilot*.
+In many organizations, developers must use an AI Assistant to increase productivity. Learning about AI assistants is a key part of AI and how this tool can be leverage within Red Hat products.
+
+* In *Red Hat OpenShift Dev Spaces*, click on *Extensions*.
+
+image:rhads-ai/rhdevspaces/devspaces-extension.png[width=15%]
+
+* Search for the *continue* extension and select the option: *Install Release version*
+
+image:rhads-ai/rhdevspaces/devspaces-continue-install-release.png[width=60%]
+
+* Confirm on the *Trust the Publisher and Install* button.
+image:rhads-ai/rhdevspaces/devspaces-trust.png[width=60%]
+
+* After a successful installation, you will see a screen similar to this:
+
+image:rhads-ai/rhdevspaces/devspaces-continue-page.png[width=100%]
+
+== Configure the *LLM in the AI Assistant*
+
+* Next, click on the *continue* icon.
+
+image:rhads-ai/rhdevspaces/devspaces-continue-icon.png[width=40%]
+
+
+* Next, click on the *Add Chat model* option, and click on *config file*.
+
+image:rhads-ai/rhdevspaces/devspaces-continue-config-assistant.png[width=80%]
+
+* You will see a new file created called: *config.yaml*
+
+image:rhads-ai/rhdevspaces/devspaces-continue-config-yaml.png[width=100%]
+
+* Take the time to review the file provided here:
+
+** https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml[config.yaml AI assistant config file^]
+
+* Copy the file content and *paste* it into the config.yaml file created by continue.
+
+In the next step will add the model's *apiBase* and *apiKey* from the *Internal MaaS Demo from the AI BU*.
+
+
+=== Get your API key to access the self-hosted Model
+When configuring an AI assistant, it needs an LLM to work. Organizations might have their own self-hosted models or remote models. We use the Model as a Service portal for this Lab to access an LLM.
+
+Now, you will set up your account in the link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Internal MaaS Demo from the AI BU,window='_blank']. Your account will enable you to access the Model you need with an *API KEY*. For these labs, you will be using two different models. You might need a new model in the future. You need to know how to access a self-hosted model that you can leverage to either build an application or connect to a third-party tool, such as an AI assistant.
+
+
+* Access the following URL and follow the steps to sign in with your *Red Hat account*.
+link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
+
+*Note:* The link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank'] is not an official Red Hat service. For Red Hat associate internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use. The models are provided for this limited purpose.
+
+
+** Click on *Sign in*
+
+image:rhads-ai/rhdevspaces/maas-sign-in.png[width=60%]
+
+** Click on *Authenticate with RH SSO*
+
+image:rhads-ai/rhdevspaces/maas-authrh.png[width=80%]
+
+** Click on *Google* to sign in to *RHOAI*, where the model is deployed with your account.
+
+image:rhads-ai/rhdevspaces/maas-rhoai.png[width=60%]
+
+** Click on the model *llama-3-2-3b*
+
+image:rhads-ai/rhdevspaces/maas-model-select.png[width=100%]
+
+** Create an application to access the *API Key*, with the name *assistant*.
+
+image:rhads-ai/rhdevspaces/maas-app-assistant.png[width=80%]
+
+** Copy the *API Key* and paste it into the config.yaml file created by continue in the *apiKey:"  "*.
+
+image:rhads-ai/rhdevspaces/maas-key.png[width=80%]
+
+** Copy the *Endpoint URL* and paste it into the config.yaml file created by continue in the *apiBase:* and add at the end of the route */v1*
+
+* Save the file and close the  *Config update* message
+
+image:rhads-ai/rhdevspaces/devspaces-config-updated.png[width=60%]
+
+
+=== Testing the AI Agent
+
+* Click on the recent added model *llama-3-2-3b*, to include it on the continue chat:  
+
+image:rhads-ai/rhdevspaces/continue-llama-select.png[width=60%]
+
+* Ask the AI assistant any questions, such as:
+
+image:rhads-ai/rhdevspaces/continue-chat1.png[width=60%]
+
+
+*Congratulations*, using a self-hosted LLM, you have successfully configured an *AI Assistant in Red Hat OpenShift Dev Spaces*.
+
+
+== Configure an *MCP server in the AI Assistant*
+
+The AI Search Agent will use *Tavily* for the  *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to continue our AI agent development.
+
+* Click on continue chat and click on the  *tools icon*:
+
+image:rhads-ai/rhdevspaces/mcp-configure-tools.png[width=60%]
+
+* In the tools window, click on the *plus icon*, to configure the *MCP server*.
+
+image:rhads-ai/rhdevspaces/mcp-configure-new.png[width=60%]
+
+* We have already provided you with a configuration to set up *Tavily MCP server*:
+** Take the time to review the file provided here:
+
+*** https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml[tavily-mcp-server config file^]
+
+*Note:* Other AI assistants might not use yaml files but JSON files. If you are trying to configure an AI Assistant in the future, the MCP server web page will have an example of how to configure it with other AI assistants. Explore more from https://docs.tavily.com/documentation/mcp[Tavily MCP^]
+
+* Copy the file content and *paste* it into the new-mcp-server.yaml file created by continue.
+** You are replacing the *MCP SERVER NAME CONFIG*, *MCP SERVER NAME*, *ARGS*, as it shows on the following picture:
+
+image:rhads-ai/rhdevspaces/mcp-server-config-new.png[width=100%]
+
+=== Setup your account on the Tavily website
+
+* Access https://app.tavily.com[https://app.tavily.com^]
+* Click on *Sign up* to create a new account
+* Choose your sign up method: *Google*, *GitHub*, *Email address*
+
+
+image:rhads-ai/rhdevspaces/tavily-web.png[width=100%]
+
+* Click on continue and once logged in, you will see a screen like this one:
+
+image:rhads-ai/rhdevspaces/tavily-main.png[width=100%]
+
+* Close the *Get started* pop up
+* Click on add *API KEY* 
+
+image:rhads-ai/rhdevspaces/tavily-appkey-add.png[width=40%]
+
+* Create the API KEY with the name *agent*:
+
+*Note:* The API KEY is *free*, additional information about limits in the next screenshot.
+
+image:rhads-ai/rhdevspaces/tavily-appkey-create.png[width=70%]
+
+** After creating the API KEY, copy the *API KEY VALUE*:
+
+image:rhads-ai/rhdevspaces/tavily-apikey-view.png[width=100%]
+
+**NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY GIT PUBLIC REPOSITORY. THIS IS YOUR PERSONAL API KEY**
+
+* Paste your key to include it after the *?tavilyApiKey=*
+
+image:rhads-ai/rhdevspaces/mcp-server-config-apikey.png[width=100%]
+
+* Save the changes.
+* Now, you will see *Tavily MCP server* in the MCP server configuration.
+
+If the server is not yet ready, click on the *refresh* icon:
+image:rhads-ai/rhdevspaces/mcp-server-refresh.png[width=70%]
+
+
+=== Testing the *MCP server in the AI Assistant*
+
+* Click on the *back icon* to go back to the continue chat  
+
+image:rhads-ai/rhdevspaces/mcp-server-back.png[width=60%]
+
+* Select the *agent* changing the current *chat* option.
+
+image:rhads-ai/rhdevspaces/mcp-server-select-agent.png[width=60%]
+
+We need an agent to interact with the *mcp server tools*
+
+* Ask the AI Agent any questions to use the recently added MCP server, such as:
+
+image:rhads-ai/rhdevspaces/mcp-server-chat.png[width=60%]
+
+
+*Congratulations*, you have successfully configured an *MCP Server in Red Hat OpenShift Dev Spaces* as part of the AI assistant.
+
+
+
