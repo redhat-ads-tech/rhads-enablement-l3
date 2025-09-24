@@ -1,0 +1,9 @@
+= Setup TPA on RHEL
+
+== Overview
+
+This guide covers the installation and configuration of Trusted Profile Analyzer (TPA) on Red Hat Enterprise Linux (RHEL) systems. This installation method is ideal for organizations that prefer traditional server deployments or need to integrate TPA with existing non-Openshift Kubernetes platforms.
+
+== TBD
+
+// TODO: Add content for TPA installation and setup on RHEL
