@@ -259,16 +259,15 @@
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Software templates are the heart of Red Hat Developer Hub (RHDH). This section will explore leveraging software templates to enable self-service integration of third-party tools and platform capabilities.
-During this session, you will explore the different patterns and self-service approach to reduce cognitive load, scale operations, and promote best practices across the organization.</p>
+<p>Software templates are the heart of Red Hat Developer Hub (RHDH). In this section, you will learn how to leverage software templates to enable self-service integration of third-party tools and platform capabilities. During this session, you will explore different patterns and self-service approaches to reduce cognitive load, scale operations, and promote best practices across the organization.</p>
 </div>
 <div class="paragraph">
-<p>For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems to self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing up databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team&#8217;s needs. Now, let&#8217;s explore the different architectures and designs for self-service.</p>
+<p>For this module, you are a Platform Architect working for an online marketplace. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is struggling to implement self-service for third-party components and is currently spending too much time manually creating namespaces, configurations, and provisioning databases. The goal is to free them up so they can focus on developing AI capabilities on top of the platform. Your challenge is to identify the best patterns to meet both the organization&#8217;s and the team&#8217;s needs. Let&#8217;s explore different architectures and design patterns for self-service.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<h2 id="_related_articles"><a class="anchor" href="#_related_articles"></a>Related Articles</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -286,61 +285,83 @@ During this session, you will explore the different patterns and self-service ap
 <h2 id="architecting-software-templates"><a class="anchor" href="#architecting-software-templates"></a>Architecting Software Templates</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Architecting software templates is essential for implementing Platform Engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to advancing a successful self-service approach.</p>
+<p>Architecting software templates is essential for implementing platform engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to building a successful self-service approach. Let&#8217;s review the core structure of software templates:</p>
 </div>
+<div class="sect2">
+<h3 id="_software_template_structure"><a class="anchor" href="#_software_template_structure"></a><strong>Software Template Structure</strong></h3>
 <div class="paragraph">
-<p><strong>Let&#8217;s review the core structure of software templates:</strong></p>
+<p>The software template structure in folders and files will vary depending on the component type, technology used, and specific requirements. Our approach is to separate different responsibilities into distinct folders and files, such as separating application source code from deployment manifests for each component.</p>
 </div>
-<div class="sect3">
-<h4 id="_software_templates_structure"><a class="anchor" href="#_software_templates_structure"></a><strong>Software Templates Structure</strong></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">my-template
+├── manifests
+│   ├── argocd
+│   │   ├── ${{values.component_id}}-argocd-app-dev.yaml
+│   │   └── ${{values.component_id}}-argocd-repo.yaml
+│   └── helm
+│       └── app
+│           ├── Chart.yaml
+│           ├── templates
+│           │   ├── _helpers.tpl
+│           │   └── vm.yaml
+│           └── values.yaml
+├── skeleton
+│   └── catalog-info.yaml
+└── template.yaml</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_skeleton_folder"><a class="anchor" href="#_skeleton_folder"></a><strong><code>skeleton</code> Folder</strong></h3>
 <div class="paragraph">
-<p>The software templates' structure in folders and files will vary depending on the component&#8217;s type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each component.</p>
+<p>This folder contains the application source code and catalog file, including the information to be displayed in the component&#8217;s UI within RHDH.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_folder_for_skeleton"><a class="anchor" href="#_folder_for_skeleton"></a><strong>Folder for skeleton</strong></h4>
+<div class="sect2">
+<h3 id="_manifests_folder"><a class="anchor" href="#_manifests_folder"></a><strong><code>manifests</code> Folder</strong></h3>
 <div class="paragraph">
-<p>This folder contains the application source code and catalog file, including the information to be displayed on the component&#8217;s UI in RHDH.</p>
+<p>This folder contains the application&#8217;s Kubernetes manifests and additional files that enable RHDH to build and deploy that component in a Kubernetes cluster.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_folder_for_manifests"><a class="anchor" href="#_folder_for_manifests"></a><strong>Folder for manifests</strong></h4>
+<div class="sect2">
+<h3 id="_template_yaml_file"><a class="anchor" href="#_template_yaml_file"></a><strong><code>template.yaml</code> File</strong></h3>
 <div class="paragraph">
-<p>This folder contains the application Kubernetes manifests and additional files that enable RHDH to build and deploy that component in a Kubernetes cluster.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_template_yaml"><a class="anchor" href="#_template_yaml"></a><strong>Template.yaml</strong></h4>
-<div class="paragraph">
-<p>The template yaml file defines how the component creation will interact with RHDH by defining the UI experience for the end-user, including fields, inputs, and workflow for the end user. Additionally, it describes the backend interactions and activities after the end user clicks on the create button, including creating repositories, creating GitOps objects, etc.</p>
+<p>The <code>template.yaml</code> file defines how component creation will interact with RHDH by specifying the UI experience for end users, including fields, inputs, and workflow. Additionally, it describes backend interactions and activities that occur after the end user clicks the create button, such as creating repositories and GitOps objects.</p>
 </div>
 <div class="paragraph">
 <p><strong>Template actions</strong></p>
 </div>
 <div class="paragraph">
-<p>The following actions can be used to define the steps and actions in the template.yaml representing the backend tasks required.</p>
+<p>The following actions can be used to define the steps and actions in the <code>template.yaml</code> representing the backend tasks required.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>fetch:template</strong>: Retrieves and processes template files</p>
+<p><code>fetch:template</code>: Retrieves and processes template files</p>
 </li>
 <li>
-<p><strong>publish:github</strong>: Creates repositories in version control</p>
+<p><code>publish:github</code>: Creates repositories in version control (both the application and GitOps repositories)</p>
 </li>
 <li>
-<p><strong>register:catalog</strong>: Adds the new component to the service catalog</p>
+<p><code>argocd:create-resources</code>: Creates Argo CD applications and point at the newly created GitOps repository</p>
 </li>
 <li>
-<p><strong>Custom actions</strong>: Organization-specific automation</p>
+<p><code>register:catalog</code>: Adds the new component to the service catalog</p>
+</li>
+<li>
+<p>Other custom actions: Organization-specific automation</p>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_the_mechanics_of_software_templates"><a class="anchor" href="#_the_mechanics_of_software_templates"></a>The mechanics of Software Templates</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_mechanics_of_software_templates"><a class="anchor" href="#_the_mechanics_of_software_templates"></a>The Mechanics of Software Templates</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm will use variables in the Helm Charts received from the RHDH UI to build the chart.</p>
+<p>We will explore the use case where resources need to be created on the cluster, using the recommended GitOps approach. Helm will use variables from the Helm Charts received from the RHDH UI to build the chart.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -349,65 +370,66 @@ During this session, you will explore the different patterns and self-service ap
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="patterns"><a class="anchor" href="#patterns"></a>Patterns for third-party tools integrations using software templates for self-service</h2>
+<h2 id="patterns"><a class="anchor" href="#patterns"></a>Patterns for Third-Party Tool Integrations Using Software Templates for Self-Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Different patterns can be created to accomplish business and technical needs according to your organization&#8217;s guidelines.
-As a Platform Architect, you want to identify these specific patterns and how they will be customized according to the Software Development Lifecycle.</p>
+<p>Different patterns can be created to accomplish business and technical needs according to your organization&#8217;s guidelines. As a Platform Architect, you need to identify these specific patterns and understand how they will be customized according to the Software Development Lifecycle.</p>
 </div>
 <div class="paragraph">
-<p>Here are some potential integrations that you will explore:</p>
+<p>Here are some potential integrations you will explore:</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/self-service-patterns/pe_integrations.png" alt="pe integrations">
 </div>
 </div>
-<div class="sect2">
-<h3 id="_building_patterns"><a class="anchor" href="#_building_patterns"></a>Building Patterns</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_patterns"><a class="anchor" href="#_building_patterns"></a>Building Patterns</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>When building different patterns, it is critical to understand the main key points:</p>
+<p>When building different patterns, it is critical to understand these key considerations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>The use case:</strong> What is the use case for this component? When and why should it be created, updated, or removed?</p>
+<p><strong>Use Case:</strong> What is the specific use case for this component? When and why should it be created, updated, or removed?</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Example:</strong> An in-memory database will be created only on the development environment for development purposes.</p>
+<p><strong>Example:</strong> An in-memory database will be created only in the development environment for development purposes.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Who is the end-user?</strong> This is a key question to grant access to specific users and understand how much "power" and flexibility we will grant to end users, such as developers, data scientists, and AI engineers.</p>
+<p><strong>End Users:</strong> Who are the intended users? This determines access control and the level of flexibility granted to different user groups, such as developers, data scientists, and AI engineers.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Example:</strong> In this case, the Java team will be the only ones creating this component. However, the legacy team wants to have read access.</p>
+<p><strong>Example:</strong> The Java team will be the only group authorized to create this component, while the legacy team will have read-only access.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>The technology required</strong> (database, VM): understanding which database and how this can be customized/configured. Mainly learning about basic vs custom configurations and how these configurations can fulfill the end-user needs. Which information will be filled out by the user, default values, which information is mandatory vs optional, and which data will be part of the manifests and not customized by the end-user.</p>
+<p><strong>Technology Requirements:</strong> What specific technology is needed (database, VM, etc.), and how can it be customized and configured? This includes understanding basic versus custom configurations and how these meet end-user needs. Consider which information users will provide, default values, mandatory versus optional fields, and which data will be part of the manifests without user customization.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Example:</strong> Many configurations could arise, from knowing the type of database, origin (vendor, community), version, and any specifics such as storage, etc.</p>
+<p><strong>Example:</strong> Configuration options may include database type, origin (vendor or community), version, and specifications such as storage requirements.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Environments required for the components</strong>, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with the development environment. Additionally, understanding who and how the promotion to different environments will happen, and who will have access to read or update this process.</p>
+<p><strong>Environment Requirements:</strong> Which environments are required for the components (development, QA, staging), including any customizations such as resource consumption that differ from the development environment. Additionally, determine who manages promotion to different environments and who has read or update access to this process.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Example:</strong> If a component needs to be created in production, this could only be managed by the Platform Engineering team, yet visible to the development team.</p>
+<p><strong>Example:</strong> Production components may only be managed by the Platform Engineering team while remaining visible to the development team.</p>
 </li>
 </ul>
 </div>
@@ -415,7 +437,7 @@ As a Platform Architect, you want to identify these specific patterns and how th
 </ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s explore some potential configurations you will create during the hands-on lab, from building a database to namespace as a service or VM.</p>
+<p>Let&#8217;s explore the configurations you will create during the hands-on lab, from building a database to providing namespace-as-a-service or virtual machines.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -433,126 +455,129 @@ As a Platform Architect, you want to identify these specific patterns and how th
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_building_virtual_machines_vm"><a class="anchor" href="#_building_virtual_machines_vm"></a>Building Virtual Machines (VM)</h3>
+</div>
+<div class="sect1">
+<h2 id="_building_virtual_machines_vms"><a class="anchor" href="#_building_virtual_machines_vms"></a>Building Virtual Machines (VMs)</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p><strong>Defining the steps for the VM creation:</strong></p>
+<p><strong>Defining the Steps for VM Creation:</strong></p>
 </div>
 <div class="paragraph">
-<p>After the user clicks the <strong>Create button</strong>, a series of actions will happen that are all part of the VM&#8217;s creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub. These steps are customizable and will be defined on the <strong>template.yaml</strong> file as part of the Software templates.</p>
+<p>When creating a component from a template in Developer Hub, after the user clicks the <strong>Create</strong> button, a series of actions will occur as part of the VM creation process to build a virtual machine using OpenShift Virtualization and Red Hat Developer Hub. These steps are customizable and will be defined in the <code>template.yaml</code> file as part of the software templates.</p>
 </div>
 <div class="paragraph">
-<p><strong>Using OpenShift GitOps to create a VM</strong></p>
+<p><strong>Using OpenShift GitOps to Create VMs</strong></p>
 </div>
 <div class="paragraph">
-<p>The OpenShift GitOps controller will ensure that the desired state defined on the project and application are applied into the cluster. The OpenShift Virtualization operator will ensure that the VMs are being created, pods are running, and the VNC Console is accessible.</p>
+<p>The OpenShift GitOps controller will ensure that the desired state defined in the project and application are applied to the cluster. The OpenShift Virtualization operator will ensure that VMs are created, pods are running, and the VNC Console is accessible.</p>
 </div>
 <div class="paragraph">
-<p><strong>Building VMs Helm charts</strong></p>
+<p><strong>Building VM Helm Charts</strong></p>
 </div>
 <div class="paragraph">
-<p>Below, we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).</p>
+<p>Below, we detail the benefits of using Helm Charts in conjunction with virtual machines (VMs).</p>
 </div>
 <div class="paragraph">
-<p><strong>Using VMs from instance types</strong></p>
+<p><strong>Using VMs from Instance Types</strong></p>
 </div>
 <div class="paragraph">
-<p>You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM&#8217;s manifest. You can customize the Helm Charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types.</p>
+<p>You can simplify virtual machine (VM) creation by using instance types, which provide an easy way to define your VM&#8217;s manifest. You can customize the Helm Charts extensively and use specific configurations to build your VM.</p>
 </div>
 <div class="paragraph">
-<p>Your Helm chart files can represent all the virtual machine definitions. For this use case, the Helm charts are:</p>
+<p>Your Helm chart files can represent all virtual machine definitions. For this use case, the Helm charts include:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>_template/helpers.tpl: to hold the variables such as labels, annotations to be used on the manifest files.</p>
+<p><code>_template/helpers.tpl</code>: Holds variables such as labels and annotations to be used in the manifest files.</p>
 </li>
 <li>
-<p>template/vm.yaml: kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.</p>
+<p><code>template/vm.yaml</code>:  a <em>VirtualMachine</em> object representing the instance of the virtual machine that will be created in OpenShift.</p>
 </li>
 <li>
-<p>chart.yaml: Including the Chart&#8217;s definition, such as name and version.</p>
+<p><code>chart.yaml</code>: Contains the Chart&#8217;s definition, such as name and version.</p>
 </li>
 <li>
-<p>values.yaml: Variables coming from the template.yaml provided by RHDH.</p>
+<p><code>values.yaml</code>: Variables from the <code>template.yaml</code> file provided by RHDH.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Building the template.yaml file</strong></p>
+<p><strong>The steps in the <code>template.yaml</code> file</strong></p>
 </div>
 <div class="paragraph">
-<p><strong>Step 1:</strong> Generating the source code component</p>
+<p><strong>Step 1:</strong> Generating the Source Code Component</p>
 </div>
 <div class="paragraph">
-<p>Developer Hub reads from the parameters coming from the UI and software templates definitions:</p>
+<p>Developer Hub reads the parameters from the UI and software template definitions:</p>
 </div>
-<div class="listingblock execute">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: fetch:template</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Step 2:</strong> Publishing to source code repository</p>
+<p><strong>Step 2:</strong> Publishing to Source Code Repository</p>
 </div>
 <div class="paragraph">
-<p>From there, it clones the repo with a new source code representing the VM source code. In this case, we only have one file, the catalog-info.yaml:</p>
+<p>The system clones the repository with new source code representing the VM source code. In this case, we only have one file: the <code>catalog-info.yaml</code>:</p>
 </div>
-<div class="listingblock execute">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: publish:gitlab</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Step 3:</strong> Registering the source code component</p>
+<p><strong>Step 3:</strong> Registering the Source Code Component</p>
 </div>
 <div class="paragraph">
-<p>Using the catalog-info.yaml file, Developer Hub will register this component, making it available in the Developer Hub UI:</p>
+<p>Using the <code>catalog-info.yaml</code> file, Developer Hub registers this component, making it available in the Developer Hub UI:</p>
 </div>
-<div class="listingblock execute">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: catalog:register</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Step 4:</strong> Generating the deployment resources and artifacts</p>
+<p><strong>Step 4:</strong> Generating the GitOps Deployment Resources and Artifacts</p>
 </div>
 <div class="paragraph">
-<p>Building the templates using the software templates defined in the manifest folder and reading from the template.yaml file to create the manifests in a new repository representing the values required to build the VM:</p>
+<p>The system builds the GitOps resource files using the software templates defined in the <code>manifest</code> folder to create the manifests in a new GitOps repository containing the values required to build the VM:</p>
 </div>
-<div class="listingblock execute">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: fetch:template</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Step 5:</strong> Publishing to deployment resource repository</p>
+<p><strong>Step 5:</strong> Publishing the GitOps Deployment Resource Repository</p>
 </div>
 <div class="paragraph">
-<p>Publish the templated source code into the GitLab repository:</p>
+<p>The templated GitOps resource files are published to the GitLab repository:</p>
 </div>
-<div class="listingblock execute">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: publish:gitlab</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Step 6:</strong> Create Argo CD resources</p>
+<p><strong>Step 6:</strong> Creating Argo CD Resources</p>
 </div>
 <div class="paragraph">
-<p>Request Argo CD  to create a GitOps application based on the previous source repository published in the last step:</p>
+<p>Argo CD creates a GitOps application based on the source repository published in the previous step:</p>
 </div>
-<div class="listingblock execute">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: argocd:create-resources</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h3>
-<div class="paragraph">
-<p>Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will benefit any organization. In the next labs, you will explore how to put this module into practice.</p>
 </div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Understanding the potential of RHDH and how it can be used to scale operations and implement platform engineering practices provides powerful capabilities that will benefit any organization. In the next labs, you will explore how to put these concepts into practice.</p>
 </div>
 <div class="sect2">
 <h3 id="_resources"><a class="anchor" href="#_resources"></a>Resources</h3>

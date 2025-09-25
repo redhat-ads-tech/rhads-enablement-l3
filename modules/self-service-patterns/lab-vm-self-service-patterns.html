@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>VM as a service in OpenShift using Software Template Patterns :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <title>VM as a Service in OpenShift Using Software Template Patterns :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/self-service-patterns/lab-vm-self-service-patterns.html">
     <link rel="prev" href="lab-intro-self-service-patterns.html">
     <link rel="next" href="lab-namespace-self-service-patterns.html">
@@ -256,67 +256,41 @@
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">VM as a service in OpenShift using Software Template Patterns</h1>
-<div class="sect1">
-<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization" target="_blank" rel="noopener">Red Hat OpenShift Virtualization</a></p>
-</li>
-<li>
-<p><a href="https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how#" target="_blank" rel="noopener">Building virtual machines with Red Hat Developer Hub: The what</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
+<h1 class="page">VM as a Service in OpenShift Using Software Template Patterns</h1>
 <div class="sect1">
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Welcome to this lab, where you will have the chance to learn about OpenShift Virtualization, how to build a new VM in OpenShift, how to work with Software templates in Red Hat Developer Hub, and create a new VM instance from Red Hat Developer Hub with your configurations.</p>
+<p>Welcome to this lab, where you will learn about OpenShift Virtualization, how to build virtual machines in OpenShift, how to work with software templates in Red Hat Developer Hub, and how to create VM instances from Red Hat Developer Hub with your custom configurations.</p>
 </div>
 <div class="paragraph">
-<p>This lab will use an existent template already defined, you will be simplifying the user experience and updating the software template to a new version for RHEL.
-During this lab, you will have the opportunity to explore different techniques to create a new template or to update one, and understand</p>
+<p>This lab will use an existing, predefined template. You will simplify the user experience by updating the software template to support a new version of RHEL. During this lab, you will have the opportunity to explore different techniques for creating new templates or updating existing ones, and understand how to implement effective self-service patterns.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="lab"><a class="anchor" href="#lab"></a>Build a new Virtual Machine in OpenShift</h2>
+<h2 id="lab"><a class="anchor" href="#lab"></a>Build a New Virtual Machine in OpenShift</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For this section, we&#8217;ll be using an existent template already defined, we&#8217;ll be updating the user experience UI on the <strong>template.yaml</strong> file and the <strong>Helm charts</strong>.</p>
+<p>For this section, we&#8217;ll use an existing, predefined template and update the user experience by modifying the <code>template.yaml</code> file and the Helm charts.</p>
 </div>
 <div class="paragraph">
-<p>The team will create the VM from RHDH. After this, Developer Hub will use the power of GitOps to build the new virtual machines in OpenShift with OpenShift Virtualization. The following diagram describes the VMs creation process using RHDH. As you can see in this diagram, the OpenShift Virtualization operator is required to provision the VM in OpenShift. The VM will run as a container in the selected namespace.</p>
+<p>You will create the VM template in RHDH. When users use the template, Developer Hub will leverage GitOps to build new virtual machines in OpenShift using OpenShift Virtualization. The following diagram describes the VM creation process using RHDH. As shown in this diagram, the OpenShift Virtualization operator is required to provision the VM in OpenShift (it has been preinstalled for you). The VM will run in the selected namespace.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-architecture.jpg" alt="Red Hat Developer Hub as part of the VM creation process."></span></p>
 </div>
 <div class="sect2">
-<h3 id="_explore_the_vm_template_in_gitlab"><a class="anchor" href="#_explore_the_vm_template_in_gitlab"></a>Explore the VM template in GitLab</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Take the time to review the source code to get familiarize with the content.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Explore the <strong>Software templates</strong> in <strong>GitLab</strong>:</p>
-</li>
-</ul>
+<h3 id="_explore_the_vm_template_in_gitlab"><a class="anchor" href="#_explore_the_vm_template_in_gitlab"></a>Explore the VM Template in GitLab</h3>
+<div class="paragraph">
+<p>Access the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/[existing template directory in GitLab^] and log in with your credentials:</p>
 </div>
-</li>
-<li>
-<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/,window=_blank]</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Login in GitLab with your user credentials:</p>
-</li>
+<p>Log in to GitLab using your credentials:</p>
+<div class="ulist">
+<ul>
 <li>
 <p><strong>Username</strong>: {gitlab_user}</p>
 </li>
@@ -326,62 +300,62 @@ During this lab, you will have the opportunity to explore different techniques t
 </ul>
 </div>
 </li>
-<li>
-<p>Component/catalog-info.yaml: This file will represent the object in Developer Hub,  such as name and links.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/source-code-catalog-info.png" alt="VM Catalog"></span></p>
+</ul>
 </div>
+<div class="paragraph">
+<p>Open the following files or folders to examine their contents:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>template.yaml</code>: This file defines the UI experience for the end user in RHDH (e.g. the fields and drop-downs and selectors to define the configuration of the VM in this case) and the programmatic steps to obtain software templates, create repositories, create GitOps objects, and more.</p>
 </li>
 <li>
-<p>Developer Hub, powered by GitOps, maintains the desired state as the actual state in the cluster for any template definitions, ensuring system stability.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/source-code-manifests.png" alt="VM Manifests"></span></p>
-</div>
+<p><code>skeleton/catalog-info.yaml</code>: This file represents the object that is added to the catalog in Developer Hub when this template is used, including its name and links. All of the placeholders (e.g. <code>${{values.component_id}}</code>) are replaced with actual values user enters or are dynamically computed when the template is used.</p>
 </li>
 <li>
-<p>GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the VM manifest’s folder.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/source-code-argocd.png" alt="VM GitOps"></span></p>
-</div>
+<p><code>manifests/argocd</code>: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the <code>argo-app-dev.yaml</code> is the Argo CD Application pointing to the VM manifest folder. That have funny names because the values that the developer provides are used when the final file is created for the user in their git repository.</p>
 </li>
 <li>
-<p>Helm Charts are great for templating. In this case, the VM manifests are implemented using Helm.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/source-code-helm.png" alt="VM Helm Charts"></span></p>
-</div>
-</li>
-<li>
-<p>template.yaml file: Defines the UI experience for the end user and the desired steps to get the software templates, create repositories, create GitOps objects, and more.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/source-code-template.png" alt="VM template.yaml"></span></p>
-</div>
+<p><code>manifests/helm/app</code>: This folder contains a Helm chart that will be used to deploy the VM. OpenShift GitOps will use this Helm chart to deploy the VM in the selected namespace by combining user-supplied values with the files (e.g. <code>vm.yaml</code>) and creating the objects in OpenShift. WHen these files are updated in the user&#8217;s git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_explore_the_vm_template_in_rhdh"><a class="anchor" href="#_explore_the_vm_template_in_rhdh"></a>Explore the VM template in RHDH</h3>
+<h3 id="_explore_the_vm_template_in_rhdh"><a class="anchor" href="#_explore_the_vm_template_in_rhdh"></a>Explore the VM Template in RHDH</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]</p>
+<p>Access the {rhdh_url}[Red Hat Developer Hub UI^] and log in with your credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: <code>{openshift_admin_user}</code></p>
 </li>
 <li>
-<p>Select the <strong>plus icon</strong> on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-create-icon.png" alt="Create UI"></span></p>
+<p><strong>Password</strong>: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
 </div>
 </li>
 <li>
-<p>Click the <strong>Register Existing Component</strong> button.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-register-component.png" alt="Create UI"></span></p>
-</div>
+<p>Select the <strong>plus icon</strong> in the top navigation bar to Create a new component, or use the URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]</p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-create-icon.png" alt="Create UI"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>Import an existing Git repository</strong> button.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -398,7 +372,7 @@ During this lab, you will have the opportunity to explore different techniques t
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>Import</strong> button</p>
+<p>Click the <strong>Import</strong> button</p>
 </li>
 </ul>
 </div>
@@ -406,7 +380,7 @@ During this lab, you will have the opportunity to explore different techniques t
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-register-component-finish.png" alt="rhdh register component finish" width="60%"></span></p>
 </div>
 <div class="paragraph">
-<p><strong>Congratulations!</strong> You now have a new Software template in RHDH. Now, end-users can <strong>self-provision Virtual Machines</strong>.</p>
+<p><strong>Congratulations!</strong> You now have a new software template in RHDH. End users can now self-provision virtual machines.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -414,7 +388,7 @@ During this lab, you will have the opportunity to explore different techniques t
 <p>We&#8217;ll explore the end-user experience by accessing the Software Templates view.</p>
 </li>
 <li>
-<p>From <strong>catalog</strong>, select <strong>Self-service</strong>:</p>
+<p>Navigate to Catalog -&#8594; Self-service</p>
 </li>
 <li>
 <p>Look for the <strong>VM</strong> catalog</p>
@@ -430,20 +404,21 @@ During this lab, you will have the opportunity to explore different techniques t
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>Choose</strong></p>
+<p>Click <strong>Choose</strong></p>
 </li>
 <li>
-<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the VM</strong>. <strong>DO NOT CLICK ON CREATE.</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-sample.png" alt="vm sample" width="100%"></span></p>
-</div>
+<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the VM</strong>. <strong>DO NOT CLICK CREATE.</strong> You will do this later on after changing the template.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Scenario:</strong>
-Now, imagine for a moment that you are part of the legacy team. Your responsibility is to create a new VM to host a legacy application.
-This VM will first be used as experimentation, but there is a new version of RHEL that we need to support, besides the current RHEL version 9. As Platform Architect, what fields and files will you need to update?</p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-sample.png" alt="vm sample" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Scenario:</strong></p>
+</div>
+<div class="paragraph">
+<p>Imagine that you are part of the legacy apps team. Your responsibility is to create a new VM to host a legacy application. This VM will initially be used for experimentation, but there is a new version of RHEL that needs to be supported in addition to the current RHEL version 9. As a Platform Architect, what fields and files will you need to update?</p>
 </div>
 <div class="paragraph">
 <p><strong>We have a couple of options:</strong></p>
@@ -451,17 +426,17 @@ This VM will first be used as experimentation, but there is a new version of RHE
 <div class="ulist">
 <ul>
 <li>
-<p>1-  We could create a new template to support the new RHEL version, in this scenario, we will have 2 software templates (RHEL9, RHEL10). The cons are that you now need to maintain two different software templates.</p>
+<p><strong>Option 1:</strong> Create a new template to support the new RHEL version. In this scenario, we would have 2 software templates (RHEL9, RHEL10). The disadvantage is that you would need to maintain two different software templates.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>We need to explore how many changes we must include in this new version to decide. Is there something else we should be updating in the VM definition besides the image name?</p>
+<p>We need to explore how many changes must be included in this new version to make the decision. Is there something else we should update in the VM definition besides the image name?</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>2- Update the current software template and make the necessary updates as generic as possible to support the new RHEL and the previous versions. This creates an opportunity to make this template more generic without adding too much complexity.</p>
+<p><strong>Option 2:</strong> Update the current software template and make the necessary changes as generic as possible to support both the new RHEL version and previous versions. This creates an opportunity to make the template more generic without adding excessive complexity.</p>
 </li>
 </ul>
 </div>
@@ -469,29 +444,28 @@ This VM will first be used as experimentation, but there is a new version of RHE
 <p><strong>When to use a new software template?</strong></p>
 </div>
 <div class="paragraph">
-<p>When artifacts/components are very different or configurations are so dissimilar, they require many logic or variables to keep them on the same configuration. The main goal is to keep it as simple as possible to reduce maintenance.</p>
+<p>Use a new software template when artifacts or components are very different, or when configurations are so dissimilar that they require extensive logic or variables to maintain them in the same configuration. The main goal is to keep it as simple as possible to reduce maintenance overhead.</p>
 </div>
 <div class="paragraph">
-<p><strong>The solution:</strong>
-We&#8217;ll choose the second option, update the current software template to support different RHEL versions. This will also help to reduce maintenance when a new version needs to be supported.</p>
+<p><strong>The solution:</strong></p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll choose the second option: update the current software template to support different RHEL versions. This approach will also help reduce maintenance when new versions need to be supported.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_explore_vms_creation_with_openshift_virtualization"><a class="anchor" href="#_explore_vms_creation_with_openshift_virtualization"></a>Explore VMs creation with OpenShift Virtualization</h3>
+<h3 id="_explore_vm_creation_with_openshift_virtualization"><a class="anchor" href="#_explore_vm_creation_with_openshift_virtualization"></a>Explore VM Creation with OpenShift Virtualization</h3>
 <div class="paragraph">
-<p>Let&#8217;s explore what type of VMs I can create in OpenShift. Imagine that you are new to templating VMs in OpenShift, then what&#8217;s the best approach to bring a new instance of OpenShift? Let&#8217;s use OpenShift Virtualization to explore the different types and solutions available, or you can create a new one.</p>
+<p>Let&#8217;s explore what types of VMs you can create in OpenShift. Imagine that you are new to templating VMs in OpenShift - what&#8217;s the best approach to deploy a new VM instance? Let&#8217;s use OpenShift Virtualization to explore the different types and solutions available.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>We need to update the VM with a new RHEL version</p>
-</li>
-<li>
-<p>Login into the OpenShift Cluster {openshift_console_url}[Web Console^]</p>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console^]</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Use your user credentials:</p>
+<p>Use your administrator credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -507,7 +481,7 @@ We&#8217;ll choose the second option, update the current software template to su
 </div>
 </li>
 <li>
-<p>Click on the <strong>Virtual Machine</strong> menu, then click on <strong>Overview</strong>.</p>
+<p>Click on the <strong>Virtualization</strong> item on the left sidebar, then click on <strong>Overview</strong>.</p>
 </li>
 </ul>
 </div>
@@ -518,14 +492,7 @@ We&#8217;ll choose the second option, update the current software template to su
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/virt-welcome-page.png" alt="virt welcome page" width="100%"></span></p>
 </div>
 <div class="paragraph">
-<p>You will get familiarize with OpenShift Virtualization using the <strong>Start Tour</strong>.  Click on <strong>Virtual Tour</strong> and follow the steps.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Complete the tour and stay on the screen.</p>
-</li>
-</ul>
+<p>You can optionally familiarize yourself with OpenShift Virtualization using the <strong>Start Tour</strong>. Click on <strong>Virtual Tour</strong> and follow the steps (or just click the <code>x</code> to close if your&#8217;re already familiar with it).</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-finish-tour.png" alt="vm finish tour" width="80%"></span></p>
@@ -537,10 +504,13 @@ We&#8217;ll choose the second option, update the current software template to su
 <div class="ulist">
 <ul>
 <li>
-<p>On the <strong>Create new VirtualMachine</strong> screen you will see a new screen listing all VM configurations available. Remember, you can also customize it to your needs.</p>
+<p>On the <strong>Create new VirtualMachine</strong> screen, you will see all available VM configurations listed. Remember, you can also customize these to your needs.</p>
 </li>
 <li>
 <p>Select the <strong>volume</strong> <strong>rhel10</strong></p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -550,32 +520,30 @@ We&#8217;ll choose the second option, update the current software template to su
 <div class="ulist">
 <ul>
 <li>
-<p>Next, Explore the <strong>Instance Type</strong> available</p>
+<p>Scroll down to explore the available <strong>Instance Types</strong></p>
 </li>
 <li>
-<p>Select the <strong>General Purpose</strong> <strong>U series</strong> and the <strong>medium</strong> <strong>1 CPUs, 4 GiB memory</strong></p>
-</li>
-</ul>
-</div>
+<p>Select <strong>General Purpose</strong> <strong>U series</strong> and <strong>medium</strong> <strong>1 CPUs, 4 GiB memory</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-instancetype-click.png" alt="vm instancetype click" width="100%"></span></p>
 </div>
-<div class="paragraph">
-<p><strong>Note: Do not create the VM. You will be creating a VM using this Configuration through RHDH.</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Leave the rest of the defaults as-is.</p>
+</li>
+</ul>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_implement_changes_in_software_templates"><a class="anchor" href="#_implement_changes_in_software_templates"></a>Implement changes in Software Templates.</h3>
 <div class="paragraph">
-<p>Let&#8217;s review the information in the new VM instance.</p>
+<p><strong>Note: Do not create the VM. You will create a VM using this configuration through RHDH.</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the button <strong>View YAML &amp; CLI</strong></p>
+<p>Click the <strong>View YAML &amp; CLI</strong> button to view what the VM manifest would look like if you created it.</p>
 </li>
 </ul>
 </div>
@@ -585,28 +553,44 @@ We&#8217;ll choose the second option, update the current software template to su
 <div class="ulist">
 <ul>
 <li>
-<p>From that view, review the <strong>RHEL10</strong> related values:</p>
+<p>From that view, look for the <strong>RHEL10</strong> related values:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-yaml-updates.png" alt="vm yaml updates" width="100%"></span></p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p><strong>Note:</strong> The instance name will change, you might have a different VM&#8217;s name. For example instead of rhel-10-peach0gazelle-65 you might have rhel-10-amethyst-frog-44.</p>
+<p>You may see other fields such as the VM&#8217;s name or the <code>dataVolumeTemplates</code> field. These fields are already represented as a variable in template we will use, and will be based on user input, so we won&#8217;t need to do anything with them.</p>
 </div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Our current template is not supporting the new RHEL version (it&#8217;s hard-coded for RHEL 9). In the next steps we&#8217;ll update the template to support the new RHEL version by adding parameters for the RHEL version within the <code>vm.yaml</code> file and add necessary UI updates to allow the user to select the RHEL version from the RHDH "Create" flow.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_implement_changes_in_software_templates"><a class="anchor" href="#_implement_changes_in_software_templates"></a>Implement Changes in Software Templates</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Return to <strong>RHDH</strong> to compare the new values with the current VM instance file.</p>
+<p>Return to <strong>RHDH</strong>. You will compare the new values with the current VM instance file to identify what needs to be updated.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Catalog</strong> on the RHDH menu</p>
+<p>Click <strong>Catalog</strong> in the RHDH menu</p>
 </li>
 <li>
-<p>Next, select the filters: <strong>Kind:Template</strong> and <strong>Tags: self-service</strong>
-As shown in the following picture:</p>
+<p>Next, select the filters: <strong>Kind:Template</strong> and <strong>Tags: self-service</strong> as shown in the following picture:</p>
 </li>
 </ul>
 </div>
@@ -629,66 +613,100 @@ As shown in the following picture:</p>
 </div>
 </li>
 <li>
-<p>Click on the <strong>three dots</strong> under Owner, next click on <strong>Unregister entity</strong></p>
+<p>Click the <strong>three dots</strong> under Owner, then click <strong>Unregister entity</strong></p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/template-unregister.png" alt="template unregister" width="60%"></span></p>
 </div>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p>Confirm the action.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/confirm-unregister.png" alt="confirm unregister" width="60%"></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Go to manifests/helm/app/templates/vm.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Review the vm definition and compare it with the one provided by <strong>OpenShift Virtualization</strong></p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-yaml-updates2.png" alt="vm yaml updates2" width="100%"></span></p>
+<p>Now we&#8217;ll update several files in the template to support the new RHEL version. These are the files you&#8217;ll need to update:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Next, <strong>replace the values</strong> in the current <strong>vm.yaml</strong> file, <strong>the hardcoded values with variables</strong>. Take a look at all the information related to RHEL10 highlighted in the images, except the name. The name will remain variable since the end user will provide it.</p>
+<p><code>vm.yaml</code> - The VM manifest file that will be used to create the VM.</p>
+</li>
+<li>
+<p><code>values.yaml</code> - The file that will be used to pass the RHEL version to the Helm chart when deployed by OpenShift GitOps.</p>
+</li>
+<li>
+<p><code>template.yaml</code> - The template file that will define the UI experience for the end user.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Remember that these software templates are built with <strong>Helm</strong>, which will use templating variables from the RHDH UI and the template.</p>
+<p>Let&#8217;s start with the <code>vm.yaml</code> file.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[Open the <code>vm.yaml</code> file in GitLab^].</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Review the VM definition and compare it with the one provided by <strong>OpenShift Virtualization</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-yaml-updates.png" alt="vm yaml updates" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p>Remember the places where you saw <code>rhel.10</code>? We need to replace it with a variable that will allow the user to choose 9 or 10.</p>
+</div>
+<div class="paragraph">
+<p>Edit the file by choosing <strong>Edit &#8594; Edit Single File</strong>:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/gitlab-edit-file.png" alt="gitlab edit file" width="90%"></span></p>
+</div>
+<div class="paragraph">
+<p>Next, find the two comments with <code>UPDATE to parameterize the RHEL version</code> - we need to replace the hardcoded values with variables:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code>rhel9</code> with <code>rhel{{ .Values.app.rhel.version }}</code></p>
+</li>
+<li>
+<p>Replace <code>rhel.9</code> with <code>rhel.{{ .Values.app.rhel.version }}</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It should look like:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/gitlab-edit-file-updated.png" alt="gitlab edit file updated" width="90%"></span></p>
+</div>
+<div class="paragraph">
+<p>This will enable the user to choose the RHEL version when they create the VM, and the chosen values will be used in the VM manifest that you just edited to create the VM.</p>
+</div>
+<div class="paragraph">
+<p>Save your changes by scrolling down and clicking the <strong>Commit Changes</strong> button.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/self-service-patterns/software_templates_flow.jpg" alt="software templates flow">
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>The variables need to be updated in the <strong>vm.yaml</strong> and the <strong>values.yaml</strong> files.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Update the <strong>vm.yaml</strong> file to ensure the <strong>data source name</strong> and <strong>preference name</strong> will contain the RHEL version.</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-file-changes.png" alt="vm file changes" width="60%"></span></p>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Take the time to review your file with the solution file provided here:</p>
+<p>If you are unsure you did it correctly, you can compare your file with the solution file provided here:</p>
 </div>
 <div class="paragraph">
 <p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/vm.yaml" target="_blank" rel="noopener">VM.yaml solution file</a></p>
@@ -699,128 +717,145 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Update the <strong>values.yaml</strong> file to include the RHEL version ensuring that is listed as a variable. This value must match the value you added to the vm.yaml file.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-valuesfile-changes.png" alt="vm valuesfile changes" width="60%"></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ensure you have applied the changes to your repository. Take the time to review your file with the solution file provided here:</p>
-</li>
-</ul>
-</div>
+<p>Next, {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/values.yaml[Open the <code>values.yaml</code> file in GitLab^].</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml" target="_blank" rel="noopener">values.yaml solution file</a></p>
+<p>You need to include the RHEL version as a variable. This value must match the value you added to the <code>vm.yaml</code> file.</p>
+</div>
+<div class="paragraph">
+<p>Under the <code>app</code> key, add a new key called <code>rhel</code> and under that, add a new key called <code>version</code> and set it to <code>${{values.rhel_version}}</code> (the "tree" of <code>rhel&#8594;version</code> matches what you added to the <code>vm.yaml</code> file, and the name <code>values.rhel_version</code> matches what you&#8217;re about to add to the <code>template.yaml</code> file).</p>
+</div>
+<div class="paragraph">
+<p>It should look like:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-valuesfile-changes.png" alt="vm valuesfile changes" width="90%"></span></p>
+</div>
+<div class="paragraph">
+<p>If you are unsure you did it correctly, you can compare your file with the <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml" target="_blank" rel="noopener">values.yaml solution file</a>:</p>
 </div>
 <div class="paragraph">
 <p><strong>Note</strong>: Don&#8217;t forget to commit your changes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_make_updates_in_the_vm_template_in_gitlab"><a class="anchor" href="#_make_updates_in_the_vm_template_in_gitlab"></a>Make updates in the VM template in GitLab</h3>
+<h3 id="_make_updates_in_the_vm_template_in_gitlab"><a class="anchor" href="#_make_updates_in_the_vm_template_in_gitlab"></a>Make Updates in the VM Template in GitLab</h3>
 <div class="paragraph">
-<p>Let&#8217;s make the following changes to update the template based on the new RHEL version.</p>
-</div>
-<div class="paragraph">
-<p><strong>UI</strong></p>
+<p>Finally, let&#8217;s update the <code>template.yaml</code> make edits to these areas to parameterize the RHEL version:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Let&#8217;s consider the user experience and what information is required to be updated with these latest changes:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Template name</p>
+<p>First, {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml[open the <code>template.yaml</code> file in GitLab^] and select Edit&#8594;Edit Single File to edit the file.</p>
 </li>
 <li>
-<p>Template description</p>
-</li>
-<li>
-<p>Ensure variables are sent to the helm charts.</p>
+<p>Remove the <code>9</code> from the name, title, and description since our template will support both RHEL 9 and RHEL 10 (and maybe others in the future):</p>
 </li>
 </ul>
 </div>
-</li>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-changes1.png" alt="vm template changes1" width="90%"></span></p>
+</div>
+<div class="ulist">
+<ul>
 <li>
-<p>Update the <strong>rhel-vm-medium/template.yaml</strong> file to ensure the RHEL version <strong>9 is not part of the template</strong>. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.</p>
+<p>Add a new required parameter under the comment <code># UPDATE: Add other required parameters here</code> called <code>rhel_version</code>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-changes1.1.png" alt="vm template changes1.1" width="90%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Below the <code># UPDATE: Add new properties here</code> comment, add this snippet that defines the parameter&#8217;s type as an enumerated type (which renders as a drop-down).</p>
 </li>
 </ul>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">        rhel_version:
+          title: Select the RHEL version
+          type: string
+          description: The RHEL version for the VM
+          default: 10
+          enum:
+            - '9'
+            - '10'
+          enumNames:
+            - 'RHEL9'
+            - 'RHEL10'</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Be sure the indentation matches the rest of the file as shown:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-changes2.png" alt="vm template changes2" width="90%"></span></p>
+</div>
+<div class="paragraph">
+<p>Next, scroll down to the <code>templateSource</code> step. We need to include the new variable in the steps. If we do not, the Helm charts will not receive the data.</p>
+</div>
+<div class="paragraph">
+<p>Add the new variable in the <strong>templateSource step</strong> at the <code># UPDATE: Add new source values here</code> comment as shown:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">rhel_version: ${{parameters.rhel_version}}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-step1.png" alt="vm template step1" width="90%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Next, let&#8217;s build the RHEL option, list an array; the idea is to give the user the option to choose the pre-defined RHEL versions. This value must match the value you have added to the <strong>values.yaml file.</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-changes1.png" alt="vm template changes1" width="60%"></span></p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-changes2.png" alt="vm template changes2" width="60%"></span></p>
-</div>
-</li>
-<li>
-<p>Next, we need to include the new variable in the steps. If we do not include that <strong>new variable</strong>, the Helm charts will not receive the data.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Add the new variable in the <strong>templateSource step</strong>:</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-step1.png" alt="vm template step1" width="50%"></span></p>
-</div>
-</li>
-<li>
-<p>Add the new variable in the <strong>templateGitops step</strong>:</p>
+<p>Add the new variable in the <strong>templateGitops step</strong> at the <code># UPDATE: Add new Gitops values here</code> comment as shown:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-step2.png" alt="vm template step2" width="50%"></span></p>
+<p>Add the new variable in the <strong>templateSource step</strong> at the <code># UPDATE: Add new source values here</code> comment as shown:</p>
 </div>
-</li>
-<li>
-<p>Ensure you have applied the changes to your repository. <strong>Take the time to review</strong> your file with the solution file provided here:</p>
-</li>
-</ul>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">rhel_version: ${{parameters.rhel_version}}</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml" target="_blank" rel="noopener">template.yaml solution file</a></p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-template-step2.png" alt="vm template step2" width="90%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Proceed to <strong>save your changes</strong>.</p>
+<p><strong>Take time to review</strong> your file against the <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml" target="_blank" rel="noopener">template.yaml solution file</a></p>
 </li>
 <li>
-<p>Ensure the template has the latest changes.</p>
+<p>Scroll down and select <strong>Commit Changes</strong> to save your changes.</p>
 </li>
-<li>
-<p>Proceed to register the new template</p>
-</li>
-<li>
-<p>Select the <strong>plus icon</strong> on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]</p>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_register_the_new_template"><a class="anchor" href="#_register_the_new_template"></a>Register the new template</h3>
+<div class="paragraph">
+<p>Back in {rhdh_url}[Developer Hub^], select the <strong>plus icon</strong> in the top navigation bar to access the Create option.</p>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-create-icon.png" alt="Create UI"></span></p>
 </div>
-</li>
+<div class="ulist">
+<ul>
 <li>
-<p>Click the <strong>Register Existing Component</strong> button.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-register-component.png" alt="Create UI"></span></p>
-</div>
+<p>Click the <strong>Import an existing Git repository</strong> button.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]</p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -837,51 +872,75 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>Import</strong> button</p>
+<p>Click the <strong>Import</strong> button to import the template with the changes you&#8217;ve made.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_test_your_changes_explore_the_user_experience_as_developer"><a class="anchor" href="#_test_your_changes_explore_the_user_experience_as_developer"></a>Test your changes: Explore the user experience as Developer</h3>
+<h3 id="_test_your_changes_explore_the_user_experience_as_a_developer"><a class="anchor" href="#_test_your_changes_explore_the_user_experience_as_a_developer"></a>Test Your Changes: Explore the User Experience as a Developer</h3>
 <div class="paragraph">
 <p>Let&#8217;s create an instance of the new VM defined in the software templates.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>From <strong>catalog</strong>, select <strong>Self-service</strong> and find the <strong>RHEL VM Medium Template</strong></p>
+<p>From the <strong>catalog</strong>, select <strong>Self-service</strong> and find the <strong>RHEL VM Medium Template</strong></p>
 </li>
 <li>
-<p>Click on the <strong>Choose</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-catalog-new.png" alt="vm catalog new" width="50%"></span></p>
-</div>
-</li>
-<li>
-<p>Review the information until you complete the flow and click on <strong>Create</strong>.</p>
-</li>
-<li>
-<p>You should see a screen like this one:</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-rhel-updated.png" alt="vm rhel updated" width="120%"></span></p>
-</div>
-</li>
-<li>
-<p>Select the new version added: <strong>RHEL10</strong> and follow the steps to create the VM in OpenShift.</p>
-</li>
-<li>
-<p>Watch the following arcade, your experience should be very similar.</p>
+<p>Click <strong>Choose</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Note</strong>: The VM might take a few minutes to complete provisioning.</p>
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-catalog-new.png" alt="vm catalog new" width="80%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>In case you want to log in to the OpenShift Cluster{openshift_console_url}[Web Console^]</p>
+<p>You should see a screen like this one:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-rhel-updated.png" alt="vm rhel updated" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select the new version using the drop-down: <strong>RHEL10</strong></p>
+</li>
+<li>
+<p>Leave the rest of the defaults as-is, click <strong>Review</strong>, and then click <strong>Create</strong> to finish the template flow.</p>
+</li>
+<li>
+<p>Once the VM is created, click <strong>Open Component in Catalog</strong> to view the newly created VM inside Developer Hub:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-created.png" alt="vm created" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <strong>Virtual Machine</strong> to view the VM inside OpenShift Virtualization. It may take a few moments for the VM to finish booting, but you&#8217;ll see the status:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/vm-lab/vm-created2.png" alt="vm created2" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Feel free to explore this VM - logging in via the VNC console, or other activities.</p>
+</li>
+<li>
+<p>Optionally watch the following demo - your experience should be very similar.</p>
+</li>
+<li>
+<p>If you need to re-login to the OpenShift Cluster: {openshift_console_url}[Web Console^]</p>
 <div class="ulist">
 <ul>
 <li>
@@ -916,7 +975,20 @@ muted>
 <div class="sect2">
 <h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h3>
 <div class="paragraph">
-<p>You have updated a Virtual Machine software template with the latest version of RHEL and simplifying the Platform engineering experience by making one template more generic, following organization policies.</p>
+<p>You have successfully updated a virtual machine software template with the latest version of RHEL and simplified the platform engineering experience by making one template more generic, while following organizational policies.</p>
+</div>
+<div class="sect3">
+<h4 id="_further_reading"><a class="anchor" href="#_further_reading"></a>Further Reading</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization" target="_blank" rel="noopener">Red Hat OpenShift Virtualization</a></p>
+</li>
+<li>
+<p><a href="https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how#" target="_blank" rel="noopener">Building virtual machines with Red Hat Developer Hub: The what, why, and how</a></p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
