@@ -152,7 +152,7 @@ image:self-service-patterns/vm-lab/virt-volumes-click.png[width=100%]
 
 
 ** Next, Explore the *Instance Type* available
-** Select the *General Purpose* *U series* and the *small* *1 CPUs, 2 GiB memory*
+** Select the *General Purpose* *U series* and the *medium* *1 CPUs, 4 GiB memory*
 
 image:self-service-patterns/vm-lab/vm-instancetype-click.png[width=100%]
 
