@@ -142,6 +142,11 @@ image:self-service-patterns/vm-lab/vm-explore-yaml.png[width=100%]
 
 image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%]
 
+[NOTE]
+====
+You may see other fields such as the VM's name or the `dataVolumeTemplates` field. These fields are already represented as a variable in template we will use, and will be based on user input, so we won't need to do anything with them.
+====
+
 Our current template is not supporting the new RHEL version (it's hard-coded for RHEL 9). In the next steps we'll update the template to support the new RHEL version by adding parameters for the RHEL version within the `vm.yaml` file and add necessary UI updates to allow the user to select the RHEL version from the RHDH "Create" flow.
 
 === Implement Changes in Software Templates
