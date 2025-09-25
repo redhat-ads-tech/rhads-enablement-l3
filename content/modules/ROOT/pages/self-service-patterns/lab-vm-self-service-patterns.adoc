@@ -179,7 +179,7 @@ Let's start with the `vm.yaml` file.
 
 ** Review the VM definition and compare it with the one provided by *OpenShift Virtualization*
 
-image:self-service-patterns/vm-lab/vm-yaml-updates2.png[width=100%]
+image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%]
 
 Remember the places where you saw `rhel.10`? We need to replace it with a variable that will allow the user to choose 9 or 10.
 
