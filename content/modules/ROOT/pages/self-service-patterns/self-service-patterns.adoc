@@ -22,6 +22,25 @@ Architecting software templates is essential for implementing platform engineeri
 
 The software template structure in folders and files will vary depending on the component type, technology used, and specific requirements. Our approach is to separate different responsibilities into distinct folders and files, such as separating application source code from deployment manifests for each component.
 
+[source,console]
+----
+my-template
+├── manifests
+│   ├── argocd
+│   │   ├── ${{values.component_id}}-argocd-app-dev.yaml
+│   │   └── ${{values.component_id}}-argocd-repo.yaml
+│   └── helm
+│       └── app
+│           ├── Chart.yaml
+│           ├── templates
+│           │   ├── _helpers.tpl
+│           │   └── vm.yaml
+│           └── values.yaml
+├── skeleton
+│   └── catalog-info.yaml
+└── template.yaml
+----
+
 === *`skeleton` Folder*
 
 This folder contains the application source code and catalog file, including the information to be displayed in the component's UI within RHDH.
@@ -118,7 +137,6 @@ Your Helm chart files can represent all virtual machine definitions. For this us
 
 Developer Hub reads the parameters from the UI and software template definitions:
 
-[.console-input]
 [source,bash,subs="+attributes"]
 ----
 action: fetch:template
@@ -128,7 +146,6 @@ action: fetch:template
 
 The system clones the repository with new source code representing the VM source code. In this case, we only have one file: the `catalog-info.yaml`:
 
-[.console-input]
 [source,bash,subs="+attributes"]
 ----
 action: publish:gitlab
@@ -138,26 +155,24 @@ action: publish:gitlab
 
 Using the `catalog-info.yaml` file, Developer Hub registers this component, making it available in the Developer Hub UI:
 
-[.console-input]
 [source,bash,subs="+attributes"]
 ----
 action: catalog:register
 ----
 
-*Step 4:* Generating the Deployment Resources and Artifacts
+*Step 4:* Generating the GitOps Deployment Resources and Artifacts
 
-The system builds the templates using the software templates defined in the `manifest` folder and reads from the `template.yaml` file to create the manifests in a new repository containing the values required to build the VM:
+The system builds the GitOps resource files using the software templates defined in the `manifest` folder to create the manifests in a new GitOps repository containing the values required to build the VM:
 
 [source,bash,subs="+attributes"]
 ----
 action: fetch:template
 ----
 
-*Step 5:* Publishing to Deployment Resource Repository
+*Step 5:* Publishing the GitOps Deployment Resource Repository
 
-The templated source code is published to the GitLab repository:
+The templated GitOps resource files are published to the GitLab repository:
 
-[.console-input]
 [source,bash,subs="+attributes"]
 ----
 action: publish:gitlab
@@ -167,7 +182,6 @@ action: publish:gitlab
 
 Argo CD creates a GitOps application based on the source repository published in the previous step:
 
-[.console-input]
 [source,bash,subs="+attributes"]
 ----
 action: argocd:create-resources

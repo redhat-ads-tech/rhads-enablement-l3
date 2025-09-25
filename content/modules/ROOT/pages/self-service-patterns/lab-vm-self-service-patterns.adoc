@@ -44,11 +44,11 @@ Open the following files or folders to examine their contents:
 *** *Password*: `{openshift_admin_password}`
 
 * Select the *plus icon* in the top navigation bar to Create a new component, or use the URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
-+
+
 image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI] 
 
 * Click the *Import an existing Git repository* button.
-+
+
 image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
@@ -74,7 +74,7 @@ image:self-service-patterns/vm-lab/vm-catalog.png[width=60%]
 
 * Click *Choose*
 * Review and fill out the information with dummy data until you reach the review screen, **without creating the VM**. **DO NOT CLICK CREATE.** You will do this later on after changing the template.
-+
+
 image:self-service-patterns/vm-lab/vm-sample.png[width=100%]
 
 *Scenario:*
@@ -122,7 +122,7 @@ image:self-service-patterns/vm-lab/vm-finish-tour.png[width=80%]
 ** On the *Create new VirtualMachine* screen, you will see all available VM configurations listed. Remember, you can also customize these to your needs.
 ** Select the *volume* *rhel10*
 
-+
+
 image:self-service-patterns/vm-lab/virt-volumes-click.png[width=100%]
 
 ** Scroll down to explore the available *Instance Types*
@@ -159,12 +159,11 @@ image:self-service-patterns/vm-lab/self-service-catalog.png[width=40%]
 
 ** Click the *three dots* under Owner, then click *Unregister entity*
 
-+
+
 image:self-service-patterns/vm-lab/template-unregister.png[width=60%]
 
 ** Confirm the action.
 
-+
 image:self-service-patterns/vm-lab/confirm-unregister.png[width=60%]
 
 Now we'll update several files in the template to support the new RHEL version. These are the files you'll need to update:
@@ -216,7 +215,6 @@ Under the `app` key, add a new key called `rhel` and under that, add a new key c
 
 It should look like:
 
-+
 image:self-service-patterns/vm-lab/vm-valuesfile-changes.png[width=90%]
 
 If you are unsure you did it correctly, you can compare your file with the https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml[values.yaml solution file^]:
@@ -288,11 +286,11 @@ image:self-service-patterns/vm-lab/vm-template-step2.png[width=90%]
 === Register the new template
 
 Back in {rhdh_url}[Developer Hub^], select the *plus icon* in the top navigation bar to access the Create option.
-+
+
 image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI] 
 
 * Click the *Import an existing Git repository* button.
-+
+
 image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
@@ -311,12 +309,12 @@ Let's create an instance of the new VM defined in the software templates.
 * From the *catalog*, select *Self-service* and find the *RHEL VM Medium Template*
 * Click *Choose*
 
-+
+
 image:self-service-patterns/vm-lab/vm-catalog-new.png[width=80%]
 
 * You should see a screen like this one:
 
-+
+
 image:self-service-patterns/vm-lab/vm-rhel-updated.png[width=100%]
 
 * Select the new version using the drop-down: *RHEL10*
