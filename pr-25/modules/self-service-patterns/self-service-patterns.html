@@ -292,6 +292,25 @@
 <div class="paragraph">
 <p>The software template structure in folders and files will vary depending on the component type, technology used, and specific requirements. Our approach is to separate different responsibilities into distinct folders and files, such as separating application source code from deployment manifests for each component.</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">my-template
+├── manifests
+│   ├── argocd
+│   │   ├── ${{values.component_id}}-argocd-app-dev.yaml
+│   │   └── ${{values.component_id}}-argocd-repo.yaml
+│   └── helm
+│       └── app
+│           ├── Chart.yaml
+│           ├── templates
+│           │   ├── _helpers.tpl
+│           │   └── vm.yaml
+│           └── values.yaml
+├── skeleton
+│   └── catalog-info.yaml
+└── template.yaml</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_skeleton_folder"><a class="anchor" href="#_skeleton_folder"></a><strong><code>skeleton</code> Folder</strong></h3>
@@ -492,7 +511,7 @@
 <div class="paragraph">
 <p>Developer Hub reads the parameters from the UI and software template definitions:</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: fetch:template</code></pre>
 </div>
@@ -503,7 +522,7 @@
 <div class="paragraph">
 <p>The system clones the repository with new source code representing the VM source code. In this case, we only have one file: the <code>catalog-info.yaml</code>:</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: publish:gitlab</code></pre>
 </div>
@@ -514,16 +533,16 @@
 <div class="paragraph">
 <p>Using the <code>catalog-info.yaml</code> file, Developer Hub registers this component, making it available in the Developer Hub UI:</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: catalog:register</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Step 4:</strong> Generating the Deployment Resources and Artifacts</p>
+<p><strong>Step 4:</strong> Generating the GitOps Deployment Resources and Artifacts</p>
 </div>
 <div class="paragraph">
-<p>The system builds the templates using the software templates defined in the <code>manifest</code> folder and reads from the <code>template.yaml</code> file to create the manifests in a new repository containing the values required to build the VM:</p>
+<p>The system builds the GitOps resource files using the software templates defined in the <code>manifest</code> folder to create the manifests in a new GitOps repository containing the values required to build the VM:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -531,12 +550,12 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Step 5:</strong> Publishing to Deployment Resource Repository</p>
+<p><strong>Step 5:</strong> Publishing the GitOps Deployment Resource Repository</p>
 </div>
 <div class="paragraph">
-<p>The templated source code is published to the GitLab repository:</p>
+<p>The templated GitOps resource files are published to the GitLab repository:</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: publish:gitlab</code></pre>
 </div>
@@ -547,7 +566,7 @@
 <div class="paragraph">
 <p>Argo CD creates a GitOps application based on the source repository published in the previous step:</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">action: argocd:create-resources</code></pre>
 </div>
