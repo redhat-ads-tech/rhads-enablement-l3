@@ -34,7 +34,7 @@ Open the following files or folders to examine their contents:
 
 * `manifests/argocd`: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the `argo-app-dev.yaml` is the Argo CD Application pointing to the VM manifest folder. That have funny names because the values that the developer provides are used when the final file is created for the user in their git repository.
 
-* `manifests/helm/app`: This folder contains a Helm chart that will be used to deploy the VM. OpenShift GitOps will use this Helm chart to deploy the VM in the selected namespace by combining user-supplied values with the files (e.g. `vm.yaml`) and creating the objects in OpenShift. WHen these files are updated in the user's git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, esuring system stability.
+* `manifests/helm/app`: This folder contains a Helm chart that will be used to deploy the VM. OpenShift GitOps will use this Helm chart to deploy the VM in the selected namespace by combining user-supplied values with the files (e.g. `vm.yaml`) and creating the objects in OpenShift. WHen these files are updated in the user's git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.
 
  
 === Explore the VM Template in RHDH
@@ -142,7 +142,7 @@ image:self-service-patterns/vm-lab/vm-explore-yaml.png[width=100%]
 
 image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%]
 
-Our current template is not supporting the new RHEL version (it's hard-coded for RHEL 9). In the next steps we'll update the template to support the new RHEL version by parameterizing the RHEL version within the `vm.yaml` file and add necessary UI updates to allow the user to select the RHEL version from the RHDH "Create" flow.
+Our current template is not supporting the new RHEL version (it's hard-coded for RHEL 9). In the next steps we'll update the template to support the new RHEL version by adding parameters for the RHEL version within the `vm.yaml` file and add necessary UI updates to allow the user to select the RHEL version from the RHDH "Create" flow.
 
 === Implement Changes in Software Templates
 
@@ -187,7 +187,7 @@ Edit the file by choosing *Edit -> Edit Single File*:
 
 image:self-service-patterns/vm-lab/gitlab-edit-file.png[width=90%]
 
-Next, find the two comments with `UPDATE to paramaterize the RHEL version` - we need to replace the hardcoded values with variables:
+Next, find the two comments with `UPDATE to parameterize the RHEL version` - we need to replace the hardcoded values with variables:
 
 * Replace `rhel9` with `rhel{{ .Values.app.rhel.version }}`
 * Replace `rhel.9` with `rhel.{{ .Values.app.rhel.version }}`
