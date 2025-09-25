@@ -77,7 +77,7 @@ The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt gene
 
 === Verify the Argo CD User Account is Active
 
-. Visit https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io~v1~Route[*Networksing > Routes* in the {ns_tssc_gitops}^] namespace.
+. Visit https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io\~v1\~Route[*Networksing > Routes* in the {ns_tssc_gitops}^] namespace.
 . Click the link in the *Location* column to access Argo CD.
 . Login using the username `{m2_argocd_user}` and password `{m2_argocd_pass}` - an empty application list will be displayed.
 
@@ -120,7 +120,7 @@ stringData:
 
 Update your Backstage CR to include the Argo CD secret:
 
-. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{m2_rhdh_project}/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and switch to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{m2_rhdh_project}/rhdh.redhat.com\~v1alpha3\~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and switch to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *argocd-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
