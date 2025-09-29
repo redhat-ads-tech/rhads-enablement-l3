@@ -255,13 +255,13 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Bootstrap your own workflow using Knative and SonataFlow CLIs</p>
+<p>Develop a workflow on OpenShift or Kubernetes using the SonataFlow development profile.</p>
 </li>
 <li>
-<p>Deploy workflows on OpenShift using a pre-created example</p>
+<p>Deploy workflows on OpenShift via Helm using a pre-built example.</p>
 </li>
 <li>
-<p>Run a workflow using Orchestrator in Red Hat Developer Hub</p>
+<p>Run a workflow using Orchestrator in Red Hat Developer Hub.</p>
 </li>
 </ul>
 </div>
@@ -346,7 +346,7 @@ spec:
 </div>
 </li>
 <li>
-<p>Click the arrow next to the Pod on the Topology view, then visit the <code>/q/dev-ui</code> endpoint to view the <a href="https://quarkus.io/guides/dev-ui">Quarkus Dev UI</a></p>
+<p>Click the arrow next to the Pod on the Topology view, then visit the <code>/q/dev-ui</code> endpoint to view the <a href="https://quarkus.io/guides/dev-ui">Quarkus Dev UI</a>. Alternatively, <a href="https://greeting-tssc-dh.apps.{openshift_cluster_ingress_domain}/q/dev-ui" target="_blank" rel="noopener">this link</a> also works.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -354,7 +354,7 @@ spec:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Quakus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as <code>sysout</code> in our sample workflow. The Operator uses <a href="https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen" target="_blank" rel="noopener">kogito-codegen</a> to generate Java code from your workflow definition and JSON schemas.
+Quakus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as <code>sysout</code> in our sample workflow. The Serverless Logic Operator uses <a href="https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen" target="_blank" rel="noopener">kogito-codegen</a> to generate Java code from your workflow definition and JSON schemas.
 </td>
 </tr>
 </table>
@@ -368,11 +368,14 @@ Quakus is the application framework that exposes REST endpoints, performs valida
 </ol>
 </div>
 <div class="paragraph">
-<p>An important part of the <strong>SonataFlow</strong> workflow CR you deployed is the <code>sonataflow.org/profile</code> annotation that&#8217;s set to <code>dev</code>. This annotation instructs the Operator to start the Quarkus application (that&#8217;s hosting the workflow) in development mode. That&#8217;s why the Dev UI is available.</p>
+<p>An important part of the <strong>SonataFlow</strong> workflow CR you deployed is the <code>sonataflow.org/profile</code> annotation that&#8217;s set to <code>dev</code>. This annotation instructs the Serverless Logic Operator to start the Quarkus application (that&#8217;s hosting the workflow) in development mode. That&#8217;s why the Quarkus Dev UI is available.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_experimenting_with_the_quarkus_dev_ui"><a class="anchor" href="#_experimenting_with_the_quarkus_dev_ui"></a>Experimenting with the Quarkus Dev UI</h3>
+<div class="paragraph">
+<p>Use the Quarkus Dev UI to test a workflow.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -384,11 +387,15 @@ Quakus is the application framework that exposes REST endpoints, performs valida
 </div>
 </li>
 <li>
-<p>Click the play button under the <strong>Actions</strong> column for the <strong>greeting</strong>.
-image::orchestrator-overview/quarkus-devui-start-workflow.png[]</p>
+<p>Click the play button under the <strong>Actions</strong> column for the <strong>greeting</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/quarkus-devui-start-workflow.png" alt="quarkus devui start workflow">
+</div>
+</div>
 </li>
 <li>
-<p>Enter the following JSON in the <strong>Start Workflow Data</strong>:</p>
+<p>Enter the following JSON in the <strong>Start Workflow Data</strong>, then click <strong>Start</strong>:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{ "language": "English"}</code></pre>
@@ -396,15 +403,20 @@ image::orchestrator-overview/quarkus-devui-start-workflow.png[]</p>
 </div>
 </li>
 <li>
-<p>Click <strong>Start</strong>.</p>
+<p>Return to the workflows screen. Your workflow run will be listed.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/quarkus-devui-workflow-run.png" alt="quarkus devui workflow run">
+</div>
+</div>
 </li>
 <li>
-<p>Return to the workflows screen. Your workflow run will be listed.
-image::orchestrator-overview/quarkus-devui-workflow-run.png[]</p>
-</li>
-<li>
-<p>Click the <strong>greeting</strong> link. The workflow run details are listed, showing that that the English branch was executed.
-image::orchestrator-overview/quarkus-devui-workflow-outline.png[]</p>
+<p>Click the <strong>greeting</strong> link. The workflow run details are listed, showing that that the English branch was executed.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/quarkus-devui-workflow-outline.png" alt="quarkus devui workflow outline">
+</div>
+</div>
 </li>
 <li>
 <p>Scroll down and you&#8217;ll see that "Hello from JSON Workflow" is in the outputs.</p>
@@ -417,13 +429,13 @@ image::orchestrator-overview/quarkus-devui-workflow-outline.png[]</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the OpenShift Web Console, and return to the tssc-dh project&#8217;s Topology view.</p>
+<p>Return to the OpenShift Web Console, and return to the tssc-dh project&#8217;s Topology view.</p>
 </li>
 <li>
 <p>Edit the greeting <strong>SonataFlow</strong> by clicking the three dots on the <strong>SF</strong> item in the Topology view.</p>
 <div class="imageblock">
 <div class="content">
-<img src="../_images/orchestrator-overview/sonataflow-pod-running.png" alt="sonataflow pod running">
+<img src="../_images/orchestrator-overview/quarkus-devui-edit-sf.png" alt="quarkus devui edit sf">
 </div>
 </div>
 </li>
@@ -469,21 +481,28 @@ image::orchestrator-overview/quarkus-devui-workflow-outline.png[]</p>
 <div class="paragraph">
 <p>When it&#8217;s time to deploy a production-ready workflow, you need to build it into a container image and run it using the <code>gitops</code> profile. This is outlined in the <a href="https://sonataflow.org/serverlessworkflow/main/cloud/operator/gitops-profile.html" target="_blank" rel="noopener">SonataFlow Deployment Profiles Guide</a>. In this section you&#8217;ll use a pre-built image to save time.</p>
 </div>
+<div class="sect2">
+<h3 id="_install_a_production_ready_workflow"><a class="anchor" href="#_install_a_production_ready_workflow"></a>Install a Production-Ready Workflow</h3>
 <div class="paragraph">
 <p>To start, delete the development version of the <strong>greeting</strong> workflow:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the OpenShift Web Console, and return to the tssc-dh project&#8217;s Topology view.</p>
+<p>Open the OpenShift Web Console, and return to the <strong>tssc-dh</strong> project&#8217;s Topology view.</p>
 </li>
 <li>
-<p>Delete the greeting <strong>SonataFlow</strong> by clicking the three dots on the <strong>SF</strong> item in the Topology view.</p>
+<p>Delete the greeting <strong>SonataFlow</strong> by clicking the three dots on the <strong>SF</strong> item in the Topology view, then clicking <strong>Delete SonataFlow</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/sonataflow-greeting-delete.png" alt="sonataflow greeting delete">
+</div>
+</div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Now you&#8217;ll use the OpenShift Web Terminal to deploy the production version of the greeting workflow:</p>
+<p>Next, use the OpenShift Web Terminal to deploy the production version of the greeting workflow:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -492,15 +511,42 @@ image::orchestrator-overview/quarkus-devui-workflow-outline.png[]</p>
 </li>
 <li>
 <p>Launch a terminal in the popup using the default settings. Once the terminal starts, run these commands:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Set the current project context to <strong>tssc-dh</strong>:</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">helm repo add workflows https://redhat-ads-tech.github.io/orchestrator-workflows/
-helm install greeting-workflow workflows/greeting</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project tssc-dh</code></pre>
 </div>
 </div>
 </li>
 <li>
+<p>Add a Helm repository that contains sample workflows:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">helm repo add workflows https://redhat-ads-tech.github.io/orchestrator-workflows/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the greeting workflow:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">helm install greeting-workflow workflows/greeting -n tssc-dh</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
 <p>The new <strong>greeting</strong> service will appear in the Topology view.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/sonataflow-helm-install.png" alt="sonataflow helm install">
+</div>
+</div>
 </li>
 <li>
 <p>Additionally, if you login to Red Hat Developer Hub you&#8217;ll now see that <strong>Greeting workflow</strong> is listed.</p>
@@ -511,6 +557,57 @@ helm install greeting-workflow workflows/greeting</code></pre>
 </div>
 </li>
 </ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the greeting workflow doesn&#8217;t appear in the Red Hat Developer Hub UI, delete the Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_run_the_workflow"><a class="anchor" href="#_run_the_workflow"></a>Run the Workflow</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click the play button on the workflow in Red Hat Developer Hub.</p>
+</li>
+<li>
+<p>Select a language when prompted.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/sonataflow-rhdh-params.png" alt="sonataflow rhdh params">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Next</strong>, verify the parameters then click <strong>Run</strong>.</p>
+</li>
+<li>
+<p>A page showing workflow details will be shown. This includes the resulting <strong>Greeting Message</strong> determined by your chosen language.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/sonataflow-rhdh-complete.png" alt="sonataflow rhdh complete">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This is a very simple workflow example, but it demonstrates how SonataFlow-based workflows are integrated with Red Hat Developer Hub using the Orchestrator feature.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re wondering how the parameters screen was generated, you can see the <a href="https://github.com/redhat-ads-tech/orchestrator-workflows/blob/main/charts/greeting/templates/sonataflow.greeting.yaml#L18-L20" target="_blank" rel="noopener"><code>dataInputSchema</code> referenced here</a>, and the <a href="https://github.com/redhat-ads-tech/orchestrator-workflows/blob/main/charts/greeting/templates/cm.greeting-resources-schemas.yaml#L12" target="_blank" rel="noopener">JSONSchema file(s)</a> in the same directory.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, this production-ready workflow is run in the <a href="https://github.com/redhat-ads-tech/orchestrator-workflows/blob/main/charts/greeting/templates/sonataflow.greeting.yaml#L7" target="_blank" rel="noopener"><code>gitops</code> profile</a> and is <a href="https://github.com/redhat-ads-tech/orchestrator-workflows/blob/main/charts/greeting/templates/sonataflow.greeting.yaml#L78" target="_blank" rel="noopener">deploying by a pre-built container image</a> per the SonataFlow best-practices referenced earlier.</p>
+</div>
 </div>
 </div>
 </div>

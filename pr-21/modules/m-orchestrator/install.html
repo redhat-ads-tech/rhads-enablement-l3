@@ -280,8 +280,17 @@
 <div class="paragraph">
 <p><span class="image"><img src="../_images/orchestrator-overview/install-operators.png" alt="install operators"></span></p>
 </div>
-<div class="paragraph">
-<p>If either Operator is missing, use Operator Hub to install the stable release with <strong>Automatic Approval</strong> enabled.</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If either Operator is missing, use Operator Hub to install the stable release with <strong>Automatic Approval</strong> enabled. Orchestrator requires these Operators to function.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -312,7 +321,7 @@ Module 2 provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic 
 <p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-dh/core<sub>v1</sub>ConfigMap" target="_blank" rel="noopener">ConfigMaps screen</a> in the <strong>tssc-dh</strong> project.</p>
 </li>
 <li>
-<p>Select and view the YAML for the <strong>tssc-developer-hub-dynamic-plugins</strong> ConfigMap.</p>
+<p>Select and view the YAML for the <strong>backstage-dynamic-plugins-developer-hub</strong> ConfigMap.</p>
 </li>
 <li>
 <p>Verify that the following plugins are listed in the <code>plugins</code> array:</p>
@@ -356,13 +365,7 @@ Module 2 provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic 
 </ol>
 </div>
 <div class="paragraph">
-<p>So, why are these additional keys provided to the plugins?</p>
-</div>
-<div class="paragraph">
-<p>In the case of <code>dependencies.ref</code>, it tells the Red Hat Developer Hub Operator to provision the SonataFlow components, specifically a <strong>SonataFlowPlatform</strong> CR.</p>
-</div>
-<div class="paragraph">
-<p>The <code>dataIndexService.url</code> instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as Red Hat Developer Hub - you can opt to host and install the SonataFlowPlatform elsewhere if required.</p>
+<p>So, why are these additional keys provided to the plugins?  In the case of <code>dependencies.ref</code>, it tells the Red Hat Developer Hub Operator to provision the SonataFlow components, specifically a <strong>SonataFlowPlatform</strong> CR. The <code>dataIndexService.url</code> instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as Red Hat Developer Hub - you can opt to host and install the SonataFlowPlatform elsewhere if required.</p>
 </div>
 </div>
 </div>
