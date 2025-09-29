@@ -134,7 +134,19 @@
     <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
@@ -217,6 +229,9 @@
     <button class="nav-item-toggle"></button>
     <span class="nav-text">Dev Mode</span>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../m-orchestrator/advanced-workflow.html">advanced-workflow</a>
+  </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
   </li>
@@ -423,7 +438,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io<sub>v1</sub>Route" target="_blank" rel="noopener"><strong>Networksing &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
+<p>Visit <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io~v1\~Route" target="_blank" rel="noopener"><strong>Networksing &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
 </li>
 <li>
 <p>Click the link in the <strong>Location</strong> column to access Argo CD.</p>
@@ -506,7 +521,7 @@ stringData:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and switch to the <strong>YAML</strong> view.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3\~Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and switch to the <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>argocd-secrets</strong> Secret you created:</p>

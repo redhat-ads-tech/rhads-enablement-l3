@@ -134,7 +134,19 @@
     <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
@@ -217,6 +229,9 @@
     <button class="nav-item-toggle"></button>
     <span class="nav-text">Dev Mode</span>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../m-orchestrator/advanced-workflow.html">advanced-workflow</a>
+  </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
   </li>
@@ -331,7 +346,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core<sub>v1</sub>Secret" target="_blank" rel="noopener">Secrets screen in the tssc-keycloak</a> namespace.</p>
+<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core~v1\~Secret" target="_blank" rel="noopener">Secrets screen in the tssc-keycloak</a> namespace.</p>
 </li>
 <li>
 <p>Click the <code>keycloak-initial-admin</code> Secret to view it.</p>
@@ -340,7 +355,7 @@
 <p>Copy the <code>password</code> value from the Secret.</p>
 </li>
 <li>
-<p>View the <a href="https://sso.apps.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients" target="_blank" rel="noopener">clients list in the <code>trusted-artifact-signer</code> realm</a> in Keycloak - login as <strong>admin</strong> using the password you copied from the Secret.</p>
+<p>View the <a href="https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients" target="_blank" rel="noopener">clients list in the <code>trusted-artifact-signer</code> realm</a> in Keycloak - login as <strong>admin</strong> using the password you copied from the Secret.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -516,6 +531,20 @@ data:
 </li>
 <li>
 <p>Select the <strong>Backstage</strong> tab, then click on your <code>rhdh</code> instance.</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Be sure to select the <strong>rhdh</strong> instance from the list. Modifying other listed Backstage instances could impact future modules.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </li>
 <li>
 <p>Click the <strong>YAML</strong> tab to edit the resource.</p>
@@ -693,6 +722,20 @@ data:
 </li>
 <li>
 <p>Replace the <code>app-config.yaml</code> content with:</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Replace just the contents of <code>app-config.yaml</code> in the ConfigMap. Do not overwrite the entire ConfigMap. Make sure you indent the new configuration correctly - you can highlight multiple lines in the editor and press TAB to indent them.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">app:
@@ -708,7 +751,7 @@ auth:
     oidc:
       production:
         metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
-        clientId: $rhdh
+        clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         prompt: auto
 
