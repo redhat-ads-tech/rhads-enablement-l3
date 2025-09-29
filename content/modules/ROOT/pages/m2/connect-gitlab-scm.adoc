@@ -32,7 +32,7 @@ You can find the GitLab instance deployment by accessing the {openshift_console_
 ====
 . Login using the root credentials:
   * Username: `root`
-  * Password: {gitlab_user_password}
+  * Password: `{gitlab_user_password}`
 . Click on your user's profile picture, select *Edit profile*, then *Access tokens*.
 . Click the *Add new token* button, then set the following values for the token:
   * *Token name*: `developer-hub-integration`
@@ -82,7 +82,7 @@ Similar to the *{m2_keycloak_secret_name}* you created in the previous section, 
 
 Update your Backstage CR to include the GitLab secret:
 
-. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and change to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com\~v1alpha3\~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and change to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -142,7 +142,7 @@ catalog:
         entityFilename: discovery-example/catalog-info.yaml
         schedule:
           frequency:
-            minutes: 5
+            minutes: 1
           timeout:
             minutes: 3
 ----
@@ -173,6 +173,11 @@ image::setup-rhdh/gitlab-discovery-log.png[]
 . Navigate to the *Catalog* to see imported items of *Kind* Component from GitLab repositories - specifically a *HTTP Sink Application*.
 +
 image::setup-rhdh/gitlab-component-httpsink.png[]
++
+[NOTE]
+====
+If the HTTP Sink Application isn't listed in the Catalog, wait a minute or two and refresh the Catalog page.
+====
 . Visit the *APIs* screen using the link in the side menu and you'll find a matching API Entity. Click it.
 . A *Relations* pane shows that the API is provided by the *HTTP Sink Application*.
 . Click the *Definition* tab - an Swagger UI is rendered from the OpenAPI Spec.
