@@ -1,6 +1,6 @@
 = Orchestrator for {product_rhdh_name}
 
-Other modules demonstrate how to use Software Templates as a means for developers to scaffold new codebases that follow organisational standards, and self-servce certain aspects of their daily activities. 
+Other modules demonstrate how to use Software Templates as a means for developers to scaffold new codebases that follow organisational standards, and self-service certain aspects of their daily activities. 
 
 However, developer self-service requests might require more than what a Software Template can provide natively. For example, certain activities require an approval step, or other *long-running, stateful processes* - this is where the Orchestrator for {product_rhdh_name} can address the fact that regular Software Templates are stateless run and done processes. 
 
@@ -14,7 +14,7 @@ SonataFlow is part of a broader ecosystem of projects within Apache KIE, includi
 
 Serverless Workflow is a cloud-native workflow engine which allows teams to design, deploy and execute arbitrarily complex workflows that integrate with external systems through several mechanisms. Teams define workflows in the Serverless Workflow format, and SonataFlow will take care of the build, state management, and serverless deployment aspects for you.
 
-The following workflow definition demonstrates functions, input validation using schema(s), and behaviour modeling using https://en.wikipedia.org/wiki/Finite-state_machine[state machine^] semantics. A workflow like this can be built and deployed on OpenShift as a Quarkus-based application container using the SonataFlow Operator.
+The following workflow definition demonstrates functions, input validation using schema(s), and behavior modeling using https://en.wikipedia.org/wiki/Finite-state_machine[state machine^] semantics. A workflow like this can be built and deployed on OpenShift as a Quarkus-based application container using the SonataFlow Operator.
 
 [source,yaml]
 ----
@@ -102,11 +102,11 @@ NOTE: To learn more about the workflow YAML/JSON, you can view https://serverles
 
 A https://sonataflow.org/serverlessworkflow/latest/tooling/serverless-workflow-editor/swf-editor-vscode-extension.html[VSCode Extension to assist workflow development^] is supported by the SonataFlow project. This extension renders a visual representation of the workflow. 
 
-## SonataFlow and Orhestrator
+## SonataFlow and Orchestrator
 
 The Orchestrator feature effectively acts as an interface between {product_rhdh_name} and SonataFlow-powered workflows - providing a listing and the ability view and run workflows directly from {product_rhdh_name}.
 
-Additionally, long running workflows can integrate with the https://backstage.io/docs/notifications/[Backstage Notifications^] plugin, to allow users or groups to be notified of milestones in the workflow execution. This is particluarly useful for long running workflows where it's impractical for a user to wait for completion. 
+Additionally, long running workflows can integrate with the https://backstage.io/docs/notifications/[Backstage Notifications^] plugin, to allow users or groups to be notified of milestones in the workflow execution. This is particularly useful for long running workflows where it's impractical for a user to wait for completion. 
 
 The following screenshot shows the prior "greeting" workflow available in the {product_rhdh_name} UI.
 

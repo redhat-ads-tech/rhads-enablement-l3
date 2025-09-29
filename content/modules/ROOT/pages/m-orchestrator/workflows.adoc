@@ -71,7 +71,7 @@ spec:
 image::orchestrator-overview/sonataflow-pod-running.png[]
 . Click the arrow next to the Pod on the Topology view, then visit the `/q/dev-ui` endpoint to view the https://quarkus.io/guides/dev-ui[Quarkus Dev UI]. Alternatively, https://greeting-tssc-dh.apps.{openshift_cluster_ingress_domain}/q/dev-ui[this link^] also works.
 +
-NOTE: Quakus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as `sysout` in our sample workflow. The Serverless Logic Operator uses https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen[kogito-codegen^] to generate Java code from your workflow definition and JSON schemas.
+NOTE: Quarkus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as `sysout` in our sample workflow. The Serverless Logic Operator uses https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen[kogito-codegen^] to generate Java code from your workflow definition and JSON schemas.
 +
 image::orchestrator-overview/sonataflow-q-dev-ui.png[]
 
