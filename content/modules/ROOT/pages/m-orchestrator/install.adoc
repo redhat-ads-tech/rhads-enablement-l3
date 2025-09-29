@@ -18,7 +18,7 @@ Confirm that both Operators are installed by visiting the https://console-opensh
 
 image:orchestrator-overview/install-operators.png[]
 
-If either Operator is missing, use Operator Hub to install the stable release with *Automatic Approval* enabled.
+WARNING: If either Operator is missing, use Operator Hub to install the stable release with *Automatic Approval* enabled. Orchestrator requires these Operators to function.
 
 == Add the Orchestrator Plugins to {product_rhdh_name}
 
@@ -29,7 +29,7 @@ NOTE: Module 2 provides an in-depth overview of {product_rhdh_name}'s dynamic pl
 Verify that the dynamic plugins have been configured correctly:
 
 . Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core~v1~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project.
-. Select and view the YAML for the *tssc-developer-hub-dynamic-plugins* ConfigMap.
+. Select and view the YAML for the *backstage-dynamic-plugins-developer-hub* ConfigMap.
 . Verify that the following plugins are listed in the `plugins` array:
   * @redhat/backstage-plugin-orchestrator
   * @redhat/backstage-plugin-orchestrator-backend-dynamic
@@ -52,11 +52,7 @@ pluginConfig:
         url: http://sonataflow-platform-data-index-service
 ----
 
-So, why are these additional keys provided to the plugins? 
-
-In the case of `dependencies.ref`, it tells the {product_rhdh_name} Operator to provision the SonataFlow components, specifically a *SonataFlowPlatform* CR. 
-
-The `dataIndexService.url` instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as {product_rhdh_name} - you can opt to host and install the SonataFlowPlatform elsewhere if required.
+So, why are these additional keys provided to the plugins?  In the case of `dependencies.ref`, it tells the {product_rhdh_name} Operator to provision the SonataFlow components, specifically a *SonataFlowPlatform* CR. The `dataIndexService.url` instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as {product_rhdh_name} - you can opt to host and install the SonataFlowPlatform elsewhere if required.
 
 == Verify the SonataFlowPlatform
 
