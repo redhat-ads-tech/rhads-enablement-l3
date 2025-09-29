@@ -10,44 +10,6 @@ IMPORTANT: Please make sure to log in as a *Platform Engineer* with `pe1` / `{co
 include::../login-pe.adoc[]
 ====
 
-=== Configure the Orchestrator Plugin
-
-. Visit your https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/developer-hub-config/[rhdh/developer-hub-config repository on GitLab, window="gitlab"].
-. Open the `values.yaml` file, then select *Edit > Edit single file*.
-. Uncomment the `--- ORCHESTRATOR PLUGIN ---` section in the `dynamic.plugins` section of the YAML, to enable the Orchestrator and Notification dynamic plugins.
-+
-[NOTE]
-====
-To uncomment multiple lines of code, highlight the lines and press `CMD + /` (on macOS) or `CTRL + /` (on Linux/Windows).
-====
-+
-image:orchestrator-overview/orchestrator-plugin.png[Orchestrator and Notification dynamic plugins, width=60%]
-+
-Note that the orchestrator plugin is not yet bundled with Red Hat Developer Hub, and needs to be referenced as an external package `@redhat/backstage-plugin-orchestrator-backend-dynamic@1.4.0`, which will be downloaded from the configured npm registry.
-. Look for the YAML between the `--- ORCHESTRATOR PLUGIN ---` block further down in the file and uncomment it.
-+
-image:orchestrator-overview/orchestrator-plugin-configuration.png[Orchestrator configuration, width=60%]
-+
-This section contains configuration for the orchestrator plugin.
-. Commit your changes with the message `feat: enable orchestrator plugin`.
-. Click the *Refresh* button on the https://openshift-gitops-server-openshift-gitops.{openshift_cluster_ingress_domain}/applications[`backstage` Application in OpenShift GitOps^, window="argo"].
-
-=== Verify that the Orchestrator and Notification plugins are enabled
-
-. After a few moments your new {product_name_rhdh} configuration will finish rolling out. Visit your https://backstage-backstage.{openshift_cluster_ingress_domain}/[instance of {product_name_rhdh}^, window="rhdh"] and view the Home page. Note two new menu items in the left-hand side menu, *Orchestrator* and *Notifications*.
-+
-image:orchestrator-overview/orchestrator-notification-menu.png[Orchestrator and Notification in RHDH, width=60%]
-. Select *Orchestrator* from the left-hand side menu.
-+
-image:orchestrator-overview/workflow-orchestrator-overview.png[Workflow Orchestrator overview]
-+
-This page shows the list of workflows that are available to the {product_name_rhdh} users. As expected, the list is empty because no workflows have been deployed yet. You will do so later in this chapter.
-. Select *Notifications* from the side menu.
-+
-image:orchestrator-overview/notifications-overview.png[Notifications overview]
-+
-This page shows the notifications for the logged in user. As expected, the list is empty, as no notifications have been emitted yet.
-
 === Import Software templates for Developer Self Service.
 
 To illustrate the possibilities of the Orchestrator plugin, let's imagine the following use case: a developer requests a namespace in an OpenShift cluster. Namespaces are limited with resource quota and limits. They come in two sizes, small and large, where the large namespace enables more resources. The large namespace requires approval. +

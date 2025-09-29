@@ -1,0 +1,141 @@
+= Developing, Managing, and Running Workflows
+
+In this section you'll learn how to:
+
+* Bootstrap your own workflow using Knative and SonataFlow CLIs
+* Deploy workflows on OpenShift using a pre-created example
+* Run a workflow using Orchestrator in {product_rhdh_name}
+
+## Developing Workflows on OpenShift
+
+It's impractical to cover all aspects of development for SonataFlow and Serverless Workflow in this module, however you'll get hands on with a basic example that demonstrates a basic Operator-based development flow. After this, you'll learn how to make the workflow available in {product_rhdh_name}.
+
+### Create a Workflow in Dev Mode
+
+. Visit the *tssc-dh* project in the OpenShift Web Console.
+. Click the plus (*+*) icon in the top navigation, and choose *Import YAML*.
+. Paste the following YAML and click create:
++ 
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  namespace: {ns_tssc_rhdh}
+  name: greeting
+  annotations:
+    # Setting the profile to dev mode allows us to run the underlying
+    # Quarkus server in dev mode - meaning we can use the dev UI to
+    # test and debug the workflow
+    sonataflow.org/profile: dev
+    sonataflow.org/description: Greeting example on OpenShift!
+    sonataflow.org/version: 0.0.1
+spec:
+  flow:
+    start: ChooseOnLanguage
+    functions:
+      - name: greetFunction
+        type: custom
+        operation: sysout
+    states:
+      - name: ChooseOnLanguage
+        type: switch
+        dataConditions:
+          - condition: "${ .language == \"English\" }"
+            transition: GreetInEnglish
+          - condition: "${ .language == \"Spanish\" }"
+            transition: GreetInSpanish
+        defaultCondition: GreetInEnglish
+      - name: GreetInEnglish
+        type: inject
+        data:
+          greeting: "Hello from JSON Workflow, "
+        transition: GreetPerson
+      - name: GreetInSpanish
+        type: inject
+        data:
+          greeting: "Saludos desde JSON Workflow, "
+        transition: GreetPerson
+      - name: GreetPerson
+        type: operation
+        actions:
+          - name: greetAction
+            functionRef:
+              refName: greetFunction
+              arguments:
+                message:  ".greeting+.name"
+        end: true
+----
+. A new *SonataFlow* resource will appear in the Topology View. Click it and wait for the Pod to enter the *Running* status.
++
+image::orchestrator-overview/sonataflow-pod-running.png[]
+. Click the arrow next to the Pod on the Topology view, then visit the `/q/dev-ui` endpoint to view the https://quarkus.io/guides/dev-ui[Quarkus Dev UI]
++
+NOTE: Quakus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as `sysout` in our sample workflow. The Operator uses https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen[kogito-codegen^] to generate Java code from your workflow definition and JSON schemas.
++
+image::orchestrator-overview/sonataflow-q-dev-ui.png[]
+
+An important part of the *SonataFlow* workflow CR you deployed is the `sonataflow.org/profile` annotation that's set to `dev`. This annotation instructs the Operator to start the Quarkus application (that's hosting the workflow) in development mode. That's why the Dev UI is available.
+
+### Experimenting with the Quarkus Dev UI
+
+. Click the *Workflows* link inside the *Serverless Workflows Tools* box. Workflows will be listed.
++
+image::orchestrator-overview/quarkus-devui-workflows.png[]
+. Click the play button under the *Actions* column for the *greeting*.
+image::orchestrator-overview/quarkus-devui-start-workflow.png[]
+. Enter the following JSON in the *Start Workflow Data*:
++
+[source,bash,role=execute,subs=attributes+]
+----
+{ "language": "English"}
+----
+. Click *Start*.
+. Return to the workflows screen. Your workflow run will be listed.
+image::orchestrator-overview/quarkus-devui-workflow-run.png[]
+. Click the *greeting* link. The workflow run details are listed, showing that that the English branch was executed. 
+image::orchestrator-overview/quarkus-devui-workflow-outline.png[]
+. Scroll down and you'll see that "Hello from JSON Workflow" is in the outputs.
+
+### Edit the Workflow
+
+. Open the OpenShift Web Console, and return to the {ns_tssc_rhdh} project's Topology view.
+. Edit the greeting *SonataFlow* by clicking the three dots on the *SF* item in the Topology view.
++
+image::orchestrator-overview/sonataflow-pod-running.png[]
+. Switch to the YAML editor.
+. Update one the Spanish entry in `ChooseOnLanguage` conditions to check for "Irish" and change the `transition` to "GreetInIrish"
+. Find the corresponding `GreetInSpanish` state and change it to `GreetInIrish`.
+. Additionally, change the `data.greeting` to `Háigh ó JSON workflow,`
++ 
+image::orchestrator-overview/quarkus-devui-edit-workflow.png[]
+. Scroll down and click *Save*.
+. Next, visit the Pod logs of the *greeting* Pod. Notice that it restarts Quarkus? You should see the Quarkus logo printed - indicating a restart of the framework.
++
+image::orchestrator-overview/quarkus-devui-restarts.png[]
+
+Test the workflow again, but pass the "Irish" as the language and observe the results.
+
+## Integrate a Workflow with Orchestrator
+
+When it's time to deploy a production-ready workflow, you need to build it into a container image and run it using the `gitops` profile. This is outlined in the https://sonataflow.org/serverlessworkflow/main/cloud/operator/gitops-profile.html[SonataFlow Deployment Profiles Guide^]. In this section you'll use a pre-built image to save time.
+
+To start, delete the development version of the *greeting* workflow:
+
+. Open the OpenShift Web Console, and return to the {ns_tssc_rhdh} project's Topology view.
+. Delete the greeting *SonataFlow* by clicking the three dots on the *SF* item in the Topology view.
+
+Now you'll use the OpenShift Web Terminal to deploy the production version of the greeting workflow:
+
+. Click the Web Terminal (*>_*) icon in the top navigation of the OpenShift Web Console.
+. Launch a terminal in the popup using the default settings. Once the terminal starts, run these commands:
++
+[source,bash,role=execute,subs=attributes+]
+----
+helm repo add workflows https://redhat-ads-tech.github.io/orchestrator-workflows/
+helm install greeting-workflow workflows/greeting
+----
+. The new *greeting* service will appear in the Topology view.
+. Additionally, if you login to {product_rhdh_name} you'll now see that *Greeting workflow* is listed.
++
+image::orchestrator-overview/rhdh-workflow-list.png[]
