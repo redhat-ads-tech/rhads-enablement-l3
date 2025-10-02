@@ -32,10 +32,10 @@ Your environment includes a preconfigured Keycloak instance with a `{keycloak_re
 
 Keycloak has been pre-deployed on your OpenShift cluster in the `tssc-keycloak` project. Accessing Keycloak requires its URL and admin password:
 
-. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core~v1~Secret[Secrets screen in the tssc-keycloak^] namespace.
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core\~v1\~Secret[Secrets screen in the tssc-keycloak^] namespace.
 . Click the `keycloak-initial-admin` Secret to view it.
 . Copy the `password` value from the Secret.
-. View the https://sso.apps.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm^] in Keycloak - login as *admin* using the password you copied from the Secret.
+. View the https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm^] in Keycloak - login as *admin* using the password you copied from the Secret.
 + 
 [NOTE]
 ====
@@ -125,6 +125,11 @@ Now you need to update your Backstage CR to reference the dynamic plugins Config
 . Navigate to *Operators > Installed Operators* in the OpenShift Web Console.
 . Click on *{product_rhdh_name}*.
 . Select the *Backstage* tab, then click on your `{m2_rhdh_instance}` instance.
++
+[WARNING]
+====
+Be sure to select the *{m2_rhdh_instance}* instance from the list. Modifying other listed Backstage instances could impact future modules.
+====
 . Click the *YAML* tab to edit the resource.
 . Update the `spec.application` section to include the dynamic plugins configuration:
 +
@@ -221,6 +226,11 @@ Update your *app-config.yaml* to include Keycloak integration:
 . Click *Edit ConfigMap*.
 . Replace the `app-config.yaml` content with:
 +
+[WARNING]
+====
+Replace just the contents of `app-config.yaml` in the ConfigMap. Do not overwrite the entire ConfigMap. Make sure you indent the new configuration correctly - you can highlight multiple lines in the editor and press TAB to indent them.
+====
++
 [source,yaml,role=execute,subs=attributes+]
 ----
 app:
@@ -235,9 +245,9 @@ auth:
   providers:
     oidc:
       production:
-        metadataUrl: ${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        metadataUrl: $\{KEYCLOAK_BASE_URL}/realms/$\{KEYCLOAK_REALM}/.well-known/openid-configuration
+        clientId: $\{KEYCLOAK_CLIENT_ID}
+        clientSecret: $\{KEYCLOAK_CLIENT_SECRET}
         prompt: auto
 
 backend:
@@ -249,11 +259,11 @@ catalog:
   providers:
     keycloakOrg:
       default:
-        baseUrl: ${KEYCLOAK_BASE_URL}
-        loginRealm: ${KEYCLOAK_REALM}
-        realm: ${KEYCLOAK_REALM}
+        baseUrl: $\{KEYCLOAK_BASE_URL}
+        loginRealm: $\{KEYCLOAK_REALM}
+        realm: $\{KEYCLOAK_REALM}
         clientId: $\{KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        clientSecret: $\{KEYCLOAK_CLIENT_SECRET}
         schedule:
           frequency:
             minutes: 5

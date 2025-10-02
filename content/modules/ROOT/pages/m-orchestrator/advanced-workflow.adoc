@@ -1,21 +1,4 @@
-:imagesdir: ../assets/images
 
-== Platform Engineer Activity: Enable The Orchestrator Plugin and Developer Self-Service
-
-Until now we have discussed Software Templates as a means for developers to accelerate their daily inner-loop activities. But Software Templates can do a lot more, like allowing developers to provision and deploy infrastructural components (like virtual machines and even complete OpenShift clusters) and application middleware components like message brokers and databases. 
-
-Software templates can achieve this through custom plugins that interact with tools like Ansible and OpenShift API servers. 
-
-
-But, in real life, these developer self-service requests might require more than what a Software Template can provide. For example, for certain activities an approval step might be required. This is where the Orchestrator plugin comes in. 
-
-The Orchestrator plugin acts as an interface between {product_name_rhdh} and Serverless Workflow. Serverless Workflow is a cloud-native workflow engine which allows to design, deploy and execute arbitrarily complex workflows which can integrate with external systems through several mechanisms.
-
-The Orchestrator plugin is also integrated with the Notifications plugin, which allows users or groups to be notified of milestones in the workflow execution.
-
-This is a high level architectural overview of the Orchestrator:
-
-image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[]
 
 As a use case for Developer Self-Service we are going to look at a pretty simple use case: a Developer can request a namespace on an OpenShift cluster. The namespace has limited resources, defined by resource quota and limit ranges. In our case, the namespaces come in two sizes, small and large. Large namespaces however require an approval. 
 
@@ -26,44 +9,6 @@ IMPORTANT: Please make sure to log in as a *Platform Engineer* with `pe1` / `{co
 ====
 include::../login-pe.adoc[]
 ====
-
-=== Configure the Orchestrator Plugin
-
-. Visit your https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/developer-hub-config/[rhdh/developer-hub-config repository on GitLab, window="gitlab"].
-. Open the `values.yaml` file, then select *Edit > Edit single file*.
-. Uncomment the `--- ORCHESTRATOR PLUGIN ---` section in the `dynamic.plugins` section of the YAML, to enable the Orchestrator and Notification dynamic plugins.
-+
-[NOTE]
-====
-To uncomment multiple lines of code, highlight the lines and press `CMD + /` (on macOS) or `CTRL + /` (on Linux/Windows).
-====
-+
-image:orchestrator-overview/orchestrator-plugin.png[Orchestrator and Notification dynamic plugins, width=60%]
-+
-Note that the orchestrator plugin is not yet bundled with Red Hat Developer Hub, and needs to be referenced as an external package `@redhat/backstage-plugin-orchestrator-backend-dynamic@1.4.0`, which will be downloaded from the configured npm registry.
-. Look for the YAML between the `--- ORCHESTRATOR PLUGIN ---` block further down in the file and uncomment it.
-+
-image:orchestrator-overview/orchestrator-plugin-configuration.png[Orchestrator configuration, width=60%]
-+
-This section contains configuration for the orchestrator plugin.
-. Commit your changes with the message `feat: enable orchestrator plugin`.
-. Click the *Refresh* button on the https://openshift-gitops-server-openshift-gitops.{openshift_cluster_ingress_domain}/applications[`backstage` Application in OpenShift GitOps^, window="argo"].
-
-=== Verify that the Orchestrator and Notification plugins are enabled
-
-. After a few moments your new {product_name_rhdh} configuration will finish rolling out. Visit your https://backstage-backstage.{openshift_cluster_ingress_domain}/[instance of {product_name_rhdh}^, window="rhdh"] and view the Home page. Note two new menu items in the left-hand side menu, *Orchestrator* and *Notifications*.
-+
-image:orchestrator-overview/orchestrator-notification-menu.png[Orchestrator and Notification in RHDH, width=60%]
-. Select *Orchestrator* from the left-hand side menu.
-+
-image:orchestrator-overview/workflow-orchestrator-overview.png[Workflow Orchestrator overview]
-+
-This page shows the list of workflows that are available to the {product_name_rhdh} users. As expected, the list is empty because no workflows have been deployed yet. You will do so later in this chapter.
-. Select *Notifications* from the side menu.
-+
-image:orchestrator-overview/notifications-overview.png[Notifications overview]
-+
-This page shows the notifications for the logged in user. As expected, the list is empty, as no notifications have been emitted yet.
 
 === Import Software templates for Developer Self Service.
 
