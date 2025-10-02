@@ -23,11 +23,11 @@ Now, imagine that you need to fulfill a need for the Java Development team. The 
 
 Open the following files or folders to examine their contents:
 
-* `template.yaml`: This file defines the UI experience for the end user in Developer Hub (e.g. the fields and drop-downs and selectors to define the configuration of the Data Grid in this case) and the programmatic steps to obtain software templates, create repositories, create GitOps objects, and more.
+* `template.yaml`: This file defines the UI experience for the end user in Developer Hub (e.g. the fields and drop-downs and selectors to define the configuration of the namespace in this case) and the programmatic steps to define the logic to be executed as part of the component's creation: create repositories, create GitOps objects, and more.
 
-* `skeleton/catalog-info.yaml`: This file represents the object that is added to the catalog in Developer Hub when this template is used, including its name and links. All of the placeholders (e.g. `${{values.component_id}}`) are replaced with actual values user enters or are dynamically computed when the template is used.
+* `skeleton/catalog-info.yaml`: This file represents a descriptor file used to define and register entities and will contain information displayed in the component's overview, such as source code, technical docs links. All of the placeholders (e.g., `${{values.component_id}}`) are replaced with actual values the user enters or are dynamically computed when the template is used.
 
-* `manifests/argocd`: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the `argo-app-dev.yaml` is the Argo CD Application pointing to the VM manifest folder. That have funny names because the values that the developer provides are used when the final file is created for the user in their git repository.
+* `manifests/argocd`: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the `argo-app-dev.yaml` is the Argo CD Application pointing to the Kubernetes manifest folder, in this case, the VM's manifests. The file name contains the component's ID name, which will be populated from the RHDH template when the final file is created for the user in their git repository. Developer Hub, powered by GitOps, maintains the desired state (defined in the manifests)as the actual state in the cluster for any template definitions, ensuring system stability.
 
 * `manifests/helm/app`: This folder contains a Helm chart that will be used to create the Data Grid cluster and other associated resources. OpenShift GitOps will use this Helm chart to create resources on the cluster by combining user-supplied values with the files and creating the resulting objects in OpenShift. When these files are updated in the user's git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.
 
@@ -96,7 +96,7 @@ image:self-service-patterns/db-lab/self-service-catalog.png[width=40%]
 image:self-service-patterns/db-lab/db-edit-catalog.png[width=60%]
 
 
-* Navigate to the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^] (it's in the `manifests/helm/app` folder). This folder contains the Kubernetes objects that should be created when the template is used in Developer HUb.
+* Navigate to the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^] (it's in the `manifests/helm/app` folder). This folder contains the Kubernetes objects required to build the component in a Kubernetes cluster.
 
 * Create a new file named `infinispan.yaml` by clicking the `+` button and selecting _New File_:
 
@@ -104,7 +104,7 @@ image:self-service-patterns/db-lab/gitlab-newfile.png[width=100%]
 
 The https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters[official documentation^] provides the following example for the `infinispan.yaml` file. We also need to use Helm variables like `{{ .Values.app.name }}` so that the user-supplied values are used when the cluster is created. Paste this content into the new file in GitLab:
 
-[source,yaml,subs=attributes+]
+[source,yaml,subs="+attributes,macros+"]
 ----
 kind: Infinispan
 apiVersion: infinispan.org/v1

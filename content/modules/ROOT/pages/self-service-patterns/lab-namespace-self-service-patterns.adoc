@@ -22,11 +22,11 @@ Now, imagine for a moment that you need to fulfill a need for the Python Develop
 
 Open the following files or folders to examine their contents:
 
-* `template.yaml`: This file defines the UI experience for the end user in Developer Hub (e.g. the fields and drop-downs and selectors to define the configuration of the namespace in this case) and the programmatic steps to obtain software templates, create repositories, create GitOps objects, and more.
+* `template.yaml`: This file defines the UI experience for the end user in Developer Hub (e.g. the fields and drop-downs and selectors to define the configuration of the namespace in this case) and the programmatic steps to define the logic to be executed as part of the component's creation: create repositories, create GitOps objects, and more.
 
-* `skeleton/catalog-info.yaml`: This file represents the object that is added to the catalog in Developer Hub when this template is used, including its name and links. All of the placeholders (e.g. `${{values.component_id}}`) are replaced with actual values user enters or are dynamically computed when the template is used.
+* `skeleton/catalog-info.yaml`: This file represents a descriptor file used to define and register entities and will contain information displayed in the component's overview, such as source code, technical docs links. All of the placeholders (e.g., `${{values.component_id}}`) are replaced with actual values the user enters or are dynamically computed when the template is used.
 
-* `manifests/argocd`: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the `argo-app-dev.yaml` is the Argo CD Application pointing to the VM manifest folder. That have funny names because the values that the developer provides are used when the final file is created for the user in their git repository.
+* `manifests/argocd`: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the `argo-app-dev.yaml` is the Argo CD Application pointing to the Kubernetes manifest folder, in this case, the VM's manifests. The file name contains the component's ID name, which will be populated from the Developer Hub template when the final file is created for the user in their git repository. Developer Hub, powered by GitOps, maintains the desired state (defined in the manifests)as the actual state in the cluster for any template definitions, ensuring system stability.
 
 * `manifests/helm/app`: This folder contains a Helm chart that will be used to create the namespace. OpenShift GitOps will use this Helm chart to create the namespace by combining user-supplied values with the files (e.g. `quota.yaml`) and creating the objects in OpenShift. When these files are updated in the user's git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.
  
@@ -46,7 +46,7 @@ image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
-[source, bash,role=execute,subs=attributes+]
+[source,bash,role=execute,subs=attributes+]
 ----
 {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/template.yaml
 ----
@@ -73,7 +73,7 @@ image::self-service-patterns/namespace-lab/project-sample.png[]
 
 == Implement changes in Software Templates
 
-To do this, we will be updating the quotas definition in the *quota.yaml* file to enforce a limit on the resources that can be used in the namespace, so that the Python Team doesn't accidentally use too many resources.
+To do this, we will be updating the quotas definition in the `quota.yaml` file to enforce a limit on the resources that can be used in the namespace, so that the Python Team doesn't accidentally use too many resources.
 
 
 === Edit the template
