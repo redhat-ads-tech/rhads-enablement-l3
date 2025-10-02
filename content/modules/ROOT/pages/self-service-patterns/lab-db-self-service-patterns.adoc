@@ -102,33 +102,35 @@ image:self-service-patterns/db-lab/db-edit-catalog.png[width=60%]
 
 image:self-service-patterns/db-lab/gitlab-newfile.png[width=100%]
 
-The https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters[official documentation^] provides the following example for the `infinispan.yaml` file. We also need to use Helm variables like `{{ .Values.app.name }}` so that the user-supplied values are used when the cluster is created. Paste this content into the new file in GitLab:
+Review the https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters[official documentation^] on how to create a Data Grid instance. This example is very simple, but in the future you can add more options to the instance, such as different storage options, different authentication methods, etc.
 
-[source,yaml,subs="+attributes,macros+"]
+* For now, we'll use a basic configuration, so paste this content into the new file in GitLab:
+
+[source,yaml,role=execute,subs="+attributes,macros+"]
 ----
 kind: Infinispan
 apiVersion: infinispan.org/v1
 metadata:
-  name: {{ .Values.app.name }}
+  name: {{ .Values.app.name }} # <1>
   labels:
-    {{- include "operator.labels" . | nindent 4 }}
+    {{- include "operator.labels" . | nindent 4 }} # <2>
     {{- include "backstage.labels" . | nindent 4 }}
 spec:
-  replicas: 2
+  replicas: 2 # <3>
   service:
     type: DataGrid
   expose:
-    type: Route
+    type: Route # <4>
   security:
-    endpointSecretName: connect-secret
+    endpointSecretName: connect-secret # <5>
 ----
+<1> This will be replaced with the user-supplied value for the Data Grid instance name
+<2> The labels for the Data Grid instance, using Helm variables to include the operator and backstage labels which integrate with Developer Hub's various plugins and help surface useful information in the context of the component.
+<3> The number of replicas for the Data Grid cluster. Additional replicas can be added to the cluster to improve performance and availability.
+<4> This option https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services[exposes the Data Grid cluster to outside traffic^]
+<5> Custom credentials from a Secret (defined in `identities.yaml`) as defined in the https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn[docs for Data Grid authentication^] enabling authenticated access.
 
-It should look like this https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml[infinispan.yaml solution file^].
-
-[NOTE]
-====
-The file also uses an `expose` option to https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services[expose the Data Grid cluster with a Route^], and we added custom credentials from a Secret (defined in `identities.yaml`) as defined in the https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn[docs for Data Grid authentication^]
-====
+* Scroll down and click the *Commit Changes* button to save your updates.
 
 * Back in the Developer Hub catalog, on the {rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance/[Data Grid Template^], click on the *Schedule entity refresh* icon to sync the catalog with the latest changes.
 
