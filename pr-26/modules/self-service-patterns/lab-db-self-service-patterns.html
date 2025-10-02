@@ -481,50 +481,67 @@ As shown in the following picture:</p>
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/gitlab-newfile.png" alt="gitlab newfile" width="100%"></span></p>
 </div>
 <div class="paragraph">
-<p>The <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters" target="_blank" rel="noopener">official documentation</a> provides the following example for the <code>infinispan.yaml</code> file. We also need to use Helm variables like <code>{{ .Values.app.name }}</code> so that the user-supplied values are used when the cluster is created. Paste this content into the new file in GitLab:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: Infinispan
-apiVersion: infinispan.org/v1
-metadata:
-  name: {{ .Values.app.name }}
-  labels:
-    {{- include "operator.labels" . | nindent 4 }}
-    {{- include "backstage.labels" . | nindent 4 }}
-spec:
-  replicas: 2
-  service:
-    type: DataGrid
-  expose:
-    type: Route
-  security:
-    endpointSecretName: connect-secret</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>It should look like this <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml" target="_blank" rel="noopener">infinispan.yaml solution file</a>.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The file also uses an <code>expose</code> option to <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services" target="_blank" rel="noopener">expose the Data Grid cluster with a Route</a>, and we added custom credentials from a Secret (defined in <code>identities.yaml</code>) as defined in the <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn" target="_blank" rel="noopener">docs for Data Grid authentication</a></p>
-</div>
-</td>
-</tr>
-</table>
+<p>Review the <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters" target="_blank" rel="noopener">official documentation</a> on how to create a Data Grid instance. This example is very simple, but in the future you can add more options to the instance, such as different storage options, different authentication methods, etc.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
+<p>For now, we&#8217;ll use a basic configuration, so paste this content into the new file in GitLab:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: Infinispan
+apiVersion: infinispan.org/v1
+metadata:
+  name: {{ .Values.app.name }} <i class="conum" data-value="1"></i><b>(1)</b>
+  labels:
+    {{- include "operator.labels" . | nindent 4 }} <i class="conum" data-value="2"></i><b>(2)</b>
+    {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  replicas: 2 <i class="conum" data-value="3"></i><b>(3)</b>
+  service:
+    type: DataGrid
+  expose:
+    type: Route <i class="conum" data-value="4"></i><b>(4)</b>
+  security:
+    endpointSecretName: connect-secret <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This will be replaced with the user-supplied value for the Data Grid instance name</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The labels for the Data Grid instance, using Helm variables to include the operator and backstage labels which integrate with Developer Hub&#8217;s various plugins and help surface useful information in the context of the component.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The number of replicas for the Data Grid cluster. Additional replicas can be added to the cluster to improve performance and availability.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>This option <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services" target="_blank" rel="noopener">exposes the Data Grid cluster to outside traffic</a></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Custom credentials from a Secret (defined in <code>identities.yaml</code>) as defined in the <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn" target="_blank" rel="noopener">docs for Data Grid authentication</a> enabling authenticated access.
+<div class="ulist">
+<ul>
+<li>
+<p>Scroll down and click the <strong>Commit Changes</strong> button to save your updates.</p>
+</li>
+<li>
 <p>Back in the Developer Hub catalog, on the {rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance/[Data Grid Template^], click on the <strong>Schedule entity refresh</strong> icon to sync the catalog with the latest changes.</p>
 </li>
 </ul>
+</div></td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/rhdh-refresh-catalog.png" alt="rhdh refresh catalog" width="70%"></span></p>
