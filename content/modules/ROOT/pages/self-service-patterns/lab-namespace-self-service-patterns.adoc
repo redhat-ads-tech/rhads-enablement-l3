@@ -1,175 +1,159 @@
 = Namespace as a service in OpenShift using Software Template Patterns
-== A self-service approach to build Namespaces and Projects in OpenShift
-== Prerequisites
-
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/building_applications/quotas#quotas-resources-managed_quotas-setting-per-project[Understanding Quotas,window='_blank']
 
 == Introduction
 
-Welcome to this lab, where you will have the chance to learn how to work with Software templates in Red Hat Developer Hub, and create a new OpenShift Project from Red Hat Developer Hub with custom configurations.
+In this exercise you will learn how to work with Software templates in Red Hat Developer Hub and create a new OpenShift Project (also referred to as a _namespace_) from Red Hat Developer Hub with custom configurations.
 
-This lab will use an existent template to create OpenShift Projects. You will be working to increasing functionality by updating the software template to limit resource quotas.
-During this lab, you will have the opportunity to explore different projects' customizations across different clusters.
+This lab will use an existing template to create OpenShift Projects. You will work on increasing functionality by updating the software template to limit resource quotas.
+
+During this lab, you will have the opportunity to explore different project customizations across different clusters.
 
 
 [#lab]
 == Scenario
-Now, imagine for a moment that you need to fullfil a need for the Python Development team. The Python Team's responsibility is to create a new start prototyping with AI and for this you need a namespace, this new namespace is not part of the Software Development Lifecycle. The request is having a namespace isolated from the rest of the cluster, with resource limits but enough resources to experiment.
+Now, imagine for a moment that you need to fulfill a need for the Python Development team. The Python Team needs the ability to create new namespaces to start prototyping with AI, and these new namespaces are not part of the Software Development Lifecycle. These new namespaces should be isolated from the rest of the cluster, with resource limits but sufficient resources for experimentation.
 
 
 == Explore the Project template in GitLab
-. Take the time to review the source code to get familiarize with the content.
-
-
-* {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium,window=_blank]
-
-** Login with your user credentials:
+. Take the time to {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium[review existing template^] in GitLab to get familiar with the content. If you need to log in, use your GitLab credentials:
 
     ** *Username*: {gitlab_user}
     ** *Password*: {gitlab_user_password}
 
+Open the following files or folders to examine their contents:
 
-* Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.
-+
-image:self-service-patterns/namespace-lab/source-code-catalog-info.png[Project Catalog]
+* `template.yaml`: This file defines the UI experience for the end user in Developer Hub (e.g. the fields and drop-downs and selectors to define the configuration of the namespace in this case) and the programmatic steps to define the logic to be executed as part of the component's creation: create repositories, create GitOps objects, and more.
 
-* Developer Hub, powered by GitOps, maintains the desired state as the actual state in the cluster for any template definitions, ensuring system stability.
-+
-image:self-service-patterns/namespace-lab/source-code-manifests.png[Project Manifests]
+* `skeleton/catalog-info.yaml`: This file represents a descriptor file used to define and register entities and will contain information displayed in the component's overview, such as source code, technical docs links. All of the placeholders (e.g., `${{values.component_id}}`) are replaced with actual values the user enters or are dynamically computed when the template is used.
 
-* GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Namespace manifest's folder.
+* `manifests/argocd`: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the `argo-app-dev.yaml` is the Argo CD Application pointing to the Kubernetes manifest folder, in this case, the VM's manifests. The file name contains the component's ID name, which will be populated from the Developer Hub template when the final file is created for the user in their git repository. Developer Hub, powered by GitOps, maintains the desired state (defined in the manifests)as the actual state in the cluster for any template definitions, ensuring system stability.
 
-+
-image:self-service-patterns/namespace-lab/source-code-argocd.png[Project GitOps]
-
-* Helm Charts are great for templating. In this case, the Namespace manifests are implemented using Helm.
-+
-image:self-service-patterns/namespace-lab/source-code-helm.png[Project Helm Charts]
-
-* template.yaml file: Defines the UI experience for the end user and the desired steps to get the software templates, create repositories, create GitOps objects, and more. 
-+
-image:self-service-patterns/namespace-lab/source-code-template.png[Project template.yaml]
-
+* `manifests/helm/app`: This folder contains a Helm chart that will be used to create the namespace. OpenShift GitOps will use this Helm chart to create the namespace by combining user-supplied values with the files (e.g. `quota.yaml`) and creating the objects in OpenShift. When these files are updated in the user's git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.
  
-=== Explore the Project template in RHDH
+=== Explore the Project template in Developer Hub
 
-* Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
+* Access the {rhdh_url}[Red Hat Developer Hub UI^]. If you need to, log in with your credentials:
+*** *Username*: `{openshift_admin_user}`
+*** *Password*: `{openshift_admin_password}`
 
-+
+* Select the *plus icon* in the top navigation bar to Create a new component, or use the URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
+
 image:self-service-patterns/namespace-lab/rhdh-create-icon.png[Create UI] 
 
+* Click the *Import an existing Git repository* button.
 
-* Click the *Register Existing Component* button.
-
-+
 image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI] 
-
-{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
-+
 [source,bash,role=execute,subs=attributes+]
 ----
 {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/template.yaml
 ----
 
-* Click on the *Import* button
+* Click the *Import* button
 
-image:self-service-patterns/namespace-lab/rhdh-register-component-finish.png[width=60%] 
+image:self-service-patterns/namespace-lab/rhdh-register-component-finish.png[width=90%] 
 
-*Congratulations!* You now have a new Software template in RHDH. Now, end-users can *self-provision Namespaces*.
+*Congratulations!* You now have a new software template in Developer Hub. End users can now self-provision namespaces.
 
-* We'll explore the end-user experience by accessing the Software Templates view.
-* From *catalog*, select *Self-service*
+=== Explore the end-user experience
+
+We'll explore the end-user experience by accessing the _Software Templates_ view.
+
+* Navigate to Catalog -> Self-service
 * Look for the *OpenShift Project Medium Size* catalog
 
-+
 image:self-service-patterns/namespace-lab/project-template.png[width=40%]
 
-*Let's explore the current catalog:*
+* Click on *Choose*
+* Review and fill out the form with sample data until you reach the review screen, **without creating the Namespace**. **DO NOT CLICK ON CREATE.** We'll do that later on after changing the template.
 
-* Click on the *Choose*
-* Review and fill out the information with dummy data until you reach the review screen, **without creating the Namespace**. **DO NOT CLICK ON CREATE.** 
-+
-image:self-service-patterns/namespace-lab/project-sample.png[width=120%]
+image::self-service-patterns/namespace-lab/project-sample.png[]
 
+== Implement changes in Software Templates
 
-== Implement changes in Software Templates.
-
-To accomplish the requirement, we will be updating the quotas definition in the *quota.yaml* file.
-
-The Python Team will create a new OpenShift project from RHDH. After this, Developer Hub will use the power of GitOps to create a new Project in OpenShift. 
+To do this, we will be updating the quotas definition in the `quota.yaml` file to enforce a limit on the resources that can be used in the namespace, so that the Python Team doesn't accidentally use too many resources.
 
 
-=== Let's review the information in the new Template.
+=== Edit the template
 
 
-** Click on *Catalog* on the RHDH menu
-** Next, select the filters: *Kind:Template* and *Tags: self-service*
-As shown in the following picture:
+* Click on *Catalog* on the Developer Hub menu
+* Next, select the filters: *Kind:Template* and *Tags: self-service*, as shown:
 
-image:self-service-patterns/namespace-lab/self-service-catalog.png[width=40%]
+image:self-service-patterns/namespace-lab/self-service-catalog.png[width=50%]
 
-** Select the **OpenShift Project Medium Size**
+* Select the **OpenShift Project Medium Size**
 
-** Access the Source code by clicking on *View Source*
+* Access the Source code by clicking on *View Source*
 
-+
-image:self-service-patterns/namespace-lab/namespace-edit-catalog.png[width=60%]
+image:self-service-patterns/namespace-lab/namespace-edit-catalog.png[width=50%]
 
-* This action will take you to the template.yaml file. We need to update the Project instance
+* Navigate to the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml[quota.yaml file^] (it's in the `manifests/helm/app/templates` folder). This file defines the quotas for the namespace and is applied to the namespace when it is created by OpenShift GitOps.
+
+* Edit the file by choosing *Edit -> Edit Single File*:
+
+image:self-service-patterns/namespace-lab/quota-file-edit.png[width=90%]
 
 
-* Go to manifests/helm/app/templates/quota.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml[quota.yaml file^]
+* Increase the quota limits by changing the value of `limits.cpu` to `"2"` and `limits.memory` to `2Gi` in the `quota.yaml` file, as shown:
 
-* Increase the quota limit to *2 CPU and memory 2Gi* in the current quota.yaml file.
+image:self-service-patterns/namespace-lab/project-file-changes.png[width=90%]
 
-+
-image:self-service-patterns/namespace-lab/project-file-changes.png[width=60%]
+* Review your file against the https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml[quota.yaml solution file^] if necessary.
 
-*Take the time to review your file with the solution file provided here:*
+* Scroll down and click the *Commit Changes* button to save your updates.
 
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml[quota.yaml solution file^]
+* Back in the Developer Hub catalog, on the {rhdh_url}/catalog/default/template/rhel-vm-medium-template/[Template^], click on the *Schedule entity refresh* icon to sync the catalog with the latest changes.
 
-* Proceed to *save your changes*.
+image:self-service-patterns/namespace-lab/rhdh-refresh-catalog.png[width=90%]
 
-* Ensure the template has the latest changes.
+== Test your changes: Explore the user experience as Developer
 
-** On RHDH, in the Project template:
+Now you will create a new Project by using your updated software template.
 
-{rhdh_url}/catalog/default/template/rhel-vm-medium-template/[Red Hat Developer Hub UI Template^]
+* From *catalog*, select *Self-service*, then select *OpenShift Project Medium Size*
+* Click on *Choose*
 
-* Click on the *entity refresh* icon
-
-+
-image:self-service-patterns/namespace-lab/rhdh-refresh-catalog.png[width=70%]
-
-=== Test your changes: Explore the user experience as Developer
-
-Let's create an instance of the new Project defined in the software templates.
-
-* From *catalog*, select *Self-service*, select *OpenShift Project Medium Size*
-* Click on the *Choose*
-
-+
 image:self-service-patterns/namespace-lab/project-template.png[width=50%]
 
-* Review the information until you complete the flow and click on *Create*.
-* You should see a screen like this one:
+* Create a new Project by following the flow. Feel free to use the default values or enter your own namespace name.
+* Review the information until you complete the flow and click *Create*. You should see a screen like this one:
 
-+
 image:self-service-patterns/namespace-lab/namespace-updated.png[]
 
-* Open the catalog from the component's creation page:
+* Open the catalog from the component's creation page by clicking on the *Open Component in Catalog* button.
 
-image:self-service-patterns/namespace-lab/catalog-open.png[width=100%]
+image:self-service-patterns/namespace-lab/catalog-open.png[width=90%]
 
-* Now, a new component has being created and you should a screen similar like this:
+* A new component has been created and you should see a screen similar to this:
 
+image:self-service-patterns/namespace-lab/namespace-created.png[width=90%]
 
-image:self-service-patterns/namespace-lab/namespace-created.png[width=100%]
+=== Verify the namespace was created
 
+* Log in to the {openshift_console_url}[OpenShift Web Console^]
+
+** Use your administrator credentials:
+
+*** *Username*: {openshift_admin_user}
+*** *Password*: {openshift_admin_password}
+
+* Navigate to _Home->Projects_
+* Enter `dev` in the search field
+* You should see the new namespace you created:
+
+image:self-service-patterns/namespace-lab/ns-list.png[width=90%]
+
+* Select the new namespace to view the details.
+* Scroll down to _Resource Quotas_, and click on the name of the quota to view the details:
+
+image:self-service-patterns/namespace-lab/rq1.png[width=90%]
+
+* Scroll to the bottom to view the details of the quota and confirm your new limits are in place:
+
+image:self-service-patterns/namespace-lab/rq2.png[width=90%]
 
 * Watch the following arcade, to explore a similar experience:
 ++++
@@ -185,13 +169,20 @@ muted>
 </iframe>
 ++++
 
-* In case you need to log in to the OpenShift Cluster {openshift_console_url}[Web Console^]
+== Conclusion
 
-** Use your user credentials:
+🎉 *Congratulations!* You've successfully transformed how developers can provision OpenShift namespaces in your organization!
 
-    *** *Username*: {openshift_admin_user}
-    *** *Password*: {openshift_admin_password}
+In this hands-on lab, you've accomplished something truly powerful:
 
-=== Conclusion
+* *Enabled self-service at scale* - The Python Development team (and any other team) can now instantly provision isolated namespaces without waiting for manual intervention from platform teams
+* *Implemented governance through code* - By updating the quota template, you've embedded resource governance directly into the provisioning process, ensuring teams get the resources they need while protecting the cluster from overuse
+* *Bridged development and operations* - You've created a seamless experience where developers can focus on building AI prototypes while GitOps automatically handles the underlying infrastructure
 
-You have updated a Project software template by increasing the quota limit to fulfill the requirement from the Python Development team.
+The template you've customized is now a reusable, version-controlled asset that can be refined, extended, and replicated across different environments. This is the power of *Platform Engineering* in action - turning complex infrastructure operations into simple, self-service experiences that accelerate innovation while maintaining control.
+
+*What's next?* Consider how you might extend this pattern to provision other resources like databases, monitoring dashboards, or even complete application stacks. We'll cover databases in the next section, but the possibilities are limitless!
+
+== Further reading
+
+* https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/building_applications/quotas#quotas-resources-managed_quotas-setting-per-project[Understanding Quotas^]
