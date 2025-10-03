@@ -98,10 +98,34 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
@@ -248,26 +272,17 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Namespace as a service in OpenShift using Software Template Patterns</h1>
-<div id="preamble">
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/building_applications/quotas#quotas-resources-managed_quotas-setting-per-project" target="_blank" rel="noopener">Understanding Quotas</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Welcome to this lab, where you will have the chance to learn how to work with Software templates in Red Hat Developer Hub, and create a new OpenShift Project from Red Hat Developer Hub with custom configurations.</p>
+<p>In this exercise you will learn how to work with Software templates in Red Hat Developer Hub and create a new OpenShift Project (also referred to as a <em>namespace</em>) from Red Hat Developer Hub with custom configurations.</p>
 </div>
 <div class="paragraph">
-<p>This lab will use an existent template to create OpenShift Projects. You will be working to increasing functionality by updating the software template to limit resource quotas.
-During this lab, you will have the opportunity to explore different projects' customizations across different clusters.</p>
+<p>This lab will use an existing template to create OpenShift Projects. You will work on increasing functionality by updating the software template to limit resource quotas.</p>
+</div>
+<div class="paragraph">
+<p>During this lab, you will have the opportunity to explore different project customizations across different clusters.</p>
 </div>
 </div>
 </div>
@@ -275,7 +290,7 @@ During this lab, you will have the opportunity to explore different projects' cu
 <h2 id="lab"><a class="anchor" href="#lab"></a>Scenario</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now, imagine for a moment that you need to fullfil a need for the Python Development team. The Python Team&#8217;s responsibility is to create a new start prototyping with AI and for this you need a namespace, this new namespace is not part of the Software Development Lifecycle. The request is having a namespace isolated from the rest of the cluster, with resource limits but enough resources to experiment.</p>
+<p>Now, imagine for a moment that you need to fulfill a need for the Python Development team. The Python Team needs the ability to create new namespaces to start prototyping with AI, and these new namespaces are not part of the Software Development Lifecycle. These new namespaces should be isolated from the rest of the cluster, with resource limits but sufficient resources for experimentation.</p>
 </div>
 </div>
 </div>
@@ -285,16 +300,9 @@ During this lab, you will have the opportunity to explore different projects' cu
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Take the time to review the source code to get familiarize with the content.</p>
+<p>Take the time to {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium[review existing template^] in GitLab to get familiar with the content. If you need to log in, use your GitLab credentials:</p>
 <div class="ulist">
 <ul>
-<li>
-<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium,window=_blank]</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Login with your user credentials:</p>
-</li>
 <li>
 <p><strong>Username</strong>: {gitlab_user}</p>
 </li>
@@ -304,146 +312,144 @@ During this lab, you will have the opportunity to explore different projects' cu
 </ul>
 </div>
 </li>
-<li>
-<p>Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/source-code-catalog-info.png" alt="Project Catalog"></span></p>
-</div>
-</li>
-<li>
-<p>Developer Hub, powered by GitOps, maintains the desired state as the actual state in the cluster for any template definitions, ensuring system stability.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/source-code-manifests.png" alt="Project Manifests"></span></p>
-</div>
-</li>
-<li>
-<p>GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Namespace manifest&#8217;s folder.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/source-code-argocd.png" alt="Project GitOps"></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Helm Charts are great for templating. In this case, the Namespace manifests are implemented using Helm.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/source-code-helm.png" alt="Project Helm Charts"></span></p>
-</div>
-</li>
-<li>
-<p>template.yaml file: Defines the UI experience for the end user and the desired steps to get the software templates, create repositories, create GitOps objects, and more.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/source-code-template.png" alt="Project template.yaml"></span></p>
-</div>
-</li>
-</ul>
-</div>
-</li>
 </ol>
 </div>
-<div class="sect2">
-<h3 id="_explore_the_project_template_in_rhdh"><a class="anchor" href="#_explore_the_project_template_in_rhdh"></a>Explore the Project template in RHDH</h3>
+<div class="paragraph">
+<p>Open the following files or folders to examine their contents:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Select the <strong>plus icon</strong> on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]</p>
+<p><code>template.yaml</code>: This file defines the UI experience for the end user in Developer Hub (e.g. the fields and drop-downs and selectors to define the configuration of the namespace in this case) and the programmatic steps to define the logic to be executed as part of the component&#8217;s creation: create repositories, create GitOps objects, and more.</p>
+</li>
+<li>
+<p><code>skeleton/catalog-info.yaml</code>: This file represents a descriptor file used to define and register entities and will contain information displayed in the component&#8217;s overview, such as source code, technical docs links. All of the placeholders (e.g., <code>${{values.component_id}}</code>) are replaced with actual values the user enters or are dynamically computed when the template is used.</p>
+</li>
+<li>
+<p><code>manifests/argocd</code>: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the <code>argo-app-dev.yaml</code> is the Argo CD Application pointing to the Kubernetes manifest folder, in this case, the VM&#8217;s manifests. The file name contains the component&#8217;s ID name, which will be populated from the Developer Hub template when the final file is created for the user in their git repository. Developer Hub, powered by GitOps, maintains the desired state (defined in the manifests)as the actual state in the cluster for any template definitions, ensuring system stability.</p>
+</li>
+<li>
+<p><code>manifests/helm/app</code>: This folder contains a Helm chart that will be used to create the namespace. OpenShift GitOps will use this Helm chart to create the namespace by combining user-supplied values with the files (e.g. <code>quota.yaml</code>) and creating the objects in OpenShift. When these files are updated in the user&#8217;s git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_explore_the_project_template_in_developer_hub"><a class="anchor" href="#_explore_the_project_template_in_developer_hub"></a>Explore the Project template in Developer Hub</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Access the {rhdh_url}[Red Hat Developer Hub UI^]. If you need to, log in with your credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Select the <strong>plus icon</strong> in the top navigation bar to Create a new component, or use the URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-create-icon.png" alt="Create UI"></span></p>
 </div>
-</li>
+<div class="ulist">
+<ul>
 <li>
-<p>Click the <strong>Register Existing Component</strong> button.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-register-component.png" alt="Create UI"></span></p>
-</div>
+<p>Click the <strong>Import an existing Git repository</strong> button.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]</p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
+</li>
+</ul>
+</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/template.yaml</code></pre>
 </div>
 </div>
-</li>
+<div class="ulist">
+<ul>
 <li>
-<p>Click on the <strong>Import</strong> button</p>
+<p>Click the <strong>Import</strong> button</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-register-component-finish.png" alt="rhdh register component finish" width="60%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-register-component-finish.png" alt="rhdh register component finish" width="90%"></span></p>
 </div>
 <div class="paragraph">
-<p><strong>Congratulations!</strong> You now have a new Software template in RHDH. Now, end-users can <strong>self-provision Namespaces</strong>.</p>
+<p><strong>Congratulations!</strong> You now have a new software template in Developer Hub. End users can now self-provision namespaces.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_explore_the_end_user_experience"><a class="anchor" href="#_explore_the_end_user_experience"></a>Explore the end-user experience</h3>
+<div class="paragraph">
+<p>We&#8217;ll explore the end-user experience by accessing the <em>Software Templates</em> view.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>We&#8217;ll explore the end-user experience by accessing the Software Templates view.</p>
-</li>
-<li>
-<p>From <strong>catalog</strong>, select <strong>Self-service</strong></p>
+<p>Navigate to Catalog &#8594; Self-service</p>
 </li>
 <li>
 <p>Look for the <strong>OpenShift Project Medium Size</strong> catalog</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/project-template.png" alt="project template" width="40%"></span></p>
-</div>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Let&#8217;s explore the current catalog:</strong></p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/project-template.png" alt="project template" width="40%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>Choose</strong></p>
+<p>Click on <strong>Choose</strong></p>
 </li>
 <li>
-<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the Namespace</strong>. <strong>DO NOT CLICK ON CREATE.</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/project-sample.png" alt="project sample" width="120%"></span></p>
-</div>
+<p>Review and fill out the form with sample data until you reach the review screen, <strong>without creating the Namespace</strong>. <strong>DO NOT CLICK ON CREATE.</strong> We&#8217;ll do that later on after changing the template.</p>
 </li>
 </ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/self-service-patterns/namespace-lab/project-sample.png" alt="project sample">
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_implement_changes_in_software_templates"><a class="anchor" href="#_implement_changes_in_software_templates"></a>Implement changes in Software Templates.</h2>
+<h2 id="_implement_changes_in_software_templates"><a class="anchor" href="#_implement_changes_in_software_templates"></a>Implement changes in Software Templates</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To accomplish the requirement, we will be updating the quotas definition in the <strong>quota.yaml</strong> file.</p>
-</div>
-<div class="paragraph">
-<p>The Python Team will create a new OpenShift project from RHDH. After this, Developer Hub will use the power of GitOps to create a new Project in OpenShift.</p>
+<p>To do this, we will be updating the quotas definition in the <code>quota.yaml</code> file to enforce a limit on the resources that can be used in the namespace, so that the Python Team doesn&#8217;t accidentally use too many resources.</p>
 </div>
 <div class="sect2">
-<h3 id="_lets_review_the_information_in_the_new_template"><a class="anchor" href="#_lets_review_the_information_in_the_new_template"></a>Let&#8217;s review the information in the new Template.</h3>
+<h3 id="_edit_the_template"><a class="anchor" href="#_edit_the_template"></a>Edit the template</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Catalog</strong> on the RHDH menu</p>
+<p>Click on <strong>Catalog</strong> on the Developer Hub menu</p>
 </li>
 <li>
-<p>Next, select the filters: <strong>Kind:Template</strong> and <strong>Tags: self-service</strong>
-As shown in the following picture:</p>
+<p>Next, select the filters: <strong>Kind:Template</strong> and <strong>Tags: self-service</strong>, as shown:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/self-service-catalog.png" alt="self service catalog" width="40%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/self-service-catalog.png" alt="self service catalog" width="50%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -452,107 +458,166 @@ As shown in the following picture:</p>
 </li>
 <li>
 <p>Access the Source code by clicking on <strong>View Source</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/namespace-edit-catalog.png" alt="namespace edit catalog" width="60%"></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>This action will take you to the template.yaml file. We need to update the Project instance</p>
-</li>
-<li>
-<p>Go to manifests/helm/app/templates/quota.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml[quota.yaml file^]</p>
-</li>
-<li>
-<p>Increase the quota limit to <strong>2 CPU and memory 2Gi</strong> in the current quota.yaml file.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/project-file-changes.png" alt="project file changes" width="60%"></span></p>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Take the time to review your file with the solution file provided here:</strong></p>
-</div>
-<div class="paragraph">
-<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml" target="_blank" rel="noopener">quota.yaml solution file</a></p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/namespace-edit-catalog.png" alt="namespace edit catalog" width="50%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Proceed to <strong>save your changes</strong>.</p>
+<p>Navigate to the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml[quota.yaml file^] (it&#8217;s in the <code>manifests/helm/app/templates</code> folder). This file defines the quotas for the namespace and is applied to the namespace when it is created by OpenShift GitOps.</p>
 </li>
 <li>
-<p>Ensure the template has the latest changes.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>On RHDH, in the Project template:</p>
-</li>
-</ul>
-</div>
+<p>Edit the file by choosing <strong>Edit &#8594; Edit Single File</strong>:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>{rhdh_url}/catalog/default/template/rhel-vm-medium-template/[Red Hat Developer Hub UI Template^]</p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/quota-file-edit.png" alt="quota file edit" width="90%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>entity refresh</strong> icon</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-refresh-catalog.png" alt="rhdh refresh catalog" width="70%"></span></p>
-</div>
+<p>Increase the quota limits by changing the value of <code>limits.cpu</code> to <code>"2"</code> and <code>limits.memory</code> to <code>2Gi</code> in the <code>quota.yaml</code> file, as shown:</p>
 </li>
 </ul>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_test_your_changes_explore_the_user_experience_as_developer"><a class="anchor" href="#_test_your_changes_explore_the_user_experience_as_developer"></a>Test your changes: Explore the user experience as Developer</h3>
 <div class="paragraph">
-<p>Let&#8217;s create an instance of the new Project defined in the software templates.</p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/project-file-changes.png" alt="project file changes" width="90%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>From <strong>catalog</strong>, select <strong>Self-service</strong>, select <strong>OpenShift Project Medium Size</strong></p>
+<p>Review your file against the <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml" target="_blank" rel="noopener">quota.yaml solution file</a> if necessary.</p>
 </li>
 <li>
-<p>Click on the <strong>Choose</strong></p>
+<p>Scroll down and click the <strong>Commit Changes</strong> button to save your updates.</p>
+</li>
+<li>
+<p>Back in the Developer Hub catalog, on the {rhdh_url}/catalog/default/template/rhel-vm-medium-template/[Template^], click on the <strong>Schedule entity refresh</strong> icon to sync the catalog with the latest changes.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rhdh-refresh-catalog.png" alt="rhdh refresh catalog" width="90%"></span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test_your_changes_explore_the_user_experience_as_developer"><a class="anchor" href="#_test_your_changes_explore_the_user_experience_as_developer"></a>Test your changes: Explore the user experience as Developer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now you will create a new Project by using your updated software template.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>From <strong>catalog</strong>, select <strong>Self-service</strong>, then select <strong>OpenShift Project Medium Size</strong></p>
+</li>
+<li>
+<p>Click on <strong>Choose</strong></p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/project-template.png" alt="project template" width="50%"></span></p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a new Project by following the flow. Feel free to use the default values or enter your own namespace name.</p>
 </li>
 <li>
-<p>Review the information until you complete the flow and click on <strong>Create</strong>.</p>
-</li>
-<li>
-<p>You should see a screen like this one:</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/namespace-updated.png" alt="namespace updated"></span></p>
-</div>
-</li>
-<li>
-<p>Open the catalog from the component&#8217;s creation page:</p>
+<p>Review the information until you complete the flow and click <strong>Create</strong>. You should see a screen like this one:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/catalog-open.png" alt="catalog open" width="100%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/namespace-updated.png" alt="namespace updated"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Now, a new component has being created and you should a screen similar like this:</p>
+<p>Open the catalog from the component&#8217;s creation page by clicking on the <strong>Open Component in Catalog</strong> button.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/namespace-created.png" alt="namespace created" width="100%"></span></p>
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/catalog-open.png" alt="catalog open" width="90%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A new component has been created and you should see a screen similar to this:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/namespace-created.png" alt="namespace created" width="90%"></span></p>
+</div>
+<div class="sect2">
+<h3 id="_verify_the_namespace_was_created"><a class="anchor" href="#_verify_the_namespace_was_created"></a>Verify the namespace was created</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console^]</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use your administrator credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: {openshift_admin_user}</p>
+</li>
+<li>
+<p><strong>Password</strong>: {openshift_admin_password}</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Navigate to <em>Home&#8594;Projects</em></p>
+</li>
+<li>
+<p>Enter <code>dev</code> in the search field</p>
+</li>
+<li>
+<p>You should see the new namespace you created:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/ns-list.png" alt="ns list" width="90%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select the new namespace to view the details.</p>
+</li>
+<li>
+<p>Scroll down to <em>Resource Quotas</em>, and click on the name of the quota to view the details:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rq1.png" alt="rq1" width="90%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Scroll to the bottom to view the details of the quota and confirm your new limits are in place:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/namespace-lab/rq2.png" alt="rq2" width="90%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -571,36 +636,48 @@ mozallowfullscreen
 allow="clipboard-write"
 muted>
 </iframe>
-<div class="ulist">
-<ul>
-<li>
-<p>In case you need to log in to the OpenShift Cluster {openshift_console_url}[Web Console^]</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Use your user credentials:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Username</strong>: {openshift_admin_user}</p>
-</li>
-<li>
-<p><strong>Password</strong>: {openshift_admin_password}</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h3>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>You have updated a Project software template by increasing the quota limit to fulfill the requirement from the Python Development team.</p>
+<p>🎉 <strong>Congratulations!</strong> You&#8217;ve successfully transformed how developers can provision OpenShift namespaces in your organization!</p>
 </div>
+<div class="paragraph">
+<p>In this hands-on lab, you&#8217;ve accomplished something truly powerful:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Enabled self-service at scale</strong> - The Python Development team (and any other team) can now instantly provision isolated namespaces without waiting for manual intervention from platform teams</p>
+</li>
+<li>
+<p><strong>Implemented governance through code</strong> - By updating the quota template, you&#8217;ve embedded resource governance directly into the provisioning process, ensuring teams get the resources they need while protecting the cluster from overuse</p>
+</li>
+<li>
+<p><strong>Bridged development and operations</strong> - You&#8217;ve created a seamless experience where developers can focus on building AI prototypes while GitOps automatically handles the underlying infrastructure</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The template you&#8217;ve customized is now a reusable, version-controlled asset that can be refined, extended, and replicated across different environments. This is the power of <strong>Platform Engineering</strong> in action - turning complex infrastructure operations into simple, self-service experiences that accelerate innovation while maintaining control.</p>
+</div>
+<div class="paragraph">
+<p><strong>What&#8217;s next?</strong> Consider how you might extend this pattern to provision other resources like databases, monitoring dashboards, or even complete application stacks. We&#8217;ll cover databases in the next section, but the possibilities are limitless!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_further_reading"><a class="anchor" href="#_further_reading"></a>Further reading</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/building_applications/quotas#quotas-resources-managed_quotas-setting-per-project" target="_blank" rel="noopener">Understanding Quotas</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
