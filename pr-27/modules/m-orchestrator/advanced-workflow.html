@@ -7,7 +7,7 @@
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m-orchestrator/advanced-workflow.html">
     <link rel="prev" href="workflows.html">
     <link rel="next" href="../security-practices.html">
-    <meta name="generator" content="Antora 3.1.13">
+    <meta name="generator" content="Antora 3.1.14">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -401,6 +401,83 @@
 </div>
 <div class="paragraph">
 <p>Additionally, this state uses <strong>functionRef</strong> to invoke one of the <code>expression</code> functions defined earlier. For example, assume <code>errorDeniedResult</code> is invoked. This will set the <code>result</code> to "Creation of namespace &lt;the namespace name&gt; denied" and attach the link to the associated GitLab Issue by placing it in the <code>outputs</code> of the workflow output.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_red_hat_developer_hub_for_the_advanced_workflow"><a class="anchor" href="#_configure_red_hat_developer_hub_for_the_advanced_workflow"></a>Configure Red Hat Developer Hub for the Advanced Workflow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The advanced workflow will use the notification plugin to keep users updated on the execution of their namespace request. Make sure the plugin is enabled.</p>
+</div>
+<div class="sect2">
+<h3 id="_enable_notifications"><a class="anchor" href="#_enable_notifications"></a>Enable Notifications</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the <strong>tssc-dh</strong> namespace in the OpenShift Web Console.</p>
+</li>
+<li>
+<p>Open the YAML editor for the <strong>tssc-developer-hub-dynamic-plugins</strong> ConfigMap, and verify that the notification plugins are enabled.</p>
+</li>
+<li>
+<p>If they&#8217;re missing or disabled make sure to update the ConfigMap to add them like so:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">- disabled: false
+  package: ./dynamic-plugins/dist/backstage-plugin-notifications
+- disabled: false
+  package: ./dynamic-plugins/dist/backstage-plugin-notifications-backend-dynamic
+- disabled: false</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Scroll down and click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enable_token_based_api_access"><a class="anchor" href="#_enable_token_based_api_access"></a>Enable Token-Based API Access</h3>
+<div class="paragraph">
+<p>Backstage, and therefore Red Hat Developer Hub supports <a href="https://backstage.io/docs/auth/service-to-service-auth/#static-tokens" target="_blank" rel="noopener">token-based API access</a>. Update the Red Hat Developer Hub configuration to enable this feature.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the YAML editor for the <strong>tssc-developer-hub-app-config</strong> ConfigMap.</p>
+</li>
+<li>
+<p>Update the <code>backend.auth</code> section to enable <code>externalAccess</code> - do not replace or remove existing properties in the <code>backend</code> object:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">backend:
+  auth:
+    externalAccess:
+      - type: static
+        options:
+          token: ${BACKEND_SECRET}
+          subject: Orchestrator</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Scroll down and click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The <code>BACKEND_SECRET</code> environment variable being referenced is already used as a session signing secert. In a production scenario you should add a new environment variable by mountain a Secret with a securely generated token, e.g using the <code>openssl</code> CLI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openssl rand 24 | base64 | cut -c1-32</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For now, the <code>BACKEND_SECRET</code> is fine.</p>
 </div>
 </div>
 </div>
