@@ -89,6 +89,53 @@ When an end state is reached, e.g *CloseIssueDenied*, it declares this fact usin
 
 Additionally, this state uses *functionRef* to invoke one of the `expression` functions defined earlier. For example, assume `errorDeniedResult` is invoked. This will set the `result` to "Creation of namespace <the namespace name> denied" and attach the link to the associated GitLab Issue by placing it in the `outputs` of the workflow output. 
 
+== Configure {product_rhdh_name} for the Advanced Workflow
+
+The advanced workflow will use the notification plugin to keep users updated on the execution of their namespace request. Make sure the plugin is enabled.
+
+=== Enable Notifications
+
+. Visit the *{ns_tssc_rhdh}* namespace in the OpenShift Web Console.
+. Open the YAML editor for the *tssc-developer-hub-dynamic-plugins* ConfigMap, and verify that the notification plugins are enabled.
+. If they're missing or disabled make sure to update the ConfigMap to add them like so:
++
+[source,bash,role=execute,subs=attributes+]
+----
+- disabled: false
+  package: ./dynamic-plugins/dist/backstage-plugin-notifications
+- disabled: false
+  package: ./dynamic-plugins/dist/backstage-plugin-notifications-backend-dynamic
+- disabled: false
+----
+. Scroll down and click *Save*.
+
+=== Enable Token-Based API Access
+
+Backstage, and therefore {product_rhdh_name} supports https://backstage.io/docs/auth/service-to-service-auth/#static-tokens[token-based API access^]. Update the {product_rhdh_name} configuration to enable this feature.
+
+. Open the YAML editor for the *tssc-developer-hub-app-config* ConfigMap.
+. Update the `backend.auth` section to enable `externalAccess` - do not replace or remove existing properties in the `backend` object:
++
+[source,bash,role=execute,subs=attributes+]
+----
+backend:
+  auth:
+    externalAccess:
+      - type: static
+        options:
+          token: ${BACKEND_SECRET}
+          subject: Orchestrator
+----
+. Scroll down and click *Save*.
+
+The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secert. In a production scenario you should add a new environment variable by mountain a Secret with a securely generated token, e.g using the `openssl` CLI:
+
+```bash
+openssl rand 24 | base64 | cut -c1-32
+```
+
+For now, the `BACKEND_SECRET` is fine.
+
 == Import Software Templates for Developer Self Service
 
 In the previous section you learned that the workflow that will launch a software template to create the namespace for the developer. 
