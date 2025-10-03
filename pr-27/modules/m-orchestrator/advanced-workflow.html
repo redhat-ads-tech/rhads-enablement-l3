@@ -304,7 +304,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Additionally, GitHub Actions is used to to build and release new verions of the container image and Helm Chart whenever the version in the <strong>pom.xml</strong> in <strong>create-ocp-namespace-swt/</strong> folder is updated.</p>
+<p>Additionally, GitHub Actions is used to to build and release new versions of the container image and Helm Chart whenever the version in the <strong>pom.xml</strong> in <strong>create-ocp-namespace-swt/</strong> folder is updated.</p>
 </div>
 <div class="sect2">
 <h3 id="_serverless_workflow_functions"><a class="anchor" href="#_serverless_workflow_functions"></a>Serverless Workflow: Functions</h3>
@@ -317,7 +317,7 @@
 <p>Interact with GitLab Issues using the GitLab REST API (note references to the <em>specs/gitlab-openapi.yaml</em>)</p>
 </li>
 <li>
-<p>Run Software Templates and send noticications to Red Hat Developer Hub users (again via REST endpoints defined in <em>specs/notifications-openapi.yaml</em>)</p>
+<p>Run Software Templates and send notifications to Red Hat Developer Hub users (again via REST endpoints defined in <em>specs/notifications-openapi.yaml</em>)</p>
 </li>
 <li>
 <p>Evaluate results and perform data transformation using <a href="https://jqlang.org/" target="_blank" rel="noopener">jq expressions</a> for the final workflow output (note the use of a <code>result.message</code> that matches the <strong>workflow-output-schema.json</strong> structure).</p>
@@ -362,7 +362,7 @@
 <p>The workflow then transitions to the <strong>CreateIssue</strong> state and reads the project ID from the the <code>getProjectIdResult</code> and creates an issue that can be used to approve or deny the creation of the large workspace.</p>
 </div>
 <div class="paragraph">
-<p>After the issue is created, the workflow will continuously transition between the the <strong>PollIssue</strong> and <strong>CheckIssueStatus</strong> states until an approved or denied label is found in the issue&#8217;s labels. The <strong>PollIssue</strong> state sleeps for a *p*eriod of *t*ime before running - spefically 60 seconds as represented by <code>PT60S</code>.</p>
+<p>After the issue is created, the workflow will continuously transition between the the <strong>PollIssue</strong> and <strong>CheckIssueStatus</strong> states until an approved or denied label is found in the issue&#8217;s labels. The <strong>PollIssue</strong> state sleeps for a <strong>Period</strong> of <strong>Time</strong> before running - specifically <strong>60 seconds</strong> as represented by <code>PT60S</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -400,7 +400,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Additionally, this state uses <strong>functionRef</strong> to invoke one of the <code>expression</code> functions defined earlier. For example, assume <code>errorDeniedResult</code> is invoked. This will set the <code>result</code> to "Creation of namespace &lt;the namesapce name&gt; denied" and attach the link to the associated GitLab Issue by placing it in the <code>outputs</code> of the workflow output.</p>
+<p>Additionally, this state uses <strong>functionRef</strong> to invoke one of the <code>expression</code> functions defined earlier. For example, assume <code>errorDeniedResult</code> is invoked. This will set the <code>result</code> to "Creation of namespace &lt;the namespace name&gt; denied" and attach the link to the associated GitLab Issue by placing it in the <code>outputs</code> of the workflow output.</p>
 </div>
 </div>
 </div>
