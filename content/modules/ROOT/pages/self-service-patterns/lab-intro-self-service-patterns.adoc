@@ -3,21 +3,21 @@
 [#introduction]
 == Introduction
 
-In this lab we will be gain hands-on experience to work with Software Templates to build new integrations into OpenShift, including:
+In this lab, you will gain hands-on experience working with Software Templates to build new integrations into OpenShift, including:
 
-* Deploy a Database, Red Hat Data Grid
+* Deploying a database using Red Hat Data Grid
 
-* Create a VM using OpenShift Virtualization
+* Creating a virtual machine using OpenShift Virtualization
 
-* Software template to create a namespace configured
+* Using software templates to create a properly configured namespace
 
-* Software template to setup Observability
+* Using software templates to set up observability
 
-== Getting started
+== Getting Started
 
-* Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
+* Access the Red Hat Developer Hub UI: {rhdh_url}[Red Hat Developer Hub UI^]
 
-** Login with your user administrator credentials:
+** Log in with your administrator credentials:
 
-    *** *Username*: {openshift_admin_user}
-    *** *Password*: {openshift_admin_password}
+*** *Username*: `{openshift_admin_user}`
+*** *Password*: `{openshift_admin_password}`

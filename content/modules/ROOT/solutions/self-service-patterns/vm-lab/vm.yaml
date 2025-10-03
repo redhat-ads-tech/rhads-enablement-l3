@@ -16,17 +16,19 @@ spec:
           namespace: openshift-virtualization-os-images
         storage:
           resources:
-            storageClassName: gp3-csi
+            requests:
+              storage: 30Gi
   instancetype:
     name: u1.medium
   preference:
     name: rhel.{{ .Values.app.rhel.version }}
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:
         {{- include "vm.labels" . | nindent 8 }}
-        {{- include "backstage.labels" . | nindent 8 }}   
+        {{- include "backstage.labels" . | nindent 8 }}
+        network.kubevirt.io/headlessService: headless   
     spec:
       domain:
         devices:

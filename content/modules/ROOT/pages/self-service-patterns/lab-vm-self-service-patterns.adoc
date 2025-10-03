@@ -1,74 +1,55 @@
-= VM as a service in OpenShift using Software Template Patterns
-== A self-service approach to build VMs in OpenShift
-
-== Prerequisites
-
-* link:https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[Red Hat OpenShift Virtualization,window='_blank']
-
-* link:https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how#[Building virtual machines with Red Hat Developer Hub: The what, why, and how,window='_blank']
+= VM as a Service in OpenShift Using Software Template Patterns
+== A Self-Service Approach to Building VMs in OpenShift
 
 == Introduction
 
-Welcome to this lab, where you will have the chance to learn about OpenShift Virtualization, how to build a new VM in OpenShift, how to work with Software templates in Red Hat Developer Hub, and create a new VM instance from Red Hat Developer Hub with your configurations.
+Welcome to this lab, where you will learn about OpenShift Virtualization, how to build virtual machines in OpenShift, how to work with software templates in Red Hat Developer Hub, and how to create VM instances from Red Hat Developer Hub with your custom configurations.
 
-This lab will use an existent template already defined, you will be simplifying the user experience and updating the software template to a new version for RHEL.
-During this lab, you will have the opportunity to explore different techniques to create a new template or to update one, and understand 
+This lab will use an existing, predefined template. You will simplify the user experience by updating the software template to support a new version of RHEL. During this lab, you will have the opportunity to explore different techniques for creating new templates or updating existing ones, and understand how to implement effective self-service patterns. 
 
 
 [#lab]
-== Build a new Virtual Machine in OpenShift 
+== Build a New Virtual Machine in OpenShift 
 
-For this section, we'll be using an existent template already defined, we'll be updating the user experience UI on the *template.yaml* file and the *Helm charts*.
+For this section, we'll use an existing, predefined template and update the user experience by modifying the `template.yaml` file and the Helm charts.
 
-The team will create the VM from RHDH. After this, Developer Hub will use the power of GitOps to build the new virtual machines in OpenShift with OpenShift Virtualization. The following diagram describes the VMs creation process using RHDH. As you can see in this diagram, the OpenShift Virtualization operator is required to provision the VM in OpenShift. The VM will run as a container in the selected namespace.
+You will create the VM template in RHDH. When users use the template, Developer Hub will leverage GitOps to build new virtual machines in OpenShift using OpenShift Virtualization. The following diagram describes the VM creation process using RHDH. As shown in this diagram, the OpenShift Virtualization operator is required to provision the VM in OpenShift (it has been preinstalled for you). The VM will run in the selected namespace.
 
 image:self-service-patterns/vm-lab/vm-architecture.jpg[Red Hat Developer Hub as part of the VM creation process.]
 
-=== Explore the VM template in GitLab
-* Take the time to review the source code to get familiarize with the content.
+=== Explore the VM Template in GitLab
 
-** Explore the *Software templates* in *GitLab*:
+Access the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/[existing template directory in GitLab^] and log in with your credentials:
 
-* {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/,window=_blank]
+* Log in to GitLab using your credentials:
 
-** Login in GitLab with your user credentials:
+** *Username*: {gitlab_user}
+** *Password*: {gitlab_user_password}
 
-    ** *Username*: {gitlab_user}
-    ** *Password*: {gitlab_user_password}
+Open the following files or folders to examine their contents:
 
-* Component/catalog-info.yaml: This file will represent the object in Developer Hub,  such as name and links.
-+
-image:self-service-patterns/vm-lab/source-code-catalog-info.png[VM Catalog]
+* `template.yaml`: This file defines the UI experience for the end user in RHDH (e.g. the fields and drop-downs and selectors to define the configuration of the VM in this case) and the programmatic steps to obtain software templates, create repositories, create GitOps objects, and more.
 
-* Developer Hub, powered by GitOps, maintains the desired state as the actual state in the cluster for any template definitions, ensuring system stability.
-+
-image:self-service-patterns/vm-lab/source-code-manifests.png[VM Manifests]
+* `skeleton/catalog-info.yaml`: This file represents the object that is added to the catalog in Developer Hub when this template is used, including its name and links. All of the placeholders (e.g. `${{values.component_id}}`) are replaced with actual values user enters or are dynamically computed when the template is used.
 
-* GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the VM manifest’s folder.
-+
-image:self-service-patterns/vm-lab/source-code-argocd.png[VM GitOps]
+* `manifests/argocd`: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the `argo-app-dev.yaml` is the Argo CD Application pointing to the VM manifest folder. That have funny names because the values that the developer provides are used when the final file is created for the user in their git repository.
 
-* Helm Charts are great for templating. In this case, the VM manifests are implemented using Helm.
-+
-image:self-service-patterns/vm-lab/source-code-helm.png[VM Helm Charts]
-
-* template.yaml file: Defines the UI experience for the end user and the desired steps to get the software templates, create repositories, create GitOps objects, and more. 
-+
-image:self-service-patterns/vm-lab/source-code-template.png[VM template.yaml]
+* `manifests/helm/app`: This folder contains a Helm chart that will be used to deploy the VM. OpenShift GitOps will use this Helm chart to deploy the VM in the selected namespace by combining user-supplied values with the files (e.g. `vm.yaml`) and creating the objects in OpenShift. WHen these files are updated in the user's git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.
 
  
-=== Explore the VM template in RHDH
+=== Explore the VM Template in RHDH
 
-* Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
-* Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
-+
+* Access the {rhdh_url}[Red Hat Developer Hub UI^] and log in with your credentials:
+*** *Username*: `{openshift_admin_user}`
+*** *Password*: `{openshift_admin_password}`
+
+* Select the *plus icon* in the top navigation bar to Create a new component, or use the URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
+
 image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI] 
 
-* Click the *Register Existing Component* button.
-+
-image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
+* Click the *Import an existing Git repository* button.
 
-{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
+image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -77,226 +58,245 @@ image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI]
 {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
 ----
 
-
-* Click on the *Import* button
-
+* Click the *Import* button
 
 image:self-service-patterns/vm-lab/rhdh-register-component-finish.png[width=60%] 
 
-*Congratulations!* You now have a new Software template in RHDH. Now, end-users can *self-provision Virtual Machines*.
+*Congratulations!* You now have a new software template in RHDH. End users can now self-provision virtual machines.
 
 * We'll explore the end-user experience by accessing the Software Templates view.
-* From *catalog*, select *Self-service*:
+* Navigate to Catalog --> Self-service
 * Look for the *VM* catalog
 
 *Let's explore the current catalog:*
 
 image:self-service-patterns/vm-lab/vm-catalog.png[width=60%]
 
-* Click on the *Choose*
-* Review and fill out the information with dummy data until you reach the review screen, **without creating the VM**. **DO NOT CLICK ON CREATE.** 
-+
+* Click *Choose*
+* Review and fill out the information with dummy data until you reach the review screen, **without creating the VM**. **DO NOT CLICK CREATE.** You will do this later on after changing the template.
+
 image:self-service-patterns/vm-lab/vm-sample.png[width=100%]
 
 *Scenario:*
-Now, imagine for a moment that you are part of the legacy team. Your responsibility is to create a new VM to host a legacy application.
-This VM will first be used as experimentation, but there is a new version of RHEL that we need to support, besides the current RHEL version 9. As Platform Architect, what fields and files will you need to update?
+
+Imagine that you are part of the legacy apps team. Your responsibility is to create a new VM to host a legacy application. This VM will initially be used for experimentation, but there is a new version of RHEL that needs to be supported in addition to the current RHEL version 9. As a Platform Architect, what fields and files will you need to update?
 
 *We have a couple of options:*
 
-* 1-  We could create a new template to support the new RHEL version, in this scenario, we will have 2 software templates (RHEL9, RHEL10). The cons are that you now need to maintain two different software templates. 
+* **Option 1:** Create a new template to support the new RHEL version. In this scenario, we would have 2 software templates (RHEL9, RHEL10). The disadvantage is that you would need to maintain two different software templates.
 
-We need to explore how many changes we must include in this new version to decide. Is there something else we should be updating in the VM definition besides the image name?
+We need to explore how many changes must be included in this new version to make the decision. Is there something else we should update in the VM definition besides the image name?
 
-* 2- Update the current software template and make the necessary updates as generic as possible to support the new RHEL and the previous versions. This creates an opportunity to make this template more generic without adding too much complexity. 
+* **Option 2:** Update the current software template and make the necessary changes as generic as possible to support both the new RHEL version and previous versions. This creates an opportunity to make the template more generic without adding excessive complexity.
 
+*When to use a new software template?*
 
-*When to use a new software template?* 
+Use a new software template when artifacts or components are very different, or when configurations are so dissimilar that they require extensive logic or variables to maintain them in the same configuration. The main goal is to keep it as simple as possible to reduce maintenance overhead.
 
-When artifacts/components are very different or configurations are so dissimilar, they require many logic or variables to keep them on the same configuration. The main goal is to keep it as simple as possible to reduce maintenance.
+*The solution:*
 
+We'll choose the second option: update the current software template to support different RHEL versions. This approach will also help reduce maintenance when new versions need to be supported.
 
-*The solution:* 
-We'll choose the second option, update the current software template to support different RHEL versions. This will also help to reduce maintenance when a new version needs to be supported.
+=== Explore VM Creation with OpenShift Virtualization
 
-=== Explore VMs creation with OpenShift Virtualization
+Let's explore what types of VMs you can create in OpenShift. Imagine that you are new to templating VMs in OpenShift - what's the best approach to deploy a new VM instance? Let's use OpenShift Virtualization to explore the different types and solutions available.
 
-Let's explore what type of VMs I can create in OpenShift. Imagine that you are new to templating VMs in OpenShift, then what's the best approach to bring a new instance of OpenShift? Let's use OpenShift Virtualization to explore the different types and solutions available, or you can create a new one.
+* Log in to the {openshift_console_url}[OpenShift Web Console^]
 
-* We need to update the VM with a new RHEL version
-* Login into the OpenShift Cluster {openshift_console_url}[Web Console^]
+** Use your administrator credentials:
 
-** Use your user credentials:
+*** *Username*: {openshift_admin_user}
+*** *Password*: {openshift_admin_password}
 
-    *** *Username*: {openshift_admin_user}
-    *** *Password*: {openshift_admin_password}
-
-* Click on the *Virtual Machine* menu, then click on *Overview*.
+* Click on the *Virtualization* item on the left sidebar, then click on *Overview*.
 
 You will see the welcome page.
 
 image:self-service-patterns/vm-lab/virt-welcome-page.png[width=100%]
 
-You will get familiarize with OpenShift Virtualization using the *Start Tour*.  Click on *Virtual Tour* and follow the steps.
-
-* Complete the tour and stay on the screen.
+You can optionally familiarize yourself with OpenShift Virtualization using the *Start Tour*. Click on *Virtual Tour* and follow the steps (or just click the `x` to close if your're already familiar with it).
 
 image:self-service-patterns/vm-lab/vm-finish-tour.png[width=80%]
 
 * *Let's create a VM in OpenShift*
-** On the *Create new VirtualMachine* screen you will see a new screen listing all VM configurations available. Remember, you can also customize it to your needs.
+** On the *Create new VirtualMachine* screen, you will see all available VM configurations listed. Remember, you can also customize these to your needs.
 ** Select the *volume* *rhel10*
 
-+
+
 image:self-service-patterns/vm-lab/virt-volumes-click.png[width=100%]
 
-
-** Next, Explore the *Instance Type* available
-** Select the *General Purpose* *U series* and the *small* *1 CPUs, 2 GiB memory*
+** Scroll down to explore the available *Instance Types*
+** Select *General Purpose* *U series* and *medium* *1 CPUs, 4 GiB memory*
 
 image:self-service-patterns/vm-lab/vm-instancetype-click.png[width=100%]
 
-*Note: Do not create the VM. You will be creating a VM using this Configuration through RHDH.*
+** Leave the rest of the defaults as-is.
 
+*Note: Do not create the VM. You will create a VM using this configuration through RHDH.*
 
-
-=== Implement changes in Software Templates.
-
-Let's review the information in the new VM instance.
-
-** Click on the button *View YAML & CLI*
+* Click the *View YAML & CLI* button to view what the VM manifest would look like if you created it.
 
 image:self-service-patterns/vm-lab/vm-explore-yaml.png[width=100%]
 
-** From that view, review the *RHEL10* related values:
+* From that view, look for the *RHEL10* related values:
 
 image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%]
 
-*Note:* The instance name will change, you might have a different VM's name. For example instead of rhel-10-peach0gazelle-65 you might have rhel-10-amethyst-frog-44.
+[NOTE]
+====
+You may see other fields such as the VM's name or the `dataVolumeTemplates` field. These fields are already represented as a variable in template we will use, and will be based on user input, so we won't need to do anything with them.
+====
 
-* Return to *RHDH* to compare the new values with the current VM instance file.
+Our current template is not supporting the new RHEL version (it's hard-coded for RHEL 9). In the next steps we'll update the template to support the new RHEL version by adding parameters for the RHEL version within the `vm.yaml` file and add necessary UI updates to allow the user to select the RHEL version from the RHDH "Create" flow.
 
-** Click on *Catalog* on the RHDH menu
-** Next, select the filters: *Kind:Template* and *Tags: self-service*
-As shown in the following picture:
+=== Implement Changes in Software Templates
+
+* Return to *RHDH*. You will compare the new values with the current VM instance file to identify what needs to be updated.
+
+** Click *Catalog* in the RHDH menu
+** Next, select the filters: *Kind:Template* and *Tags: self-service* as shown in the following picture:
 
 image:self-service-patterns/vm-lab/self-service-catalog.png[width=40%]
 
-** Select the **RHEL9 VM Medium Template**
+** Select the *RHEL9 VM Medium Template*
 
 * The current template needs to be deleted since we'll be creating a new template with a new name.
 
-** Click on the *three dots* under Owner, next click on *Unregister entity*
+** Click the *three dots* under Owner, then click *Unregister entity*
 
-+
+
 image:self-service-patterns/vm-lab/template-unregister.png[width=60%]
 
 ** Confirm the action.
 
-+
 image:self-service-patterns/vm-lab/confirm-unregister.png[width=60%]
 
+Now we'll update several files in the template to support the new RHEL version. These are the files you'll need to update:
 
-* Go to manifests/helm/app/templates/vm.yaml or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[VM.yaml file^]
+* `vm.yaml` - The VM manifest file that will be used to create the VM.
+* `values.yaml` - The file that will be used to pass the RHEL version to the Helm chart when deployed by OpenShift GitOps.
+* `template.yaml` - The template file that will define the UI experience for the end user.
 
-** Review the vm definition and compare it with the one provided by *OpenShift Virtualization*
+Let's start with the `vm.yaml` file.
 
-image:self-service-patterns/vm-lab/vm-yaml-updates2.png[width=100%]
+* {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/templates/vm.yaml[Open the `vm.yaml` file in GitLab^].
 
+** Review the VM definition and compare it with the one provided by *OpenShift Virtualization*
 
-** Next, *replace the values* in the current *vm.yaml* file, *the hardcoded values with variables*. Take a look at all the information related to RHEL10 highlighted in the images, except the name. The name will remain variable since the end user will provide it.
+image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%]
 
-Remember that these software templates are built with *Helm*, which will use templating variables from the RHDH UI and the template.
+Remember the places where you saw `rhel.10`? We need to replace it with a variable that will allow the user to choose 9 or 10.
+
+Edit the file by choosing *Edit -> Edit Single File*:
+
+image:self-service-patterns/vm-lab/gitlab-edit-file.png[width=90%]
+
+Next, find the two comments with `UPDATE to parameterize the RHEL version` - we need to replace the hardcoded values with variables:
+
+* Replace `rhel9` with `rhel{{ .Values.app.rhel.version }}`
+* Replace `rhel.9` with `rhel.{{ .Values.app.rhel.version }}`
+
+It should look like:
+
+image:self-service-patterns/vm-lab/gitlab-edit-file-updated.png[width=90%]
+
+This will enable the user to choose the RHEL version when they create the VM, and the chosen values will be used in the VM manifest that you just edited to create the VM.
+
+Save your changes by scrolling down and clicking the *Commit Changes* button.
 
 image::self-service-patterns/software_templates_flow.jpg[]
 
-* The variables need to be updated in the *vm.yaml* and the *values.yaml* files.
-
-** Update the *vm.yaml* file to ensure the *data source name* and *preference name* will contain the RHEL version.
-
-+
-image:self-service-patterns/vm-lab/vm-file-changes.png[width=60%]
-
-Take the time to review your file with the solution file provided here:
+If you are unsure you did it correctly, you can compare your file with the solution file provided here:
 
 https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/vm.yaml[VM.yaml solution file^]
 
+*Note*: Don't forget to commit your changes.
+
+* Next, {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/manifests/helm/app/values.yaml[Open the `values.yaml` file in GitLab^].
+
+You need to include the RHEL version as a variable. This value must match the value you added to the `vm.yaml` file.
+
+Under the `app` key, add a new key called `rhel` and under that, add a new key called `version` and set it to `${{values.rhel_version}}` (the "tree" of `rhel->version` matches what you added to the `vm.yaml` file, and the name `values.rhel_version` matches what you're about to add to the `template.yaml` file).
+
+It should look like:
+
+image:self-service-patterns/vm-lab/vm-valuesfile-changes.png[width=90%]
+
+If you are unsure you did it correctly, you can compare your file with the https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml[values.yaml solution file^]:
+
+
 *Note*: Don't forget to commit your changes. 
 
-** Update the *values.yaml* file to include the RHEL version ensuring that is listed as a variable. This value must match the value you added to the vm.yaml file.
+=== Make Updates in the VM Template in GitLab
 
-+
-image:self-service-patterns/vm-lab/vm-valuesfile-changes.png[width=60%]
+Finally, let's update the `template.yaml` make edits to these areas to parameterize the RHEL version:
 
+* First, {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml[open the `template.yaml` file in GitLab^] and select Edit->Edit Single File to edit the file.
 
-* Ensure you have applied the changes to your repository. Take the time to review your file with the solution file provided here:
+* Remove the `9` from the name, title, and description since our template will support both RHEL 9 and RHEL 10 (and maybe others in the future):
 
+image:self-service-patterns/vm-lab/vm-template-changes1.png[width=90%]
 
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml[values.yaml solution file^]
+* Add a new required parameter under the comment `# UPDATE: Add other required parameters here` called `rhel_version`:
 
-*Note*: Don't forget to commit your changes. 
+image:self-service-patterns/vm-lab/vm-template-changes1.1.png[width=90%]
 
-=== Make updates in the VM template in GitLab
-Let's make the following changes to update the template based on the new RHEL version.
+* Below the `# UPDATE: Add new properties here` comment, add this snippet that defines the parameter's type as an enumerated type (which renders as a drop-down).
 
-**UI** 
-
-* Let's consider the user experience and what information is required to be updated with these latest changes:
-
-** Template name
-** Template description
-** Ensure variables are sent to the helm charts.
-
-
-* Update the *rhel-vm-medium/template.yaml* file to ensure the RHEL version *9 is not part of the template*. We now have a generic template to create VMs based on RHEL, where no version is listed on the template.
-
-[source, bash,role=execute,subs=attributes+]
+[source,yaml,role=execute,subs=attributes+]
 ----
-{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
+        rhel_version:
+          title: Select the RHEL version
+          type: string
+          description: The RHEL version for the VM
+          default: 10
+          enum:
+            - '9'
+            - '10'
+          enumNames:
+            - 'RHEL9'
+            - 'RHEL10'
 ----
 
-* Next, let's build the RHEL option, list an array; the idea is to give the user the option to choose the pre-defined RHEL versions. This value must match the value you have added to the *values.yaml file.*
+Be sure the indentation matches the rest of the file as shown:
 
-+
-image:self-service-patterns/vm-lab/vm-template-changes1.png[width=60%]
+image:self-service-patterns/vm-lab/vm-template-changes2.png[width=90%]
 
-+
-image:self-service-patterns/vm-lab/vm-template-changes2.png[width=60%]
+Next, scroll down to the `templateSource` step. We need to include the new variable in the steps. If we do not, the Helm charts will not receive the data.
 
+Add the new variable in the *templateSource step* at the `# UPDATE: Add new source values here` comment as shown:
 
-* Next, we need to include the new variable in the steps. If we do not include that *new variable*, the Helm charts will not receive the data.
+[source,yaml,role=execute,subs=attributes+]
+----
+rhel_version: ${{parameters.rhel_version}}
+----
 
-** Add the new variable in the *templateSource step*:
+image:self-service-patterns/vm-lab/vm-template-step1.png[width=90%]
 
-+
-image:self-service-patterns/vm-lab/vm-template-step1.png[width=50%]
+** Add the new variable in the *templateGitops step* at the `# UPDATE: Add new Gitops values here` comment as shown:
 
+Add the new variable in the *templateSource step* at the `# UPDATE: Add new source values here` comment as shown:
 
-** Add the new variable in the *templateGitops step*:
+[source,yaml,role=execute,subs=attributes+]
+----
+rhel_version: ${{parameters.rhel_version}}
+----
 
-+
-image:self-service-patterns/vm-lab/vm-template-step2.png[width=50%]
+image:self-service-patterns/vm-lab/vm-template-step2.png[width=90%]
 
-* Ensure you have applied the changes to your repository. *Take the time to review* your file with the solution file provided here:
+* *Take time to review* your file against the https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml[template.yaml solution file^]
 
-https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml[template.yaml solution file^]
+* Scroll down and select **Commit Changes** to save your changes.
 
+=== Register the new template
 
-* Proceed to *save your changes*.
+Back in {rhdh_url}[Developer Hub^], select the *plus icon* in the top navigation bar to access the Create option.
 
-* Ensure the template has the latest changes.
-
-* Proceed to register the new template
-
-* Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
-+
 image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI] 
 
-* Click the *Register Existing Component* button.
-+
-image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
+* Click the *Import an existing Git repository* button.
 
-{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]
+image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -305,37 +305,44 @@ image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI]
 {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhel-vm-medium/template.yaml
 ----
 
-* Click on the *Import* button
+* Click the *Import* button to import the template with the changes you've made.
 
-
-=== Test your changes: Explore the user experience as Developer
+=== Test Your Changes: Explore the User Experience as a Developer
 
 Let's create an instance of the new VM defined in the software templates.
 
-* From *catalog*, select *Self-service* and find the *RHEL VM Medium Template*
-* Click on the *Choose*
-
-+
-image:self-service-patterns/vm-lab/vm-catalog-new.png[width=50%]
+* From the *catalog*, select *Self-service* and find the *RHEL VM Medium Template*
+* Click *Choose*
 
 
-* Review the information until you complete the flow and click on *Create*.
+image:self-service-patterns/vm-lab/vm-catalog-new.png[width=80%]
+
 * You should see a screen like this one:
 
-+
-image:self-service-patterns/vm-lab/vm-rhel-updated.png[width=120%]
 
-* Select the new version added: *RHEL10* and follow the steps to create the VM in OpenShift.
-* Watch the following arcade, your experience should be very similar. 
+image:self-service-patterns/vm-lab/vm-rhel-updated.png[width=100%]
 
-*Note*: The VM might take a few minutes to complete provisioning.
+* Select the new version using the drop-down: *RHEL10*
+* Leave the rest of the defaults as-is, click *Review*, and then click *Create* to finish the template flow.
 
-* In case you want to log in to the OpenShift Cluster{openshift_console_url}[Web Console^]
+* Once the VM is created, click *Open Component in Catalog* to view the newly created VM inside Developer Hub:
+
+image:self-service-patterns/vm-lab/vm-created.png[width=100%]
+
+* Click *Virtual Machine* to view the VM inside OpenShift Virtualization. It may take a few moments for the VM to finish booting, but you'll see the status:
+
+image:self-service-patterns/vm-lab/vm-created2.png[width=100%]
+
+* Feel free to explore this VM - logging in via the VNC console, or other activities.
+
+* Optionally watch the following demo - your experience should be very similar.
+
+* If you need to re-login to the OpenShift Cluster: {openshift_console_url}[Web Console^]
 
 ** Use your user credentials:
 
-   *** *Username*: {openshift_admin_user}
-   *** *Password*: {openshift_admin_password}
+*** *Username*: {openshift_admin_user}
+*** *Password*: {openshift_admin_password}
 
 ++++
 <iframe 
@@ -352,4 +359,11 @@ muted>
 
 === Conclusion
 
-You have updated a Virtual Machine software template with the latest version of RHEL and simplifying the Platform engineering experience by making one template more generic, following organization policies.
+You have successfully updated a virtual machine software template with the latest version of RHEL and simplified the platform engineering experience by making one template more generic, while following organizational policies.
+
+==== Further Reading
+
+* link:https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[Red Hat OpenShift Virtualization^]
+
+* link:https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how#[Building virtual machines with Red Hat Developer Hub: The what, why, and how^]
+

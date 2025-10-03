@@ -1,0 +1,9 @@
+= Setup Trusted Artifact Signer on OpenShift
+
+== Overview
+
+This guide covers the installation and configuration of Trusted Application Scanner (TAS) on OpenShift Container Platform. TAS on OpenShift leverages container orchestration for scalable and efficient application security scanning workflows.
+
+== TBD
+
+// TODO: Add content for TAS installation and setup on OpenShift

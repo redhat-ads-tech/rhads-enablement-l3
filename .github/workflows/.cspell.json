@@ -1,6 +1,6 @@
 {
   "version": "0.2",
-  "language": "en",
+  "language": "en, en-GB",
   "words": [
     "RHADS",
     "RHDH",
@@ -129,7 +129,7 @@
     "Knative"
   ],
   "ignoreWords": [
-    "sysout"
+    "sysout",
     "adoc",
     "xref",
     "ifndef",

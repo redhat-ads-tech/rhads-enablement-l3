@@ -113,8 +113,8 @@ spec:
       action: argocd:create-resources
       input:
         appName: ${{parameters.component_id}}-gitops
-        argoInstance: default
-        namespace: tssc-gitops
+        argoInstance: cluster-argocd
+        namespace: openshift-gitops
         repoUrl: https://gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/rhdh/${{parameters.component_id}}-gitops.git
         path: 'argocd/'
   output:
