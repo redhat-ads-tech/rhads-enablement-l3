@@ -21,6 +21,7 @@
 ** xref:m-orchestrator/overview.adoc[Orchestrator Overview]
 ** xref:m-orchestrator/install.adoc[Install & Setup]
 ** xref:m-orchestrator/workflows.adoc[Managing and Running Workflows]
+** xref:m-orchestrator/advanced-workflow.adoc[Workflows with State and Integrations]
 * xref:security-practices.adoc[Module 8: Getting started with security best practices]
 * xref:tssc-tpa.adoc[Module 9: Trusted Software Supply Chain with TPA]
 * xref:tssc-tas.adoc[Module 10: Attestations, Tekton Chains & Enterprise Contract with TAS]
