@@ -13,7 +13,7 @@ Learn more about link:https://www.redhat.com/en/products/ai[Red Hat AI,window='_
 
 
 [#rhads-ai]
-== How RHADS enables AI tools  for AI Engineers
+== How RHADS enables AI tools for AI Engineers
 
 
 === RHADS integrations with other tools

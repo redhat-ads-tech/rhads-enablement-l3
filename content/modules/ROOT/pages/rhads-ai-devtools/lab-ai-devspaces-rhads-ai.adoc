@@ -1,17 +1,16 @@
-= Build an Agent with Red Hat Advanced Developer Suite
+= Build an Agent with Red Hat OpenShift Dev Spaces
 
 == Introduction
 
-This lab provides the opportunity to explore how Red Hat Advanced Developer Suite integrates with other products and third-party tools to bring AI into the developers' daily activities, but also how other developer tools, such as RH OpenShift Dev Spaces, provide an opportunity to adopt AI practices. 
+This Lab provides the opportunity to explore how Red Hat Advanced Developer Suite integrates with other products and third-party tools to bring AI into the developers' daily activities, but also how other developer tools, such as RH OpenShift Dev Spaces, provide an opportunity to adopt AI practices. 
 
 == Objectives
-This Lab will showcase how to start building an AI application from a blank software template using Red Hat Advanced Developer Suite right from the start to ensure organizations include best practices and company guidelines from the beginning. 
-Additionally, you will be setting up a Red Hat OpenShift Dev Spaces as a development environment, leveraging AI tools.
+This Lab will showcase how to build an AI application using a pre-existing software template built in Red Hat Advanced Developer Suite, right from the start, to ensure organizations include best practices and company guidelines from the beginning. You will leverage Red Hat OpenShift Dev Spaces as a development environment and set up AI tools.
 
 Let's get started.
 
 == Scenario
-Now, imagine for a moment that you are part of the Python AI Development team. The AI Team's responsibility is to build an AI agent with best practices and organization guardrails using RHADS and integrations with OpenShift AI.
+Now, imagine for a moment that you are part of the Python AI Development team. The AI Team's responsibility is to build an AI agent using the provided tools by the AI Platform Engineering Team.
 
 == Getting started
 
@@ -21,8 +20,8 @@ Now, imagine for a moment that you are part of the Python AI Development team. T
 
 ** Login with your user administrator credentials:
 
-    *** *Username*: {openshift_admin_user}
-    *** *Password*: {openshift_admin_password}
+ *** *Username*: {openshift_admin_user}
+ *** *Password*: {openshift_admin_password}
 
 ** Next, click on the component's *Python Web AI*
 ** From the component's overview, *click on* the *Red Hat OpenShift Dev Spaces*
@@ -34,47 +33,12 @@ Now, imagine for a moment that you are part of the Python AI Development team. T
 
 == Getting started with Red Hat OpenShift Dev Spaces
 
-*Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing the repository, Dev Spaces will attempt to select a suitable development environment. OpenShift Dev Spaces will read from the *dev.yaml* file and automatically configure the workspace with the specified container image, tools, and commands. 
+*Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing the repository, Dev Spaces will attempt to select a suitable development environment. RH OpenShift Dev Spaces will read from the *dev.yaml* file and automatically configure the workspace with the specified container image, tools, and commands. 
 
 Once it finishes creating the workspace, you will see an environment similar to this:
 
 image:rhads-ai/rhdevspaces/devspaces-newenv.png[width=100%]
 
-
-== AI Agent Overview
-An AI agent needs the following things:
-
-* *Planning and Reasoning*: The AI agent uses an LLM for reasoning. For this module, we are using a Red Hat self-hosted module.
-* *Tools and Actions*: An AI Engineer can build their own tools and integrations; however, there are many tools available that organizations can take advantage of. Additional integrations with custom systems are also possible.
-* *Memory*, understanding context, such as short-term or long-term memory, is the ability to store data and learn more from it.
-* *Input* could be a website or any device that provides input information to the agent. *Guardrails/Safety Layer: The rules that keep the agent's actions in check.
-
-== Explore the AI Agent
-Our AI Agent is a Search Agent that will search information on the Internet and specific websites, depending on the prompt send by the user. The agent will decide which tool to use to return the information you require.
-
-== AI Agent Characteristics
-
-* *Planning and Reasoning:* We are using a Red Hat self-hosted module for this module.
-* *Tools and Actions:* This agent, is using the tools provided by *https://www.tavily.com[tavily^]*. Tavily provides tools, including Web Search to search information on the Internet, TavilyExtract to extract specific information on web pages, and TavilyCrawl to discover new pages and index their content, helping agents find content.
-* *Memory:* Short memory is used for this AI agent.
-* *Input:* This solution includes a website to interact with the agent.
-* *Guardrails/Security:* Start with the prompt provided to the agent. And follows with Red Hat Advanced Developer Suite security integrated, including image scanning, policy.  
-
-== AI Agent Architecture
-The following image describes the AI agent architecture, including the Red Hat products interacting directly with the application through the Software Development Lifecycle.
-
-image:rhads-ai/rhdevspaces/architecture.png[width=100%]
-
-== AI Agent Use Cases
-
-Many use cases that an AI Agent can fulfil, some of them are:
-
-* Web Search
-* Planning / Coordinator
-* Fraud Prevention
-* Events Manager
-* Automated Code Generation & Testing
-* Customer support
 
 == Configure the *AI Assistant in Red Hat OpenShift Dev Spaces*
 We want to take advantage of an AI assistant using OpenShift Dev Spaces. For this Lab, we'll use *https://www.continue.dev[Continue^]*. However, many organizations might use others, such as *Claude from Anthropic *, *Microsoft Copilot*.
@@ -116,7 +80,7 @@ image:rhads-ai/rhdevspaces/devspaces-continue-config-yaml.png[width=100%]
 
 * Copy the file content and *paste* it into the config.yaml file created by continue.
 
-In the next step will add the model's *apiBase* and *apiKey* from the *Internal MaaS Demo from the AI BU*.
+The next step will add the Model's *apiBase* and *apiKey* from the *Internal MaaS Demo from the AI BU*.
 
 
 === Get your API key to access the self-hosted Model
@@ -209,7 +173,7 @@ image:rhads-ai/rhdevspaces/mcp-server-config-new.png[width=100%]
 
 image:rhads-ai/rhdevspaces/tavily-web.png[width=100%]
 
-* Click on continue and once logged in, you will see a screen like this one:
+* Click on continue, and once logged in, you will see a screen like this one:
 
 image:rhads-ai/rhdevspaces/tavily-main.png[width=100%]
 
@@ -228,7 +192,7 @@ image:rhads-ai/rhdevspaces/tavily-appkey-create.png[width=70%]
 
 image:rhads-ai/rhdevspaces/tavily-apikey-view.png[width=100%]
 
-**NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY GIT PUBLIC REPOSITORY. THIS IS YOUR PERSONAL API KEY**
+**NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY**
 
 * Paste your key to include it after the *?tavilyApiKey=*
 
