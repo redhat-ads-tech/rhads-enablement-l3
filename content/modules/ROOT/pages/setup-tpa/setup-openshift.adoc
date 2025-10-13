@@ -4,6 +4,92 @@
 
 This guide covers the installation and configuration of Trusted Profile Analyzer (TPA) on OpenShift Container Platform. TPA on OpenShift leverages container orchestration for scalable and efficient security analysis workflows.
 
+To install TPA on OpenShift, we have two options:
+. The Operator-based install
+. The `helm` install, using the official helm chart from the https://charts.openshift.io/[`openshift-helm-charts` repository]
+
+[NOTE]
+====
+We will go through both installation paths, but there are some prerequisites that we need to look at:
+
+* Persistent Storage for the ingested data (SBOMs, CVEs, Advisories), either as S3 or as PVC
+* A `postgresql` database for the graph database
+* OIDC setup for authentication, both for the frontend and the REST API (typically used from your CI)
+====
+
+== Prerequisites
+
+For ease of use, we have prepared some k8s artifacts and helper scripts that you can use. Please open the {openshift_console_url}/terminal[terminal^,window="terminal"], logging in as `{openshift_admin_user} / {openshift_admin_password}`.
+
+Then, clone the following repository:
+
+[source,bash,role=execute,subs=attributes+]
+----
+git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers
+----
+
+While not strictly a prerequisite, let's quickly create a project to install TPA while we're here:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc new-project student-tpa-operator
+----
+
+=== Storage
+
+For (object-)storage, the recommended and supported option is to use S3, provided either by ODF (OpenShift Data Foundations) or Amazon S3. 
+
+However, for PoC purposes and tests without S3 available, `filesystem` is also a configuration option that is recognized by the `helm` Chart and the `helm`-based Operator. This effectively triggers the helm chart to spin up a PVC.
+
+[WARNING] 
+====
+If you choose `filesystem`, be aware that there are two pods accessing the same PVC - namely the `importer` and the `server` pod. The helm chart template creates the PVC as RWO, therefore this only works as long as both pods are on the same node as the PVC.  
+
+With the help from OpenShift's internal PVC/pod affinity rules, this *_should_* work in most cases, but it is definitely not recommended for production.
+====
+
+[source,console]
+----
+$ oc get pods
+NAME                              READY   STATUS    RESTARTS      AGE
+importer-666b79c69b-vf2ff         1/1     Running   2 (55m ago)   173m
+server-7555686b95-hkq9r           1/1     Running   0             173m
+tpa-postgresql-7d4694d455-gtzrg   1/1     Running   1 (57m ago)   3h2m
+
+$ oc get pod importer-666b79c69b-vf2ff -o jsonpath='{range .spec.volumes[?(@.persistentVolumeClaim)]}{.name}{" (PVC: "}{.persistentVolumeClaim.claimName}{")"}{"\n"}{end}{range .spec.containers[*].volumeMounts[?(@.name=="storage")]}{"\tMount: "}{.mountPath}{"\n"}{end}'
+storage (PVC: storage)
+Mount: /data/storage
+
+$ oc get pod importer-666b79c69b-vf2ff -o jsonpath='{range .spec.volumes[?(@.persistentVolumeClaim)]}{.name}{" (PVC: "}{.persistentVolumeClaim.claimName}{")"}{"\n"}{end}{range .spec.containers[*].volumeMounts[?(@.name=="storage")]}{"\tMount: "}{.mountPath}{"\n"}{end}'
+storage (PVC: storage)
+Mount: /data/storage
+
+----
+
+==== S3 Storage using ODF
+
+On the cluster, we have installed ODF, which is part of OPP (OpenShift Platform Plus), so we expect customers to use it for production-grade S3.
+
+With ODF installed, 
+
+
+
+=== Database (`postgresql`)
+
+=== OIDC setup
+
+NOTE: We are using RHBOK (Red Hat build of Keycloak) here, but you can also use Amazon Cognito. Refer to the https://docs.redhat.com/en/documentation/red_hat_trusted_profile_analyzer/2.1/html/deployment_guide/select-your-installation-platform#installing-trusted-profile-analyzer-by-using-helm-with-aws_deploy[product documentation] for that setup if you're using Cognito. However, we need to configure OIDC `scopes` and redirect URLs and we'll show you using Keycloak.  
+
+
+
+
+== Operator Installation
+
+NOTE: The operator is currently in tech preview and has some issues handling multiple installations on the same cluster (it is also using `helm`). Since we already have installed a TPA for reference using this method, you might see some misleading errors, but the installation itself (and the resulting TPA) works.
+
+== Helm Installation
+
 == TBD
 
 // TODO: Add content for TPA installation and setup on OpenShift
