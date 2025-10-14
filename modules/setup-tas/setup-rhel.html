@@ -271,18 +271,266 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Setup Trusted Artifact Signer on RHEL</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>IF you have already completed the <a href="../setup-tpa/setup-rhel.html" class="xref page">TPA module on RHEL</a>, you simply re-use that same RHEL workshop environment and follow the instructions inside of it for TAS. Otherwise, continue with the instructions below to provision a new RHEL workshop environment.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_overview"><a class="anchor" href="#_overview"></a>Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This guide covers the installation and configuration of Trusted Artifact Signer (TAS) on Red Hat Enterprise Linux (RHEL) systems. This installation method is ideal for organizations that prefer traditional server deployments or need to integrate TAS with existing non-OpenShift Kubernetes platforms.</p>
+<p>To setup TAS on RHEL, you will use a separate hands-on workshop which provisions multiple RHEL systems for you to use. You will then use Red Hat Ansible Automation Platform to deploy RHTAS in a production-ready configuration using the supported Ansible collection.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_tbd"><a class="anchor" href="#_tbd"></a>TBD</h2>
+<h2 id="_use_cases"><a class="anchor" href="#_use_cases"></a>Use Cases</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>RHTAS on RHEL is ideal for the following scenarios:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>Pure RHEL Environments</strong></dt>
+<dd>
+<p>Organizations that want to ensure the integrity and authenticity of software artifacts in environments that don&#8217;t use OpenShift or container platforms.</p>
+</dd>
+<dt class="hdlist1"><strong>Non-OpenShift Kubernetes Platforms</strong></dt>
+<dd>
+<p>Integrate RHADS security components into CI/CD pipelines running on non-OpenShift Kubernetes distributions (e.g., K3s, K3d, RKE2, EKS, AKS, GKE) where TAS is not supported. Configure these pipelines to use RHTAS and RHTPA services running on RHEL.</p>
+</dd>
+<dt class="hdlist1"><strong>Traditional Server Deployments</strong></dt>
+<dd>
+<p>Organizations preferring traditional server deployments can run RHTAS on bare metal or virtual machines without container orchestration platforms.</p>
+</dd>
+<dt class="hdlist1"><strong>Legacy Infrastructure Modernization</strong></dt>
+<dd>
+<p>Integrate RHTAS into existing data centers running RHEL without requiring full OpenShift migration, enabling gradual adoption of supply chain security practices.</p>
+</dd>
+<dt class="hdlist1"><strong>Resource-Constrained Environments</strong></dt>
+<dd>
+<p>Deploy in environments where full OpenShift clusters are impractical due to resource, cost, or complexity constraints.</p>
+</dd>
+<dt class="hdlist1"><strong>Edge and Remote Sites</strong></dt>
+<dd>
+<p>Deploy RHTAS at edge locations or remote sites running RHEL for distributed signing and verification closer to where artifacts are built and deployed.</p>
+</dd>
+<dt class="hdlist1"><strong>Development and Testing</strong></dt>
+<dd>
+<p>Developers can run RHTAS on RHEL workstations or laptops for local testing and validation before deploying to production.</p>
+</dd>
+<dt class="hdlist1"><strong>Custom Infrastructure Requirements</strong></dt>
+<dd>
+<p>Organizations with specific networking, database, identity provider, or security requirements that need granular control over RHTAS configuration.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_workshop_access"><a class="anchor" href="#_workshop_access"></a>Workshop Access</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The hands-on workshop for installing and configuring RHTAS on RHEL is available through the Red Hat Demo Platform and takes about 15 minutes to provision. Follow the instructions below to provision the RHEL workshop environment.</p>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h3>
+<div class="paragraph">
+<p>Before provisioning the workshop, ensure you have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Access to the <a href="https://demo.redhat.com">Red Hat Demo Platform</a></p>
+</li>
+<li>
+<p>Valid Red Hat credentials for the Demo Platform:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Red Hat Associates</strong>: Use your Red Hat SSO credentials</p>
+</li>
+<li>
+<p><strong>Partners and Customers</strong>: Use your Red Hat account credentials</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>One of the following <code>registry.redhat.io</code> credentials (required during the workshop):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>A Red Hat account username/password, ora Red Hat Registry Service Account username/token</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you don&#8217;t have registry credentials, visit the <a href="https://access.redhat.com/articles/RegistryAuthentication" target="_blank" rel="noopener">Registry Authentication</a> article on the Red Hat Customer Portal to create an account. You can also <a href="https://access.redhat.com/terms-based-registry/create" target="_blank" rel="noopener">create or use an existing Registry Service Account</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_provisioning_your_workshop"><a class="anchor" href="#_provisioning_your_workshop"></a>Provisioning Your Workshop</h3>
+<div class="paragraph">
+<p>Follow these steps to provision your RHTAS on RHEL workshop environment:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Access and Order the Workshop</strong></p>
+<div class="paragraph">
+<p>Navigate to the <a href="https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/openshift-cnv.etx-rhads.prod" target="_blank" rel="noopener">RHTAS on RHEL Workshop</a> catalog item and click the <strong>Order</strong> button:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-tas/rhel-workshop-catalog.png" alt="rhel workshop catalog" width="80%">
+</div>
+</div>
+</li>
+<li>
+<p><strong>Fill out the Form</strong></p>
+<div class="paragraph">
+<p>Once you click the <strong>Order</strong> button, you&#8217;ll be presented with a provisioning form. Complete the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Activity</strong>: <em>Practice / Enablement</em></p>
+</li>
+<li>
+<p><strong>Purpose</strong>: <em>Learning about the product</em></p>
+</li>
+<li>
+<p><strong>Confirm</strong> the important note at the bottom of the form.</p>
+</li>
+<li>
+<p>Click the <strong>Order</strong> button.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-tas/rhel-workshop-form.png" alt="rhel workshop form" width="80%">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The workshop shouldn&#8217;t take more than an hour to complete once provisioned. If you need more than 4 hours, you can adjust the auto-stop and/or auto-destroy times on the form.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Wait for Provisioning to Complete</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Provisioning typically takes 15-20 minutes</p>
+</li>
+<li>
+<p>You&#8217;ll receive email notifications when provisioning starts and completes</p>
+</li>
+<li>
+<p>Monitor the status in your Red Hat Demo Platform dashboard on the <em>Services</em> tab:</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-tas/rhel-workshop-provisioning.png" alt="rhel workshop provisioning" width="80%">
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Access Workshop Instructions</strong></p>
+<div class="paragraph">
+<p>Once provisioning is complete:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>From the <em>Services</em> tab, click on the name of the service</p>
+</li>
+<li>
+<p>Locate and click the <strong>Showroom</strong> link at the top (you won&#8217;t need to use the other links presented, unless you want to explore the workshop environment in more detail)</p>
+</li>
+<li>
+<p>Follow the step-by-step instructions provided in the workshop</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="setup-tas/rhel-workshop-showroom.png" alt="rhel workshop showroom" width="80%">
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>When you finish this TAS on RHEL workshop, feel free to use the same workshop environment to complete the <a href="../setup-tpa/setup-rhel.html" class="xref page">TPA workshop on RHEL</a> (you don&#8217;t need to re-order the same catalog item again, just re-use the existing environment.)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_next_steps"><a class="anchor" href="#_next_steps"></a>Next Steps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After completing the TAS workshop, you&#8217;ll be ready to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Integrate RHTAS into your CI/CD pipelines</p>
+</li>
+<li>
+<p>Implement keyless and key-based signing workflows</p>
+</li>
+<li>
+<p>Configure verification policies for your software supply chain</p>
+</li>
+<li>
+<p>Explore the <a href="../tssc-tas.html" class="xref page">Trusted Software Supply Chain with TAS</a> module for advanced use cases on OpenShift</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <nav class="pagination">
