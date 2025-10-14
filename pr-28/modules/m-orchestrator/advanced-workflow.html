@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Workflows with State and Integrations :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/m-orchestrator/advanced-workflow.html">
+    <link rel="prev" href="workflows.html">
+    <link rel="next" href="../security-practices.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m2/introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m2/concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m2/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="overview.html">Module 7: Orchestrator Red Hat Developer Hub</a></li>
+    <li><a href="advanced-workflow.html">Workflows with State and Integrations</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Workflows with State and Integrations</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>As a use case for developer self-service using the Orchestrator we are going to look at a pretty simple use case: a Developer requesting a namespace on an OpenShift cluster. The namespace has limited resources, defined by <a href="https://kubernetes.io/docs/concepts/policy/resource-quotas/" target="_blank" rel="noopener">resource quota</a> and <a href="https://kubernetes.io/docs/concepts/policy/limit-range/" target="_blank" rel="noopener">limit ranges</a>. In our case, the namespaces come in two sizes, small and large.</p>
+</div>
+<div class="paragraph">
+<p>To illustrate the possibilities of the Orchestrator plugin, when a developer requests a large namespace in an OpenShift cluster the namespace requires approval.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_understanding_the_workflow"><a class="anchor" href="#_understanding_the_workflow"></a>Understanding the Workflow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The serverless workflow used in this section is stored in <a href="https://github.com/redhat-ads-tech/orchestrator-self-service-workflows">redhat-ads-tech/orchestrator-self-service-workflows on GitHub</a>. The repository structure is as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>create-ocp-namespace-swt</strong>: Contains the workflow definition and dependencies (API specifications and JSON schemas)</p>
+</li>
+<li>
+<p><strong>scripts</strong>: Files used to build the production-ready workflow container image and generate deployment manifests.</p>
+</li>
+<li>
+<p><strong>charts</strong>: The Helm Chart used to deploy the workflow. The templates with a numeric prefix are autogenerated</p>
+</li>
+<li>
+<p><strong>resources</strong>: Contains a Dockerfile used to build the workflow container image</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Additionally, GitHub Actions is used to to build and release new versions of the container image and Helm Chart whenever the version in the <strong>pom.xml</strong> in <strong>create-ocp-namespace-swt/</strong> folder is updated.</p>
+</div>
+<div class="sect2">
+<h3 id="_serverless_workflow_functions"><a class="anchor" href="#_serverless_workflow_functions"></a>Serverless Workflow: Functions</h3>
+<div class="paragraph">
+<p>View the <a href="https://github.com/redhat-ads-tech/orchestrator-self-service-workflows/blob/main/create-ocp-namespace-swt/src/main/resources/create-ocp-namespace-swt.sw.yaml" target="_blank" rel="noopener">serverless workflow file: create-ocp-namespace-swt.sw.yaml</a>. You can see that it defines a set of <strong>functions</strong> upfront. These functions are used to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Interact with GitLab Issues using the GitLab REST API (note references to the <em>specs/gitlab-openapi.yaml</em>)</p>
+</li>
+<li>
+<p>Run Software Templates and send notifications to Red Hat Developer Hub users (again via REST endpoints defined in <em>specs/notifications-openapi.yaml</em>)</p>
+</li>
+<li>
+<p>Evaluate results and perform data transformation using <a href="https://jqlang.org/" target="_blank" rel="noopener">jq expressions</a> for the final workflow output (note the use of a <code>result.message</code> that matches the <strong>workflow-output-schema.json</strong> structure).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_serverless_workflow_states"><a class="anchor" href="#_serverless_workflow_states"></a>Serverless Workflow: States</h3>
+<div class="paragraph">
+<p>As mentioned earlier, a serverless workflow is a set of states and rules for transitioning between them - a <a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="_blank" rel="noopener">Finite State Machine</a>.</p>
+</div>
+<div class="paragraph">
+<p>Following the <strong>functions</strong> a set of <strong>states</strong> are defined, including a <code>start.stateName</code> that references the <code>NamespaceSizeSwitch</code>. This switch determines whether the workflow transitions into the <code>LaunchSoftwareTemplate</code> or <code>GetGitlabProjectId</code> state, based on the provided namespace size - large namespaces trigger the GitLab approvals flow.</p>
+</div>
+<div class="paragraph">
+<p>Assuming the user requested a <strong>large</strong> namespace, the first state transition is to <strong>GetGitLabProjectId</strong>. This state calls the <strong>getProjectId</strong> function declared in the <strong>functions</strong> block.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- name: GetGitlabProjectId
+  actionMode: sequential
+  actions:
+    - name: GetGitlabProjectId
+      actionDataFilter:
+        toStateData: .getProjectIdResult
+        useResults: true
+      functionRef:
+        arguments:
+          search: orchestrator-approvals
+          simple: true
+        invoke: sync
+        refName: getProjectId
+  transition:
+    nextState: CreateIssue</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>actionDataFilter</code> instructs the workflow to update the overall workflow state (<code>useResults: true</code>), and store the result of the <strong>getProjectId</strong> call under a <code>getProjectIdResult</code> property.</p>
+</div>
+<div class="paragraph">
+<p>The workflow then transitions to the <strong>CreateIssue</strong> state and reads the project ID from the the <code>getProjectIdResult</code> and creates an issue that can be used to approve or deny the creation of the large workspace.</p>
+</div>
+<div class="paragraph">
+<p>After the issue is created, the workflow will continuously transition between the the <strong>PollIssue</strong> and <strong>CheckIssueStatus</strong> states until an approved or denied label is found in the issue&#8217;s labels. The <strong>PollIssue</strong> state sleeps for a <strong>Period</strong> of <strong>Time</strong> before running - specifically <strong>60 seconds</strong> as represented by <code>PT60S</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_serverless_workflow_output"><a class="anchor" href="#_serverless_workflow_output"></a>Serverless Workflow: Output</h3>
+<div class="paragraph">
+<p>When an end state is reached, e.g <strong>CloseIssueDenied</strong>, it declares this fact using the <code>end.terminate: true</code> property.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- name: CloseIssueDenied
+  type: operation
+  actionMode: sequential
+  actions:
+    - actionDataFilter:
+        useResults: true
+      functionRef:
+        invoke: sync
+        refName: errorDeniedResult
+      name: setOutput
+    - actionDataFilter:
+        toStateData: .closeIssueResult
+        useResults: true
+      functionRef:
+        arguments:
+          id: .getProjectIdResult[0].id|tostring
+          issue_iid: .createIssueResult.iid
+          state_event: close
+        invoke: sync
+        refName: closeIssue
+      name: CloseIssue
+  end:
+    terminate: true
+  metadata:
+    errorMessage: '"Creation of namespace " + .namespace + " denied"'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Additionally, this state uses <strong>functionRef</strong> to invoke one of the <code>expression</code> functions defined earlier. For example, assume <code>errorDeniedResult</code> is invoked. This will set the <code>result</code> to "Creation of namespace &lt;the namespace name&gt; denied" and attach the link to the associated GitLab Issue by placing it in the <code>outputs</code> of the workflow output.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_red_hat_developer_hub_for_the_advanced_workflow"><a class="anchor" href="#_configure_red_hat_developer_hub_for_the_advanced_workflow"></a>Configure Red Hat Developer Hub for the Advanced Workflow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The advanced workflow will use the notification plugin to keep users updated on the execution of their namespace request. Make sure the plugin is enabled.</p>
+</div>
+<div class="sect2">
+<h3 id="_enable_notifications"><a class="anchor" href="#_enable_notifications"></a>Enable Notifications</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the <strong>tssc-dh</strong> namespace in the OpenShift Web Console.</p>
+</li>
+<li>
+<p>Open the YAML editor for the <strong>tssc-developer-hub-dynamic-plugins</strong> ConfigMap, and verify that the notification plugins are enabled.</p>
+</li>
+<li>
+<p>If they&#8217;re missing or disabled make sure to update the ConfigMap to add them like so:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">- disabled: false
+  package: ./dynamic-plugins/dist/backstage-plugin-notifications
+- disabled: false
+  package: ./dynamic-plugins/dist/backstage-plugin-notifications-backend-dynamic
+- disabled: false</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Scroll down and click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enable_token_based_api_access"><a class="anchor" href="#_enable_token_based_api_access"></a>Enable Token-Based API Access</h3>
+<div class="paragraph">
+<p>Backstage, and therefore Red Hat Developer Hub supports <a href="https://backstage.io/docs/auth/service-to-service-auth/#static-tokens" target="_blank" rel="noopener">token-based API access</a>. Update the Red Hat Developer Hub configuration to enable this feature.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the YAML editor for the <strong>tssc-developer-hub-app-config</strong> ConfigMap.</p>
+</li>
+<li>
+<p>Update the <code>backend.auth</code> section to enable <code>externalAccess</code> - do not replace or remove existing properties in the <code>backend</code> object:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">backend:
+  auth:
+    externalAccess:
+      - type: static
+        options:
+          token: ${BACKEND_SECRET}
+          subject: Orchestrator</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Scroll down and click <strong>Save</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The <code>BACKEND_SECRET</code> environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mountain a Secret with a securely generated token, e.g using the <code>openssl</code> CLI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openssl rand 24 | base64 | cut -c1-32</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For now, the <code>BACKEND_SECRET</code> is fine.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_import_software_templates_for_developer_self_service"><a class="anchor" href="#_import_software_templates_for_developer_self_service"></a>Import Software Templates for Developer Self Service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the previous section you learned that the workflow that will launch a software template to create the namespace for the developer.</p>
+</div>
+<div class="paragraph">
+<p>Before deploying the workflow itself, you need to import the software template that it will use to create namespaces.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login to Red Hat Developer Hub as the <code>admin</code> user.</p>
+</li>
+<li>
+<p>Click the self-service icon (the <strong>+</strong> plus) in the top-right corner of the UI.</p>
+</li>
+<li>
+<p>Click the <strong>Import an existing Git repository</strong> button.</p>
+</li>
+<li>
+<p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://github.com/redhat-ads-tech/orchestrator-self-service-templates/blob/main/namespace/template.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>You&#8217;ll be asked to review the entities being imported, as shown:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/rhdh-register-template.png" alt="Registering Software Templates"></span></p>
+</div>
+</li>
+<li>
+<p>Click <strong>Import</strong> when prompted.</p>
+</li>
+<li>
+<p>Select the self-service icon (the <strong>+</strong> plus) icon on the top navigation bar, then filter by setting the <strong>Tags</strong> to <code>orchestrator</code> to see the new template.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/rhdh-developer-self-service-templates.png" alt="Developer Self Service Software Templates"></span></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The software template to create a namespace is not meant to be used directly, but rather through an Orchestrator Workflow. While it is visible (and usable) it should be hidden using RBAC rules in production.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>OpenShift Namespace Request</strong> software template is annotated with the <code>backstage.io/managed-by: orchestrator</code> annotation, as can be seen in the <a href="https://github.com/redhat-ads-tech/orchestrator-self-service/blob/main/namespace/template.yaml" target="_blank" rel="noopener">template file in GitHub</a>. Additionally the template has an <code>orchestrator</code> tag that can be used to find it more easily in the self-service list, as seen in the previous screenshot.</p>
+</div>
+<div class="sect2">
+<h3 id="_deploy_the_serverless_workflow"><a class="anchor" href="#_deploy_the_serverless_workflow"></a>Deploy the Serverless Workflow</h3>
+<div class="paragraph">
+<p>As a reminder, workflows are deployed using the <strong>SonataFlow</strong> Custom Resource. You&#8217;ll use a Helm Chart to deploy the various resources associated with this advanced workflow.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Return to the OpenShift Web Console and open a Web Terminal.</p>
+</li>
+<li>
+<p>Enter the following commands:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Set the current project context to <strong>tssc-dh</strong>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project tssc-dh</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add the Helm repository that contains the advanced self-service workflows:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">helm repo add advanced-workflows https://redhat-ads-tech.github.io/orchestrator-self-service-workflows/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Define pre-requisite authentication tokens first:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export BACKSTAGE_TOKEN=$(oc get secret tssc-developer-hub-env -n tssc-dh -o jsonpath='{.data.BACKEND_SECRET}' | base64 -d)
+export GITLAB_TOKEN=$(oc get secret root-user-personal-token -n gitlab -o jsonpath='{.data.token}' | base64 -d)</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the namespace request workflow, making passing the tokens and URLs to your Red Hat Developer Hub and GitLab instances:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">helm install request-ns advanced-workflows/create-ocp-namespace-swt -n tssc-dh \
+--set env.backstageBackendUrl="https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}" \
+--set env.backstageBackendBearerToken="$BACKSTAGE_TOKEN" \
+--set env.gitlabUrl="https://gitlab-gitlab.{openshift_cluster_ingress_domain}" \
+--set env.gitlabToken="$GITLAB_TOKEN"</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The tokens used in this example have broad permissions. Create and use tokens with the minimum required permissions in production environments.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The GitLab parameters are required by the workflow to open and observe issues in the <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/orchestrator-approvals/-/issues/1">rhdh/orchestrator-approvals issue tracker</a>. These issues are used to deny or approve large namespace requests.</p>
+</div>
+<div class="paragraph">
+<p>The Red Hat Developer Hub parameters are used by the workflow to send notifications to the developer using the <a href="https://backstage.io/docs/notifications/" target="_blank" rel="noopener">Backstage Notifications API</a>.</p>
+</div>
+<div class="paragraph">
+<p>After the Helm install completes, a <strong>create-ocp-namespace-swt</strong> SonataFlow node will appear in the Topology View.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-workflow-ns-deployed.png" alt="orchestrator workflow ns deployed"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_execute_the_serverless_workflow"><a class="anchor" href="#_execute_the_serverless_workflow"></a>Execute the Serverless Workflow</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the <strong>Orchestrator</strong> item in the left-hand menu of Red Hat Developer Hub.</p>
+</li>
+<li>
+<p>Click on the <strong>Create OpenShift Namespace</strong> workflow.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the workflow isn&#8217;t listed, delete the Red Hat Developer Hub Pod to force a refresh of all workflows.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-select-workflow.png" alt="orchestrator select workflow"></span></p>
+</div>
+</li>
+<li>
+<p>The workflow definition is shown.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-workflow-overview.png" alt="orchestrator workflow overview"></span></p>
+</div>
+<div class="paragraph">
+<p>The workflow itself is pretty simple. If the user requests a small or medium namespace, the workflow launches the relevant software template. It then checks the state of the software template execution and notifies the user of success or failure.</p>
+</div>
+<div class="paragraph">
+<p>If a large namespace is requested, the request needs to be approved. GitLab Issues in the <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/orchestrator-approvals/-/issues" target="_blank" rel="noopener">orchestrator-approvals repository</a> is used as a ticketing system - ServiceNow or Jira or an equivalent system could be used instead. If the request is approved, the software template is executed and the user notified. If the request is denied, the user is notified as well, but no namespace is created.</p>
+</div>
+</li>
+<li>
+<p>Click on the <strong>Run</strong> button at the top right of the screen to start an instance of the workflow.</p>
+</li>
+<li>
+<p>You are presented with a form to enter the details of your request. Let&#8217;s start with a request for a small namespace. Fill in the form as follows:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><strong>Namespace name</strong>: <code>{rhdh_user}-small</code></p>
+</li>
+<li>
+<p><strong>Requester</strong>: <code>{rhdh_user}</code></p>
+</li>
+<li>
+<p><strong>Size</strong>: <code>small</code></p>
+</li>
+<li>
+<p><strong>Reason</strong>: you can leave this blank</p>
+</li>
+<li>
+<p><strong>Recipients</strong>: <code>user:default/{rhdh_user}</code></p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-workflow-form.png" alt="orchestrator workflow form"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click on <strong>Next</strong> to review your request.</p>
+</li>
+<li>
+<p>Click on <strong>Run</strong> to start the workflow execution.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-workflow-run-2.png" alt="orchestrator workflow run 2"></span></p>
+</div>
+</li>
+<li>
+<p>After a few seconds the status of the workflow moves to <strong>Run completed</strong>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-workflow-run-completed.png" alt="orchestrator workflow run completed"></span></p>
+</div>
+</li>
+<li>
+<p>Select the <strong>Notifications</strong> item in the left-hand menu.</p>
+</li>
+<li>
+<p>Notice a notification that the namespace <code>dev1-small</code> has been created.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-notification-1.png" alt="orchestrator notification 1"></span></p>
+</div>
+</li>
+<li>
+<p>If you click on the notification link, you will see the component that was created as a result of the execution of the software template.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-component-namespace-1.png" alt="orchestrator component namespace 1"></span></p>
+</div>
+</li>
+<li>
+<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/cluster/projects/{rhdh_user}-small" target="console">namespace in the OpenShift Web Console</a> in your OpenShift cluster. If needed, login as <code>{openshift_admin_user}</code> / <code>{openshift_admin_password}</code>.</p>
+</li>
+<li>
+<p>Click on <strong>Administration/ResourceQuotas</strong> and <strong>Administration/LimitRanges</strong> on the left-hand side menu to see the Resource Quota and Limit Ranges defined as part of the creation of the namespace.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-workflow-small-ns-quota.png" alt="orchestrator workflow small ns quota"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_test_the_workflows_approval_process"><a class="anchor" href="#_test_the_workflows_approval_process"></a>Test the Workflow&#8217;s Approval Process</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Return to Red Hat Developer Hub to run another instance of the workflow, this time for a large namespace request.</p>
+</li>
+<li>
+<p>Select the <strong>Orchestrator</strong> item in the left-hand menu.</p>
+</li>
+<li>
+<p>Click the <strong>Run</strong> icon on the left of the workflow name.</p>
+</li>
+<li>
+<p>Fill in the form as follows:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><strong>Namespace name</strong>: <code>{rhdh_user}-large</code></p>
+</li>
+<li>
+<p><strong>Requester</strong>: <code>{rhdh_user}</code></p>
+</li>
+<li>
+<p><strong>Size</strong>: <code>large</code></p>
+</li>
+<li>
+<p><strong>Reason</strong>: <code>Required for a production deployment&#8230;&#8203;</code></p>
+</li>
+<li>
+<p><strong>Recipients</strong>: <code>user:default/{rhdh_user}</code></p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are logged in to Red Hat Developer Hub as the <code>admin</code> user, change <code>user:default/{rhdh_user}</code> to <code>user:default/admin</code>.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click on <strong>Next</strong> and <strong>Run</strong> to start the workflow.</p>
+</li>
+<li>
+<p>Select the <strong>Notifications</strong> item in the left-hand menu. After a couple of seconds you will see a notification that an issue has been created in GitLab.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/orchestrator-issue-notification.png" alt="orchestrator issue notification"></span></p>
+</div>
+</li>
+<li>
+<p>Click on the link of the notification. This opens the issue in GitLab.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/gitlab-issue-1.png" alt="gitlab issue 1"></span></p>
+</div>
+</li>
+<li>
+<p>GitLab is not a ticketing system. To mimic the behavior of a ticketing system, we use labels on the issue to mark the request as approved or denied.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Make sure you are logged in into GitLab as <code>{gitlab_user}</code> / <code>{gitlab_user_password}</code>.</p>
+</li>
+<li>
+<p>Click on the <strong>Edit</strong> button next to <strong>Labels</strong> on the right.</p>
+</li>
+<li>
+<p>Select the <strong>Approved</strong> label.</p>
+</li>
+<li>
+<p>To actually add the label, you need to click on a different area of the page, outside of the <strong>Labels</strong> area.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Return to Red Hat Developer Hub. After a while you should see a notification that the namespace <code>{rhdh_user}-large</code> has been created.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/notification-2.png" alt="notification 2"></span></p>
+</div>
+<div class="paragraph">
+<p>The workflow instance checks the status of GitLab issue every 60 seconds. When the workflow detects the <strong>approved</strong> label on the issue, it proceeds to create the namespace using the software template, and closes the ticket afterwards.</p>
+</div>
+</li>
+<li>
+<p>You can check the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/cluster/projects/{rhdh_user}-large" target="console">namespace in the OpenShift console</a> in your OpenShift cluster. Also notice that the <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/orchestrator-approvals/-/issues/1" target="gitlab">Issue in GitLab</a> has been closed by the workflow.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/orchestrator-overview/gitlab-issue-2.png" alt="gitlab issue 2"></span></p>
+</div>
+</li>
+<li>
+<p>Feel free to create another request for a large namespace, but this time label the issue as <strong>denied</strong>. In this case, you should see a notification in Red Hat Developer Hub that the request was denied, and there should be no namespace created in OpenShift.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h3>
+<div class="paragraph">
+<p>In this module you learned how the Red Hat Developer Hub Orchestrator plugin, in combination with Serverless Workflow on OpenShift enables more complex workflows that go beyond what Software Templates can do. The possibilities are endless, and in this module we illustrated these possibilities with a relatively simple example that involves approval and notification as part of a developer self-service experience.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="workflows.html" class="query-params-link">Managing and Running Workflows</a></span>
+  <span class="next"><a href="../security-practices.html" class="query-params-link">Module 8: Getting started with security best practices</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
