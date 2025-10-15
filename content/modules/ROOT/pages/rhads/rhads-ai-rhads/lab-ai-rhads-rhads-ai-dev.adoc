@@ -1,0 +1,203 @@
+= AI Engineering: Using Pre-existent software templates to build an AI Agent with Red Hat Advanced Developer Suite
+
+
+== Objectives
+In this lab, you will create an AI Agent using the pre-created component already Red Hat Developer Hub. This new application source code to the new resource to be part of the software development lifecycle.
+
+== Scenario
+Now, imagine for a moment that you are part of the Python AI Development team. The AI Team's responsibility is to build an AI agent using the provided tools by the AI Platform Engineering Team.
+
+Let's get started.
+
+== AI Agent Overview
+An AI agent needs the following things:
+
+* *Planning and Reasoning*: The AI agent uses an LLM for reasoning. For this module, we are using a Red Hat self-hosted module.
+* *Tools and Actions*: An AI Engineer can build their own tools and integrations; however, there are many tools available that organizations can take advantage of. Additional integrations with custom systems are also possible.
+* *Memory*, understanding context, such as short-term or long-term memory, is the ability to store data and learn more from it.
+* *Input* could be a website or any device that provides input information to the agent. *Guardrails/Safety Layer: The rules that keep the agent's actions in check.
+
+== Explore the AI Agent
+Our AI Agent is a Search Agent that will search information on the Internet and specific websites, depending on the prompt send by the user. The agent will decide which tool to use to return the information you require.
+
+== AI Agent Characteristics
+
+* *Planning and Reasoning:* We are using a Red Hat self-hosted module for this module.
+* *Tools and Actions:* This agent, is using the tools provided by *https://www.tavily.com[tavily^]*. Tavily provides tools, including Web Search to search information on the Internet, TavilyExtract to extract specific information on web pages, and TavilyCrawl to discover new pages and index their content, helping agents find content.
+* *Memory:* Short memory is used for this AI agent.
+* *Input:* This solution includes a website to interact with the agent.
+* *Guardrails/Security:* Start with the prompt provided to the agent. And follows with Red Hat Advanced Developer Suite security integrated, including image scanning, policy.  
+
+== AI Agent Architecture
+The following image describes the AI agent architecture, including the Red Hat products interacting directly with the application through the Software Development Lifecycle.
+
+image:rhads-ai/rhdevspaces/architecture.png[width=100%]
+
+== AI Agent Use Cases
+
+Many use cases that an AI Agent can fulfill, some of them are:
+
+* Web Search
+* Planning / Coordinator
+* Fraud Prevention
+* Events Manager
+* Automated Code Generation & Testing
+* Customer support
+
+== Explore the component created by the PE team from the Developer perspective
+
+* Access the {rhdh_url/catalog-import}[Red Hat Developer Hub UI- components^] with the developer credentials:
+
+ *** *Username*: {rhdh_user}
+ *** *Password*: {rhdh_user_password}
+
+
+== Let's build the AI Agent
+
+=== Getting started with Red Hat OpenShift Dev Spaces
+
+* Click on the *OpenShift Dev spaces* link
+//TODO ADD LINK
+
+** Login with your user credentials:
+
+ *** *Username*: {devspaces_user}
+ *** *Password*: {devspaces_user_password}
+
+*Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing the repository, Dev Spaces will attempt to select a suitable development environment. RH OpenShift Dev Spaces will read from the *dev.yaml* file and automatically configure the workspace with the specified container image, tools, and commands. 
+
+Once it finishes creating the workspace, you will see an environment similar to this:
+
+//TODO replace image check devfile
+image:rhads-ai/rhdevspaces/devspaces-newenv.png[width=100%]
+
+
+=== Bring the AI agent
+
+
+* Update the dev.file:
+
+* Update the html file
+
+* Update the docker file
+
+* Update the python app file.
+
+* Update the env.file //TODO REVIEW THIS
+
+=== x
+
+
+
+=== Test the AI Agent in your development environment
+
+* Click on Run Tasks
+* Then, select the *dev file* option and TODO complete
+
+== Setting up environment credentials.
+For the purpose of this lab, the credentials used will depend on each attendance. In an enterprise environment, credentials will be provided by the PE team and preloaded in a secure environment, such as VAULT to store the information encrypted.
+
+//TODO ADD STEPS TO GATHER THE KEYS
+
+=== Get your API key to access the self-hosted Model
+Now, you will set up your account in the link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Internal MaaS Demo from the AI BU,window='_blank']. Your account will enable you to access the Model you need with an *API KEY*. For these labs, you will be using the same model. You might need a new model in the future. You need to know how to access a self-hosted model that you can leverage to either build an application or connect to a third-party tool, such as an AI assistant.
+
+* Access the following URL and follow the steps to sign in with your *Red Hat account*.
+link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
+
+*Note:* The link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank'] is not an official Red Hat service. For Red Hat associate internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use. The models are provided for this limited purpose.
+
+
+** Click on *Sign in*
+
+image:rhads-ai/rhdevspaces/maas-sign-in.png[width=60%]
+
+** Click on *Authenticate with RH SSO*
+
+image:rhads-ai/rhdevspaces/maas-authrh.png[width=80%]
+
+** Click on *Google* to sign in to *RHOAI*, where the model is deployed with your account.
+
+image:rhads-ai/rhdevspaces/maas-rhoai.png[width=60%]
+
+** Click on the model *llama-3-2-3b*
+
+image:rhads-ai/rhdevspaces/maas-model-select.png[width=100%]
+
+** Create an application to access the *API Key*, with the name *assistant*.
+
+image:rhads-ai/rhdevspaces/maas-app-assistant.png[width=80%]
+
+** Copy the *API Key* and paste it into the
+
+
+//TODO FINISH
+
+=== Setup your account on the Tavily website
+The AI Search Agent will use *Tavily* for the  *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to continue our AI agent development.
+
+* Access https://app.tavily.com[https://app.tavily.com^]
+* Click on *Sign up* to create a new account
+* Choose your sign up method: *Google*, *GitHub*, *Email address*
+
+
+image:rhads-ai/rhdevspaces/tavily-web.png[width=100%]
+
+* Click on continue, and once logged in, you will see a screen like this one:
+
+image:rhads-ai/rhdevspaces/tavily-main.png[width=100%]
+
+* Close the *Get started* pop up
+* Click on add *API KEY* 
+
+image:rhads-ai/rhdevspaces/tavily-appkey-add.png[width=40%]
+
+* Create the API KEY with the name *agent*:
+
+*Note:* The API KEY is *free*, additional information about limits in the next screenshot.
+
+image:rhads-ai/rhdevspaces/tavily-appkey-create.png[width=70%]
+
+** After creating the API KEY, copy the *API KEY VALUE*:
+
+**NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY**
+
+* Paste your key to include it after the *?tavilyApiKey=*
+
+
+=== Create the secret in Kubernetes.
+
+* Open the terminal by clicking on *terminal* 
+* copy the following content and ensure you have replaced the values with the recent gathered credentials
+
+### Environment Variables (Kubernetes)
+Create a secret with your API keys:
+```bash
+kubectl create secret generic ai-agent-secrets \
+  --from-literal=LLM_API_BASE_URL=https://your-endpoint.com/v1 \
+  --from-literal=MODEL_NAME=your-model \
+  --from-literal=LLM_API_KEY=your-key \
+  --from-literal=TAVILY_API_KEY=your-key \
+  -n TODO-NAMESPACE
+```
+
+//todo ensure we have access and secret is created on the namespace
+
+=== Push the source code
+
+* Click on the Git icon 
+//TODO COMPLETE
+
+
+=== Explore the Trusted Software Supply Chain
+
+//TODO REPLACE COMPONENT NAME
+** Go back to {rhdh_url/component/name}[Red Hat Developer Hub UI^]
+
+** Click on the CI tab and review the pipeline running until all the stages are finished and will appear in green as the following picture:
+
+image:rhads-ai/rhads/rhads-tssc.png[width=30%]
+
+
+=== Test the AI Agent
+

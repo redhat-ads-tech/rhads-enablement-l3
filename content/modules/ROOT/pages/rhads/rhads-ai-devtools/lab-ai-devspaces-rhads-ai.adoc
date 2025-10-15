@@ -1,43 +1,35 @@
-= Build an Agent with Red Hat OpenShift Dev Spaces
+= Configure AI toosl in Red Hat OpenShift Dev Spaces (Bonus Lab)
 
 == Introduction
 
 This Lab provides the opportunity to explore how Red Hat Advanced Developer Suite integrates with other products and third-party tools to bring AI into the developers' daily activities, but also how other developer tools, such as RH OpenShift Dev Spaces, provide an opportunity to adopt AI practices. 
 
 == Objectives
-This Lab will showcase how to build an AI application using a pre-existing software template built in Red Hat Advanced Developer Suite, right from the start, to ensure organizations include best practices and company guidelines from the beginning. You will leverage Red Hat OpenShift Dev Spaces as a development environment and set up AI tools.
+This Lab will showcase how to configure an AI assistant and expand the AI assistant capabilities by configuring a Tavily MCP server.
 
 Let's get started.
 
 == Scenario
-Now, imagine for a moment that you are part of the Python AI Development team. The AI Team's responsibility is to build an AI agent using the provided tools by the AI Platform Engineering Team.
+Now, imagine for a moment that you are part of the Python AI Development team. You have already an AI agent built but now you need to include new functionalities.
 
 == Getting started
 
 * Access the Red Hat OpenShift Dev Spaces from the template already created in Red Hat Developer Hub:
 
-** Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
+** Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^] //TODO replace URL
 
-** Login with your user administrator credentials:
+** Login with your user credentials:
 
- *** *Username*: {openshift_admin_user}
- *** *Password*: {openshift_admin_password}
+ *** *Username*: {rhdh_user}
+ *** *Password*: {rhdh_user_password}
 
 ** Next, click on the component's *Python Web AI*
 ** From the component's overview, *click on* the *Red Hat OpenShift Dev Spaces*
 
-** Login with your user administrator credentials:
+** Login with your user credentials:
 
  *** *Username*: {devspaces_user}
  *** *Password*: {devspaces_user_password}
-
-== Getting started with Red Hat OpenShift Dev Spaces
-
-*Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing the repository, Dev Spaces will attempt to select a suitable development environment. RH OpenShift Dev Spaces will read from the *dev.yaml* file and automatically configure the workspace with the specified container image, tools, and commands. 
-
-Once it finishes creating the workspace, you will see an environment similar to this:
-
-image:rhads-ai/rhdevspaces/devspaces-newenv.png[width=100%]
 
 
 == Configure the *AI Assistant in Red Hat OpenShift Dev Spaces*
@@ -86,9 +78,6 @@ The next step will add the Model's *apiBase* and *apiKey* from the *Internal Maa
 === Get your API key to access the self-hosted Model
 When configuring an AI assistant, it needs an LLM to work. Organizations might have their own self-hosted models or remote models. We use the Model as a Service portal for this Lab to access an LLM.
 
-Now, you will set up your account in the link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Internal MaaS Demo from the AI BU,window='_blank']. Your account will enable you to access the Model you need with an *API KEY*. For these labs, you will be using two different models. You might need a new model in the future. You need to know how to access a self-hosted model that you can leverage to either build an application or connect to a third-party tool, such as an AI assistant.
-
-
 * Access the following URL and follow the steps to sign in with your *Red Hat account*.
 link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
 
@@ -107,13 +96,12 @@ image:rhads-ai/rhdevspaces/maas-authrh.png[width=80%]
 
 image:rhads-ai/rhdevspaces/maas-rhoai.png[width=60%]
 
+** Click on applications
+
 ** Click on the model *llama-3-2-3b*
 
 image:rhads-ai/rhdevspaces/maas-model-select.png[width=100%]
 
-** Create an application to access the *API Key*, with the name *assistant*.
-
-image:rhads-ai/rhdevspaces/maas-app-assistant.png[width=80%]
 
 ** Copy the *API Key* and paste it into the config.yaml file created by continue in the *apiKey:"  "*.
 
@@ -142,7 +130,7 @@ image:rhads-ai/rhdevspaces/continue-chat1.png[width=60%]
 
 == Configure an *MCP server in the AI Assistant*
 
-The AI Search Agent will use *Tavily* for the  *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to continue our AI agent development.
+The AI assistant will use *Tavily* for the  *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to continue our AI agent development.
 
 * Click on continue chat and click on the  *tools icon*:
 
@@ -164,11 +152,11 @@ image:rhads-ai/rhdevspaces/mcp-configure-new.png[width=60%]
 
 image:rhads-ai/rhdevspaces/mcp-server-config-new.png[width=100%]
 
-=== Setup your account on the Tavily website
+=== Access your account on the Tavily website
 
 * Access https://app.tavily.com[https://app.tavily.com^]
-* Click on *Sign up* to create a new account
-* Choose your sign up method: *Google*, *GitHub*, *Email address*
+* Click on *Login* to create a new account
+* Choose your sign up method, as previously selected: *Google*, *GitHub*, *Email address*
 
 
 image:rhads-ai/rhdevspaces/tavily-web.png[width=100%]
@@ -177,18 +165,7 @@ image:rhads-ai/rhdevspaces/tavily-web.png[width=100%]
 
 image:rhads-ai/rhdevspaces/tavily-main.png[width=100%]
 
-* Close the *Get started* pop up
-* Click on add *API KEY* 
-
-image:rhads-ai/rhdevspaces/tavily-appkey-add.png[width=40%]
-
-* Create the API KEY with the name *agent*:
-
-*Note:* The API KEY is *free*, additional information about limits in the next screenshot.
-
-image:rhads-ai/rhdevspaces/tavily-appkey-create.png[width=70%]
-
-** After creating the API KEY, copy the *API KEY VALUE*:
+* Click on add *API KEY* , copy the *API KEY VALUE*:
 
 image:rhads-ai/rhdevspaces/tavily-apikey-view.png[width=100%]
 
