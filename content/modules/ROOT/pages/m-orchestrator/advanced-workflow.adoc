@@ -128,7 +128,7 @@ backend:
 ----
 . Scroll down and click *Save*.
 
-The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mounting a Secret with a securely generated token, e.g using the `openssl` CLI:
+The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mountain a Secret with a securely generated token, e.g using the `openssl` CLI:
 
 ```bash
 openssl rand 24 | base64 | cut -c1-32
