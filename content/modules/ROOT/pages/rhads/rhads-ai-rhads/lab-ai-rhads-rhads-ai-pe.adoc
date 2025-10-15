@@ -20,29 +20,72 @@ Software templates can build, deploy, and promote any application that can run o
 Pre-defined software templates are offered with the RHADS installation and provide receipts that users can leverage to start bringing applications into OpenShift. The pre-defined Software Templates are built to give customers a starting point and a reference to make any application using Trusted Software Supply Chain (TSSC). They are not meant for production; customers can bring their own configurations on top of these templates following the documentation provided in the [product documentation]https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite_-_software_supply_chain
 
 
+== Create the component 
 * Let's bring the pre-existing Software Template to Red Hat Developer Hub.
 
-* Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
-
-image:rhads-ai/rhads/rhdh-create-icon.png[Create UI]
-
-
-* Then, select the template  *Python - Trusted Application Pipeline*
-image:rhads-ai/rhads/rhdh-template-import.png[Create UI] 
+* From *catalog*, select *Self-service*, then select *Python - Trusted Application Pipeline*
+* Click on *Choose*
 
 
-{rhdh_url/catalog-import}[Red Hat Developer Hub UI- Catalog^]
+image:rhads-ai/rhads/rhdh-catalog-python.png[Create UI] 
 
 
 * Follow the steps to create the object in Red Hat Developer Hub
 
+** Add the name *Ai-agent*, click on *Next*
 
-//TODO ADD SCREENS AND STEPS
-* Click on the *Import* button
+image:rhads-ai/rhads/rhdh-python.png[Create UI] 
 
-//TODO REPLACE
-image:rhads-ai/rhads/rhdh-register-component-finish.png[width=60%]
 
+** Add the following inputs:
+
+*Host Type: GitLab*
+image:rhads-ai/rhads/rhdh-gitselection.png[Create UI] 
+
+*Repository Name: Ai-agent*
+
+
+*Repository Owner: rhdh*
+
+
+*Repository Server: gitlab-gitlab.{openshift_cluster_ingress_domain}*
+
+
+
+*Repository Server: tssc*
+
+
+Your screen should like similar like this:
+
+image:rhads-ai/rhads/rhdh-python2.png[Create UI] 
+
+
+Notice that the GitLab URL might be different since the cluster domain will change.
+
+** Click on Next
+** Add the following inputs:
+
+*Image Organization : rhdh*
+
+
+*Image Name: rhdh*
+
+
+Your screen should like similar like this:
+
+image:rhads-ai/rhads/rhdh-python3.png[width=60%]
+
+* Click on Review
+
+Your screen should like similar like this:
+
+image:rhads-ai/rhads/rhdh-python4.png[width=60%]
+
+* Click on the *Create* button
+
+The component will be created in Red Hat Developer Hub.... TDO
+
+image:rhads-ai/rhads/rhdh-python5.png[width=60%]
 
 *Congratulations!* You now have a resource available for the AI team to start building their application.
 
@@ -53,80 +96,78 @@ In this section, you will learn what was created and how to understand these con
 We now have two repositories available, both of which are needed to build and deploy the application:
 
 
-* gitops-repo: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production).
+* Source Repository: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production).
 
-** pipelines: Holds the actual code for the build and validation pipelines that are triggered by the gitops-repo and source-repo.
-
-** tasks: A collection of reusable and customizable steps used within the pipelines. You can add, modify, or replace these tasks to fit your organization's specific needs, like swapping out security scanners.
-
-* source-repo: represents the AI application, now with only a sample app. This is the repository where the AI Engineers will be working to include the AI Agent.
+* GitOps Repository: represents the AI application, now with only a sample app. This is the repository where the AI Engineers will be working to include the AI Agent.
 
 
 * Learn more about these templates at [Sample Pipelines]https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite_-_software_supply_chain/about-sample-pipelines_default
-
-=== Exploring the template in GitLab
-
-Access the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/agent-ai-stssc-template-maas/template.yaml/[existing template directory in GitLab^] and log in with your credentials:
-
-* Log in to GitLab using your credentials:
-
-** *Username*: {gitlab_user}
-** *Password*: {gitlab_user_password}
-
 
 === Adding more configurations: Creating the webhook
 Webhooks are not part of the pre-defined software templates; however, we need them to ensure pipelines will be triggered once the source is changed.
 Now, we must create a webhook in the source code repository in GitLab.
 
-Let's go to the source code:
 
-+
-[source,bash,role=execute,subs=attributes+]
-----
-{gitlab_url}/rhdh/repo/xx TODO REPLACE
-----
+On the same screen, click on *Source Repository* 
+
+Or  use the following URL, link:{gitlab_url}/rhdh/ai-agent[GitLab AI Agent,window='_blank'].
+
+* Log in to GitLab using your credentials:
+
+** Click on *Sign in*
+
+image:rhads-ai/rhads/gitlab-sign-in.png[width=60%]
+
+
+** *Username*: {gitlab_user}
+** *Password*: {gitlab_user_password}
+
 
 * Click on Settings -> Webhooks
 
-* Copy the URL
+image:rhads-ai/rhads/gitlab-webhook.png[width=60%]
+
+
+* Copy the URL and past it on the *URL*
 
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-{openshift_ingress}/openshift-pipelines/xxx
+https://pipelines-as-code-controller-openshift-pipelines.{openshift_ingress}
 ----
 
-* Paste the URL in the box:
+* Check on the trigger option and select the following:
+
+image:rhads-ai/rhads/gitlab-webhook-config.png[width=60%]
 
 Next, on the same screen, you will test the webhook to ensure it works properly.
 
+* Scroll down and *Click on the Add Webhook button*. 
+
+image:rhads-ai/rhads/gitlab-add-webhook.png.png[width=60%]
 
 === Trigger the Pipeline
 
-* On the webhook screen, click on *TEST EVENT* //TODO REVIEW THIS
+* On the webhook screen, click on *Test* and *Push events* 
+
+image:rhads-ai/rhads/gitlab-webhook-test.png[width=60%]
+
 * Next, we'll see the pipeline being triggered.
 
-//TODO REPLACE COMPONENT NAME
-** Go back to {rhdh_url/component/name}[Red Hat Developer Hub UI^]
 
 === Explore the Pipeline
 
+** Go back to {rhdh_url/catalog/default/component/ai-agent/}[Red Hat Developer Hub UI - AI Agent^]
+
+** Click on the *ci tab*
 
 image:rhads-ai/rhads/rhads-tssc.png[width=30%]
-
 
 
 The AI agent will be built with all security best practices and organization guardrails that are already in place before the development team starts building the application implementing Trusted Software Supply Chain thanks to Red Hat Advanced Developer Suite. As a best practices we want development teams to use the shift-left security approach on any development type. This approach applies to any kind of application.
 
 
-//TODO ADD IMAGE OF PIPELINE
-image:rhads-ai/rhads/rhads-tssc.png[width=30%]
-
-//TODO ADD A PARAGRAPH ON TSSC
-
 To learn more about Trusted Software Supply Chain, ensure you review the modules Trusted Software Supply Chain. //TODO see if we can link to other modules.
 
 Great job! We have successfully built the tools for the AI Engineering team to start building their agent.
 
-
-//TODO CREATE ONE FOR DEVELOPERS - POLISH THIS // PROCESS TO MOVE TO STAGING/PROD
