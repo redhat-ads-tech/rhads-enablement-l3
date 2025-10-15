@@ -16,6 +16,8 @@ To save time and ensure that the correct Operator versions are used, the Operato
 
 Confirm that both Operators are installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com\~v1alpha1\~ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
 
+[NOTE]: Login as *{openshift_admin_user}* using the password `{openshift_admin_password}`.
+
 image:orchestrator-overview/install-operators.png[]
 
 WARNING: If either Operator is missing, use Operator Hub to install the stable release with *Automatic Approval* enabled. Orchestrator requires these Operators to function.
