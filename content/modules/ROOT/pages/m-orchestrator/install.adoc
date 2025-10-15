@@ -28,7 +28,9 @@ NOTE: Module 2 provides an in-depth overview of {product_rhdh_name}'s dynamic pl
 
 Verify that the dynamic plugins have been configured correctly:
 
-. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core\~v1\~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project.
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core\~v1\~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
+  * Username: {openshift_admin_user}
+  * Password: {openshift_admin_password}
 . Select and view the YAML for the *backstage-dynamic-plugins-developer-hub* ConfigMap.
 . Verify that the following plugins are listed in the `plugins` array:
   * @redhat/backstage-plugin-orchestrator
