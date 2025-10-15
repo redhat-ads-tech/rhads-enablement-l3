@@ -6,7 +6,7 @@ To illustrate the possibilities of the Orchestrator plugin, when a developer req
 
 == Understanding the Workflow
 
-The serverless workflow used in this section is stored in https://github.com/redhat-ads-tech/orchestrator-self-service-workflows[redhat-ads-tech/orchestrator-self-service-workflows on GitHub]. The repository structure is as follows:
+The serverless workflow used in this section is stored in https://github.com/redhat-ads-tech/orchestrator-self-service-workflows[redhat-ads-tech/orchestrator-self-service-workflows on GitHub^]. The repository structure is as follows:
 
 * *create-ocp-namespace-swt*: Contains the workflow definition and dependencies (API specifications and JSON schemas)
 * *scripts*: Files used to build the production-ready workflow container image and generate deployment manifests.
@@ -128,7 +128,7 @@ backend:
 ----
 . Scroll down and click *Save*.
 
-The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mountain a Secret with a securely generated token, e.g using the `openssl` CLI:
+The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mounting a Secret with a securely generated token, e.g using the `openssl` CLI:
 
 ```bash
 openssl rand 24 | base64 | cut -c1-32

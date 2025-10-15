@@ -28,7 +28,7 @@ NOTE: Module 2 provides an in-depth overview of {product_rhdh_name}'s dynamic pl
 
 Verify that the dynamic plugins have been configured correctly:
 
-. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core~v1~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project.
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core\~v1\~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project.
 . Select and view the YAML for the *backstage-dynamic-plugins-developer-hub* ConfigMap.
 . Verify that the following plugins are listed in the `plugins` array:
   * @redhat/backstage-plugin-orchestrator
@@ -63,7 +63,7 @@ You've confirmed that the Orchestrator plugins are configured correctly - now yo
 +
 image::orchestrator-overview/sonataflow-platform-topology.png[]
 . Confirm that `ownerReferences` in the *YAML* view shows that the {product_rhdh_name} instance is managing this SonataFlowPlatform.
-. Additionally, you should notice that and `spec.services` is connecting SonataFlow to the {product_rhdh_name} PostgreSQL database - this is to manage and track workflow state.
+. Additionally, you should notice that `spec.services` is connecting SonataFlow to the {product_rhdh_name} PostgreSQL database - this is to manage and track workflow state.
 +
 image:orchestrator-overview/sonataflow-db-connection.png[]
 

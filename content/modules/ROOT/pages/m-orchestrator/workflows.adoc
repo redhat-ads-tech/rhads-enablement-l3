@@ -69,7 +69,7 @@ spec:
 . A new *SonataFlow* resource will appear in the Topology View. Click it and wait for the Pod to enter the *Running* status.
 +
 image::orchestrator-overview/sonataflow-pod-running.png[]
-. Click the arrow next to the Pod on the Topology view, then visit the `/q/dev-ui` endpoint to view the https://quarkus.io/guides/dev-ui[Quarkus Dev UI]. Alternatively, https://greeting-tssc-dh.apps.{openshift_cluster_ingress_domain}/q/dev-ui[this link^] also works.
+. Click the arrow next to the Pod on the Topology view, then visit the `/q/dev-ui` endpoint to view the https://quarkus.io/guides/dev-ui[Quarkus Dev UI^]. Alternatively, https://greeting-tssc-dh.{openshift_cluster_ingress_domain}/q/dev-ui[this link^] also works.
 +
 NOTE: Quarkus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as `sysout` in our sample workflow. The Serverless Logic Operator uses https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen[kogito-codegen^] to generate Java code from your workflow definition and JSON schemas.
 +
@@ -159,11 +159,11 @@ helm install greeting-workflow workflows/greeting -n {ns_tssc_rhdh}
 . The new *greeting* service will appear in the Topology view.
 +
 image::orchestrator-overview/sonataflow-helm-install.png[]
-. Additionally, if you login to {product_rhdh_name} you'll now see that *Greeting workflow* is listed.
+. Additionally, if you login to {product_rhdh_name} (using `{rhdh_user}` / `{rhdh_user_password}` ) you'll now see that *Greeting workflow* is listed.
 +
 image::orchestrator-overview/rhdh-workflow-list.png[]
 
-NOTE: If the greeting workflow doesn't appear in the {product_rhdh_name} UI, delete the Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
+NOTE: If the greeting workflow doesn't appear in the {product_rhdh_name} UI, delete the {product_rhdh_name} Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
 
 ### Run the Workflow
 
