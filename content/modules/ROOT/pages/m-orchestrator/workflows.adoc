@@ -30,6 +30,7 @@ metadata:
     sonataflow.org/profile: dev
     sonataflow.org/description: Greeting example on OpenShift!
     sonataflow.org/version: 0.0.1
+    app.kubernetes.io/part-of: sonataflow-platform  
 spec:
   flow:
     start: ChooseOnLanguage
@@ -123,6 +124,8 @@ Test the workflow again, but pass the "Irish" as the language and observe the re
 ## Integrate a Workflow with Orchestrator
 
 When it's time to deploy a production-ready workflow, you need to build it into a container image and run it using the `gitops` profile. This is outlined in the https://sonataflow.org/serverlessworkflow/main/cloud/operator/gitops-profile.html[SonataFlow Deployment Profiles Guide^]. In this section you'll use a pre-built image to save time.
+
+NOTE: The source code and scripts to build this sample workflow can be found in https://github.com/redhat-ads-tech/orchestrator-workflows[redhat-ads-tech/orchestrator-workflows^] on GitHub.
 
 ### Install a Production-Ready Workflow
 
