@@ -3,22 +3,25 @@
 
 == Prerequisites
 
-Since the Orchestrator plugin for {product_rhdh_name} relies on Serverless Workflow, it requires two Operators to provide the primitives it relies on:
+Since the Orchestrator plugin for {product_rhdh_name} relies on Serverless Workflow, it requires the OpenShift Serverless Workflow Operator to provide the primitives it relies on.
 
-* OpenShift Serverless Operator
-* OpenShift Serverless Logic Operator
+This Operator provides the necessary *SonataFlow* https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resources^] that Orchestrator uses to facilitate the execution of custom workflows.
 
-These Operators provide the necessary *Knative* and *SonataFlow* https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resources^] that Orchestrator uses to facilitate the execution of custom workflows.
+== Install Serverless Workflow Operator
 
-== Install the Serverless and Serverless Workflow Operators
+Confirm the operator is installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com\~v1alpha1\~ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
 
-To save time and ensure that the correct Operator versions are used, the Operators have been pre-installed in your cluster.
-
-Confirm that both Operators are installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com\~v1alpha1\~ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
+[NOTE]: Login as *{openshift_admin_user}* using the password `{openshift_admin_password}`.
 
 image:orchestrator-overview/install-operators.png[]
 
-WARNING: If either Operator is missing, use Operator Hub to install the stable release with *Automatic Approval* enabled. Orchestrator requires these Operators to function.
+If the Operator is not installed, use Operator Hub to install the stable release with *Automatic Approval* enabled:
+
+. Visit *Operator Hub* and view the Red Hat OpenShift Serverless Operators - https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/all-namespaces?keyword=openshift+serverless&source=%5B%22Red+Hat%22%5D[use this link to jump right there!^]
++
+image::orchestrator-overview/serverless-operators.png[]
+. Select the *OpenShift Serverless Logic Operator*, select version 1.36.0, and click *Install*.
+. Wait for the installation to complete.
 
 == Add the Orchestrator Plugins to {product_rhdh_name}
 
@@ -28,7 +31,9 @@ NOTE: Module 2 provides an in-depth overview of {product_rhdh_name}'s dynamic pl
 
 Verify that the dynamic plugins have been configured correctly:
 
-. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core~v1~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project.
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core\~v1\~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
+  * Username: {openshift_admin_user}
+  * Password: {openshift_admin_password}
 . Select and view the YAML for the *backstage-dynamic-plugins-developer-hub* ConfigMap.
 . Verify that the following plugins are listed in the `plugins` array:
   * @redhat/backstage-plugin-orchestrator
@@ -51,6 +56,7 @@ pluginConfig:
       dataIndexService:
         url: http://sonataflow-platform-data-index-service
 ----
+. Before proceeding, change `disabled: true` to `disabled: false` for the listed plugins.
 
 So, why are these additional keys provided to the plugins?  In the case of `dependencies.ref`, it tells the {product_rhdh_name} Operator to provision the SonataFlow components, specifically a *SonataFlowPlatform* CR. The `dataIndexService.url` instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as {product_rhdh_name} - you can opt to host and install the SonataFlowPlatform elsewhere if required.
 
@@ -63,7 +69,7 @@ You've confirmed that the Orchestrator plugins are configured correctly - now yo
 +
 image::orchestrator-overview/sonataflow-platform-topology.png[]
 . Confirm that `ownerReferences` in the *YAML* view shows that the {product_rhdh_name} instance is managing this SonataFlowPlatform.
-. Additionally, you should notice that and `spec.services` is connecting SonataFlow to the {product_rhdh_name} PostgreSQL database - this is to manage and track workflow state.
+. Additionally, you should notice that `spec.services` is connecting SonataFlow to the {product_rhdh_name} PostgreSQL database - this is to manage and track workflow state.
 +
 image:orchestrator-overview/sonataflow-db-connection.png[]
 
