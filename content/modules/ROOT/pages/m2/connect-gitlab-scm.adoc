@@ -82,7 +82,7 @@ Similar to the *{m2_keycloak_secret_name}* you created in the previous section, 
 
 Update your Backstage CR to include the GitLab secret:
 
-. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com\~v1alpha3\~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and change to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and change to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
