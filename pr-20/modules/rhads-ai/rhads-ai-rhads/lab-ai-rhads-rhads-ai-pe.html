@@ -340,7 +340,7 @@ In the next lab, the AI Engineers will bring their application source code to th
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-catalog-python.png" alt="Create UI"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-catalog-python.png" alt="rhdh catalog python" width="60%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -349,7 +349,10 @@ In the next lab, the AI Engineers will bring their application source code to th
 <div class="ulist">
 <ul>
 <li>
-<p>Add the name <strong>Ai-agent</strong>, click on <strong>Next</strong></p>
+<p>Add the name <strong>Ai-agent</strong>,</p>
+</li>
+<li>
+<p>Select the user <strong>user1</strong> from the dropdown</p>
 </li>
 </ul>
 </div>
@@ -357,7 +360,17 @@ In the next lab, the AI Engineers will bring their application source code to th
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python.png" alt="Create UI"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python-user.png" alt="rhdh python user" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on <strong>Next</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python.png" alt="rhdh python" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -367,8 +380,10 @@ In the next lab, the AI Engineers will bring their application source code to th
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Host Type: GitLab</strong>
-<span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-gitselection.png" alt="Create UI"></span></p>
+<p><strong>Host Type: GitLab</strong></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-gitselection.png" alt="rhdh gitselection" width="60%"></span></p>
 </div>
 <div class="paragraph">
 <p><strong>Repository Name: Ai-agent</strong></p>
@@ -386,7 +401,7 @@ In the next lab, the AI Engineers will bring their application source code to th
 <p>Your screen should like similar like this:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python2.png" alt="Create UI"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python2.png" alt="rhdh python2" width="100%"></span></p>
 </div>
 <div class="paragraph">
 <p>Notice that the GitLab URL might be different since the cluster domain will change.</p>
@@ -411,7 +426,7 @@ In the next lab, the AI Engineers will bring their application source code to th
 <p>Your screen should like similar like this:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python3.png" alt="rhdh python3" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python3.png" alt="rhdh python3" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -424,7 +439,7 @@ In the next lab, the AI Engineers will bring their application source code to th
 <p>Your screen should like similar like this:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python4.png" alt="rhdh python4" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python4.png" alt="rhdh python4" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -434,10 +449,14 @@ In the next lab, the AI Engineers will bring their application source code to th
 </ul>
 </div>
 <div class="paragraph">
-<p>The component will be created in Red Hat Developer Hub&#8230;&#8203;. TDO</p>
+<p>Red Hat Developer Hub will run the tasks defined on the <strong>template.yaml</strong> file and rest of the manifests.
+Once it finishes, you will see all the steps in green.</p>
 </div>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="rhads-ai/rhads/rhdh-python5.png" alt="rhdh python5" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python5.png" alt="rhdh python5" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p>Next, you will explore the application source code.</p>
 </div>
 <div class="paragraph">
 <p><strong>Congratulations!</strong> You now have a resource available for the AI team to start building their application.</p>
@@ -466,11 +485,42 @@ In the next lab, the AI Engineers will bring their application source code to th
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_adding_more_configurations_creating_the_webhook"><a class="anchor" href="#_adding_more_configurations_creating_the_webhook"></a>Adding more configurations: Creating the webhook</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_more_configurations"><a class="anchor" href="#_adding_more_configurations"></a>Adding more configurations</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Webhooks are not part of the pre-defined software templates; however, we need them to ensure pipelines will be triggered once the source is changed.
-Now, we must create a webhook in the source code repository in GitLab.</p>
+<p>You have received some requests from the AI Engineering team:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The application will use environment configurations to connect to an AI model and an API</p>
+</li>
+<li>
+<p>Integrate with Red Hat OpenShift Dev Spaces</p>
+</li>
+<li>
+<p>Create a webhook in GitLab to trigger Pipelines</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As Platform Engineer you will need to update the software templates or components managing custom configurations. In this case, we are applying these configurations to the component created.
+Let&#8217;s work on these requests!</p>
+</div>
+<div class="sect2">
+<h3 id="_integrating_rh_openshift_dev_spaces"><a class="anchor" href="#_integrating_rh_openshift_dev_spaces"></a>Integrating RH OpenShift Dev Spaces</h3>
+<div class="paragraph">
+<p>In this template, you will include the integration with RH OpenShift Dev Spaces. The integration will be done by including a link in the component&#8217;s overview UI. To achieve this, you need to include this information in the catalog-info.yaml file.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Go to the GitLab source code repository:</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>On the same screen, click on <strong>Source Repository</strong></p>
@@ -493,7 +543,7 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-sign-in.png" alt="gitlab sign in" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-sign-in.png" alt="gitlab sign in" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -505,7 +555,32 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on Settings &#8594; Webhooks</p>
+<p>Click on the <strong>catalog-info.yaml file</strong></p>
+</li>
+<li>
+<p>Click on <strong>Edit</strong>, then <strong>Edit Single File</strong>
+<span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></span></p>
+</li>
+<li>
+<p>Copy the following code:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">- url: https://devspaces.apps.{openshift_ingress}/dashboard/#https://gitlab-gitlab.{openshift_ingress}/rhdh/ai-agent
+  title: RH OpenShift Dev Spaces
+  icon: dashboard
+  type: admin-dashboard</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste it into catalog in line 11.</p>
+</li>
+<li>
+<p>Your file should look like this:</p>
 </li>
 </ul>
 </div>
@@ -513,7 +588,57 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook.png" alt="gitlab webhook" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-catalog-info.png" alt="ai agent catalog info" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Commit your changes:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-commit.png" alt="gitlab commit" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Verify the link was added to the component:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Go back to {rhdh_url/catalog/default/component/ai-agent/}[Red Hat Developer Hub UI - AI Agent^]</p>
+</li>
+<li>
+<p>You should see an link similar like this:</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-click.png" alt="rhdh devspaces click" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> Do not click on the link. You will be working with RH OpenShift Dev Spaces later in the next lab.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_the_webhook"><a class="anchor" href="#_creating_the_webhook"></a>Creating the webhook</h3>
+<div class="paragraph">
+<p>Webhooks are not part of the pre-defined software templates; however, we need them to ensure pipelines will be triggered once the source is changed.
+Now, we must create a webhook in the source code repository in GitLab.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on Settings &#8594; Webhooks</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook.png" alt="gitlab webhook" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -531,7 +656,7 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-config.png" alt="gitlab webhook config" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-config.png" alt="gitlab webhook config" width="100%"></span></p>
 </div>
 <div class="paragraph">
 <p>Next, on the same screen, you will test the webhook to ensure it works properly.</p>
@@ -544,7 +669,7 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="rhads-ai/rhads/gitlab-add-webhook.png.png" alt="gitlab add webhook.png" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-add-webhook.png" alt="gitlab add webhook" width="100%"></span></p>
 </div>
 </div>
 <div class="sect2">
@@ -557,7 +682,7 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-test.png" alt="gitlab webhook test" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-test.png" alt="gitlab webhook test" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
@@ -580,13 +705,68 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="rhads-ai/rhads/rhads-tssc.png" alt="rhads tssc" width="30%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhads-tssc.png" alt="rhads tssc" width="100%"></span></p>
 </div>
 <div class="paragraph">
 <p>The AI agent will be built with all security best practices and organization guardrails that are already in place before the development team starts building the application implementing Trusted Software Supply Chain thanks to Red Hat Advanced Developer Suite. As a best practices we want development teams to use the shift-left security approach on any development type. This approach applies to any kind of application.</p>
 </div>
 <div class="paragraph">
-<p>To learn more about Trusted Software Supply Chain, ensure you review the modules Trusted Software Supply Chain. //TODO see if we can link to other modules.</p>
+<p>To learn more about Trusted Software Supply Chain, ensure you review the modules Trusted Software Supply Chain.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adding_environment_variables"><a class="anchor" href="#_adding_environment_variables"></a>Adding environment variables</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Go to the GitLab gitops repository: <a href="{gitlab_url}/rhdh/ai-agent-gitops/-/blob/main/components/ai-agent/base/deployment.yaml" target="_blank" rel="noopener">GitLab AI Agent deployment.yaml</a>.</p>
+</li>
+<li>
+<p>Click on <strong>Edit</strong>, then <strong>Edit Single File</strong>
+<span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></span></p>
+</li>
+<li>
+<p>In line 52 paste the new source code to include integrations with LLM models including name, URL and API key. Additionally, the integration with Tavily API to be used as part of the AI Agent tools.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">        - name: LLM_API_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: ai-agent-secrets
+              key: LLM_API_BASE_URL
+        - name: TAVILY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-agent-secrets
+              key: TAVILY_API_KEY
+        - name: LLM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-agent-secrets
+              key: LLM_API_KEY</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your file should look like this, ensure the identation is correct:</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-deployment.png" alt="ai agent deployment" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Commit your changes:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-commit.png" alt="gitlab commit" width="60%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> In the next lab, the developer will be creating the secret with the keys. This is not a recommended practice, but for the purpose of this lab and not share private keys on a public repository.</p>
 </div>
 <div class="paragraph">
 <p>Great job! We have successfully built the tools for the AI Engineering team to start building their agent.</p>
