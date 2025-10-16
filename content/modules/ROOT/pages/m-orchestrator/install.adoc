@@ -3,7 +3,7 @@
 
 == Prerequisites
 
-Since the Orchestrator plugin for {product_rhdh_name} relies on Serverless Workflow, it requires the OpenShift Severless Workflow Operator to provide the primitives it relies on.
+Since the Orchestrator plugin for {product_rhdh_name} relies on Serverless Workflow, it requires the OpenShift Serverless Workflow Operator to provide the primitives it relies on.
 
 This Operator provides the necessary *SonataFlow* https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resources^] that Orchestrator uses to facilitate the execution of custom workflows.
 
