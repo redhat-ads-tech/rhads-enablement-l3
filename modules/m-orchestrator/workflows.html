@@ -323,6 +323,7 @@ metadata:
     sonataflow.org/profile: dev
     sonataflow.org/description: Greeting example on OpenShift!
     sonataflow.org/version: 0.0.1
+    app.kubernetes.io/part-of: sonataflow-platform
 spec:
   flow:
     start: ChooseOnLanguage
@@ -370,7 +371,7 @@ spec:
 </div>
 </li>
 <li>
-<p>Click the arrow next to the Pod on the Topology view, then visit the <code>/q/dev-ui</code> endpoint to view the <a href="https://quarkus.io/guides/dev-ui">Quarkus Dev UI</a>. Alternatively, <a href="https://greeting-tssc-dh.apps.{openshift_cluster_ingress_domain}/q/dev-ui" target="_blank" rel="noopener">this link</a> also works.</p>
+<p>Click the arrow next to the Pod on the Topology view, then visit the <code>/q/dev-ui</code> endpoint to view the <a href="https://quarkus.io/guides/dev-ui" target="_blank" rel="noopener">Quarkus Dev UI</a>. Alternatively, <a href="https://greeting-tssc-dh.{openshift_cluster_ingress_domain}/q/dev-ui" target="_blank" rel="noopener">this link</a> also works.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -505,6 +506,18 @@ Quarkus is the application framework that exposes REST endpoints, performs valid
 <div class="paragraph">
 <p>When it&#8217;s time to deploy a production-ready workflow, you need to build it into a container image and run it using the <code>gitops</code> profile. This is outlined in the <a href="https://sonataflow.org/serverlessworkflow/main/cloud/operator/gitops-profile.html" target="_blank" rel="noopener">SonataFlow Deployment Profiles Guide</a>. In this section you&#8217;ll use a pre-built image to save time.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The source code and scripts to build this sample workflow can be found in <a href="https://github.com/redhat-ads-tech/orchestrator-workflows" target="_blank" rel="noopener">redhat-ads-tech/orchestrator-workflows</a> on GitHub.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="_install_a_production_ready_workflow"><a class="anchor" href="#_install_a_production_ready_workflow"></a>Install a Production-Ready Workflow</h3>
 <div class="paragraph">
@@ -573,7 +586,7 @@ Quarkus is the application framework that exposes REST endpoints, performs valid
 </div>
 </li>
 <li>
-<p>Additionally, if you login to Red Hat Developer Hub you&#8217;ll now see that <strong>Greeting workflow</strong> is listed.</p>
+<p>Additionally, if you login to Red Hat Developer Hub (using <code>{rhdh_user}</code> / <code>{rhdh_user_password}</code> ) you&#8217;ll now see that <strong>Greeting workflow</strong> is listed.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/orchestrator-overview/rhdh-workflow-list.png" alt="rhdh workflow list">
@@ -589,7 +602,7 @@ Quarkus is the application framework that exposes REST endpoints, performs valid
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the greeting workflow doesn&#8217;t appear in the Red Hat Developer Hub UI, delete the Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
+If the greeting workflow doesn&#8217;t appear in the Red Hat Developer Hub UI, delete the Red Hat Developer Hub Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
 </td>
 </tr>
 </table>

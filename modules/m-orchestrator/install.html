@@ -275,46 +275,45 @@
 <h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Since the Orchestrator plugin for Red Hat Developer Hub relies on Serverless Workflow, it requires two Operators to provide the primitives it relies on:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>OpenShift Serverless Operator</p>
-</li>
-<li>
-<p>OpenShift Serverless Logic Operator</p>
-</li>
-</ul>
+<p>Since the Orchestrator plugin for Red Hat Developer Hub relies on Serverless Workflow, it requires the OpenShift Serverless Workflow Operator to provide the primitives it relies on.</p>
 </div>
 <div class="paragraph">
-<p>These Operators provide the necessary <strong>Knative</strong> and <strong>SonataFlow</strong> <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/" target="_blank" rel="noopener">Custom Resources</a> that Orchestrator uses to facilitate the execution of custom workflows.</p>
+<p>This Operator provides the necessary <strong>SonataFlow</strong> <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/" target="_blank" rel="noopener">Custom Resources</a> that Orchestrator uses to facilitate the execution of custom workflows.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_install_the_serverless_and_serverless_workflow_operators"><a class="anchor" href="#_install_the_serverless_and_serverless_workflow_operators"></a>Install the Serverless and Serverless Workflow Operators</h2>
+<h2 id="_install_serverless_workflow_operator"><a class="anchor" href="#_install_serverless_workflow_operator"></a>Install Serverless Workflow Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To save time and ensure that the correct Operator versions are used, the Operators have been pre-installed in your cluster.</p>
+<p>Confirm the operator is installed by visiting the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com~v1alpha1\~ClusterServiceVersion" target="_blank" rel="noopener">Installed Operators section</a> of the OpenShift Web Console.</p>
 </div>
 <div class="paragraph">
-<p>Confirm that both Operators are installed by visiting the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com~v1alpha1\~ClusterServiceVersion" target="_blank" rel="noopener">Installed Operators section</a> of the OpenShift Web Console.</p>
+<p>[NOTE]: Login as <strong>{openshift_admin_user}</strong> using the password <code>{openshift_admin_password}</code>.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/orchestrator-overview/install-operators.png" alt="install operators"></span></p>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-If either Operator is missing, use Operator Hub to install the stable release with <strong>Automatic Approval</strong> enabled. Orchestrator requires these Operators to function.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>If the Operator is not installed, use Operator Hub to install the stable release with <strong>Automatic Approval</strong> enabled:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit <strong>Operator Hub</strong> and view the Red Hat OpenShift Serverless Operators - <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/all-namespaces?keyword=openshift+serverless&amp;source=%5B%22Red+Hat%22%5D" target="_blank" rel="noopener">use this link to jump right there!</a></p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/orchestrator-overview/serverless-operators.png" alt="serverless operators">
+</div>
+</div>
+</li>
+<li>
+<p>Select the <strong>OpenShift Serverless Logic Operator</strong>, select version 1.36.0, and click <strong>Install</strong>.</p>
+</li>
+<li>
+<p>Wait for the installation to complete.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -342,7 +341,17 @@ Module 2 provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic 
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-dh/core<sub>v1</sub>ConfigMap" target="_blank" rel="noopener">ConfigMaps screen</a> in the <strong>tssc-dh</strong> project.</p>
+<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-dh/core~v1\~ConfigMap" target="_blank" rel="noopener">ConfigMaps screen</a> in the <strong>tssc-dh</strong> project. Login using:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: {openshift_admin_user}</p>
+</li>
+<li>
+<p>Password: {openshift_admin_password}</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Select and view the YAML for the <strong>backstage-dynamic-plugins-developer-hub</strong> ConfigMap.</p>
@@ -386,6 +395,9 @@ Module 2 provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic 
 </div>
 </div>
 </li>
+<li>
+<p>Before proceeding, change <code>disabled: true</code> to <code>disabled: false</code> for the listed plugins.</p>
+</li>
 </ol>
 </div>
 <div class="paragraph">
@@ -416,7 +428,7 @@ Module 2 provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic 
 <p>Confirm that <code>ownerReferences</code> in the <strong>YAML</strong> view shows that the Red Hat Developer Hub instance is managing this SonataFlowPlatform.</p>
 </li>
 <li>
-<p>Additionally, you should notice that and <code>spec.services</code> is connecting SonataFlow to the Red Hat Developer Hub PostgreSQL database - this is to manage and track workflow state.</p>
+<p>Additionally, you should notice that <code>spec.services</code> is connecting SonataFlow to the Red Hat Developer Hub PostgreSQL database - this is to manage and track workflow state.</p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/orchestrator-overview/sonataflow-db-connection.png" alt="sonataflow db connection"></span></p>
 </div>
