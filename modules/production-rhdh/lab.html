@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Trusted Software Supply Chain with RHDH for Production :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/production-rhdh/lab.html">
+    <link rel="prev" href="introduction.html">
+    <link rel="next" href="../tssc-3rdparty-ci.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m2/introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m2/introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m2/concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html">Core Concepts</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m2/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../m2/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="tssc-rhdh.html">Module 12: Deep dive into RHADS (RHDH and TSSC combined)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="lab.html">Hands on Lab for full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="tssc-rhdh.html">Module 12: Deep dive into RHADS (RHDH and TSSC combined)</a></li>
+    <li><a href="lab.html">Hands on Lab for full lifecycle of product usage</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Trusted Software Supply Chain with RHDH for Production</h1>
+<div class="sect1">
+<h2 id="_hands_on_lab"><a class="anchor" href="#_hands_on_lab"></a>Hands-on Lab</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This hands-on lab will use the Red Hat Demo RHADS TL3 item and walk you through the use of the product set from the perspective of a developer. We will examine and explain each step in terms of what is technically happening with the product, and then we will walk through altering an example TSSC pipeline (as stated before some customers may/will want to add additional security steps as part of their processes).</p>
+</div>
+<div class="sect2">
+<h3 id="_walk_through_of_end_to_end_interaction"><a class="anchor" href="#_walk_through_of_end_to_end_interaction"></a>Walk-through of end-to-end interaction</h3>
+<div class="paragraph">
+<p>For this part of the lab we will be using a lot of the tooling and interfaces provided by the product. To be prepared, please make a note of the following information from your Red Hat Demo “Red Hat Advanced Developer Suite - Technical Enablement Level 3” item:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The RHDH application URL, and the password (user will be user1 throughout this example unless otherwise stated)</p>
+</li>
+<li>
+<p>The GitLab application URL, and the password (should be the same as the RHDH one)</p>
+</li>
+<li>
+<p>The OpenShift Ux URL, and the password for admin (we will use the administrator login to examine some of the behaviours on the cluster resulting from the template and ArgoCD)</p>
+</li>
+<li>
+<p>[Optional] The ArgoCD application URL and the password (again, for ArgoCD we will use the admin user to look at what gets physically created when the template executes)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The point of this part of the hands-on lab is to give you a feel of what the end user experience is whilst making you aware of the technical components that are being used so that you can describe them to end customers.</p>
+</div>
+<div class="paragraph">
+<p>Start by logging into the RHDH instance (using the URL and password from above). The screen will look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/1.png" alt="Logon">
+</div>
+</div>
+<div class="paragraph">
+<p>The username will be ‘user1’; we are logging on to the system with a standard user rather than admin.</p>
+</div>
+<div class="paragraph">
+<p>The RHDH screen will render; if it is the first time, you will get a helpful information panel on the right hand side; close this to give yourself more screen real estate.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/2.png" alt="RHDH Frontpage">
+</div>
+</div>
+<div class="paragraph">
+<p>Click on ‘Catalog’ on the left-hand navigation panel. This will default to showing the ‘Components’ you have access to; as discussed earlier in the modules, RHDH works with a database of different types of objects and an RBAC which gives you access to them. In this case you should see a single service, ‘provisioning-data’, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a button labelled ‘Self Service’. Click on this.</p>
+</div>
+<div class="paragraph">
+<p>This will render all the templates currently registered in the system that you, as user1, have access to. For the sake of this lab we are going to walk through the creation of a Quarkus application with secure build via TSSC - scroll to the bottom of the tiles and you will see one labelled ‘Securing a Quarkus Service Software Supply Chain (Tekton)’. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on ‘Choose’.</p>
+</div>
+<div class="paragraph">
+<p>This is where the power of templates starts to shine; if you remember looking at the structure in the earlier section we described the use of parameters that the framework interprets as a wizard; we are now seeing that in action.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/3.png" alt="Template start">
+</div>
+</div>
+<div class="paragraph">
+<p>Notice the breadcrumb trail at the top; this matches the individual parameter sections we described previously. Change the name of the component to ‘tl3test1’. Change the artifact ID to ‘tl3test1’ as well. Change the description to something different. Click ‘Next’.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/4.png" alt="Template parameters">
+</div>
+</div>
+<div class="paragraph">
+<p>Now you will see the Registry parameters; you can leave these as they are (the demo has its own instance of Quay installed and the organisation setup correctly). Click ‘Next’.</p>
+</div>
+<div class="paragraph">
+<p>The next wizard prompts for the repository information; again, leave as is as the demo has Gitlab setup and integrated. Click ‘Review’.</p>
+</div>
+<div class="paragraph">
+<p>The final generated content page contains the information you have provided; click on ‘Create’ to start the process of executing the template within RHDH.</p>
+</div>
+<div class="paragraph">
+<p>The template will process all of the defined steps and give you a real-time view of the progress. It should succeed at this point and the screen will look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/5.png" alt="Template success">
+</div>
+</div>
+<div class="paragraph">
+<p>It is worth scrolling up in the log and looking at the output of each step to see what it is doing - in particular look at the ‘Fetch Skeleton and Template’ step; it lists all the files it is marshalling before it commits them to the new git repository it creates. The look at the log for the ‘Fetch gitops skeleton’ step and you will see the GitOps definitions being marshalled and setup. The Publish and Publish GitOps steps create the required repositories, and the ‘Create ArgoCD Resources’ step instantiates the required (and instance configured) versions of the applications (in this case Application refers to an ArgoCD application - more later).</p>
+</div>
+<div class="paragraph">
+<p>At this point the template has completed and generated all the scaffolding for the developer; note the four outputs (defined in the template) rendered as icon/text beneath the rendering of the completed template - in addition to generating the source and GitOps repositories, RHDH generates Component objects to back these within the RHDH database. What we are going to do now is look at exactly what has happened behind the scenes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_is_scaffolded_example"><a class="anchor" href="#_what_is_scaffolded_example"></a>What is Scaffolded (example)?</h3>
+<div class="paragraph">
+<p>First, click on the ‘Catalog’ navigation link again. You will see you now have an active component (the result of the completed template).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/6.png" alt="Catalog Components">
+</div>
+</div>
+<div class="paragraph">
+<p>Click on the name of the component. This takes you to the core interaction content page for the developer, which should look similar to this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/7.png" alt="Component Summary">
+</div>
+</div>
+<div class="paragraph">
+<p>This is a very powerful part of the RHDH offering; the sub-tabs on this page are generated by the plugins added to the framework (see earlier modules). If you now click on ‘CI’ (and assuming you have waited a couple of minutes) the TSSC pipeline will have completed, using the base repository and code.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the Quay Ux and login again using the quayadmin username and the password provided in the lab. You can then do a commit of the code (more in a moment) and the pipeline will automatically re-run, successfully.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Expand the information panel for the Pipeline Run (the small arrow at the left and the Ux will render the output of the pipeline that was automatically executed as part of the creation of the git repo. Notice the icon indication of the potential vulnerabilities shown as part of the run as well.</p>
+</div>
+<div class="paragraph">
+<p>You can use the cursor to move around the pipeline. As an example click on the ‘Build Container’ step and it will show you the direct logs of the processes executed as part of that process:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/8.png" alt="Examining the Pipeline">
+</div>
+</div>
+<div class="paragraph">
+<p>Now click on the ‘Topology’ tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the RHDH approach, it removes the need for a developer to both login and navigate to the appropriate screens in the OpenShift/Kubernetes Ux.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/9.png" alt="Examining the Topology plugin">
+</div>
+</div>
+<div class="paragraph">
+<p>Note that it has deployed three versions of the Application, development, stage and production.</p>
+</div>
+<div class="paragraph">
+<p>Now click on the ‘CD’ tab (continuous deployment). This will show the state of the ArgoCD components that were scaffolded to deploy the application, and, interestingly, the pipeline components (the *-ci components). Later on in the lab we will examine how to promote the software through the development, staging and production lifecycles simply and in an automated fashion.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/10.png" alt="Examining the CD plugin">
+</div>
+</div>
+<div class="paragraph">
+<p>Switch back to the CI (continuous integration) tab; on the far right of the pipeline run are a set of icons, labelled ‘view logs’, ‘view output’ and ‘view SBOM’. Click on the ‘view SBOM’ icon; this will render the SBOM (Software Bill of Materials) created as part of this build, which is the immutable ‘receipt’ for this individual build.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/11.png" alt="Highlighting the SBOM link">
+</div>
+</div>
+<div class="paragraph">
+<p>What we will do now is to act as a developer; switch to the overview tab of the component, and click on the ‘OpenShift Dev Spaces (VS Code)’ link.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/12.png" alt="Highlighting the Dev Spaces link">
+</div>
+</div>
+<div class="paragraph">
+<p>This link will spin off a browser tab with the OpenShift Dev Spaces component; this is an in-browser full IDE and when it starts up it will be pointing directly at the git repository created as part of the scaffolding.</p>
+</div>
+<div class="paragraph">
+<p>It will ask if you trust the authors of the repository; click ‘continue’.</p>
+</div>
+<div class="paragraph">
+<p>The first time you go into the Dev Spaces it will prompt you to allow access and also prompt for adding additional components; let it settle for a couple of minutes so all the components have been loaded correctly.</p>
+</div>
+<div class="paragraph">
+<p>Before we force a restart of the build pipeline, click on the Explorer icon on the far left if the code structure is not displayed yet. When the (WORKSPACE) appears, click on the ‘pom.xml’ file.</p>
+</div>
+<div class="paragraph">
+<p>Dev Spaces works by maintaining a realtime copy of the files on the cluster, nothing is stored locally. In addition the RHADS adds code monitoring components; the pom.xml should have a direct vulnerability. The code outline on the far right will contain red where the code has a potential issue. Scroll down so the lines are visible in the editor.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/13.png" alt="Dev Spaces">
+</div>
+</div>
+<div class="paragraph">
+<p>When the initial scan is done you will get a pop-up on the right bottom (shown in the preceding figure). If you hang the cursor over the red lines in the editor the information will pop up as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/14.png" alt="Highlighting the potential security issue">
+</div>
+</div>
+<div class="paragraph">
+<p>Click on ‘Quick Fix’ and the dependency report will appear within Dev Spaces. In the report you can scroll down to the vulnerabilities and check the remediation information:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/15.png" alt="Examining the potential security issue">
+</div>
+</div>
+<div class="paragraph">
+<p>Now we will act as a developer and change some code; click on the ‘README.md’ file on the left-hand navigation.</p>
+</div>
+<div class="paragraph">
+<p>Where it shows the description you entered earlier in the template wizard, add a line of text (anything you want). Dev Spaces will save the changes and indicate that there are differences in your local files to the repository (which was created and scaffolded by the template).</p>
+</div>
+<div class="paragraph">
+<p>On the far left navigation icons, click on the ‘Git’ icon - it will have a blue circle with a number in it, probably 1, indicating changes made to the files. In the message box type ‘Changed README.md’ and then click ‘Commit’. It will ask you to stage the changes - select ‘Yes’.</p>
+</div>
+<div class="paragraph">
+<p>The Commit button will change to ‘Sync Changes’. This will push the code changes to the git repo created by the template and, using the webhooks also instantiated by the template, start the secure build pipeline again. Click it now.</p>
+</div>
+<div class="paragraph">
+<p>Switch back to the RHDH Ux, go to the catalog, click on the component and switch to the ‘CI” tab; you will see the pipeline has restarted (due to the commit of code).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/16.png" alt="Pipeline automatically run as part of a code submit">
+</div>
+</div>
+<div class="paragraph">
+<p>This is the hook back that links the developer’s committing code (end product) to the automatic start of the secure build.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_advanced_modifying_the_base_secure_pipelines"><a class="anchor" href="#_advanced_modifying_the_base_secure_pipelines"></a>Advanced - Modifying the base secure Pipelines</h3>
+<div class="paragraph">
+<p>As mentioned earlier, a customer can add (or remove) components of the base secure pipelines depending on their organization’s needs. What we have seen so far is a standard developer interaction with the product. In this section we will show you where and how to alter the flow of the base pipelines to add customer/organization additional steps in.</p>
+</div>
+<div class="paragraph">
+<p>Firstly, remember that the application of the template scaffolds all the code and components needed for the end-to-end developer/ops functionality. As part of that, the base pipelines that back the TSSC templates are installed as well.</p>
+</div>
+<div class="paragraph">
+<p>From the information provided in the demo lab setup, get the GitLab URL and the password (username will be admin). In a separate browser tab, go to the GitLab URL.</p>
+</div>
+<div class="paragraph">
+<p>At the high level project view there will be a number of repos; these are either in the ‘development’ realm or in the ‘rhdh’ realm. Find the rhdh/sample-pipelines repository, as shown in the image below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/17.png" alt="Locating the default pipeline definitions">
+</div>
+</div>
+<div class="paragraph">
+<p>Click on the tssc-sample-pipelines, and then click on the ‘pipelines’ subfolder when it appears.</p>
+</div>
+<div class="paragraph">
+<p>There should be two sample pipelines in this folder; click on the ‘maven-build-ci.yaml’ one.</p>
+</div>
+<div class="paragraph">
+<p>In the content page for this one, including the source, click on the ‘Edit’ button - we are going to add a separate step to the trusted pipeline that is executed as part of any template that instantiates this. Choose ‘Edit Single File’.</p>
+</div>
+<div class="paragraph">
+<p>Scroll down to where the tasks are defined. We are going to add a task after the init, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">tasks:
+   - name: init
+     params:
+       - name: image-url
+         value: $(params.output-image)
+       - name: rebuild
+         value: $(params.rebuild)
+     taskRef:
+       name: init
+    - name: octest
+      taskRef:
+        resolver: hub
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: openshift-client
+          - name: version
+            value: '0.2'
+      params:
+        - name: SCRIPT
+          value: oc whoami
+        - name: VERSION
+          value: '4.18'
+      runAfter:
+        - init
+   - name: clone-repository</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You are adding the 'octest' task, the 'init' and 'clone-repository' already exist, copy the code for the 'octest' task into the file</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>What we are doing is adding a simple task that echoes the OpenShift user context; it runs after the init. The task itself is trivial, but this will show how easy it is to add a task to the base secure pipelines.</p>
+</div>
+<div class="paragraph">
+<p>When you have changed the code, scroll down and hit ‘Commit Changes’.</p>
+</div>
+<div class="paragraph">
+<p>Now switch back to your Dev Spaces tab. If you have closed it, go to the RHDH Ux, select your component from the catalog, and hit the ‘OpenShift Dev Spaces’ link in the overview.</p>
+</div>
+<div class="paragraph">
+<p>In the Dev Spaces tab, select the README.md file again, and add another line of text below the top header (where you entered text before to trigger the pipeline).</p>
+</div>
+<div class="paragraph">
+<p>As before, commit this change using the gitops icon on the far left, providing a Commit message and then syncing the changes.</p>
+</div>
+<div class="paragraph">
+<p>If you switch back to the RHDH tab, select your component from the catalog, and look at the ‘CI’ tab you will see another pipeline has started. Let it complete, then expand the pipeline run. The new task, ‘octest’, will appear as part of the process as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/18.png" alt="Showing the new task as part of the executed secure pipeline">
+</div>
+</div>
+<div class="paragraph">
+<p>This is how a customer may add additional tasks into the appropriate pipeline.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_promoting_the_code_releases_through_development_staging_and_production"><a class="anchor" href="#_promoting_the_code_releases_through_development_staging_and_production"></a>Promoting the code releases through development, staging and production</h3>
+<div class="paragraph">
+<p>The TSSC pipelines along with RHADS also adds the ability to promote code releases from development to staging and then to production, as part of an automated process. If you remember when we looked at the topology, the default deployment for the TSSC template produces three applications, development, staging and production.</p>
+</div>
+<div class="paragraph">
+<p>Staging is triggered by tagging the code repository post-development. To do this, go to the RHDH Ux, select your component from the catalog, and then click on the ‘&lt;&gt; View Source’ icon in the ‘About’ on the Overview tab. This will take you directly to the scaffolded code repository.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/19.png" alt="Gitlab source page">
+</div>
+</div>
+<div class="paragraph">
+<p>On the right hand side, under the ‘Project Information’, click on ‘Tags’ (yours should have 0). When the tag page appears, click on ‘New Tag’, add some descriptive text, and then click on ‘Create Tag’. This will add a valid tag to the code repository. The scaffolded webhooks will then perform a pipeline run in the cluster to redeploy the staging application.</p>
+</div>
+<div class="paragraph">
+<p>Switch back to the RHDH Ux, click on the catalog, choose your component, and then click on ‘CI. You will see another pipeline has executed to promote the current build to the staging project:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/20.png" alt="The promotion pipeline in action">
+</div>
+</div>
+<div class="paragraph">
+<p>Now we will complete the development&#8594;staging&#8594;release cycle. In the RHDH Ux select your component through the catalog. Again, click on the ‘&lt;&gt; View Source’ icon to get to the GitLab repository (which was scaffolded by the template and has been tagged by yourself).</p>
+</div>
+<div class="paragraph">
+<p>Click on the ‘Tag’ item again. Next to your created tag you will see a ‘Create Release’ button; click on this now.</p>
+</div>
+<div class="paragraph">
+<p>In the New Release dialog, give the release a title. Leave everything else as is, and click on the ‘Create Release’; in an actual environment this would be done post functional and non-functional testing of tagged staging application in the cluster.</p>
+</div>
+<div class="paragraph">
+<p>Switch back to the RHDH Ux, select your component and click on CI. If you are quick enough you will see that another pipeline has been triggered by the creation of a release; the system is promoting the image from the staging application to the production one.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/production-rhdh/21.png" alt="Promoting to production">
+</div>
+</div>
+<div class="paragraph">
+<p>When this is completed, the application running in the production deployment will be based on the image that has been promoted from development, having been built there in a secure pipeline, to staging, and then promoted to production.</p>
+</div>
+<div class="paragraph">
+<p>This is an opinionated but thorough and secure approach provided directly by the template instantiated through the RHDH Ux; we have automated and secured all the phases of development through to production.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="introduction.html" class="query-params-link">An overview of the composite product set (RHADS)</a></span>
+  <span class="next"><a href="../tssc-3rdparty-ci.html" class="query-params-link">Module 13: Trusted Software Supply Chain with other CIs</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
