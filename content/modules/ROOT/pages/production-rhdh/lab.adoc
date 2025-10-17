@@ -1,0 +1,237 @@
+= Trusted Software Supply Chain with RHDH for Production
+
+== Hands-on Lab
+This hands-on lab will use the Red Hat Demo RHADS TL3 item and walk you through the use of the product set from the perspective of a developer. We will examine and explain each step in terms of what is technically happening with the product, and then we will walk through altering an example TSSC pipeline (as stated before some customers may/will want to add additional security steps as part of their processes).
+
+=== Walk-through of end-to-end interaction
+
+For this part of the lab we will be using a lot of the tooling and interfaces provided by the product. To be prepared, please make a note of the following information from your Red Hat Demo “Red Hat Advanced Developer Suite - Technical Enablement Level 3” item:
+
+* The RHDH application URL, and the password (user will be user1 throughout this example unless otherwise stated)
+* The GitLab application URL, and the password (should be the same as the RHDH one)
+* The OpenShift Ux URL, and the password for admin (we will use the administrator login to examine some of the behaviours on the cluster resulting from the template and ArgoCD)
+* [Optional] The ArgoCD application URL and the password (again, for ArgoCD we will use the admin user to look at what gets physically created when the template executes)
+
+The point of this part of the hands-on lab is to give you a feel of what the end user experience is whilst making you aware of the technical components that are being used so that you can describe them to end customers.
+
+Start by logging into the RHDH instance (using the URL and password from above). The screen will look like this:
+
+image::production-rhdh/1.png[Logon]
+
+The username will be ‘user1’; we are logging on to the system with a standard user rather than admin.
+
+The RHDH screen will render; if it is the first time, you will get a helpful information panel on the right hand side; close this to give yourself more screen real estate.
+
+image::production-rhdh/2.png[RHDH Frontpage]
+
+Click on ‘Catalog’ on the left-hand navigation panel. This will default to showing the ‘Components’ you have access to; as discussed earlier in the modules, RHDH works with a database of different types of objects and an RBAC which gives you access to them. In this case you should see a single service, ‘provisioning-data’, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a button labelled ‘Self Service’. Click on this.
+
+This will render all the templates currently registered in the system that you, as user1, have access to. For the sake of this lab we are going to walk through the creation of a Quarkus application with secure build via TSSC - scroll to the bottom of the tiles and you will see one labelled ‘Securing a Quarkus Service Software Supply Chain (Tekton)’. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on ‘Choose’.
+
+This is where the power of templates starts to shine; if you remember looking at the structure in the earlier section we described the use of parameters that the framework interprets as a wizard; we are now seeing that in action. 
+
+image::production-rhdh/3.png[Template start]
+
+Notice the breadcrumb trail at the top; this matches the individual parameter sections we described previously. Change the name of the component to ‘tl3test1’. Change the artifact ID to ‘tl3test1’ as well. Change the description to something different. Click ‘Next’.
+
+image::production-rhdh/4.png[Template parameters]
+
+Now you will see the Registry parameters; you can leave these as they are (the demo has its own instance of Quay installed and the organisation setup correctly). Click ‘Next’.
+
+The next wizard prompts for the repository information; again, leave as is as the demo has Gitlab setup and integrated. Click ‘Review’.
+
+The final generated content page contains the information you have provided; click on ‘Create’ to start the process of executing the template within RHDH.
+
+The template will process all of the defined steps and give you a real-time view of the progress. It should succeed at this point and the screen will look like this:
+
+image::production-rhdh/5.png[Template success]
+
+It is worth scrolling up in the log and looking at the output of each step to see what it is doing - in particular look at the ‘Fetch Skeleton and Template’ step; it lists all the files it is marshalling before it commits them to the new git repository it creates. The look at the log for the ‘Fetch gitops skeleton’ step and you will see the GitOps definitions being marshalled and setup. The Publish and Publish GitOps steps create the required repositories, and the ‘Create ArgoCD Resources’ step instantiates the required (and instance configured) versions of the applications (in this case Application refers to an ArgoCD application - more later).
+
+At this point the template has completed and generated all the scaffolding for the developer; note the four outputs (defined in the template) rendered as icon/text beneath the rendering of the completed template - in addition to generating the source and GitOps repositories, RHDH generates Component objects to back these within the RHDH database. What we are going to do now is look at exactly what has happened behind the scenes.
+
+=== What is Scaffolded (example)?
+
+First, click on the ‘Catalog’ navigation link again. You will see you now have an active component (the result of the completed template).
+
+image::production-rhdh/6.png[Catalog Components]
+
+Click on the name of the component. This takes you to the core interaction content page for the developer, which should look similar to this:
+
+image::production-rhdh/7.png[Component Summary]
+
+This is a very powerful part of the RHDH offering; the sub-tabs on this page are generated by the plugins added to the framework (see earlier modules). If you now click on ‘CI’ (and assuming you have waited a couple of minutes) the TSSC pipeline will have completed, using the base repository and code.
+
+[NOTE]
+====
+Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the Quay Ux and login again using the quayadmin username and the password provided in the lab. You can then do a commit of the code (more in a moment) and the pipeline will automatically re-run, successfully.
+====
+
+Expand the information panel for the Pipeline Run (the small arrow at the left and the Ux will render the output of the pipeline that was automatically executed as part of the creation of the git repo. Notice the icon indication of the potential vulnerabilities shown as part of the run as well.
+
+You can use the cursor to move around the pipeline. As an example click on the ‘Build Container’ step and it will show you the direct logs of the processes executed as part of that process:
+
+image::production-rhdh/8.png[Examining the Pipeline]
+
+Now click on the ‘Topology’ tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the RHDH approach, it removes the need for a developer to both login and navigate to the appropriate screens in the OpenShift/Kubernetes Ux.
+
+image::production-rhdh/9.png[Examining the Topology plugin]
+
+Note that it has deployed three versions of the Application, development, stage and production. 
+
+Now click on the ‘CD’ tab (continuous deployment). This will show the state of the ArgoCD components that were scaffolded to deploy the application, and, interestingly, the pipeline components (the *-ci components). Later on in the lab we will examine how to promote the software through the development, staging and production lifecycles simply and in an automated fashion.
+
+image::production-rhdh/10.png[Examining the CD plugin]
+
+Switch back to the CI (continuous integration) tab; on the far right of the pipeline run are a set of icons, labelled ‘view logs’, ‘view output’ and ‘view SBOM’. Click on the ‘view SBOM’ icon; this will render the SBOM (Software Bill of Materials) created as part of this build, which is the immutable ‘receipt’ for this individual build.
+
+image::production-rhdh/11.png[Highlighting the SBOM link]
+
+What we will do now is to act as a developer; switch to the overview tab of the component, and click on the ‘OpenShift Dev Spaces (VS Code)’ link. 
+
+image::production-rhdh/12.png[Highlighting the Dev Spaces link]
+
+This link will spin off a browser tab with the OpenShift Dev Spaces component; this is an in-browser full IDE and when it starts up it will be pointing directly at the git repository created as part of the scaffolding.
+
+It will ask if you trust the authors of the repository; click ‘continue’.
+
+The first time you go into the Dev Spaces it will prompt you to allow access and also prompt for adding additional components; let it settle for a couple of minutes so all the components have been loaded correctly.
+
+Before we force a restart of the build pipeline, click on the Explorer icon on the far left if the code structure is not displayed yet. When the (WORKSPACE) appears, click on the ‘pom.xml’ file.
+
+Dev Spaces works by maintaining a realtime copy of the files on the cluster, nothing is stored locally. In addition the RHADS adds code monitoring components; the pom.xml should have a direct vulnerability. The code outline on the far right will contain red where the code has a potential issue. Scroll down so the lines are visible in the editor.
+
+image::production-rhdh/13.png[Dev Spaces]
+
+When the initial scan is done you will get a pop-up on the right bottom (shown in the preceding figure). If you hang the cursor over the red lines in the editor the information will pop up as shown below:
+
+image::production-rhdh/14.png[Highlighting the potential security issue]
+
+Click on ‘Quick Fix’ and the dependency report will appear within Dev Spaces. In the report you can scroll down to the vulnerabilities and check the remediation information:
+
+image::production-rhdh/15.png[Examining the potential security issue]
+
+Now we will act as a developer and change some code; click on the ‘README.md’ file on the left-hand navigation.
+
+Where it shows the description you entered earlier in the template wizard, add a line of text (anything you want). Dev Spaces will save the changes and indicate that there are differences in your local files to the repository (which was created and scaffolded by the template).
+
+On the far left navigation icons, click on the ‘Git’ icon - it will have a blue circle with a number in it, probably 1, indicating changes made to the files. In the message box type ‘Changed README.md’ and then click ‘Commit’. It will ask you to stage the changes - select ‘Yes’.
+
+The Commit button will change to ‘Sync Changes’. This will push the code changes to the git repo created by the template and, using the webhooks also instantiated by the template, start the secure build pipeline again. Click it now.
+
+Switch back to the RHDH Ux, go to the catalog, click on the component and switch to the ‘CI” tab; you will see the pipeline has restarted (due to the commit of code). 
+
+image::production-rhdh/16.png[Pipeline automatically run as part of a code submit]
+
+This is the hook back that links the developer’s committing code (end product) to the automatic start of the secure build. 
+
+=== Advanced - Modifying the base secure Pipelines
+
+As mentioned earlier, a customer can add (or remove) components of the base secure pipelines depending on their organization’s needs. What we have seen so far is a standard developer interaction with the product. In this section we will show you where and how to alter the flow of the base pipelines to add customer/organization additional steps in.
+
+Firstly, remember that the application of the template scaffolds all the code and components needed for the end-to-end developer/ops functionality. As part of that, the base pipelines that back the TSSC templates are installed as well.
+
+From the information provided in the demo lab setup, get the GitLab URL and the password (username will be admin). In a separate browser tab, go to the GitLab URL.
+
+At the high level project view there will be a number of repos; these are either in the ‘development’ realm or in the ‘rhdh’ realm. Find the rhdh/sample-pipelines repository, as shown in the image below:
+
+image::production-rhdh/17.png[Locating the default pipeline definitions]
+
+Click on the tssc-sample-pipelines, and then click on the ‘pipelines’ subfolder when it appears.
+
+There should be two sample pipelines in this folder; click on the ‘maven-build-ci.yaml’ one.
+
+In the content page for this one, including the source, click on the ‘Edit’ button - we are going to add a separate step to the trusted pipeline that is executed as part of any template that instantiates this. Choose ‘Edit Single File’.
+
+Scroll down to where the tasks are defined. We are going to add a task after the init, as follows:
+
+```yaml
+tasks:
+   - name: init
+     params:
+       - name: image-url
+         value: $(params.output-image)
+       - name: rebuild
+         value: $(params.rebuild)
+     taskRef:
+       name: init
+    - name: octest
+      taskRef:
+        resolver: hub
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: openshift-client
+          - name: version
+            value: '0.2'
+      params:
+        - name: SCRIPT
+          value: oc whoami
+        - name: VERSION
+          value: '4.18'
+      runAfter:
+        - init
+   - name: clone-repository
+```
+[NOTE]
+====
+You are adding the 'octest' task, the 'init' and 'clone-repository' already exist, copy the code for the 'octest' task into the file
+====
+
+What we are doing is adding a simple task that echoes the OpenShift user context; it runs after the init. The task itself is trivial, but this will show how easy it is to add a task to the base secure pipelines.
+
+When you have changed the code, scroll down and hit ‘Commit Changes’.
+
+Now switch back to your Dev Spaces tab. If you have closed it, go to the RHDH Ux, select your component from the catalog, and hit the ‘OpenShift Dev Spaces’ link in the overview.
+
+In the Dev Spaces tab, select the README.md file again, and add another line of text below the top header (where you entered text before to trigger the pipeline).
+
+As before, commit this change using the gitops icon on the far left, providing a Commit message and then syncing the changes.
+
+If you switch back to the RHDH tab, select your component from the catalog, and look at the ‘CI’ tab you will see another pipeline has started. Let it complete, then expand the pipeline run. The new task, ‘octest’, will appear as part of the process as shown below:
+
+image::production-rhdh/18.png[Showing the new task as part of the executed secure pipeline]
+
+This is how a customer may add additional tasks into the appropriate pipeline.
+
+=== Promoting the code releases through development, staging and production
+
+The TSSC pipelines along with RHADS also adds the ability to promote code releases from development to staging and then to production, as part of an automated process. If you remember when we looked at the topology, the default deployment for the TSSC template produces three applications, development, staging and production.
+
+Staging is triggered by tagging the code repository post-development. To do this, go to the RHDH Ux, select your component from the catalog, and then click on the ‘<> View Source’ icon in the ‘About’ on the Overview tab. This will take you directly to the scaffolded code repository.
+
+image::production-rhdh/19.png[Gitlab source page]
+
+On the right hand side, under the ‘Project Information’, click on ‘Tags’ (yours should have 0). When the tag page appears, click on ‘New Tag’, add some descriptive text, and then click on ‘Create Tag’. This will add a valid tag to the code repository. The scaffolded webhooks will then perform a pipeline run in the cluster to redeploy the staging application.
+
+Switch back to the RHDH Ux, click on the catalog, choose your component, and then click on ‘CI. You will see another pipeline has executed to promote the current build to the staging project:
+
+image::production-rhdh/20.png[The promotion pipeline in action]
+
+Now we will complete the development->staging->release cycle. In the RHDH Ux select your component through the catalog. Again, click on the ‘<> View Source’ icon to get to the GitLab repository (which was scaffolded by the template and has been tagged by yourself).
+
+Click on the ‘Tag’ item again. Next to your created tag you will see a ‘Create Release’ button; click on this now.
+
+In the New Release dialog, give the release a title. Leave everything else as is, and click on the ‘Create Release’; in an actual environment this would be done post functional and non-functional testing of tagged staging application in the cluster. 
+
+Switch back to the RHDH Ux, select your component and click on CI. If you are quick enough you will see that another pipeline has been triggered by the creation of a release; the system is promoting the image from the staging application to the production one.
+
+image::production-rhdh/21.png[Promoting to production]
+
+When this is completed, the application running in the production deployment will be based on the image that has been promoted from development, having been built there in a secure pipeline, to staging, and then promoted to production.
+
+This is an opinionated but thorough and secure approach provided directly by the template instantiated through the RHDH Ux; we have automated and secured all the phases of development through to production.
+
+
+
+
+
+
+
+
+
+
+
+
+
