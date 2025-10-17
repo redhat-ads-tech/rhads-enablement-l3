@@ -7,7 +7,7 @@ IF you have already completed the xref:setup-tpa/setup-rhel.adoc[TPA module on R
 
 == Overview
 
-To setup TAS on RHEL, you will use a separate hands-on workshop which provisions multiple RHEL systems for you to use. You will then use Red Hat Ansible Automation Platform to deploy RHTAS in a production-ready configuration using the supported Ansible collection.
+To setup TAS on RHEL, you will use a separate hands-on workshop which provisions multiple RHEL systems for you to use (which takes ~15 minutes to provision). You will then use Red Hat Ansible Automation Platform to deploy RHTAS in a production-ready configuration using the supported Ansible collection.
 
 == Use Cases
 
@@ -55,7 +55,7 @@ Follow these steps to provision your RHTAS on RHEL workshop environment:
 
 . **Access and Order the Workshop**
 +
-Navigate to the https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/openshift-cnv.etx-rhads.prod[RHTAS on RHEL Workshop^] catalog item and click the *Order* button:
+Navigate to the https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/openshift-cnv.etx-rhads.prod[RHADS on RHEL - Technical Enablement Level 3^] catalog item and click the *Order* button:
 +
 image::setup-tas/rhel-workshop-catalog.png[width=80%]
 
@@ -87,11 +87,17 @@ image::setup-tas/rhel-workshop-provisioning.png[width=80%]
 +
 Once provisioning is complete:
 +
-* From the _Services_ tab, click on the name of the service
-* Locate and click the **Showroom** link at the top (you won't need to use the other links presented, unless you want to explore the workshop environment in more detail)
-* Follow the step-by-step instructions provided in the workshop
+* From the _Services_ tab, click on the name of the service:
++
+image::setup-tas/rhel-workshop-service.png[width=80%]
++
+* Locate and click the **Showroom** link at the top (you won't need to use the other links presented, unless you want to explore the workshop environment in more detail):
 +
 image::setup-tas/rhel-workshop-showroom.png[width=80%]
++   
+* Follow the step-by-step instructions provided in the workshop
++
+image::setup-tas/rhel-workshop-instructions.png[width=80%]
 
 When you finish this TAS on RHEL workshop, feel free to use the same workshop environment to complete the xref:setup-tpa/setup-rhel.adoc[TPA workshop on RHEL] (you don't need to re-order the same catalog item again, just re-use the existing environment.)
 
