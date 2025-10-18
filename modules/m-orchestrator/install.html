@@ -295,7 +295,7 @@
 <h2 id="_install_serverless_workflow_operator"><a class="anchor" href="#_install_serverless_workflow_operator"></a>Install Serverless Workflow Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Confirm the operator is installed by visiting the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com~v1alpha1\~ClusterServiceVersion" target="_blank" rel="noopener">Installed Operators section</a> of the OpenShift Web Console.</p>
+<p>Confirm the operator is installed by visiting the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com~v1alpha1~ClusterServiceVersion" target="_blank" rel="noopener">Installed Operators section</a> of the OpenShift Web Console.</p>
 </div>
 <div class="paragraph">
 <p>[NOTE]: Login as <strong>{openshift_admin_user}</strong> using the password <code>{openshift_admin_password}</code>.</p>
@@ -318,6 +318,9 @@
 </li>
 <li>
 <p>Select the <strong>OpenShift Serverless Logic Operator</strong>, select version 1.36.0, and click <strong>Install</strong>.</p>
+</li>
+<li>
+<p>On the install form, keep the default settings and click <strong>Install</strong> a final time.</p>
 </li>
 <li>
 <p>Wait for the installation to complete.</p>
@@ -350,7 +353,7 @@ Module 2 provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic 
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-dh/core~v1\~ConfigMap" target="_blank" rel="noopener">ConfigMaps screen</a> in the <strong>tssc-dh</strong> project. Login using:</p>
+<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-dh/core~v1~ConfigMap" target="_blank" rel="noopener">ConfigMaps screen</a> in the <strong>tssc-dh</strong> project. Login using:</p>
 <div class="ulist">
 <ul>
 <li>
