@@ -11,7 +11,7 @@ Without dynamic plugin caching, the {product_rhdh_name} downloads and installs p
 
 == Create a PersistentVolumeClaim
 
-First, create a PersistentVolumeClaim that will store the cached plugin packages. This PVC will be mounted into the {product_rhdh_name} pods to provide persistent storage for downloaded plugins.
+First, create a PersistentVolumeClaim (PVC) that will store the cached plugin packages. This PVC will be mounted into the {product_rhdh_name} pods to provide persistent storage for downloaded plugins.
 
 . Navigate to *Storage > PersistentVolumeClaims* in the OpenShift Web Console.
 . Ensure the `{m2_rhdh_project}` project is selected.
@@ -39,9 +39,8 @@ The 5GiB storage allocation provides sufficient space for caching multiple plugi
 Next, update your Backstage Custom Resource to mount a volume. This configuration uses the {product_rhdh_name} Operator's patch functionality to modify the underlying Deployment.
 
 . Navigate to *Operators > Installed Operators* in the OpenShift Web Console.
-
-. Click on *{product_rhdh_name}*.
-. Select the *Backstage* tab, then click on your `{m2_rhdh_instance}` instance.
+. Click on the *{product_rhdh_name}* operator.
+. Select the *{product_rhdh_name}* tab, then click on your `{m2_rhdh_instance}` instance.
 . Click the *YAML* tab to edit the resource.
 . Add the following `deployment.patch` configuration to your Backstage CR's `spec` field:
 +
@@ -85,12 +84,12 @@ image::setup-rhdh/plugin-cache-attached.png[]
 
 Next, you'll observe just how much faster a new pod starts with plugin caching enabled.
 
-. Wait for the new deployment's `backstage-backend` container to start.
-. Return to the *Workloads > Pods* list and locate the `backstage-rhdh` pod.
-. Click the three dots to the right of the table and delete the pod - a new pod will immediately be created to replace the missing Backstage pod.
+. Return to the *Workloads > Pods*.
+. Wait for the new deployment to report a ready status, and for the old pod to be deleted.
+. Click the three dots to the right of the new pod and select *Delete Pod* - a new pod will immediately be created to replace the missing Backstage pod.
 +
 image::setup-rhdh/plugin-cache-delete-pod.png[]
-. Visit the logs for the new pod and you'll find that the *install-dynamic-plugins* container reports that it's not downloading previously installed plugins.
+. Visit the logs for the new pod and you'll find that the *install-dynamic-plugins* container reports that it is `Skipping download of already installed dynamic plugin`.
 +
 image:setup-rhdh/plugin-cache-install-skip.png[]
 
