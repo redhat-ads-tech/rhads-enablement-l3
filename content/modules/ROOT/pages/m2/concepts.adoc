@@ -1,6 +1,8 @@
 
 = Backstage Concepts
 
+== Core Features
+
 {product_rhdh_name}, and internal developer portals in general, can be thought of as a modular system where you aggregate and display data related to the software within an organization.
 
 The core features of {product_rhdh_name} are the:

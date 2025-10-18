@@ -35,7 +35,7 @@ Verify that the dynamic plugins have been configured correctly:
 . Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core{tilde}v1{tilde}ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
   * Username: {openshift_admin_user}
   * Password: {openshift_admin_password}
-. Select and view the YAML for the *backstage-dynamic-plugins-developer-hub* ConfigMap.
+. Select and view the YAML for the *tssc-developer-hub-dynamic-plugins* ConfigMap.
 . Verify that the following plugins are listed in the `plugins` array:
   * @redhat/backstage-plugin-orchestrator
   * @redhat/backstage-plugin-orchestrator-backend-dynamic
