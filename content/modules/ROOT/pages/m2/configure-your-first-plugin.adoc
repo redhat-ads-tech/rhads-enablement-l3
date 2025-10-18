@@ -32,7 +32,7 @@ Your environment includes a preconfigured Keycloak instance with a `{keycloak_re
 
 Keycloak has been pre-deployed on your OpenShift cluster in the `tssc-keycloak` project. Accessing Keycloak requires its URL and admin password:
 
-. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core\~v1\~Secret[Secrets screen in the tssc-keycloak^] namespace.
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-keycloak/core{tilde}v1{tilde}Secret[Secrets screen in the tssc-keycloak^] namespace.
 . Click the `keycloak-initial-admin` Secret to view it.
 . Copy the `password` value from the Secret.
 . View the https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients[clients list in the `trusted-artifact-signer` realm^] in Keycloak - login as *admin* using the password you copied from the Secret.
@@ -51,17 +51,17 @@ The *General settings* screen for the client will be displayed. You need to add 
 
 Failure to set a valid redirect URL will result in login failures when you attempt to use Keycloak as an authentication provider with {product_rhdh_name}. This is because Keycloak will not recognise your {product_rhdh_name} hostname as a registered application and refuse to complete the authentication flow - this is standard OAuth/OpenID behavior.
 
-. Add the following value to *Web origins*
-+
-[.wrap,source,role=execute,text,subs=attributes+]
-----
-https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
-----
 . Add the following value to *Valid redirect URIs*:
 +
 [.wrap,source,role=execute,text,subs=attributes+]
 ----
 https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}/api/auth/oidc/handler/frame
+----
+. Add the following value to *Web origins*
++
+[.wrap,source,role=execute,text,subs=attributes+]
+----
+https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 ----
 +
 [WARNING]
@@ -73,7 +73,7 @@ Do not delete the existing *Web origins* and *Valid redirect URIs*!
 image::setup-rhdh/keycloak-valid-urls.png[]
 . Click *Save*.
 
-The path for the redirect URL is `/api/auth/oidc/handler/frame` as documented in https://backstage.io/docs/auth/oidc/#the-api-reference[Backstage's OIDC reference^] and our https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/html-single/authentication_in_red_hat_developer_hub/index#assembly-authenticating-with-rhbk[{product_rhdh_name} documentation^].
+The path for the redirect URL is `/api/auth/oidc/handler/frame` as documented in https://backstage.io/docs/auth/oidc/#the-api-reference[Backstage's OIDC reference^] and our https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html-single/authentication_in_red_hat_developer_hub/index#assembly-authenticating-with-rhbk[{product_rhdh_name} documentation^].
 
 == Install a Dynamic Plugin
 
@@ -91,13 +91,15 @@ For detailed information on configuring dynamic plugins with the operator, refer
 
 === Create the Dynamic Plugins ConfigMap
 
-As mentioned earlier, certain plugins are preinstalled in the {product_rhdh_name}. These plugins have gone through our productisation process to verify they're compatible with the specific version of Backstage that {product_rhdh_name} is built from, and to facilitate installation at runtime. Using upstream Backstage requires plugins to be installed from a registry. For example, upstream Backstage would require a platform engineer to install a compatible version of https://www.npmjs.com/package/@backstage-community/plugin-catalog-backend-module-keycloak[@backstage-community/plugin-catalog-backend-module-keycloak from npm^] and make code changes to their Backstage instance. With {product_rhdh_name} no such code changes or version matrix concerns are necessary. 
+As mentioned earlier, certain plugins are preinstalled in the {product_rhdh_name}. These plugins have gone through our productisation process to verify they're compatible with the specific version of Backstage that {product_rhdh_name} is built from, and to facilitate installation at runtime. 
+
+Using upstream Backstage requires plugins to be installed from a registry. For example, upstream Backstage would require a platform engineer to install a compatible version of https://www.npmjs.com/package/@backstage-community/plugin-catalog-backend-module-keycloak[@backstage-community/plugin-catalog-backend-module-keycloak from npm^] and make code changes to their Backstage instance. With {product_rhdh_name} no such code changes or version matrix concerns are necessary. 
 
 Get started by creating a minimal `{m2_rhdh_plugins_cm_name}` ConfigMap that enables the Keycloak plugin. 
 
-. Log in to the {openshift_console_url}[OpenShift Web Console].
-. Ensure you're in the `{m2_rhdh_project}` project.
+. Log in to the {openshift_console_url}[OpenShift Web Console^].
 . Navigate to *Workloads > ConfigMaps*.
+. Ensure the `{m2_rhdh_project}` project is selected.
 . Click the *Create ConfigMap* button.
 . Switch to the YAML view and paste the following configuration:
 +
@@ -120,11 +122,11 @@ data:
 
 === Update the Backstage Custom Resource
 
-Now you need to update your Backstage CR to reference the dynamic plugins ConfigMap.
+You need to update your Backstage CR to reference the dynamic plugins ConfigMap.
 
 . Navigate to *Operators > Installed Operators* in the OpenShift Web Console.
-. Click on *{product_rhdh_name}*.
-. Select the *Backstage* tab, then click on your `{m2_rhdh_instance}` instance.
+. Click on the *{product_rhdh_name}* operator.
+. Select the *{product_rhdh_name}* tab, then click on your `{m2_rhdh_instance}` instance.
 +
 [WARNING]
 ====
@@ -189,7 +191,12 @@ First, create a Secret to store Keycloak connection details:
 . In the OpenShift Web Console, navigate to *Workloads > Secrets*.
 . Ensure the `{m2_rhdh_project}` project is selected.
 . Click *Create > Key/value secret*.
-. Set the secret name to `{m2_keycloak_secret_name}`.
+. Set the secret name to:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+{m2_keycloak_secret_name}
+----
 +
 image::setup-rhdh/keycloak-secret.png[]
 . Add the following key-value pairs:
@@ -211,7 +218,7 @@ image::setup-rhdh/keycloak-secret.png[]
 |`{keycloak_client_id}`
 
 |`KEYCLOAK_CLIENT_SECRET`
-|`\{openshift_admin_password}`
+|`\{rhdh_user_password}`
 |===
 . Click *Create*.
 
@@ -274,9 +281,9 @@ catalog:
 ----
 . Click *Save*.
 
-This configuration replaces the Guest authentication provider with a production-ready OpenID Connect authentication flow. 
+This configuration replaces the Guest authentication provider with a production-ready OpenID Connect authentication flow. Additionally, you added a new `catalog.providers` configuration. 
 
-Additionally, you added a new `catalog.providers` configuration. As a reminder, the Software Catalog in Backstage (and thus {product_rhdh_name}) contains entities that represent your deployed software, services, APIs, and resources such as file storage, databases, and message queues. It's possible to point to https://backstage.io/docs/conf/[static locations^] (YAML files available over HTTPS) that contain the description and relationships between these entities. Providers are https://backstage.io/docs/features/software-catalog/external-integrations[plugins that provide an integration^] to dynamically fetch entities from external sources. The Keycloak plugin will fetch Users and Groups from a configured realm, and add them to the Software Catalog as entities.
+As a reminder, the Software Catalog in Backstage (and thus {product_rhdh_name}) contains entities that represent your deployed software, services, APIs, and resources such as file storage, databases, and message queues. It's possible to point to https://backstage.io/docs/conf/[static locations^] (YAML files available over HTTPS) that contain the description and relationships between these entities. Providers are https://backstage.io/docs/features/software-catalog/external-integrations[plugins that provide an integration^] to dynamically fetch entities from external sources. The Keycloak plugin will fetch Users and Groups from a configured realm, and add them to the Software Catalog as entities.
 
 === Update Backstage CR with Secret References
 
@@ -308,10 +315,11 @@ More information on custom configurations that load data from Secrets and Config
 
 === Verify Keycloak Integration
 
-A new {product_rhdh_name} pod will be created. Wait for it to start and the old pod to be deleted, then:
+A new {product_rhdh_name} pod will be created. Observe the rollout:
 
 . Select *Workloads > Pods* in the OpenShift Web Console. 
 . Ensure the `{m2_rhdh_project}` project is selected.
+. Two `backstage-rhdh` Pods should be listed. Wait for the newer Pod to become ready, then click it.
 . View the *Logs* for the *backstage-backend* container in the Backstage pod.
 . Search for "keycloak" in the log output.
 
@@ -327,7 +335,7 @@ Next, verify the new OpenID Connect login flow is working:
 image::setup-rhdh/rhdh-oidc-signin.png[]
 . Click *Sign In* and use the following credentials in the popup that appears:
   * Username: `{rhdh_user}`
-  * Password: {rhdh_user_password}
+  * Password: `{rhdh_user_password}`
 . Once logged in, go to the *Catalog* set the *Kind* dropdown to *User* or *Group*. Imported User or Group entities will be displayed.
 + 
 image::setup-rhdh/users-in-catalog.png[]
