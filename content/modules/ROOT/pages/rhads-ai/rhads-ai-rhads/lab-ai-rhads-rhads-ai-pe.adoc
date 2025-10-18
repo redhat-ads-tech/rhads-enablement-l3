@@ -17,25 +17,39 @@ Software templates can build, deploy, and promote any application that can run o
 
 == About pre-defined Software templates
 
-Pre-defined software templates are offered with the RHADS installation and provide receipts that users can leverage to start bringing applications into OpenShift. The pre-defined Software Templates are built to give customers a starting point and a reference to make any application using Trusted Software Supply Chain (TSSC). They are not meant for production; customers can bring their own configurations on top of these templates following the documentation provided in the [product documentation]https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite_-_software_supply_chain
+Pre-defined software templates are offered with the RHADS installation and provide receipts that users can leverage to start bringing applications into OpenShift. The pre-defined Software Templates are built to give customers a starting point and a reference to make any application using Trusted Software Supply Chain (TSSC). They are not meant for production; customers can bring their own configurations on top of these templates following the documentation provided in the https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/index[Customizing Red Hat Trusted Application Pipeline documentation^].
 
-
-== Create the component 
+== Create the component
 * Let's bring the pre-existing Software Template to Red Hat Developer Hub.
 
-* From *catalog*, select *Self-service*, then select *Python - Trusted Application Pipeline*
+
+* Click on *catalog*: 
+
++
+image:rhads-ai/rhads/rhdh-catalogicon.png[width=30%]
+
+* Next, click on *Self-service*:
+
++
+image:rhads-ai/rhads/rhdh-selfservice.png[width=30%]
+
+* Then select the software template: *Python - Trusted Application Pipeline*
 * Click on *Choose*
 
 
 image:rhads-ai/rhads/rhdh-catalog-python.png[width=60%]
 
+Follow the steps to create the component in *Red Hat Developer Hub*, add the following input data for each section.
 
-* Follow the steps to create the object in Red Hat Developer Hub
+=== Application Information 
 
-** Add the name *Ai-agent*, 
+Add the following data into the specific fields:
 
-** Select the user *user1* from the dropdown
+* *Name: ai-agent* 
 
+* *Owner*: Select the user: *user1* from the dropdown:
+
++
 image:rhads-ai/rhads/rhdh-python-user.png[width=60%]
 
 ** Click on *Next*
@@ -43,51 +57,58 @@ image:rhads-ai/rhads/rhdh-python-user.png[width=60%]
 image:rhads-ai/rhads/rhdh-python.png[width=100%]
 
 
-** Add the following inputs:
+=== Application Repository Information 
 
-*Host Type: GitLab*
+Only change the following data into the specific fields:
 
-image:rhads-ai/rhads/rhdh-gitselection.png[width=60%]
+* *Host Type: GitLab*
 
-*Repository Name: Ai-agent*
++
+image:rhads-ai/rhads/rhdh-gitselection.png[width=30%]
 
+* *Repository Name: ai-agent*
 
-*Repository Owner: rhdh*
+* *Repository Owner: rhdh*
 
-
-*Repository Server: gitlab-gitlab.{openshift_cluster_ingress_domain}*
-
-
-*Repository Server: tssc*
+* *Repository Server: gitlab-gitlab.{openshift_cluster_ingress_domain}*
 
 
 Your screen should like similar like this:
 
 image:rhads-ai/rhads/rhdh-python2.png[width=100%]
 
+* Keep Repository Default Branch and CI Provider with the default values.
 
-Notice that the GitLab URL might be different since the cluster domain will change.
+*Note:* Notice that the GitLab URL might be different since the cluster domain will change.
 
-** Click on Next
-** Add the following inputs:
+** Click on *Next*
 
-*Image Organization : rhdh*
+=== Deployment Information
 
+Only change the following inputs:
 
-*Image Name: rhdh*
+* *Image Registry: quay-{guid}.{openshift_cluster_ingress_domain}*
+
+* *Image Organization : tssc*
+
+* *Image Name: ai-agent*
 
 
 Your screen should like similar like this:
 
 image:rhads-ai/rhads/rhdh-python3.png[width=100%]
 
-* Click on Review
+* Keep Deployment Namespace with the default value.
+
+=== Click on Review
 
 Your screen should like similar like this:
 
 image:rhads-ai/rhads/rhdh-python4.png[width=100%]
 
-* Click on the *Create* button
+Ensure the information is similar as it's shown on the picture.
+
+=== Click on the *Create* button
 
 Red Hat Developer Hub will run the tasks defined on the *template.yaml* file and rest of the manifests.
 Once it finishes, you will see all the steps in green.
@@ -107,38 +128,37 @@ In this section, you will learn what was created and how to understand these con
 We now have two repositories available, both of which are needed to build and deploy the application:
 
 
-* Source Repository: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production).
+* *Source Repository*: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production).
 
-* GitOps Repository: represents the AI application, now with only a sample app. This is the repository where the AI Engineers will be working to include the AI Agent.
+* *GitOps Repository*: represents the AI application, now with only a sample app. This is the repository where the AI Engineers will be working to include the AI Agent.
 
-* Learn more about these templates at [Sample Pipelines]https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite_-_software_supply_chain/about-sample-pipelines_default
+* Learn more about these templates at https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/customizing-sample-pipelines_default[Customizing Sample Pipelines^].
 
 == Adding more configurations
 
 You have received some requests from the AI Engineering team:
 
-- The application will use environment configurations to connect to an AI model and an API
-- Integrate with Red Hat OpenShift Dev Spaces
-- Create a webhook in GitLab to trigger Pipelines
+. Update the *dev.yaml* file to the application configurations
+. Integrate Red Hat Developer Hub with *Red Hat OpenShift Dev Spaces*
+. The application will use *environment configurations* to connect to an AI model and an API
+. Create a webhook in GitLab to trigger Pipelines
 
 As Platform Engineer you will need to update the software templates or components managing custom configurations. In this case, we are applying these configurations to the component created.
 Let's work on these requests!
 
+=== 1- Update the dev.yaml file
 
-=== Integrating RH OpenShift Dev Spaces
+In this section, you will replace the *whole content* of the dev.yaml file.
 
-In this template, you will include the integration with RH OpenShift Dev Spaces. The integration will be done by including a link in the component's overview UI. To achieve this, you need to include this information in the catalog-info.yaml file.
+* Go to the GitLab source code repository
 
-* Go to the GitLab source code repository:
+** On the same screen, click on *Source Repository* 
 
-
-On the same screen, click on *Source Repository* 
-
-Or  use the following URL, link:{gitlab_url}/rhdh/ai-agent[GitLab AI Agent,window='_blank'].
+** Or  use the following URL, link:{gitlab_url}/rhdh/ai-agent[GitLab AI Agent,window='_blank'].
 
 * Log in to GitLab using your credentials:
 
-** Click on *Sign in*
+** Click on *Sign in*:
 
 image:rhads-ai/rhads/gitlab-sign-in.png[width=100%]
 
@@ -146,77 +166,184 @@ image:rhads-ai/rhads/gitlab-sign-in.png[width=100%]
 ** *Username*: {gitlab_user}
 ** *Password*: {gitlab_user_password}
 
-
-* Click on the *catalog-info.yaml file*
+* Click on the *dev.yaml file* in the root directory of the project
 
 * Click on *Edit*, then *Edit Single File*
-image:rhads-ai/rhads/gitlab-open.png[width=100%]
-
-* Copy the following code:
 
 +
+image:rhads-ai/rhads/gitlab-open.png[width=100%]
+
+* Copy the content provided, by clicking on the icon:
+
++
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+
+
 [source,bash,role=execute,subs=attributes+]
 ----
-- url: https://devspaces.apps.{openshift_ingress}/dashboard/#https://gitlab-gitlab.{openshift_ingress}/rhdh/ai-agent
-  title: RH OpenShift Dev Spaces
-  icon: dashboard
-  type: admin-dashboard
+schemaVersion: 2.2.2
+metadata:
+  name: ai-agent
+  displayName: "AI Research Agent"
+  description: "Web-based AI research agent with search capabilities"
+components:
+  - name: python
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel9:3.23
+      volumeMounts:
+        - name: venv
+          path: /home/user/.venv
+      memoryLimit: '2Gi'
+      memoryRequest: '1Gi'
+      cpuLimit: '2'
+      cpuRequest: '1'
+      mountSources: true
+      env:
+        - name: FLASK_ENV
+          value: development
+        - name: FLASK_DEBUG
+          value: "1"
+  - name: venv
+    volume:
+      size: 1G
+commands:
+  - id: install
+    exec:
+      label: "Install Dependencies"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+      group:
+        kind: build
+  - id: run
+    exec:
+      label: "Run AI Agent Server"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: . .venv/bin/activate && gunicorn --bind 0.0.0.0:8080 --workers 2 --threads 4 --reload app:app
+      group:
+        kind: run
+  - id: dev
+    exec:
+      label: "Run Development Server"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: . .venv/bin/activate && python app.py
+      group:
+        kind: run
+  - id: health
+    exec:
+      label: "Health Check"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: curl -f http://localhost:8080/health || echo "Service not ready"
+      group:
+        kind: test
 ----
 
-
-* Paste it into catalog in line 11.
-
-* Your file should look like this:
-
-image:rhads-ai/rhads/ai-agent-catalog-info.png[width=100%]
+* Paste it into the file *REPLACING THE WHOLE CONTENT*
 
 * Commit your changes:
 
 image:rhads-ai/rhads/gitlab-commit.png[width=60%]
 
+
+=== Integrating RH OpenShift Dev Spaces
+
+In this template, you will include the integration with RH OpenShift Dev Spaces. The integration will be done by including a link in the component's overview UI. To achieve this, you need to add this information in the catalog-info.yaml file.
+
+
+* Go back to the root folder of the project and find the *catalog-info.yaml file*:
+
++
+image:rhads-ai/rhads/gitlab-catalog.png[width=60%]
+
+* Click on the file
+* Click on *Edit*, then *Edit Single File*
+
++
+image:rhads-ai/rhads/gitlab-open.png[width=100%]
+
+* Copy the following code:
+
++
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+
+[source,bash,role=execute,subs=attributes+]
+----
+    - url: https://devspaces.{openshift_cluster_ingress_domain}/dashboard/#https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/ai-agent
+      title: RH OpenShift Dev Spaces
+      icon: dashboard
+      type: admin-dashboard
+----
+
+* Paste it into catalog in line 11, *without replacing the current content*.
+
+* Your file should look similar like this, except for the cluster domain which will be different:
+
++
+image:rhads-ai/rhads/ai-agent-catalog-info.png[width=100%]
+
+* Commit your changes:
+
++
+image:rhads-ai/rhads/gitlab-commit.png[width=60%]
+
 * Verify the link was added to the component:
 
 
-** Go back to {rhdh_url/catalog/default/component/ai-agent/}[Red Hat Developer Hub UI - AI Agent^]
+** Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]
 
-** You should see an link similar like this:
+
+** You should see a new link added in the component's overview:
 
 image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
 
-*Note:* Do not click on the link. You will be working with RH OpenShift Dev Spaces later in the next lab.
+*Note:* Do not click on the link. You will be working with RH OpenShift Dev Spaces later in the next lab as an AI Engineer.
 
 === Creating the webhook
 Webhooks are not part of the pre-defined software templates; however, we need them to ensure pipelines will be triggered once the source is changed.
-Now, we must create a webhook in the source code repository in GitLab.
+Now, we must create a webhook in the *source code repository in GitLab*.
 
-
+* On the source code repository or accessing link:{gitlab_url}/rhdh/ai-agent[GitLab AI Agent,window='_blank']
 * Click on Settings -> Webhooks
 
-image:rhads-ai/rhads/gitlab-webhook.png[width=100%]
++
+image:rhads-ai/rhads/gitlab-webhook.png[width=80%]
 
+* Click on *Add new webhook*
+
++
+image:rhads-ai/rhads/gitlab-webhook-new.png[width=100%]
 
 * Copy the URL and past it on the *URL*
 
 +
 [source,bash,role=execute,subs=attributes+]
 ----
-https://pipelines-as-code-controller-openshift-pipelines.{openshift_ingress}
+https://pipelines-as-code-controller-openshift-pipelines.{openshift_cluster_ingress_domain}
 ----
 
 * Check on the trigger option and select the following:
 
+* Push events
+* Tag Push events
+* Comments
+
 image:rhads-ai/rhads/gitlab-webhook-config.png[width=100%]
 
-Next, on the same screen, you will test the webhook to ensure it works properly.
+* Go to the bottom of the screen and click on *Add webhook*. 
 
-* Scroll down and *Click on the Add Webhook button*. 
-
++
 image:rhads-ai/rhads/gitlab-add-webhook.png[width=100%]
+
+Next, on the same screen, you will test the webhook to ensure it works properly.
 
 === Trigger the Pipeline
 
 * On the webhook screen, click on *Test* and *Push events* 
 
++
 image:rhads-ai/rhads/gitlab-webhook-test.png[width=100%]
 
 * Next, we'll see the pipeline being triggered.
@@ -224,57 +351,61 @@ image:rhads-ai/rhads/gitlab-webhook-test.png[width=100%]
 
 === Explore the Pipeline
 
-** Go back to {rhdh_url/catalog/default/component/ai-agent/}[Red Hat Developer Hub UI - AI Agent^]
+** Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]
 
-** Click on the *ci tab*
+** Click on the *CI* tab
 
++
 image:rhads-ai/rhads/rhads-tssc.png[width=100%]
 
+*Note:* The pipeline will take a few minutes to complete all the steps.
 
 The AI agent will be built with all security best practices and organization guardrails that are already in place before the development team starts building the application implementing Trusted Software Supply Chain thanks to Red Hat Advanced Developer Suite. As a best practices we want development teams to use the shift-left security approach on any development type. This approach applies to any kind of application.
 
-
-To learn more about Trusted Software Supply Chain, ensure you review the modules Trusted Software Supply Chain. 
-
+To learn more about Trusted Software Supply Chain, ensure you review the modules Trusted Software Supply Chain, xref:tssc-overview.adoc[Module 11: Trusted Software Supply Chain]. 
 
 === Adding environment variables
 
-* Go to the GitLab gitops repository: link:{gitlab_url}/rhdh/ai-agent-gitops/-/blob/main/components/ai-agent/base/deployment.yaml[GitLab AI Agent deployment.yaml,window='_blank'].
+* Go to the AI Agent GitOps repository: link:{gitlab_url}/rhdh/ai-agent-gitops/-/blob/main/components/ai-agent/base/deployment.yaml[ai-agent-gitops deployment.yaml,window='_blank'].
 
 * Click on *Edit*, then *Edit Single File*
-image:rhads-ai/rhads/gitlab-open.png[width=100%]
-
-* In line 52 paste the new source code to include integrations with LLM models including name, URL and API key. Additionally, the integration with Tavily API to be used as part of the AI Agent tools. 
 
 +
+image:rhads-ai/rhads/gitlab-open.png[width=100%]
+
+* In line 52 paste the new source code to include integrations with LLM models including name, URL and API key. Additionally, the integration with Tavily API to be used as part of the AI Agent tools. *Ensure you are not replacing the current content.*
+
+
 [source,bash,role=execute,subs=attributes+]
 ----
         - name: LLM_API_BASE_URL
           valueFrom:
             secretKeyRef:
-              name: ai-agent-secrets
+              name: ai-agent-secrets-llm
               key: LLM_API_BASE_URL
         - name: TAVILY_API_KEY
           valueFrom:
             secretKeyRef:
-              name: ai-agent-secrets
+              name: ai-agent-secrets-tavily
               key: TAVILY_API_KEY
         - name: LLM_API_KEY
           valueFrom:
             secretKeyRef:
-              name: ai-agent-secrets
+              name: ai-agent-secrets-llm
               key: LLM_API_KEY
 
 ----
 Your file should look like this, ensure the identation is correct:
 
++
 image:rhads-ai/rhads/ai-agent-deployment.png[width=100%]
 
 * Commit your changes:
 
++
 image:rhads-ai/rhads/gitlab-commit.png[width=60%]
 
 *Note:* In the next lab, the developer will be creating the secret with the keys. This is not a recommended practice, but for the purpose of this lab and not share private keys on a public repository.
 
-Great job! We have successfully built the tools for the AI Engineering team to start building their agent.
+Great job! We have successfully built the tools for the AI Engineering team to start building the AI Agent.
 

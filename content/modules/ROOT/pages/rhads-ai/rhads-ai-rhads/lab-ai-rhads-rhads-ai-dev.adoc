@@ -47,17 +47,10 @@ image:rhads-ai/rhads/architecture.png[width=100%]
 == Create the AI Research Agent
 === Let's build the AI Agent
 
-* Login as a Developer to explore the Developer experience. 
-** Logout from Red Hat Developer Hub by clicking on the user and click on *Sign out*
+* Access the {rhdh_url/catalog-import}[Red Hat Developer Hub UI- components^] with your credentials:
 
-image:rhads-ai/rhads/rhdh-logout.png[width=100%]
-
-
-* Access the {rhdh_url/catalog-import}[Red Hat Developer Hub UI- components^] with the developer credentials:
-
- *** *Username*: {rhdh_user}
- *** *Password*: {rhdh_user_password}
-
+** Username: {openshift_admin_user}
+** Password: {openshift_admin_password}
 
 * From *catalog*, select *Self-service*, click on *Ai Agent*
 
@@ -91,7 +84,7 @@ image:rhads-ai/rhads/rhdh-devspaces-creating-continue.png[width=100%]
 * Authorize *OpenShift Dev Spaces to connect with GitLab*
 image:rhads-ai/rhads/rhdh-devspaces-authorize.png[width=100%]
 
-* You should see a screen similar like this:
+* *Welcome to Red Hat OpenShift Dev Spaces*. You should see a screen similar like this:
 
 image:rhads-ai/rhads/rhdh-devspaces-welcome.png[width=100%]
 
@@ -100,24 +93,151 @@ image:rhads-ai/rhads/rhdh-devspaces-welcome.png[width=100%]
 The blank project doesn't have yet the AI Agent implementation. We have provided the solution for you to use.
 As a Developer you will be implementing your changes using Red Hat OpenShift Dev Spaces already integrated.
 
-== Let's add the solution to the new project:
-Follow the next steps:
+== Connecting your AI Agent to APIs
 
-=== Update index.html
+=== Setup your account on the Tavily website
+The AI Search Agent will use *Tavily* for the  *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to continue our AI agent development.
 
-* On Red Hat Red Hat OpenShift Dev Spaces:
+* Access https://app.tavily.com[https://app.tavily.com^]
+* Click on *Sign up* to create a new account
+* Choose your sign up method: *Google*, *GitHub*, *Email address*
 
-- Create a new folder name: *templates*
-image:rhads-ai/rhads/devspaces-newfolder.png[width=100%]
 
-- Add a new file with the name *index.html* 
+image:rhads-ai/rhads/tavily-web.png[width=100%]
+
+* Click on continue, and once logged in, you will see a screen like this one:
+
+image:rhads-ai/rhads/tavily-main.png[width=100%]
+
+* Close the *Get started* pop up
+* Click on add *API KEY* 
+
+image:rhads-ai/rhads/tavily-appkey-add.png[width=40%]
+
+* Create the API KEY with the name *agent*:
+
+*Note:* The API KEY is *free*, additional information about limits in the next screenshot.
+
+image:rhads-ai/rhads/tavily-appkey-create.png[width=70%]
+
+** After creating the API KEY, copy the *API KEY VALUE*:
+
+**NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY**
+
+
+=== Create the secret in Kubernetes.
+
+You will create a secret with Tavily API key.
+
+* Open the *Terminal* by clicking on *New Terminal* 
+
++
+image:rhads-ai/rhads/devspaces-terminal.png[width=70%]
+
+*Note*: Ignore any message from Red Hat Dev Spaces:
+"Some keybindings don't go to the terminal by default and are handled by Red Hat OpenShift Dev Spaces with Microsoft Visual Studio Code - Open Source IDE instead."
+
+* Copy the following content:
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+kubectl create secret generic ai-agent-secrets-tavily \
+  --from-literal=TAVILY_API_KEY= \
+  -n tssc-app-development
+----
+
+* Paste the content on the terminal.
+* Paste your key *after* the *TAVILY_API_KEY=* in the kubernetes secret.
+
+* Hit enter to create the secret, you should see a message: *"secret/ai-agent-secrets-tavily created"*
+
+
+=== Get your API key to access the self-hosted Model
+Now, you will set up your account in the link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Internal MaaS Demo from the AI BU,window='_blank']. Your account will enable you to access the Model you need with an *API KEY*. For these labs, you will be using the same model. You might need a new model in the future. You need to know how to access a self-hosted model that you can leverage to either build an application or connect to a third-party tool, such as an AI assistant.
+
+* Access the following URL and follow the steps to sign in with your *Red Hat account*.
+link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
+
+*Note:* The link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank'] is not an official Red Hat service. For Red Hat associate internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use. The models are provided for this limited purpose.
+
+
+** Click on *Sign in*
+
+image:rhads-ai/rhads/maas-sign-in.png[width=60%]
+
+** Click on *Authenticate with RH SSO*
+
+image:rhads-ai/rhads/maas-authrh.png[width=80%]
+
+** Click on *Google* to sign in to *RHOAI*, where the model is deployed with your account.
+
+image:rhads-ai/rhads/maas-rhoai.png[width=60%]
+
+** Click on the model *llama-3-2-3b*
+
+image:rhads-ai/rhads/maas-model-select.png[width=100%]
+
+** Create an application to access the *API Key*, with the name *assistant*.
+
+image:rhads-ai/rhads/maas-app-assistant.png[width=80%]
+
+
+**NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY**
+
+=== Create the secret in Kubernetes.
+
+* Copy the following content:
+
+### Environment Variables (Kubernetes)
+Create a secret with your API keys:
+
+[source,bash,role=execute,subs=attributes+]
+----
+kubectl create secret generic ai-agent-secrets-llm \
+  --from-literal=LLM_API_BASE_URL=\
+  --from-literal=LLM_API_KEY= \
+  --from-literal=MODEL_NAME=Llama-3.2-3B \
+  -n tssc-app-development
+---
+
+* Paste the secret on the terminal. 
+
+** Copy the *Endpoint URL* from the Maas website and paste it after the *LLM_API_BASE_URL=* in the kubernetes secret
+
+** Copy the *API Key* and paste it after the *LLM_API_KEY=* in the kubernetes secret
+
+
+* Hit enter to create the secret, you should see a message: *"secret/ai-agent-secrets-llm created"*
+
+
+== Let's add the AI Agent implementation to the project:
+You will add new files and update existent content. 
+
+. *Create a new folder* and within a *new file, index.html*: this file represents the UI.
+. Create a *new python file*, search_agent.py: this file contains the Agent Logic.
+. *Update app.py* python file: this file is the main file that the index.html will communicating with.
+. *Update Dockerfile*: this file defines the container specification.
+. *Update the requirements.txt* file : this file holds the required libraries for the AI python app to work.
+
+=== 1. Create a index.html file
+The index.html file needs to be located under the templates folder.
+
+* On Red Hat Red Hat OpenShift Dev Spaces, click on the *ai-agent* project:
+
+* Create a new folder name: *templates*
+
++
+image:rhads-ai/rhads/devspaces-newfolder.png[width=80%]
+
+* Next, inside this folder, add a new file with the name *index.html* 
+
++
 image:rhads-ai/rhads/devspaces-newfile.png[width=100%]
 
-- On the index.html:
-image:rhads-ai/rhads/devspaces-index.html.png[width=100%]
+* On the index.html copy the content provided, by clicking on the icon:
 
-* Copy the content provided, by clicking on the icon:
-
++
 image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 
 
@@ -605,120 +725,22 @@ image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 </html>
 ----
 
-* Paste the content on the index.html file replacing the whole content.
+* Paste the content on the *index.html* file replacing the whole content.
 
-* Verify the solution
+* Save the new content.
 
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/index.html[index.html solution file^] 
-
-
-=== Update app.py
-* Go to the app.py file:
-
-image:rhads-ai/rhads/devspaces-app.png[width=20%]
-
-* Copy the content provided, by clicking on the icon:
-
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
-
-[source,bash,role=execute,subs=attributes+]
-----
-from flask import Flask, render_template, request, jsonify
-from search_agent import SearchAgent
-
-# Initialize Flask app
-app = Flask(__name__)
-
-# Initialize the search agent
-print("Initializing AI Research Agent...")
-try:
-    search_agent = SearchAgent()
-    print("Agent initialized successfully!")
-except Exception as e:
-    print(f"Failed to initialize agent: {e}")
-    search_agent = None
-
-@app.route('/')
-def home():
-    """Render the home page with input form."""
-    return render_template('index.html')
-
-@app.route('/ask', methods=['POST'])
-def ask():
-    """Handle form submission and return results."""
-    user_prompt = request.form.get('prompt', '').strip()
-
-    if not user_prompt:
-        return render_template('index.html',
-                             prompt=user_prompt,
-                             result="Please enter a research question.")
-
-    if not search_agent:
-        return render_template('index.html',
-                             prompt=user_prompt,
-                             result="Error: Agent not available. Check your API keys.")
-
-    try:
-        print(f"Processing query: {user_prompt[:50]}...")
-        result = search_agent.run(user_prompt)
-        print("Query completed successfully!")
-
-        return render_template('index.html',
-                             prompt=user_prompt,
-                             result=result)
-    except Exception as e:
-        print(f"Error processing query: {e}")
-        return render_template('index.html',
-                             prompt=user_prompt,
-                             result=f"Error: {str(e)}")
-
-@app.route('/ask_async', methods=['POST'])
-def ask_async():
-    """Handle AJAX requests and return JSON."""
-    user_prompt = request.json.get('prompt', '').strip()
-
-    if not user_prompt:
-        return jsonify({'error': 'Please provide a valid prompt'}), 400
-
-    if not search_agent:
-        return jsonify({'error': 'Agent not available'}), 500
-
-    try:
-        result = search_agent.run(user_prompt)
-        return jsonify({'result': result, 'cached': False})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/health')
-def health_check():
-    """Simple health check endpoint."""
-    if search_agent:
-        return jsonify({'status': 'healthy'})
-    return jsonify({'status': 'unhealthy'}), 503
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8080)
-----
-
-* On Red Hat Red Hat OpenShift Dev Spaces, click on the app.py file 
-
-image:rhads-ai/rhads/devspaces-app.py.png[width=100%]
-* Paste the content on the app.py file replacing the whole content.
+* If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/index.html[index.html solution file^] 
 
 
-* Verify the solution
-
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/app.py[app.py solution file^] 
-
-
-=== Add a new python file: search_agent.py 
+=== 2. Add a new python file: search_agent.py 
 
 
 * Click on the project, then click on *New file* 
 
++
 image:rhads-ai/rhads/devspaces-newfile.png[width=100%]
 
-* Paste the following name. Hit *enter*
+* Paste the following name and pres *enter*
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -727,7 +749,7 @@ search_agent.py
 
 * Copy the content provided, by clicking on the icon:
 
-
++
 image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 
 [source,bash,role=execute,subs=attributes+]
@@ -912,22 +934,118 @@ if __name__ == "__main__":
 
 ----
 
+* Save the new content.
 
-* Verify the solution
+* If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/search_agent.py[search_agent.py solution file^] 
 
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/search_agent.py[search_agent.py solution file^] 
 
-=== Update Dockerfile
+=== 3. Update app.py
+* Go to the app.py file and open it:
 
-* On Red Hat Red Hat OpenShift Dev Spaces, click on the Dockerfile file 
-
-image:rhads-ai/rhads/devspaces-dockerfile.png[width=100%]
-
-* Paste the content on the Dockerfile file replacing the whole content.
++
+image:rhads-ai/rhads/devspaces-app.png[width=100%]
 
 * Copy the content provided, by clicking on the icon:
 
++
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 
+[source,bash,role=execute,subs=attributes+]
+----
+from flask import Flask, render_template, request, jsonify
+from search_agent import SearchAgent
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Initialize the search agent
+print("Initializing AI Research Agent...")
+try:
+    search_agent = SearchAgent()
+    print("Agent initialized successfully!")
+except Exception as e:
+    print(f"Failed to initialize agent: {e}")
+    search_agent = None
+
+@app.route('/')
+def home():
+    """Render the home page with input form."""
+    return render_template('index.html')
+
+@app.route('/ask', methods=['POST'])
+def ask():
+    """Handle form submission and return results."""
+    user_prompt = request.form.get('prompt', '').strip()
+
+    if not user_prompt:
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result="Please enter a research question.")
+
+    if not search_agent:
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result="Error: Agent not available. Check your API keys.")
+
+    try:
+        print(f"Processing query: {user_prompt[:50]}...")
+        result = search_agent.run(user_prompt)
+        print("Query completed successfully!")
+
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result=result)
+    except Exception as e:
+        print(f"Error processing query: {e}")
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result=f"Error: {str(e)}")
+
+@app.route('/ask_async', methods=['POST'])
+def ask_async():
+    """Handle AJAX requests and return JSON."""
+    user_prompt = request.json.get('prompt', '').strip()
+
+    if not user_prompt:
+        return jsonify({'error': 'Please provide a valid prompt'}), 400
+
+    if not search_agent:
+        return jsonify({'error': 'Agent not available'}), 500
+
+    try:
+        result = search_agent.run(user_prompt)
+        return jsonify({'result': result, 'cached': False})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint."""
+    if search_agent:
+        return jsonify({'status': 'healthy'})
+    return jsonify({'status': 'unhealthy'}), 503
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=8080)
+----
+* Paste the content on the app.py file replacing the whole content.
+
+* Save the new content.
+
+* If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/app.py[app.py solution file^] 
+
+
+=== 4. Update Dockerfile
+
+* On Red Hat Red Hat OpenShift Dev Spaces, click on the Dockerfile file 
+
++
+image:rhads-ai/rhads/devspaces-dockerfile.png[width=100%]
+
+
+* Copy the content provided, by clicking on the icon:
+
++
 image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 
 [source,bash,role=execute,subs=attributes+]
@@ -968,15 +1086,23 @@ CMD ["gunicorn", "--bind", "0.0.0.0:8081", "--workers", "2", "--threads", "4", "
 
 ----
 
-* Verify the solution
+* Paste the content on the Dockerfile file replacing the whole content.
 
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/Dockerfile[Dockerfile solution file^] 
+* Save the new content.
+
+* If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/Dockerfile[Dockerfile solution file^] 
 
 
-=== Update requirements.txt
+=== 5. Update requirements.txt
+
+* On Red Hat Red Hat OpenShift Dev Spaces, click on the requirements.txt file 
+
++
+image:rhads-ai/rhads/devspaces-requirements.png[width=100%]
 
 * Copy the content provided, by clicking on the icon:
 
++
 image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 
 [source,bash,role=execute,subs=attributes+]
@@ -1001,136 +1127,40 @@ python-dotenv==1.0.1
 gunicorn==23.0.0
 ----
 
-* On Red Hat Red Hat OpenShift Dev Spaces, click on the requirements.txt file 
+* Paste the content on the requirements.txt file *replacing the whole content*.
 
-image:rhads-ai/rhads/devspaces-requirements.png[width=100%]
-* Paste the content on the requirements.txt file replacing the whole content.
+* Save the new content.
 
+* If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/requirements.txt[requirements.txt solution file^] 
 
-* Verify the solution
-
-https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/requirements.txt[requirements.txt solution file^] 
 
 *Note:* Depending on the organization, Platform Engineering teams might be responsible for defining the Dockerfile.
-
-
-Before submitting your changes,let's create additional resources in Kubernetes.
-
-== Connecting your AI Agent to APIs
-
-=== Create the secret in Kubernetes.
-
-* Open the *Terminal* by clicking on *New Terminal* 
-image:rhads-ai/rhads/devspaces-terminal.png[width=70%]
-
-
-* Copy the following content and ensure you have replaced the values with the recent gathered credentials
-
-### Environment Variables (Kubernetes)
-Create a secret with your API keys:
-
-[source,bash,role=execute,subs=attributes+]
-----
-kubectl create secret generic ai-agent-secrets \
-  --from-literal=LLM_API_BASE_URL=REPLACE_1/v1 \
-  --from-literal=LLM_API_KEY=REPLACE_2 \
-  --from-literal=TAVILY_API_KEY=REPLACE_3 \
-  --from-literal=MODEL_NAME=Llama-3.2-3B \
-  -n tssc-app-development
-----
-You will find the values to be replacing the placeholders in the next section. Do not hit enter yet.
-
-=== Get your API key to access the self-hosted Model
-Now, you will set up your account in the link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Internal MaaS Demo from the AI BU,window='_blank']. Your account will enable you to access the Model you need with an *API KEY*. For these labs, you will be using the same model. You might need a new model in the future. You need to know how to access a self-hosted model that you can leverage to either build an application or connect to a third-party tool, such as an AI assistant.
-
-* Access the following URL and follow the steps to sign in with your *Red Hat account*.
-link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
-
-*Note:* The link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank'] is not an official Red Hat service. For Red Hat associate internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use. The models are provided for this limited purpose.
-
-
-** Click on *Sign in*
-
-image:rhads-ai/rhads/maas-sign-in.png[width=60%]
-
-** Click on *Authenticate with RH SSO*
-
-image:rhads-ai/rhads/maas-authrh.png[width=80%]
-
-** Click on *Google* to sign in to *RHOAI*, where the model is deployed with your account.
-
-image:rhads-ai/rhads/maas-rhoai.png[width=60%]
-
-** Click on the model *llama-3-2-3b*
-
-image:rhads-ai/rhads/maas-model-select.png[width=100%]
-
-** Create an application to access the *API Key*, with the name *assistant*.
-
-image:rhads-ai/rhads/maas-app-assistant.png[width=80%]
-
-** Copy the *Endpoint URL* and paste it into the *REPLACE_1* in the kubernetes secret
-
-** Copy the *API Key* and paste it into the *REPLACE_2* in the kubernetes secret
-
-=== Setup your account on the Tavily website
-The AI Search Agent will use *Tavily* for the  *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to continue our AI agent development.
-
-* Access https://app.tavily.com[https://app.tavily.com^]
-* Click on *Sign up* to create a new account
-* Choose your sign up method: *Google*, *GitHub*, *Email address*
-
-
-image:rhads-ai/rhads/tavily-web.png[width=100%]
-
-* Click on continue, and once logged in, you will see a screen like this one:
-
-image:rhads-ai/rhads/tavily-main.png[width=100%]
-
-* Close the *Get started* pop up
-* Click on add *API KEY* 
-
-image:rhads-ai/rhads/tavily-appkey-add.png[width=40%]
-
-* Create the API KEY with the name *agent*:
-
-*Note:* The API KEY is *free*, additional information about limits in the next screenshot.
-
-image:rhads-ai/rhads/tavily-appkey-create.png[width=70%]
-
-** After creating the API KEY, copy the *API KEY VALUE*:
-
-**NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY**
-
-* Paste your key into the *REPLACE_3* in the kubernetes secret.
-
-* Hit enter to create the secret, you should see a message: *"secret created"*
 
 Now, we are ready to push the source code.
 
 === Push the source code
 
+* Verify your changes:
+
 Your directories and source code should look similar like this:
 
 image:rhads-ai/rhads/devspaces-folders.png[width=60%]
 
-* Next, push your changes.
+* Next, push your changes to the GitLab repository.
 
 ** Click on the *Source control* icon
 
-image:rhads-ai/rhads/devspaces-sourceicon.png[width=30%]
+image:rhads-ai/rhads/devspaces-sourceicon.png[width=20%]
 
-** Add a commit message: 
+** Add a commit message, copy the following description: 
 [source,bash,role=execute,subs=attributes+]
 ----
-Add Agent
+add agent
 ----
 
 ** Click on the *Commit & Push* icon
 
-
 image:rhads-ai/rhads/devspaces-commit.png[width=100%]
-
 
 === Explore the Trusted Software Supply Chain
 
@@ -1156,6 +1186,7 @@ image:rhads-ai/rhads/ai-agent-live.png[width=100%]
 * Test the agent
 
 ** Say Hi to the agent: 
+
 [source,bash,role=execute,subs=attributes+]
 ----
 Hi
@@ -1167,6 +1198,7 @@ image:rhads-ai/rhads/ai-agent-hi.png[width=100%]
 
 
 ** Let's try Tavily Search by asking a question that the agent should be able to find in Internet: 
+
 [source,bash,role=execute,subs=attributes+]
 ----
 What are the latest developments in quantum computing from the past month?
@@ -1174,5 +1206,26 @@ What are the latest developments in quantum computing from the past month?
 
 image:rhads-ai/rhads/ai-agent-quantum.png[width=100%]
 
-== Congratulations on building an Agent 
+
+** Let's try Tavily Extract by asking a question that the agent should be able to extract from a specific web page: 
+
+[source,bash,role=execute,subs=attributes+]
+----
+Extract information from  https://commons.openshift.org/gatherings/ and tell me when is the next gathering
+----
+
+image:rhads-ai/rhads/ai-agent-extract.png[width=100%]
+
+** Let's try Tavily Crawl by asking a question that the agent should be able to crawl from a series of web pages: 
+
+[source,bash,role=execute,subs=attributes+]
+----
+Crawl through the CNCF website and give me the list of few graduated projects
+----
+
+image:rhads-ai/rhads/ai-agent-crawl.png[width=100%]
+
+Note: the list of CNCF projects listed will be different since we are not adding specific parameters about which projects will show.
+
+== Congratulations on building an AI Agent 
 You have completed this lab! We have learned how to build an AI Agent with best practices including Developer Productivity, Security and Scalability. Built and deploy an AI agent in OpenShift using Red Hat Advanced Developer Suite.

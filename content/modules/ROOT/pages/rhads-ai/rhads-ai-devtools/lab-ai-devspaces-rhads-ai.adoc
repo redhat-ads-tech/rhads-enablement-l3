@@ -10,21 +10,26 @@ This Lab will showcase how to configure an AI assistant and expand the AI assist
 Let's get started.
 
 == Scenario
-Now, imagine for a moment that you are part of the Python AI Development team. You have already an AI agent built but now you need to include new functionalities.
+Now, imagine for a moment that you are part of the Python AI Development team. Your team has already built the AI agent built but now is your time to learn about this implementation.
+
 
 == Getting started
 
-* Access the Red Hat OpenShift Dev Spaces from the template already created in Red Hat Developer Hub:
+* Access the Red Hat OpenShift Dev Spaces from the component already created in Red Hat Developer Hub:
 
-** Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^] //TODO replace URL
+** Go back to {rhdh_url/catalog/default/component/ai-agent}[Red Hat Developer Hub UI^]
 
 ** Login with your user credentials:
 
  *** *Username*: {rhdh_user}
  *** *Password*: {rhdh_user_password}
 
-** Next, click on the component's *Python Web AI*
+** Next, click on the component's *ai-agent*
 ** From the component's overview, *click on* the *Red Hat OpenShift Dev Spaces*
+** Click on the *OpenShift Dev spaces* link from the *component overview* screen 
+
+image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
+
 
 ** Login with your user credentials:
 
@@ -66,11 +71,47 @@ image:rhads-ai/rhdevspaces/devspaces-continue-config-assistant.png[width=80%]
 
 image:rhads-ai/rhdevspaces/devspaces-continue-config-yaml.png[width=100%]
 
-* Take the time to review the file provided here:
+* Copy the following content and past it to replace the *whole current content*:
 
-** https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml[config.yaml AI assistant config file^]
+** Copy the content provided, by clicking on the icon:
 
-* Copy the file content and *paste* it into the config.yaml file created by continue.
++
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+name: Local Assistant
+version: 1.0.0
+schema: v1
+models:
+  - name: llama-3-2-3b
+    provider: openai
+    model: llama-3-2-3b
+    apiBase: 
+    apiKey: ""
+    roles:
+      - chat
+      - edit
+      - apply
+tabAutocompleteModel:
+  title: RamaLama (AutoComplete)
+  provider: custom
+  model: default
+allowAnonymousTelemetry: false
+context:
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+  - provider: problems
+  - provider: folder
+  - provider: codebase
+----
+
+**  If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml[config.yaml AI assistant config file^]
+
+* *Paste* it into the config.yaml file created by continue.
 
 The next step will add the Model's *apiBase* and *apiKey* from the *Internal MaaS Demo from the AI BU*.
 
@@ -103,11 +144,12 @@ image:rhads-ai/rhdevspaces/maas-rhoai.png[width=60%]
 image:rhads-ai/rhdevspaces/maas-model-select.png[width=100%]
 
 
-** Copy the *API Key* and paste it into the config.yaml file created by continue in the *apiKey:"  "*.
+** Copy the *API Key* and paste it into the *config.yaml* file created by continue in the *apiKey:"  "*.
 
 image:rhads-ai/rhdevspaces/maas-key.png[width=80%]
 
-** Copy the *Endpoint URL* and paste it into the config.yaml file created by continue in the *apiBase:* and add at the end of the route */v1*
+** Copy the *Endpoint URL* and paste it into the *config.yaml* file created by continue in the *apiBase:* and add at the end of the route */v1*
+
 
 * Save the file and close the  *Config update* message
 
@@ -124,13 +166,35 @@ image:rhads-ai/rhdevspaces/continue-llama-select.png[width=60%]
 
 image:rhads-ai/rhdevspaces/continue-chat1.png[width=60%]
 
+* Learn about the current implementation. Let's start with the *search_agent.py* file
 
-*Congratulations*, using a self-hosted LLM, you have successfully configured an *AI Assistant in Red Hat OpenShift Dev Spaces*.
+[source,bash,role=execute,subs=attributes+]
+----
+@search_agent.py  tell me about this file
+----
+
+Note: ensure you are adding @search_agent.py at the beginning of the prompt
+
+image:rhads-ai/rhdevspaces/continue-chat2.png[width=100%]
+
+
+* Learn about the current implementation. Let's start with the *requirements.txt* file
+
+[source,bash,role=execute,subs=attributes+]
+----
+@requirements.txt  tell me about this file
+----
+
+Note: ensure you are adding @requirements.txt *at the beginning of the prompt
+
+image:rhads-ai/rhdevspaces/continue-chat3.png[width=100%]
+
+*Congratulations*, using a self-hosted LLM, you have successfully configured an *AI Assistant in Red Hat OpenShift Dev Spaces* and learn about the AI Agent implementation.
 
 
 == Configure an *MCP server in the AI Assistant*
 
-The AI assistant will use *Tavily* for the  *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to continue our AI agent development.
+The AI assistant will use *Tavily* for the *tools*, such as Web Search. We want to include the *Tavily MCP server* in our Development environment to learn about the AI agent development.
 
 * Click on continue chat and click on the  *tools icon*:
 
@@ -138,12 +202,36 @@ image:rhads-ai/rhdevspaces/mcp-configure-tools.png[width=60%]
 
 * In the tools window, click on the *plus icon*, to configure the *MCP server*.
 
-image:rhads-ai/rhdevspaces/mcp-configure-new.png[width=60%]
+image:rhads-ai/rhdevspaces/mcp-configure-new.png[width=100%]
+
+
+* You will see a new file created called: *new-mcp-server.yaml*
+
+* Copy the following content and past it to replace the *whole current content*:
+
+** Copy the content provided, by clicking on the icon:
+
++
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+name: Tavily MCP
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Tavily MCP server
+    command: npx
+    args:
+      - -y
+      - mcp-remote 
+      - https://mcp.tavily.com/mcp/?tavilyApiKey=
+    env: {}
+----
 
 * We have already provided you with a configuration to set up *Tavily MCP server*:
-** Take the time to review the file provided here:
-
-*** https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml[tavily-mcp-server config file^]
+** If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml[tavily-mcp-server config file^]
 
 *Note:* Other AI assistants might not use yaml files but JSON files. If you are trying to configure an AI Assistant in the future, the MCP server web page will have an example of how to configure it with other AI assistants. Explore more from https://docs.tavily.com/documentation/mcp[Tavily MCP^]
 
@@ -182,24 +270,38 @@ If the server is not yet ready, click on the *refresh* icon:
 image:rhads-ai/rhdevspaces/mcp-server-refresh.png[width=70%]
 
 
-=== Testing the *MCP server in the AI Assistant*
+=== Using the *MCP server in the AI Assistant* to learn about Tavily
+
+Tavily provides different tools including Tavily Search and Tavily Extract.
 
 * Click on the *back icon* to go back to the continue chat  
 
 image:rhads-ai/rhdevspaces/mcp-server-back.png[width=60%]
 
-* Select the *agent* changing the current *chat* option.
+* Ensure the *agent* is selected in the Continue terminal option.
 
 image:rhads-ai/rhdevspaces/mcp-server-select-agent.png[width=60%]
 
-We need an agent to interact with the *mcp server tools*
+An agent to interact with the *mcp server tools*.
 
-* Ask the AI Agent any questions to use the recently added MCP server, such as:
+* Ask the AI Agent a questions about *Tavily Search*:
 
-image:rhads-ai/rhdevspaces/mcp-server-chat.png[width=60%]
+[source,bash,role=execute,subs=attributes+]
+----
+tell me about tavily search
+----
+image:rhads-ai/rhdevspaces/mcp-server-chat.png[width=100%]
+
+* Ask the AI Agent a questions about *Tavily Extract*:
+
+[source,bash,role=execute,subs=attributes+]
+----
+tell me about tavily extract
+----
+image:rhads-ai/rhdevspaces/mcp-server-chat-extract.png[width=100%]
 
 
-*Congratulations*, you have successfully configured an *MCP Server in Red Hat OpenShift Dev Spaces* as part of the AI assistant.
+*Congratulations*, you have successfully configured an *MCP Server in Red Hat OpenShift Dev Spaces* as part of the AI assistant and learn about the AI Agent tools.
 
 
 

@@ -1,40 +1,42 @@
-= Build an AI Agent with Red Hat Advanced Developer Suite (RHADS) and Integrated Security
+= Building an AI Agent with Red Hat Advanced Developer Suite (RHADS)
 
-[#Introduction]
 == Introduction
-The following labs will guide you through leveraging Red Hat Advanced Developer Suite to build and deploy an AI agent with integrated security and best practices. You'll learn how to establish a robust framework for AI application development within an organization, ensuring adherence to security best practices with self-service on OpenShift using Red Hat Advanced Developer Suite.
 
+These labs will guide you through building and deploying a secure AI agent using the Red Hat Advanced Developer Suite (RHADS). You will learn how to establish a strong framework for AI application development that incorporates security best practices from the start, all while using self-service tools on OpenShift.
 
 == Objectives
-This lab demonstrates how to take a pre-existing software template and deploy an AI Agent into OpenShift using Red Hat Advanced Developer Suite. This approach ensures that organizations integrate best practices from the beginning to provide developers the tool they need to build and deploy applications securely. In this case, we are leveraging the pre-defined Software templates already integrated with Red Hat Developer Hub.
 
-This section presents two labs to represent each persona and the following scenarios:
+This lab demonstrates how to use a pre-built software template in RHADS to deploy an AI Agent to OpenShift. This approach helps organizations ensure that developers have the tools and security standards they need right from the beginning. We will use the software templates already integrated into the Red Hat Developer Hub.
 
-== AI Platform Engineering
-You are part of the AI Platform Engineering team and are responsible for providing the tools and best practices with your organization's guidelines for the AI team to build an AI agent in OpenShift. 
+This guide is divided into two labs, each focusing on a different role:
+
+== AI Platform Engineer
+
+As a member of the AI Platform Engineering team, you are responsible for providing the tools, templates, and security guidelines for the AI engineering team to build applications in OpenShift.
 
 == AI Engineer
-You are part of the AI Engineer team and are responsible for creating an AI agent following your organization's guidelines and best practices provided by the AI Platform Engineering.
 
+As a member of the AI engineering team, you are responsible for creating an AI agent that follows the guidelines and best practices established by the AI Platform Engineering team.
 
-== Getting started
+== Getting Started
 
-** Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]
+. Access the Red Hat Developer Hub UI
 
-** Click on *Sign In* using the *OIDC* authentication method
+Open the {rhdh_url}[Red Hat Developer Hub UI^]
 
-image:rhads-ai/rhads/rhdh-login.png.png[Create UI]
+. Sign In
 
+Click Sign In and choose the OIDC authentication method.
 
-** Log in with your user administrator credentials:
+image:rhads-ai/rhads/rhdh-login.png[width=60%]
 
- *** *Username*: {openshift_admin_user}
- *** *Password*: {openshift_admin_password}
+Log in with your administrator credentials:
 
-** You will see a screen similar like this:
+** Username: {openshift_admin_user}
+** Password: {openshift_admin_password}
 
+You will be greeted with a welcome screen.
 
 image:rhads-ai/rhads/rhdh-welcome.png[Create UI]
- 
 
-Next, you will dive into an AI Platform Engineer persona to build the tools for the AI Engineering team.
+Next, you will take on the role of an AI Platform Engineer to set up the necessary tools for the AI Engineering team.
