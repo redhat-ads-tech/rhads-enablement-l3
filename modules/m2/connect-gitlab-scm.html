@@ -58,7 +58,7 @@
     <a class="nav-link" href="concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="concepts.html">Core Concepts</a>
+    <a class="nav-link" href="concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -354,7 +354,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console] and viewing the <code>gitlab</code> project. Do not edit or delete anything in this project!</p>
+<p>You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console^] and viewing the <code>gitlab</code> project. Do not edit or delete anything in this project!</p>
 </div>
 </td>
 </tr>
@@ -362,7 +362,7 @@
 </div>
 </li>
 <li>
-<p>Login using the root credentials:</p>
+<p>Login to GitLab using the root credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -417,7 +417,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -487,7 +487,7 @@ stringData:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3\~Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/clusterserviceversions/rhdh-operator.v1.7.1/rhdh.redhat.com~v1alpha3~Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>gitlab-secrets</strong> Secret you created:</p>
@@ -689,7 +689,7 @@ stringData:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The GitLab integration will scan the specified group (<code>rhdh</code> in this example) for repositories containing <code>discovery-example/catalog-info.yaml</code> files and automatically import them into the Backstage catalog. Normally the <code>discovery-example/</code> prefix is not used, but to avoid cluttering the software catalog, it&#8217;s used to narrow the scope in this example.</p>
+<p>The GitLab integration will scan the specified group (<code>rhdh</code> in this example) for repositories containing <code>discovery-example/catalog-info.yaml</code> files and automatically import them into the Backstage catalog. Normally the <code>discovery-example/</code> prefix is not used, but it&#8217;s used to narrow the scope in this example to avoid cluttering the software catalog.</p>
 </div>
 </td>
 </tr>

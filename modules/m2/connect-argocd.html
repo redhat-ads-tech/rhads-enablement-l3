@@ -58,7 +58,7 @@
     <a class="nav-link" href="concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="concepts.html">Core Concepts</a>
+    <a class="nav-link" href="concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -337,7 +337,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -364,7 +364,7 @@
 <p>Select the <strong>tssc-gitops</strong> instance, and then <strong>Actions &gt; Edit Argo CD</strong>.</p>
 </li>
 <li>
-<p>Edit the <code>extraConfig</code> section to include the following line that adds the <strong>developer-hub</strong> user:</p>
+<p>Add this line to the <code>extraConfig</code> section to add a <strong>developer-hub</strong> user:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">accounts.developer-hub: 'apiKey, login'</code></pre>
@@ -447,10 +447,13 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io~v1\~Route" target="_blank" rel="noopener"><strong>Networksing &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
+<p>Visit <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io~v1~Route" target="_blank" rel="noopener"><strong>Networking &gt; Routes</strong> in the tssc-gitops</a> namespace.</p>
 </li>
 <li>
 <p>Click the link in the <strong>Location</strong> column to access Argo CD.</p>
+</li>
+<li>
+<p><strong>Do not click</strong> the <strong>Log in via OpenShift</strong> button.</p>
 </li>
 <li>
 <p>Login using the username <code>developer-hub</code> and password <code>d3v3l0p3rs</code> - an empty application list will be displayed.</p>
@@ -493,10 +496,13 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to <strong>Workloads &gt; Secrets</strong> and click <strong>Create &gt; From YAML</strong>.</p>
+<p>Navigate to <strong>Workloads &gt; Secrets</strong>.</p>
 </li>
 <li>
 <p>Ensure that the <code>setup-rhdh</code> project is selected.</p>
+</li>
+<li>
+<p>Click <strong>Create &gt; From YAML</strong></p>
 </li>
 <li>
 <p>Replace the content in the YAML editor with the following:</p>
@@ -530,7 +536,7 @@ stringData:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3\~Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and switch to the <strong>YAML</strong> view.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/clusterserviceversions/rhdh-operator.v1.7.1/rhdh.redhat.com~v1alpha3~Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and switch to the <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>argocd-secrets</strong> Secret you created:</p>
@@ -566,7 +572,7 @@ stringData:
 <p>Click <strong>Edit ConfigMap</strong>.</p>
 </li>
 <li>
-<p>Update the <code>dynamic-plugins.yaml</code> content to include the Argo CD plugin:</p>
+<p>Update the <code>dynamic-plugins.yaml</code> content to include the Argo CD plugins:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- package: ./dynamic-plugins/dist/roadiehq-backstage-plugin-argo-cd-backend-dynamic
@@ -663,7 +669,7 @@ stringData:
 <p>For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.</p>
 </div>
 <div class="paragraph">
-<p>Recall that your environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> in GitLab - <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/development/argocd-example" target="_blank" rel="noopener">module-2-assets/discovery-example</a>.</p>
+<p>Recall that your environment has been pre-configured with a repository that contains a sample <strong>catalog-info.yaml</strong> in GitLab - <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/module-2-assets/-/tree/main/discovery-example" target="_blank" rel="noopener">module-2-assets/discovery-example</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -715,7 +721,17 @@ metadata:
 <p>Click <strong>Create</strong>.</p>
 </li>
 <li>
-<p>Confirm the namespace is managed by <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters" target="_blank" rel="noopener">viewing the clusters screen in Argo CD</a>, then selecting the <strong>in-cluster</strong> item.</p>
+<p>Confirm the namespace is managed by <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters" target="_blank" rel="noopener">viewing the clusters screen in Argo CD</a>, then selecting the <strong>in-cluster</strong> item. Login as:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>developer-hub</code></p>
+</li>
+<li>
+<p>Password: <code>d3v3l0p3rs</code></p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Your new <strong>httpsink</strong> namespace should be listed in the <strong>Namespaces</strong> field.</p>
@@ -777,7 +793,7 @@ spec:
 </ol>
 </div>
 <div class="paragraph">
-<p>The Application you created is a simple example, but notably it has a <code>app.kubernetes.io/name: httpsink</code> label. Recall that the Argo CD plugin uses a selector to query information from Argo CD for a given Backstage Entity - this is the label your Component uses as the selector.</p>
+<p>The Application you created is a simple example, but notably it has a <code>app.kubernetes.io/name: httpsink</code> label. Recall that the Argo CD plugin for Red Hat Developer Hub uses a selector to query information from Argo CD for a given Backstage Entity - this is the label your Component uses as the selector when querying Argo CD for deployment information.</p>
 </div>
 </div>
 <div class="sect2">
@@ -853,11 +869,12 @@ spec:
 </li>
 </ol>
 </div>
+</div>
+</div>
+</div>
+<h1 id="_conclusion" class="sect0"><a class="anchor" href="#_conclusion"></a>Conclusion</h1>
 <div class="paragraph">
-<p>Nice work! Developers can now view the continuous delivery status of their applications directly in Red Hat Developer Hub without needing to access Argo CD directly. In this instance, just one environment&#8217;s information is shown, but the application could be deployed in multiple environments, and a card for each would be listed in the Argo CD tab.</p>
-</div>
-</div>
-</div>
+<p>Nice work! Developers can now view the continuous delivery status of their applications directly in Red Hat Developer Hub. In this instance, just one environment&#8217;s information is shown, but the application could be deployed in multiple environments. A card for each environment would be listed in the Argo CD tab.</p>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="connect-gitlab-scm.html" class="query-params-link">GitLab Integration</a></span>

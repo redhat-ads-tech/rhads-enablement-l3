@@ -58,7 +58,7 @@
     <a class="nav-link" href="concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="concepts.html">Core Concepts</a>
+    <a class="nav-link" href="concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -321,7 +321,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -335,31 +335,14 @@
 </li>
 <li>
 <p>Dismiss any popups that appear.</p>
-</li>
-<li>
-<p>Click the <strong>Cluster Selector</strong> in the top-left and select <strong>local-cluster</strong>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/setup-rhdh/select-cluster.png" alt="select cluster">
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Your environment is equipped with Red Hat Advanced Cluster Management, hence the requirement to select a cluster context. In a real-world scenario, you&#8217;d have multiple clusters to choose from, but your environment is limited to a single OpenShift cluster.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 </li>
 <li>
-<p>Switch to the <strong>Administrator</strong> perspective using the <strong>Perspective Switcher</strong> in the top-left of the UI.</p>
+<p>If the <strong>Developer</strong> perspective is enabled, switch to the <strong>Administrator</strong> perspective using the <strong>Perspective Switcher</strong> in the top-left of the UI.</p>
 </li>
 <li>
 <p>Expand <strong>Operators</strong> section in the side menu and click the <strong>Installed Operators</strong> link.</p>
@@ -455,10 +438,7 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit the {openshift_console_url}[OpenShift Web Console].</p>
-</li>
-<li>
-<p>Click the <strong>Cluster Selector</strong> in the top-left, and select <strong>local-cluster</strong>.</p>
+<p>Visit the {openshift_console_url}[OpenShift Web Console^].</p>
 </li>
 <li>
 <p>Switch to the <strong>Administrator</strong> perspective using the <strong>Perspective Switcher</strong> in the top-left of the UI.</p>
@@ -491,10 +471,7 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Login to the {openshift_console_url}[OpenShift Web Console].</p>
-</li>
-<li>
-<p>Go to <strong>Workloads &gt; ConfigMaps</strong> using the side navigation.</p>
+<p>Select <strong>Workloads &gt; ConfigMaps</strong> using the side navigation.</p>
 </li>
 <li>
 <p>Click the <strong>Create ConfigMap</strong> button on the <strong>ConfigMaps</strong> screen.</p>
@@ -505,7 +482,7 @@ spec:
 </div>
 </li>
 <li>
-<p>Switch to the YAML view and paste the following into the editor:</p>
+<p>Switch to the <strong>YAML view</strong> and paste the following into the editor:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
@@ -597,6 +574,18 @@ spec:
 <div class="paragraph">
 <p>This Backstage CR will be detected by the Red Hat Developer Hub Operator. The Operator will deploy Postgres and Backstage Pods in the <code>setup-rhdh</code> namespace. Verify the status of the Pods by visiting <strong>Workloads &gt; Pods</strong> and checking that both Pods are marked as running and ready - this will take a minute or two.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you don&#8217;t see the expected Pods, make sure to select the <strong>setup-rhdh</strong> in the <strong>Project</strong> dropdown.
+</td>
+</tr>
+</table>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/setup-rhdh/backstage-pods.png" alt="backstage pods">
@@ -618,6 +607,18 @@ spec:
 </li>
 <li>
 <p>Click the URL in the <strong>Location</strong> column on the <strong>Routes</strong> page. The Red Hat Developer Hub sign-in page will appear.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If an <strong>Application is not available</strong> message is displayed when you click the Location, wait another minute. This simply means the Pod readiness check has not passed yet, but will soon.
+</td>
+</tr>
+</table>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/setup-rhdh/backstage-route.png" alt="backstage route">
@@ -634,20 +635,17 @@ spec:
 </li>
 </ol>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If an <strong>Application is not available</strong> message is displayed when you click the Location, wait another minute. This simply means the Pod readiness check has not passed yet, but will soon.
-</td>
-</tr>
-</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Nice work! You deployed an instance of Red Hat Developer Hub with a minimal <strong>app-config.yaml</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Nice work! You deployed an instance of Red Hat Developer Hub with a minimal <strong>app-config.yaml</strong>. An internal developer portal is only valuable when it has been connected to sources of data and configured with templates. In the following sections you&#8217;ll learn how to connect Red Hat Developer Hub to:</p>
+<p>An internal developer portal is only valuable when it has been connected to sources of data and configured with templates. In the following sections you&#8217;ll learn how to connect Red Hat Developer Hub to:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -677,7 +675,6 @@ If an <strong>Application is not available</strong> message is displayed when yo
 <p>Enable role-based access control (RBAC)</p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>

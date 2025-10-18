@@ -58,7 +58,7 @@
     <a class="nav-link" href="concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="concepts.html">Core Concepts</a>
+    <a class="nav-link" href="concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -311,7 +311,7 @@
 <h2 id="_create_a_persistentvolumeclaim"><a class="anchor" href="#_create_a_persistentvolumeclaim"></a>Create a PersistentVolumeClaim</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>First, create a PersistentVolumeClaim that will store the cached plugin packages. This PVC will be mounted into the Red Hat Developer Hub pods to provide persistent storage for downloaded plugins.</p>
+<p>First, create a PersistentVolumeClaim (PVC) that will store the cached plugin packages. This PVC will be mounted into the Red Hat Developer Hub pods to provide persistent storage for downloaded plugins.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -378,10 +378,10 @@
 <p>Navigate to <strong>Operators &gt; Installed Operators</strong> in the OpenShift Web Console.</p>
 </li>
 <li>
-<p>Click on <strong>Red Hat Developer Hub</strong>.</p>
+<p>Click on the <strong>Red Hat Developer Hub</strong> operator.</p>
 </li>
 <li>
-<p>Select the <strong>Backstage</strong> tab, then click on your <code>rhdh</code> instance.</p>
+<p>Select the <strong>Red Hat Developer Hub</strong> tab, then click on your <code>rhdh</code> instance.</p>
 </li>
 <li>
 <p>Click the <strong>YAML</strong> tab to edit the resource.</p>
@@ -473,13 +473,13 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Wait for the new deployment&#8217;s <code>backstage-backend</code> container to start.</p>
+<p>Return to the <strong>Workloads &gt; Pods</strong>.</p>
 </li>
 <li>
-<p>Return to the <strong>Workloads &gt; Pods</strong> list and locate the <code>backstage-rhdh</code> pod.</p>
+<p>Wait for the new deployment to report a ready status, and for the old pod to be deleted.</p>
 </li>
 <li>
-<p>Click the three dots to the right of the table and delete the pod - a new pod will immediately be created to replace the missing Backstage pod.</p>
+<p>Click the three dots to the right of the new pod and select <strong>Delete Pod</strong> - a new pod will immediately be created to replace the missing Backstage pod.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/setup-rhdh/plugin-cache-delete-pod.png" alt="plugin cache delete pod">
@@ -487,7 +487,7 @@
 </div>
 </li>
 <li>
-<p>Visit the logs for the new pod and you&#8217;ll find that the <strong>install-dynamic-plugins</strong> container reports that it&#8217;s not downloading previously installed plugins.</p>
+<p>Visit the logs for the new pod and you&#8217;ll find that the <strong>install-dynamic-plugins</strong> container reports that it is <code>Skipping download of already installed dynamic plugin</code>.</p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/setup-rhdh/plugin-cache-install-skip.png" alt="plugin cache install skip"></span></p>
 </div>

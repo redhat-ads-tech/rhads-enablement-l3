@@ -58,7 +58,7 @@
     <a class="nav-link" href="concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="concepts.html">Core Concepts</a>
+    <a class="nav-link" href="concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -375,7 +375,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -432,7 +432,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>In this exercise you&#8217;re using <code>user:default/admin</code> since this is the administrative user in the lab environment. Replace this with a valid user entity reference in real-world scenarios - you can view valid user entities in the Red Hat Developer Hub Software Catalog by filtering by <strong>Kind: User</strong>.</p>
+<p>In this exercise you&#8217;re using <code>user:default/admin</code> as the administrative user in the lab environment. Replace this with a valid user entity reference in real-world scenarios - you can view valid user entities in the Red Hat Developer Hub Software Catalog by filtering by <strong>Kind: User</strong>.</p>
 </div>
 </td>
 </tr>
@@ -492,7 +492,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log out from Red Hat Developer Hub.</p>
+<p>Log out from Red Hat Developer Hub using the dropdown in the top-right corner.</p>
 </li>
 <li>
 <p>Log in again, but as:</p>
@@ -697,16 +697,16 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log out from the <strong>admin</strong> account.</p>
+<p>Log out from Red Hat Developer Hub.</p>
 </li>
 <li>
-<p>Log in as a user who is a member of the <code>tssc</code> group (such as <strong>user1</strong>).</p>
+<p>Log in as a user who is a non-privileged user that&#8217;s member of the <code>tssc</code> group (<code>{rhdh_user}</code> / <code>{rhdh_user_password}</code>).</p>
 </li>
 <li>
 <p>Visit the Software Catalog to confirm that entities are visible.</p>
 </li>
 <li>
-<p>Select the <strong>HTTP Sink Application</strong> to confirm <strong>user1</strong> can view it.</p>
+<p>Select the <strong>HTTP Sink Application</strong> to confirm <strong>{rhdh_user}</strong> can view it.</p>
 </li>
 <li>
 <p>Navigate to the <strong>CD</strong> tab - you should notice a permission error.</p>
@@ -778,6 +778,9 @@
 </li>
 <li>
 <p>Expand <strong>Workloads &gt; ConfigMaps</strong> and click <strong>Create ConfigMap</strong>.</p>
+</li>
+<li>
+<p>Select the <strong>Form view</strong>.</p>
 </li>
 <li>
 <p>Set the <strong>Name</strong> to <code>rbac-policies</code>.</p>
@@ -926,7 +929,7 @@ g, group:default/tssc, role:default/location_read</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Login to Red Hat Developer Hub as the <strong>admin</strong> user.</p>
+<p>Login to Red Hat Developer Hub as the <code>{openshift_admin_user}</code> user using the passowrd <code>{openshift_admin_password}</code>.</p>
 </li>
 <li>
 <p>Visit the <strong>Administration &gt; RBAC</strong> screen.</p>
