@@ -9,7 +9,7 @@ This Operator provides the necessary *SonataFlow* https://kubernetes.io/docs/con
 
 == Install Serverless Workflow Operator
 
-Confirm the operator is installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com\~v1alpha1\~ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
+Confirm the operator is installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com{tilde}v1alpha1{tilde}ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
 
 [NOTE]: Login as *{openshift_admin_user}* using the password `{openshift_admin_password}`.
 
@@ -21,6 +21,7 @@ If the Operator is not installed, use Operator Hub to install the stable release
 +
 image::orchestrator-overview/serverless-operators.png[]
 . Select the *OpenShift Serverless Logic Operator*, select version 1.36.0, and click *Install*.
+. On the install form, keep the default settings and click *Install* a final time.
 . Wait for the installation to complete.
 
 == Add the Orchestrator Plugins to {product_rhdh_name}
@@ -31,7 +32,7 @@ NOTE: Module 2 provides an in-depth overview of {product_rhdh_name}'s dynamic pl
 
 Verify that the dynamic plugins have been configured correctly:
 
-. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core\~v1\~ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core{tilde}v1{tilde}ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
   * Username: {openshift_admin_user}
   * Password: {openshift_admin_password}
 . Select and view the YAML for the *tssc-developer-hub-dynamic-plugins* ConfigMap.

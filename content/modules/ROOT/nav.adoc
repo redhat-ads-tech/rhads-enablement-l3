@@ -2,7 +2,7 @@
 * xref:m2/introduction.adoc[Module 2: Install & Administer]
 ** xref:m2/introduction.adoc[Introduction]
 ** xref:m2/concepts.adoc[Foundations]
-*** xref:m2/concepts.adoc[Core Concepts]
+*** xref:m2/concepts.adoc#_core_features[Core Features]
 *** xref:m2/concepts.adoc#_software_catalog_and_entities[Software Catalog & Entities]
 *** xref:m2/concepts.adoc#_plugins[Plugins]
 *** xref:m2/concepts.adoc#_understanding_the_red_hat_developer_hub_configuration[Red Hat Developer Hub Configuration]

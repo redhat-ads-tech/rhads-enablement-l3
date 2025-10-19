@@ -22,7 +22,7 @@ Your cluster has been pre-configured with an Argo CD instance that's managed by 
 
 === Create a Readonly Argo CD User
 
-. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
+. Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:
   * Username: `{openshift_admin_user}`
   * Password: `{openshift_admin_password}`
 . Navigate to *Operators > Installed Operators* and search for "gitops" to find the {product_gitops_name} operator.
@@ -30,7 +30,7 @@ Your cluster has been pre-configured with an Argo CD instance that's managed by 
 +
 image::setup-rhdh/argocd-operator.png[]
 . Select the *{ns_tssc_gitops}* instance, and then *Actions > Edit Argo CD*.
-. Edit the `extraConfig` section to include the following line that adds the *{m2_argocd_user}* user:
+. Add this line to the `extraConfig` section to add a *{m2_argocd_user}* user:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -77,8 +77,9 @@ The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt gene
 
 === Verify the Argo CD User Account is Active
 
-. Visit https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io\~v1\~Route[*Networksing > Routes* in the {ns_tssc_gitops}^] namespace.
+. Visit https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-gitops/route.openshift.io{tilde}v1{tilde}Route[*Networking > Routes* in the {ns_tssc_gitops}^] namespace.
 . Click the link in the *Location* column to access Argo CD.
+. *Do not click* the *Log in via OpenShift* button.
 . Login using the username `{m2_argocd_user}` and password `{m2_argocd_pass}` - an empty application list will be displayed.
 
 image::setup-rhdh/argocd-dashboard.png[]
@@ -96,8 +97,9 @@ Now that Argo CD is configured with a readonly user, you'll update the {product_
 
 Create a Secret in your {product_rhdh_name} namespace to store the *{m2_argocd_user}* Argo CD credentials:
 
-. Navigate to *Workloads > Secrets* and click *Create > From YAML*.
+. Navigate to *Workloads > Secrets*.
 . Ensure that the `{m2_rhdh_project}` project is selected.
+. Click *Create > From YAML*
 . Replace the content in the YAML editor with the following:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -120,7 +122,7 @@ stringData:
 
 Update your Backstage CR to include the Argo CD secret:
 
-. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{m2_rhdh_project}/rhdh.redhat.com\~v1alpha3\~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and switch to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{m2_rhdh_project}/clusterserviceversions/rhdh-operator.v1.7.1/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and switch to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *argocd-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -141,7 +143,7 @@ Enable the Argo CD plugin by updating your *{m2_rhdh_plugins_cm_name}* ConfigMap
 
 . Navigate to *Workloads > ConfigMaps* and click on `{m2_rhdh_plugins_cm_name}`.
 . Click *Edit ConfigMap*.
-. Update the `dynamic-plugins.yaml` content to include the Argo CD plugin:
+. Update the `dynamic-plugins.yaml` content to include the Argo CD plugins:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -193,7 +195,7 @@ image::setup-rhdh/argocd-plugin-logs.png[]
 
 For entities to display Argo CD information, they must include the appropriate annotation linking them to their corresponding Argo CD applications.
 
-Recall that your environment has been pre-configured with a repository that contains a sample *catalog-info.yaml* in GitLab - https://gitlab-gitlab.{openshift_cluster_ingress_domain}/development/argocd-example[module-2-assets/discovery-example^].
+Recall that your environment has been pre-configured with a repository that contains a sample *catalog-info.yaml* in GitLab - https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/module-2-assets/-/tree/main/discovery-example[module-2-assets/discovery-example^].
 
 [NOTE]
 ====
@@ -222,7 +224,9 @@ metadata:
     argocd.argoproj.io/managed-by: tssc-gitops
 ----
 . Click *Create*.
-. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD^], then selecting the *in-cluster* item.
+. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD^], then selecting the *in-cluster* item. Login as:
+  * Username: `{m2_argocd_user}`
+  * Password: `{m2_argocd_pass}`
 . Your new *httpsink* namespace should be listed in the *Namespaces* field.
 +
 image::setup-rhdh/argocd-cluster-details.png[]
@@ -267,7 +271,7 @@ spec:
         maxDuration: 3m
 ----
 
-The Application you created is a simple example, but notably it has a `app.kubernetes.io/name: httpsink` label. Recall that the Argo CD plugin uses a selector to query information from Argo CD for a given Backstage Entity - this is the label your Component uses as the selector.
+The Application you created is a simple example, but notably it has a `app.kubernetes.io/name: httpsink` label. Recall that the Argo CD plugin for {product_rhdh_name} uses a selector to query information from Argo CD for a given Backstage Entity - this is the label your Component uses as the selector when querying Argo CD for deployment information.
 
 === View the Application in Argo CD and Developer Hub
 
@@ -295,4 +299,6 @@ image::setup-rhdh/argocd-httpsink-cd.png[]
 +
 image::setup-rhdh/argocd-httpsink-app-info.png[]
 
-Nice work! Developers can now view the continuous delivery status of their applications directly in {product_rhdh_name} without needing to access Argo CD directly. In this instance, just one environment's information is shown, but the application could be deployed in multiple environments, and a card for each would be listed in the Argo CD tab.
+= Conclusion
+
+Nice work! Developers can now view the continuous delivery status of their applications directly in {product_rhdh_name}. In this instance, just one environment's information is shown, but the application could be deployed in multiple environments. A card for each environment would be listed in the Argo CD tab.
