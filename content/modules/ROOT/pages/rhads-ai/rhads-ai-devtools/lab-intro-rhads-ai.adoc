@@ -1,10 +1,12 @@
-= Hands-on Lab RHADS for AI Engineers
+= Hands-on Lab: Red Hat Advanced Developer Suite for AI Engineers
 
 [#Introduction]
 == Introduction
 
-In this lab, we will gain hands-on experience working with RHADS and Developer tools to build AI applications, including:
+In this lab, you will use Red Hat Advanced Developer Suite  and developer tools to build AI applications. 
+
+You will:
 
 * Experiment with an AI application locally using Podman AI Lab
-* Build an Agent with RHDH from Red Hat OpenShift Dev Spaces
+* Build an Agent with Red Hat Developer Hub from Red Hat OpenShift Dev Spaces
 
