@@ -58,7 +58,7 @@
     <a class="nav-link" href="concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="concepts.html">Core Concepts</a>
+    <a class="nav-link" href="concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -98,10 +98,34 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
@@ -110,7 +134,22 @@
     <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
@@ -125,7 +164,16 @@
     <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 12: Deep dive into RHADS (RHDH and TSSC combined)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab for full lifecycle of product usage</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
@@ -357,7 +405,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console] and viewing the <code>gitlab</code> project. Do not edit or delete anything in this project!</p>
+<p>You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console^] and viewing the <code>gitlab</code> project. Do not edit or delete anything in this project!</p>
 </div>
 </td>
 </tr>
@@ -365,14 +413,14 @@
 </div>
 </li>
 <li>
-<p>Login using the root credentials:</p>
+<p>Login to GitLab using the root credentials:</p>
 <div class="ulist">
 <ul>
 <li>
 <p>Username: <code>root</code></p>
 </li>
 <li>
-<p>Password: {gitlab_user_password}</p>
+<p>Password: <code>{gitlab_user_password}</code></p>
 </li>
 </ul>
 </div>
@@ -420,7 +468,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:</p>
+<p>Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -490,7 +538,7 @@ stringData:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/clusterserviceversions/rhdh-operator.v1.7.1/rhdh.redhat.com~v1alpha3~Backstage/rhdh" target="_blank" rel="noopener">Backstage CR in the OpenShift Web Console</a> and change to the <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Update the <code>extraEnvs.secrets</code> section to reference the <strong>gitlab-secrets</strong> Secret you created:</p>
@@ -586,7 +634,7 @@ stringData:
         entityFilename: discovery-example/catalog-info.yaml
         schedule:
           frequency:
-            minutes: 5
+            minutes: 1
           timeout:
             minutes: 3</code></pre>
 </div>
@@ -647,6 +695,20 @@ stringData:
 <img src="../_images/setup-rhdh/gitlab-component-httpsink.png" alt="gitlab component httpsink">
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If the HTTP Sink Application isn&#8217;t listed in the Catalog, wait a minute or two and refresh the Catalog page.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </li>
 <li>
 <p>Visit the <strong>APIs</strong> screen using the link in the side menu and you&#8217;ll find a matching API Entity. Click it.</p>
@@ -678,7 +740,7 @@ stringData:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The GitLab integration will scan the specified group (<code>rhdh</code> in this example) for repositories containing <code>discovery-example/catalog-info.yaml</code> files and automatically import them into the Backstage catalog. Normally the <code>discovery-example/</code> prefix is not used, but to avoid cluttering the software catalog, it&#8217;s used to narrow the scope in this example.</p>
+<p>The GitLab integration will scan the specified group (<code>rhdh</code> in this example) for repositories containing <code>discovery-example/catalog-info.yaml</code> files and automatically import them into the Backstage catalog. Normally the <code>discovery-example/</code> prefix is not used, but it&#8217;s used to narrow the scope in this example to avoid cluttering the software catalog.</p>
 </div>
 </td>
 </tr>

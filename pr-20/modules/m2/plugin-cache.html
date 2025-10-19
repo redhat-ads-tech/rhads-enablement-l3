@@ -58,7 +58,7 @@
     <a class="nav-link" href="concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="concepts.html">Core Concepts</a>
+    <a class="nav-link" href="concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -98,10 +98,34 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
@@ -110,7 +134,22 @@
     <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
@@ -125,7 +164,16 @@
     <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 12: Deep dive into RHADS (RHDH and TSSC combined)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab for full lifecycle of product usage</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
@@ -314,7 +362,7 @@
 <h2 id="_create_a_persistentvolumeclaim"><a class="anchor" href="#_create_a_persistentvolumeclaim"></a>Create a PersistentVolumeClaim</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>First, create a PersistentVolumeClaim that will store the cached plugin packages. This PVC will be mounted into the Red Hat Developer Hub pods to provide persistent storage for downloaded plugins.</p>
+<p>First, create a PersistentVolumeClaim (PVC) that will store the cached plugin packages. This PVC will be mounted into the Red Hat Developer Hub pods to provide persistent storage for downloaded plugins.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -381,10 +429,10 @@
 <p>Navigate to <strong>Operators &gt; Installed Operators</strong> in the OpenShift Web Console.</p>
 </li>
 <li>
-<p>Click on <strong>Red Hat Developer Hub</strong>.</p>
+<p>Click on the <strong>Red Hat Developer Hub</strong> operator.</p>
 </li>
 <li>
-<p>Select the <strong>Backstage</strong> tab, then click on your <code>rhdh</code> instance.</p>
+<p>Select the <strong>Red Hat Developer Hub</strong> tab, then click on your <code>rhdh</code> instance.</p>
 </li>
 <li>
 <p>Click the <strong>YAML</strong> tab to edit the resource.</p>
@@ -476,13 +524,13 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Wait for the new deployment&#8217;s <code>backstage-backend</code> container to start.</p>
+<p>Return to the <strong>Workloads &gt; Pods</strong>.</p>
 </li>
 <li>
-<p>Return to the <strong>Workloads &gt; Pods</strong> list and locate the <code>backstage-rhdh</code> pod.</p>
+<p>Wait for the new deployment to report a ready status, and for the old pod to be deleted.</p>
 </li>
 <li>
-<p>Click the three dots to the right of the table and delete the pod - a new pod will immediately be created to replace the missing Backstage pod.</p>
+<p>Click the three dots to the right of the new pod and select <strong>Delete Pod</strong> - a new pod will immediately be created to replace the missing Backstage pod.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/setup-rhdh/plugin-cache-delete-pod.png" alt="plugin cache delete pod">
@@ -490,7 +538,7 @@
 </div>
 </li>
 <li>
-<p>Visit the logs for the new pod and you&#8217;ll find that the <strong>install-dynamic-plugins</strong> container reports that it&#8217;s not downloading previously installed plugins.</p>
+<p>Visit the logs for the new pod and you&#8217;ll find that the <strong>install-dynamic-plugins</strong> container reports that it is <code>Skipping download of already installed dynamic plugin</code>.</p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/setup-rhdh/plugin-cache-install-skip.png" alt="plugin cache install skip"></span></p>
 </div>

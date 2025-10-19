@@ -58,7 +58,7 @@
     <a class="nav-link" href="../m2/concepts.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../m2/concepts.html">Core Concepts</a>
+    <a class="nav-link" href="../m2/concepts.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="../m2/concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
@@ -98,10 +98,34 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tpa.html">Module 3: Setup TPA</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../setup-tas.html">Module 4: Setup TAS</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
@@ -110,7 +134,22 @@
     <a class="nav-link" href="../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../orchestrator-overview.html">Module 7: Orchestrator Overview</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../m-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../security-practices.html">Module 8: Getting started with security best practices</a>
@@ -125,7 +164,16 @@
     <a class="nav-link" href="../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../tssc-rhdh.html">Module 12: Trusted Software Supply Chain with RHDH for production</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 12: Deep dive into RHADS (RHDH and TSSC combined)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab for full lifecycle of product usage</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
@@ -284,28 +332,20 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Database as a service using Software Template Patterns</h1>
-<div id="preamble">
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/operator" target="_blank" rel="noopener">Understanding Data Grid</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Welcome to this lab, where you will have the chance to learn how to work with Software templates in Red Hat Developer Hub, and create a new instance of Red Hat Data Grid with Infinispan from Red Hat Developer Hub.</p>
+<p>In this exercise, you will learn how to work with Software templates in Red Hat Developer Hub and create a new instance of <a href="https://www.redhat.com/en/technologies/jboss-middleware/data-grid">Red Hat Data Grid</a> (based on the <a href="https://infinispan.org/">Infinispan</a> project) from Red Hat Developer Hub. Red Hat Data Grid is an open-source in-memory database that can hold nearly any type of data, from plain-text to structured objects.</p>
 </div>
 <div class="paragraph">
-<p>This lab will use creating the instance in an existent, not yet ready template. You will be working to adding the infinispan instance as part of this new template. During this lab, you will have the opportunity to explore how to build clusters for Data Grid, with main goal of learning the different options to build and bring new components into OpenShift in a self-service approach.</p>
+<p>This lab will create the instance using an existing template that is not yet complete. You will work on adding the Infinispan instance as part of this template. During this lab, you will explore how to build clusters for Data Grid, with the main goal of learning different options to build and deploy new components into OpenShift using a self-service approach.</p>
 </div>
 <div class="paragraph">
-<p><strong>Explore RH Data Grid</strong></p>
+<p><strong>Data Grid Operator overview</strong></p>
+</div>
+<div class="paragraph">
+<p>You will use the Data Grid Operator to create a new instance of Data Grid. The Data Grid Operator is a Kubernetes operator that manages the lifecycle of Data Grid clusters. The operator is pre-installed for you, and the Software Template you create will use it to create new Data Grid clusters, through OpenShift GitOps. This image shows the Data Grid Operator in action, where users create Custom Resources on the cluster, and the operator responds by creating the corresponding Data Grid clusters.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-cr.png" alt="RH Data Grid Catalog"></span></p>
@@ -316,26 +356,19 @@
 <h2 id="lab"><a class="anchor" href="#lab"></a>Scenario</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now, imagine for a moment that you need to fullfil a need for the Java Development team. The Java Team&#8217;s responsibility is to connect a new application with Data Grid, for now, only for the development environment.</p>
+<p>Now, imagine that you need to fulfill a need for the Java Development team. The Java Team needs to connect a new application with Data Grid for their development environment.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_explore_the_rh_data_grid_template_in_gitlab"><a class="anchor" href="#_explore_the_rh_data_grid_template_in_gitlab"></a>Explore the RH Data Grid template in GitLab</h2>
+<h2 id="_explore_the_project_template_in_gitlab"><a class="anchor" href="#_explore_the_project_template_in_gitlab"></a>Explore the Project template in GitLab</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Take the time to review the source code to get familiarize with the content.</p>
+<p>Take the time to {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan[review existing template^] in GitLab to get familiar with the content. If you need to log in, use your GitLab credentials:</p>
 <div class="ulist">
 <ul>
-<li>
-<p>{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan[{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan,window=_blank]</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Login with your user credentials:</p>
-</li>
 <li>
 <p><strong>Username</strong>: {gitlab_user}</p>
 </li>
@@ -345,49 +378,47 @@
 </ul>
 </div>
 </li>
-<li>
-<p>Component/catalog-info.yaml: This file will represent the object in Developer Hub, such as name and links.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/source-code-catalog-info.png" alt="RH Data Grid Catalog"></span></p>
-</div>
-</li>
-<li>
-<p>Developer Hub, powered by GitOps, maintains the desired state as the actual state in the cluster for any template definitions, ensuring system stability.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/source-code-manifests.png" alt="RH Data Grid Manifests"></span></p>
-</div>
-</li>
-<li>
-<p>GitOps application definitions and necessary secrets to read from the SCM. In this case, the argo-app-dev.yaml is the Argo CD Application pointing to the Data Grid manifest&#8217;s folder.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/source-code-argocd.png" alt="RH Data Grid GitOps"></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Helm Charts are great for templating. In this case, the Data Grid manifests are implemented using Helm.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/source-code-helm.png" alt="RH Data Grid Helm Charts"></span></p>
-</div>
-</li>
-<li>
-<p>template.yaml file: Defines the UI experience for the end user and the desired steps to get the software templates, create repositories, create GitOps objects, and more.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/source-code-template.png" alt="RH Data Grid template.yaml"></span></p>
-</div>
-</li>
-</ul>
-</div>
-</li>
 </ol>
 </div>
-<div class="sect2">
-<h3 id="_explore_the_rh_data_grid_template_in_rhdh"><a class="anchor" href="#_explore_the_rh_data_grid_template_in_rhdh"></a>Explore the RH Data Grid template in RHDH</h3>
+<div class="paragraph">
+<p>Open the following files or folders to examine their contents:</p>
+</div>
 <div class="ulist">
 <ul>
+<li>
+<p><code>template.yaml</code>: This file defines the UI experience for the end user in Developer Hub (e.g. the fields and drop-downs and selectors to define the configuration of the namespace in this case) and the programmatic steps to define the logic to be executed as part of the component&#8217;s creation: create repositories, create GitOps objects, and more.</p>
+</li>
+<li>
+<p><code>skeleton/catalog-info.yaml</code>: This file represents a descriptor file used to define and register entities and will contain information displayed in the component&#8217;s overview, such as source code, technical docs links. All of the placeholders (e.g., <code>${{values.component_id}}</code>) are replaced with actual values the user enters or are dynamically computed when the template is used.</p>
+</li>
+<li>
+<p><code>manifests/argocd</code>: This folder contains the Argo CD application definitions and necessary secrets to read from the SCM. In this case, the <code>argo-app-dev.yaml</code> is the Argo CD Application pointing to the Kubernetes manifest folder, in this case, the VM&#8217;s manifests. The file name contains the component&#8217;s ID name, which will be populated from the RHDH template when the final file is created for the user in their git repository. Developer Hub, powered by GitOps, maintains the desired state (defined in the manifests)as the actual state in the cluster for any template definitions, ensuring system stability.</p>
+</li>
+<li>
+<p><code>manifests/helm/app</code>: This folder contains a Helm chart that will be used to create the Data Grid cluster and other associated resources. OpenShift GitOps will use this Helm chart to create resources on the cluster by combining user-supplied values with the files and creating the resulting objects in OpenShift. When these files are updated in the user&#8217;s git repo, OpenShift GitOps will automatically deploy (sync) the changes to maintain the desired state, ensuring system stability.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore_the_data_grid_template_in_developer_hub"><a class="anchor" href="#_explore_the_data_grid_template_in_developer_hub"></a>Explore the Data Grid template in Developer Hub</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Access the {rhdh_url}[Red Hat Developer Hub UI^]. If you need to, log in with your credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Select the <strong>plus icon</strong> on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]</p>
 <div class="paragraph">
@@ -395,28 +426,29 @@
 </div>
 </li>
 <li>
-<p>Click the <strong>Register Existing Component</strong> button.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/rhdh-register-component.png" alt="Create UI"></span></p>
-</div>
+<p>Click the <strong>Import an existing Git repository</strong> button.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>{rhdh_url}/catalog-import[Red Hat Developer Hub UI- Catalog^]</p>
+<p><span class="image"><img src="../_images/self-service-patterns/db-lab/rhdh-register-component.png" alt="Create UI"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
 <p>Enter the following URL in the <strong>Select URL</strong> field and click <strong>Analyze</strong>:</p>
+</li>
+</ul>
+</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/template.yaml</code></pre>
 </div>
 </div>
-</li>
+<div class="ulist">
+<ul>
 <li>
-<p>Click on the <strong>Import</strong> button</p>
+<p>Click the <strong>Import</strong> button</p>
 </li>
 </ul>
 </div>
@@ -424,56 +456,54 @@
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/rhdh-register-component-finish.png" alt="rhdh register component finish" width="60%"></span></p>
 </div>
 <div class="paragraph">
-<p><strong>Congratulations!</strong> You now have a new Software template in RHDH. Now, end-users can <strong>self-provision RH Data Grid</strong>.</p>
+<p><strong>Congratulations!</strong> You now have a new Software template in Developer Hub. Now, end-users can <strong>self-provision Data Grid</strong>.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll explore the end-user experience by accessing the Software Templates view.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>We&#8217;ll explore the end-user experience by accessing the Software Templates view.</p>
-</li>
-<li>
-<p>From <strong>catalog</strong>, select <strong>Self-service</strong></p>
+<p>Navigate to Catalog &#8594; Self-service</p>
 </li>
 <li>
 <p>Look for the <strong>RH Data Grid infinispan</strong> catalog</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-catalog.png" alt="datagrid catalog" width="40%"></span></p>
-</div>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Let&#8217;s explore the current catalog:</strong></p>
+<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-catalog.png" alt="datagrid catalog" width="40%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>Choose</strong></p>
+<p>Click on <strong>Choose</strong></p>
 </li>
 <li>
-<p>Review and fill out the information with dummy data until you reach the review screen, <strong>without creating the RH Data Grid</strong>. <strong>DO NOT CLICK ON CREATE.</strong></p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-sample.png" alt="datagrid sample" width="120%"></span></p>
-</div>
+<p>Review and fill out the form with sample data until you reach the review screen, <strong>without creating the RH Data Grid</strong>. <strong>DO NOT CLICK ON CREATE.</strong></p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-sample.png" alt="datagrid sample" width="120%"></span></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_implement_changes_in_software_templates"><a class="anchor" href="#_implement_changes_in_software_templates"></a>Implement changes in Software Templates.</h2>
+<h2 id="_implement_changes_in_software_templates"><a class="anchor" href="#_implement_changes_in_software_templates"></a>Implement changes in Software Templates</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To accomplish the requirement, you need to update the <strong>infinispan.yaml</strong> file right now is blank.</p>
+<p>To do this, you need to add a new file named <code>infinispan.yaml</code> to the <code>manifests/helm/app/templates</code> folder. This file defines the Infinispan instance that the operator will use to create the Data Grid cluster.</p>
 </div>
 <div class="paragraph">
-<p>The Java Team can access RH Data Grid by creating an Infinispan cluster from RHDH. After this, Developer Hub will use the power of GitOps to create a new Data Grid cluster in OpenShift.</p>
+<p>The Java Team can then use Data Grid clusters by creating a new cluster from Developer Hub. Developer Hub will then use GitOps to create a new Data Grid cluster in OpenShift.</p>
 </div>
+<div class="sect2">
+<h3 id="_edit_the_template"><a class="anchor" href="#_edit_the_template"></a>Edit the template</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Catalog</strong> on the RHDH menu</p>
+<p>Click on <strong>Catalog</strong> on the Developer Hub menu</p>
 </li>
 <li>
 <p>Next, select the filters: <strong>Kind:Template</strong> and <strong>Tags: self-service</strong>
@@ -491,120 +521,99 @@ As shown in the following picture:</p>
 </li>
 <li>
 <p>Access the Source code by clicking on <strong>View Source</strong></p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/db-edit-catalog.png" alt="db edit catalog" width="60%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>We need to update the RH Data Grid instance.</p>
+<p>Navigate to the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^] (it&#8217;s in the <code>manifests/helm/app</code> folder). This folder contains the Kubernetes objects required to build the component in a Kubernetes cluster.</p>
 </li>
 <li>
-<p>Go to manifests/helm/app/templates/ or click on {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^]</p>
-</li>
-<li>
-<p>Create a new file:</p>
+<p>Create a new file named <code>infinispan.yaml</code> by clicking the <code>+</code> button and selecting <em>New File</em>:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/gitlab-newfile.png" alt="gitlab newfile" width="100%"></span></p>
 </div>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p>We&#8217;ll review the configuration needed from the Operator official documentation.</p>
+<p>Review the <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters" target="_blank" rel="noopener">official documentation</a> on how to create a Data Grid instance. This example is very simple, but in the future you can add more options to the instance, such as different storage options, different authentication methods, etc.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Review the official documentation:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters" target="_blank" rel="noopener">Creating Data Grid infinispan</a></p>
+<p>For now, we&#8217;ll use a basic configuration, so paste this content into the new file in GitLab:</p>
 </li>
 </ul>
 </div>
-</li>
-<li>
-<p>Copy the infinispan definition</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-doc.png" alt="datagrid doc" width="100%"></span></p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: Infinispan
+apiVersion: infinispan.org/v1
+metadata:
+  name: {{ .Values.app.name }} <i class="conum" data-value="1"></i><b>(1)</b>
+  labels:
+    {{- include "operator.labels" . | nindent 4 }} <i class="conum" data-value="2"></i><b>(2)</b>
+    {{- include "backstage.labels" . | nindent 4 }}
+spec:
+  replicas: 2 <i class="conum" data-value="3"></i><b>(3)</b>
+  service:
+    type: DataGrid
+  expose:
+    type: Route <i class="conum" data-value="4"></i><b>(4)</b>
+  security:
+    endpointSecretName: connect-secret <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
-</li>
-<li>
-<p>Paste the content on new file</p>
-</li>
-</ul>
 </div>
-<div class="paragraph">
-<p><strong>Take the time to review your file with the solution file provided here:</strong></p>
-</div>
-<div class="paragraph">
-<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/rhdatagrid_infinispan/infinispan.yaml" target="_blank" rel="noopener">infinispan.yaml solution file</a></p>
-</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This will be replaced with the user-supplied value for the Data Grid instance name</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The labels for the Data Grid instance, using Helm variables to include the operator and backstage labels which integrate with Developer Hub&#8217;s various plugins and help surface useful information in the context of the component.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The number of replicas for the Data Grid cluster. Additional replicas can be added to the cluster to improve performance and availability.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>This option <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services" target="_blank" rel="noopener">exposes the Data Grid cluster to outside traffic</a></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Custom credentials from a Secret (defined in <code>identities.yaml</code>) as defined in the <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn" target="_blank" rel="noopener">docs for Data Grid authentication</a> enabling authenticated access.
 <div class="ulist">
 <ul>
 <li>
-<p>Note that your file needs to be ready to be used with <strong>Helm</strong>. In the following solution, you will find the name was updated to be a variable, and labels were included.</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-changes.png" alt="datagrid changes" width="80%"></span></p>
-</div>
+<p>Scroll down and click the <strong>Commit Changes</strong> button to save your updates.</p>
 </li>
 <li>
-<p>Note: The file also contains a definition to expose the deployment with a <strong>Route</strong>: <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/creating-network#exposing-routes_network-services" target="_blank" rel="noopener">Exposing Data Grid through a Route</a> and we added the custom <strong>credentials</strong> as well as defined on the documentation <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/configuring-authentication#default-credentials_authn" target="_blank" rel="noopener">Configuring authentication</a></p>
+<p>Back in the Developer Hub catalog, on the {rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance/[Data Grid Template^], click on the <strong>Schedule entity refresh</strong> icon to sync the catalog with the latest changes.</p>
 </li>
 </ul>
+</div></td>
+</tr>
+</table>
 </div>
-<div class="paragraph">
-<p>As we had modified the content, use the solution provided for this configuration:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Copy the content from the solution provided.</strong></p>
-</li>
-<li>
-<p>Name your file as <strong>infinispan.yaml</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong>: Don&#8217;t forget to commit your changes.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ensure the template has the latest changes.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>On RHDH, in the Data Grid template:</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>{rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance/[Red Hat Developer Hub UI Template^]</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click on the <strong>entity refresh</strong> icon</p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/rhdh-refresh-catalog.png" alt="rhdh refresh catalog" width="70%"></span></p>
 </div>
-</li>
-</ul>
 </div>
-<div class="sect2">
-<h3 id="_test_your_changes_explore_the_user_experience_as_developer"><a class="anchor" href="#_test_your_changes_explore_the_user_experience_as_developer"></a>Test your changes: Explore the user experience as Developer</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test_your_changes_explore_the_user_experience_as_developer"><a class="anchor" href="#_test_your_changes_explore_the_user_experience_as_developer"></a>Test your changes: Explore the user experience as Developer</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s create an instance of the RH Data Grid defined in the software templates.</p>
+<p>Now, you will create a new instance of the Data Grid cluster defined in the software templates.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -612,16 +621,17 @@ As shown in the following picture:</p>
 <p>From <strong>catalog</strong>, select <strong>Self-service</strong> and find the <strong>Red Hat Data Grid infinispan</strong></p>
 </li>
 <li>
-<p>Click on the <strong>Choose</strong></p>
+<p>Click on <strong>Choose</strong></p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-catalog.png" alt="datagrid catalog" width="50%"></span></p>
 </div>
-</li>
+<div class="ulist">
+<ul>
 <li>
-<p>Click on the <strong>Choose</strong></p>
-</li>
-<li>
-<p>Review the information until you complete the flow and click on <strong>Create</strong>.</p>
+<p>Review the information until you complete the flow and click <strong>Create</strong> (Feel free to use the default values or enter your own Data Grid cluster name).</p>
 </li>
 </ul>
 </div>
@@ -641,30 +651,33 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>The component is created, and you should see a screen like this one:</p>
-<div class="paragraph">
-<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-component.png" alt="datagrid component" width="100%"></span></p>
-</div>
-</li>
-<li>
-<p>Click on <strong>Data Grid URL</strong> from the component&#8217;s overview</p>
-</li>
-<li>
-<p>Access <strong>RH Data Grid</strong> with the credentials listed on the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/rhdatagrid_infinispan/manifests/helm/app/templates/identities.yaml[identity file^]</p>
+<p>The component has been created, and you should see a screen like this:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>user</strong>: user1</p>
+<p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-component.png" alt="datagrid component" width="100%"></span></p>
 </div>
-<div class="paragraph">
-<p><strong>password</strong>: openshift!3415@</p>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong>: The infinispan might take a few minutes to complete provisioning.</p>
-</div>
+<div class="sect2">
+<h3 id="_verify_the_data_grid_cluster_was_created"><a class="anchor" href="#_verify_the_data_grid_cluster_was_created"></a>Verify the Data Grid cluster was created</h3>
 <div class="ulist">
 <ul>
+<li>
+<p>Click on <strong>Data Grid URL</strong> from the component&#8217;s overview (It may take a few moments for the Data Grid cluster to be created, so wait a few moments and try again if you don&#8217;t see the Data Grid login page)</p>
+</li>
+<li>
+<p>Access <strong>RH Data Grid</strong> with the credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>user</strong>: <code>user1</code></p>
+</li>
+<li>
+<p><strong>password</strong>: <code>openshift!3415@</code></p>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Click on <strong>Proceed</strong>, next click on <strong>Open the console</strong></p>
 </li>
@@ -676,47 +689,67 @@ As shown in the following picture:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>You should see only one screen, like this one:</p>
+<p>You should see a screen like this:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/self-service-patterns/db-lab/datagrid-working.png" alt="datagrid working" width="100%"></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>In case you want to log in to the OpenShift Cluster{openshift_console_url}[Web Console^]</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Use your user credentials:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Username</strong>: {openshift_admin_user}</p>
-</li>
-<li>
-<p><strong>Password</strong>: {openshift_admin_password}</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p><strong>Note:</strong> In a production environment, the security setup and user creation will not be managed in this identity yaml file. Explore the RH Data Grid documentation to learn more about best practices.
-<a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/configuring-authentication" target="_blank" rel="noopener">Configuring Authentication</a></p>
+<p>In a Data Grid production environment, the security setup and user creation would not be managed in this way. Explore the <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/configuring-authentication" target="_blank" rel="noopener">Data Grid authentication documentation</a> to learn more about best practices.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h3>
 <div class="paragraph">
-<p>You have updated the RH Data Grid software template by adding the infinispan instance to fulfill the requirement from the Java Development team. After this process, other configurations can be applied to the cluster. Explore more at <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/configuring-clusters" target="_blank" rel="noopener">Configuring Clusters</a></p>
+<p>🎉 <strong>Congratulations!</strong> You have created a new Data Grid template by adding the Infinispan instance to fulfill the requirement from the Java Development team.</p>
 </div>
+<div class="paragraph">
+<p>In this hands-on lab, you&#8217;ve accomplished something powerful:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Created a database-as-a-service offering</strong> - The Java Development team can now instantly provision Red Hat Data Grid clusters without manual intervention from platform teams</p>
+</li>
+<li>
+<p><strong>Implemented template customization</strong> - You learned how to extend existing templates by adding new components and configurations</p>
+</li>
+<li>
+<p><strong>Bridged infrastructure and application needs</strong> - You&#8217;ve created a seamless experience where developers can provision the data layer they need while GitOps handles deployment automatically</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>After this process, other configurations can be applied to the cluster. Explore more at <a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/configuring-clusters" target="_blank" rel="noopener">Configuring Clusters</a></p>
+</div>
+<div class="paragraph">
+<p><strong>What&#8217;s next?</strong> Consider how you might extend this pattern to include monitoring, backup strategies, or different Data Grid configurations for various environments!</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_further_reading"><a class="anchor" href="#_further_reading"></a>Further reading</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.redhat.com/en/documentation/red_hat_data_grid/latest/html/data_grid_operator_guide/operator" target="_blank" rel="noopener">Understanding Data Grid</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
