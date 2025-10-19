@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Build an AI Agent with Red Hat Advanced Developer Suite (RHADS) and Integrated Security :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <title>Building an AI Agent with Red Hat Advanced Developer Suite (RHADS) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">
     <link rel="prev" href="../rhads-ai.html">
     <link rel="next" href="lab-ai-rhads-rhads-ai-pe.html">
@@ -282,12 +282,12 @@
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Build an AI Agent with Red Hat Advanced Developer Suite (RHADS) and Integrated Security</h1>
+<h1 class="page">Building an AI Agent with Red Hat Advanced Developer Suite (RHADS)</h1>
 <div class="sect1">
-<h2 id="Introduction"><a class="anchor" href="#Introduction"></a>Introduction</h2>
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The following labs will guide you through leveraging Red Hat Advanced Developer Suite to build and deploy an AI agent with integrated security and best practices. You&#8217;ll learn how to establish a robust framework for AI application development within an organization, ensuring adherence to security best practices with self-service on OpenShift using Red Hat Advanced Developer Suite.</p>
+<p>These labs will guide you through building and deploying a secure AI agent using the Red Hat Advanced Developer Suite (RHADS). You will learn how to establish a strong framework for AI application development that incorporates security best practices from the start, all while using self-service tools on OpenShift.</p>
 </div>
 </div>
 </div>
@@ -295,18 +295,18 @@
 <h2 id="_objectives"><a class="anchor" href="#_objectives"></a>Objectives</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab demonstrates how to take a pre-existing software template and deploy an AI Agent into OpenShift using Red Hat Advanced Developer Suite. This approach ensures that organizations integrate best practices from the beginning to provide developers the tool they need to build and deploy applications securely. In this case, we are leveraging the pre-defined Software templates already integrated with Red Hat Developer Hub.</p>
+<p>This lab demonstrates how to use a pre-built software template in RHADS to deploy an AI Agent to OpenShift. This approach helps organizations ensure that developers have the tools and security standards they need right from the beginning. We will use the software templates already integrated into the Red Hat Developer Hub.</p>
 </div>
 <div class="paragraph">
-<p>This section presents two labs to represent each persona and the following scenarios:</p>
+<p>This guide is divided into two labs, each focusing on a different role:</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_ai_platform_engineering"><a class="anchor" href="#_ai_platform_engineering"></a>AI Platform Engineering</h2>
+<h2 id="_ai_platform_engineer"><a class="anchor" href="#_ai_platform_engineer"></a>AI Platform Engineer</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are part of the AI Platform Engineering team and are responsible for providing the tools and best practices with your organization&#8217;s guidelines for the AI team to build an AI agent in OpenShift.</p>
+<p>As a member of the AI Platform Engineering team, you are responsible for providing the tools, templates, and security guidelines for the AI engineering team to build applications in OpenShift.</p>
 </div>
 </div>
 </div>
@@ -314,51 +314,57 @@
 <h2 id="_ai_engineer"><a class="anchor" href="#_ai_engineer"></a>AI Engineer</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are part of the AI Engineer team and are responsible for creating an AI agent following your organization&#8217;s guidelines and best practices provided by the AI Platform Engineering.</p>
+<p>As a member of the AI engineering team, you are responsible for creating an AI agent that follows the guidelines and best practices established by the AI Platform Engineering team.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a>Getting started</h2>
+<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a>Getting Started</h2>
 <div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access the Red Hat Developer Hub UI</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Open the {rhdh_url}[Red Hat Developer Hub UI^]</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Sign In</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Click Sign In and choose the OIDC authentication method.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-login.png" alt="rhdh login" width="60%"></span></p>
+</div>
+<div class="paragraph">
+<p>Log in with your administrator credentials:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^]</p>
+<p>Username: {openshift_admin_user}</p>
 </li>
 <li>
-<p>Click on <strong>Sign In</strong> using the <strong>OIDC</strong> authentication method</p>
+<p>Password: {openshift_admin_password}</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="rhads-ai/rhads/rhdh-login.png.png" alt="Create UI"></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Log in with your user administrator credentials:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Username</strong>: {openshift_admin_user}</p>
-</li>
-<li>
-<p><strong>Password</strong>: {openshift_admin_password}</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>You will see a screen similar like this:</p>
-</li>
-</ul>
+<p>You will be greeted with a welcome screen.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-welcome.png" alt="Create UI"></span></p>
 </div>
 <div class="paragraph">
-<p>Next, you will dive into an AI Platform Engineer persona to build the tools for the AI Engineering team.</p>
+<p>Next, you will take on the role of an AI Platform Engineer to set up the necessary tools for the AI Engineering team.</p>
 </div>
 </div>
 </div>

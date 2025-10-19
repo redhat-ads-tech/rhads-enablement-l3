@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Configure AI toosl in Red Hat OpenShift Dev Spaces (Bonus Lab) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <title>Configure AI Tools in Red Hat OpenShift Dev Spaces (Bonus Lab) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">
     <link rel="prev" href="lab-intro-rhads-ai.html">
     <link rel="next" href="lab-ai-podman-rhads-ai.html">
@@ -283,12 +283,12 @@
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Configure AI toosl in Red Hat OpenShift Dev Spaces (Bonus Lab)</h1>
+<h1 class="page">Configure AI Tools in Red Hat OpenShift Dev Spaces (Bonus Lab)</h1>
 <div class="sect1">
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Lab provides the opportunity to explore how Red Hat Advanced Developer Suite integrates with other products and third-party tools to bring AI into the developers' daily activities, but also how other developer tools, such as RH OpenShift Dev Spaces, provide an opportunity to adopt AI practices.</p>
+<p>This lab explores how <strong>Red Hat Advanced Developer Suite</strong> (RHADS) integrates with other products and third-party tools to bring AI into developers' daily activities. It also shows how developer tools like <strong>Red Hat OpenShift Dev Spaces</strong> provide opportunities to adopt AI practices.</p>
 </div>
 </div>
 </div>
@@ -296,7 +296,7 @@
 <h2 id="_objectives"><a class="anchor" href="#_objectives"></a>Objectives</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Lab will showcase how to configure an AI assistant and expand the AI assistant capabilities by configuring a Tavily MCP server.</p>
+<p>This lab showcases how to configure an AI assistant and expand its capabilities by configuring a <strong>Tavily MCP server</strong>.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s get started.</p>
@@ -307,7 +307,7 @@
 <h2 id="_scenario"><a class="anchor" href="#_scenario"></a>Scenario</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now, imagine for a moment that you are part of the Python AI Development team. You have already an AI agent built but now you need to include new functionalities.</p>
+<p>You are part of the Python AI Development team. Your team has already built the AI agent; now it is your time to learn about this implementation.</p>
 </div>
 </div>
 </div>
@@ -317,14 +317,14 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Access the Red Hat OpenShift Dev Spaces from the template already created in Red Hat Developer Hub:</p>
+<p>Access Red Hat OpenShift Dev Spaces from the component already created in Red Hat Developer Hub:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Access the Red Hat Developer Hub UI, {rhdh_url}[Red Hat Developer Hub UI^] //TODO replace URL</p>
+<p>Go back to {rhdh_url/catalog/default/component/ai-agent}[Red Hat Developer Hub UI^]</p>
 </li>
 <li>
-<p>Login with your user credentials:</p>
+<p>Log in with your user credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -336,14 +336,24 @@
 </ul>
 </div>
 </li>
-<li>
-<p>Next, click on the component&#8217;s <strong>Python Web AI</strong></p>
+</ul>
+</div>
 </li>
 <li>
-<p>From the component&#8217;s overview, <strong>click on</strong> the <strong>Red Hat OpenShift Dev Spaces</strong></p>
+<p>Next, click the <strong>ai-agent</strong> component.</p>
 </li>
 <li>
-<p>Login with your user credentials:</p>
+<p>From the component&#8217;s overview, click the <strong>Red Hat OpenShift Dev Spaces</strong> link.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-click.png" alt="rhdh devspaces click" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Log in with your user credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -357,22 +367,19 @@
 </li>
 </ul>
 </div>
-</li>
-</ul>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_configure_the_ai_assistant_in_red_hat_openshift_dev_spaces"><a class="anchor" href="#_configure_the_ai_assistant_in_red_hat_openshift_dev_spaces"></a>Configure the <strong>AI Assistant in Red Hat OpenShift Dev Spaces</strong></h2>
+<h2 id="_configure_the_ai_assistant_in_red_hat_openshift_dev_spaces"><a class="anchor" href="#_configure_the_ai_assistant_in_red_hat_openshift_dev_spaces"></a>Configure the AI Assistant in Red Hat OpenShift Dev Spaces</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We want to take advantage of an AI assistant using OpenShift Dev Spaces. For this Lab, we&#8217;ll use <strong><a href="https://www.continue.dev" target="_blank" rel="noopener">Continue</a></strong>. However, many organizations might use others, such as <strong>Claude from Anthropic *, *Microsoft Copilot</strong>.
-In many organizations, developers must use an AI Assistant to increase productivity. Learning about AI assistants is a key part of AI and how this tool can be leverage within Red Hat products.</p>
+<p>We want to use an AI assistant within OpenShift Dev Spaces. For this lab, we&#8217;ll use <strong><a href="https://www.continue.dev" target="_blank" rel="noopener">Continue</a></strong>. Organizations might use others, such as <strong>Claude</strong> or <strong>Microsoft Copilot</strong>.
+In many organizations, developers use AI Assistants to increase productivity. Learning about these tools is key to understanding how AI can be leveraged within Red Hat products.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>In <strong>Red Hat OpenShift Dev Spaces</strong>, click on <strong>Extensions</strong>.</p>
+<p>In <strong>Red Hat OpenShift Dev Spaces</strong>, click <strong>Extensions</strong>.</p>
 </li>
 </ul>
 </div>
@@ -382,7 +389,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Search for the <strong>continue</strong> extension and select the option: <strong>Install Release version</strong></p>
+<p>Search for the <strong>continue</strong> extension and select <strong>Install Release version</strong>.</p>
 </li>
 </ul>
 </div>
@@ -392,7 +399,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Confirm on the <strong>Trust the Publisher and Install</strong> button.
+<p>Click the <strong>Trust the Publisher and Install</strong> button.
 <span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-trust.png" alt="devspaces trust" width="60%"></span></p>
 </li>
 <li>
@@ -406,12 +413,12 @@ In many organizations, developers must use an AI Assistant to increase productiv
 </div>
 </div>
 <div class="sect1">
-<h2 id="_configure_the_llm_in_the_ai_assistant"><a class="anchor" href="#_configure_the_llm_in_the_ai_assistant"></a>Configure the <strong>LLM in the AI Assistant</strong></h2>
+<h2 id="_configure_the_llm_in_the_ai_assistant"><a class="anchor" href="#_configure_the_llm_in_the_ai_assistant"></a>Configure the LLM in the AI Assistant</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>Next, click on the <strong>continue</strong> icon.</p>
+<p>Next, click the <strong>continue</strong> icon.</p>
 </li>
 </ul>
 </div>
@@ -421,7 +428,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Next, click on the <strong>Add Chat model</strong> option, and click on <strong>config file</strong>.</p>
+<p>Click the <strong>Add Chat model</strong> option, then click <strong>config file</strong>.</p>
 </li>
 </ul>
 </div>
@@ -431,7 +438,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>You will see a new file created called: <strong>config.yaml</strong></p>
+<p>A new file named <strong>config.yaml</strong> will be created.</p>
 </li>
 </ul>
 </div>
@@ -441,43 +448,86 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Take the time to review the file provided here:</p>
+<p>Copy the following content and paste it, <strong>replacing the whole current content</strong>:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml" target="_blank" rel="noopener">config.yaml AI assistant config file</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Copy the file content and <strong>paste</strong> it into the config.yaml file created by continue.</p>
+<p>Copy the provided content by clicking the icon:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The next step will add the Model&#8217;s <strong>apiBase</strong> and <strong>apiKey</strong> from the <strong>Internal MaaS Demo from the AI BU</strong>.</p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">name: Local Assistant
+version: 1.0.0
+schema: v1
+models:
+  - name: llama-3-2-3b
+    provider: openai
+    model: llama-3-2-3b
+    apiBase:
+    apiKey: ""
+    roles:
+      - chat
+      - edit
+      - apply
+tabAutocompleteModel:
+  title: RamaLama (AutoComplete)
+  provider: custom
+  model: default
+allowAnonymousTelemetry: false
+context:
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+  - provider: problems
+  - provider: folder
+  - provider: codebase</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml" target="_blank" rel="noopener">config.yaml AI assistant config file</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Paste</strong> it into the config.yaml file created by continue.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Next, you will add the Model&#8217;s <strong>apiBase</strong> and <strong>apiKey</strong> from the <strong>Internal MaaS Demo from the AI BU</strong>.</p>
 </div>
 <div class="sect2">
-<h3 id="_get_your_api_key_to_access_the_self_hosted_model"><a class="anchor" href="#_get_your_api_key_to_access_the_self_hosted_model"></a>Get your API key to access the self-hosted Model</h3>
+<h3 id="_get_your_api_key_for_the_self_hosted_model"><a class="anchor" href="#_get_your_api_key_for_the_self_hosted_model"></a>Get your API key for the self-hosted Model</h3>
 <div class="paragraph">
-<p>When configuring an AI assistant, it needs an LLM to work. Organizations might have their own self-hosted models or remote models. We use the Model as a Service portal for this Lab to access an LLM.</p>
+<p>Configuring an AI assistant requires an LLM. Organizations might use their own self-hosted models or remote ones. For this lab, we will use the Model as a Service portal to access an LLM.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Access the following URL and follow the steps to sign in with your <strong>Red Hat account</strong>.
-<a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a></p>
+<p>Access the URL and sign in with your Red Hat account: <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Note:</strong> The <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a> is not an official Red Hat service. For Red Hat associate internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use. The models are provided for this limited purpose.</p>
+<p><strong>Note:</strong> The <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a> is not an official Red Hat service. It is for Red Hat associates' internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Sign in</strong></p>
+<p>Click <strong>Sign in</strong></p>
 </li>
 </ul>
 </div>
@@ -487,7 +537,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Authenticate with RH SSO</strong></p>
+<p>Click <strong>Authenticate with RH SSO</strong></p>
 </li>
 </ul>
 </div>
@@ -497,7 +547,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Google</strong> to sign in to <strong>RHOAI</strong>, where the model is deployed with your account.</p>
+<p>Click <strong>Google</strong> to sign in to <strong>RHOAI</strong>, where the model is deployed with your account.</p>
 </li>
 </ul>
 </div>
@@ -507,10 +557,10 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Click on applications</p>
+<p>Click applications</p>
 </li>
 <li>
-<p>Click on the model <strong>llama-3-2-3b</strong></p>
+<p>Click the <strong>llama-3-2-3b</strong> model</p>
 </li>
 </ul>
 </div>
@@ -520,7 +570,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Copy the <strong>API Key</strong> and paste it into the config.yaml file created by continue in the <strong>apiKey:"  "</strong>.</p>
+<p>Copy the <strong>API Key</strong> and paste it into the <strong>config.yaml</strong> file&#8217;s <strong>apiKey:"  "</strong>.</p>
 </li>
 </ul>
 </div>
@@ -530,7 +580,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Copy the <strong>Endpoint URL</strong> and paste it into the config.yaml file created by continue in the <strong>apiBase:</strong> and add at the end of the route <strong>/v1</strong></p>
+<p>Copy the <strong>Endpoint URL</strong> and paste it into the <strong>config.yaml</strong> file&#8217;s <strong>apiBase:</strong> and add <strong>/v1</strong> to the end of the URL.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -545,30 +595,59 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-config-updated.png" alt="devspaces config updated" width="60%"></span></p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_testing_the_ai_agent"><a class="anchor" href="#_testing_the_ai_agent"></a>Testing the AI Agent</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test_the_ai_assistant"><a class="anchor" href="#_test_the_ai_assistant"></a>Test the AI Assistant</h2>
+<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the recent added model <strong>llama-3-2-3b</strong>, to include it on the continue chat:</p>
+<p>Click the recently added model <strong>llama-3-2-3b</strong>, to add it to the Continue chat:</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-llama-select.png" alt="continue llama select" width="60%"></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ask the AI assistant any questions, such as:</p>
-</li>
-</ul>
-</div>
+<div class="sect2">
+<h3 id="_ask_the_ai_assistant_a_question_such_as"><a class="anchor" href="#_ask_the_ai_assistant_a_question_such_as"></a>Ask the AI assistant a question, such as:</h3>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat1.png" alt="continue chat1" width="60%"></span></p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_learn_about_the_search_agent_py_file"><a class="anchor" href="#_learn_about_the_search_agent_py_file"></a>Learn about the <strong>search_agent.py</strong> file</h3>
 <div class="paragraph">
-<p><strong>Congratulations</strong>, using a self-hosted LLM, you have successfully configured an <strong>AI Assistant in Red Hat OpenShift Dev Spaces</strong>.</p>
+<p>Learn about the implementation. Let&#8217;s start with the search_agent.py file.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@search_agent.py  tell me about this file</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> ensure you add @search_agent.py at the beginning of the prompt</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat2.png" alt="continue chat2" width="100%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_learn_about_the_requirements_txt_file"><a class="anchor" href="#_learn_about_the_requirements_txt_file"></a>Learn about the requirements.txt file</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@requirements.txt  tell me about this file</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> ensure you add @requirements.txt *at the beginning of the prompt</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat3.png" alt="continue chat3" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Congratulations</strong>, you have successfully configured an <strong>AI Assistant in Red Hat OpenShift Dev Spaces</strong> using a self-hosted LLM and learned about the AI Agent implementation.</p>
 </div>
 </div>
 </div>
@@ -577,12 +656,12 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <h2 id="_configure_an_mcp_server_in_the_ai_assistant"><a class="anchor" href="#_configure_an_mcp_server_in_the_ai_assistant"></a>Configure an <strong>MCP server in the AI Assistant</strong></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The AI assistant will use <strong>Tavily</strong> for the  <strong>tools</strong>, such as Web Search. We want to include the <strong>Tavily MCP server</strong> in our Development environment to continue our AI agent development.</p>
+<p>The AI assistant will use <strong>Tavily</strong> for <strong>tools</strong>, such as Web Search. We want to include the <strong>Tavily MCP server</strong> in our Development environment to learn about the AI agent development.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on continue chat and click on the  <strong>tools icon</strong>:</p>
+<p>Click the <strong>Continue chat</strong> and click the <strong>tools icon</strong>:</p>
 </li>
 </ul>
 </div>
@@ -592,28 +671,56 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>In the tools window, click on the <strong>plus icon</strong>, to configure the <strong>MCP server</strong>.</p>
+<p>In the tools window, click the <strong>plus icon</strong> to configure the <strong>MCP server</strong>.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-configure-new.png" alt="mcp configure new" width="60%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-configure-new.png" alt="mcp configure new" width="100%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>We have already provided you with a configuration to set up <strong>Tavily MCP server</strong>:</p>
+<p>A new file named <strong>new-mcp-server.yaml</strong> will be created.</p>
+</li>
+<li>
+<p>Copy the following content and paste it, <strong>replacing the whole current content</strong>:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Take the time to review the file provided here:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml" target="_blank" rel="noopener">tavily-mcp-server config file</a></p>
+<p>Copy the provided content by clicking on the icon:</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">name: Tavily MCP
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Tavily MCP server
+    command: npx
+    args:
+      - -y
+      - mcp-remote
+      - https://mcp.tavily.com/mcp/?tavilyApiKey=
+    env: {}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We have provided a configuration to set up the <strong>Tavily MCP server</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml" target="_blank" rel="noopener">tavily-mcp-server config file</a></p>
 </li>
 </ul>
 </div>
@@ -621,16 +728,16 @@ In many organizations, developers must use an AI Assistant to increase productiv
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Note:</strong> Other AI assistants might not use yaml files but JSON files. If you are trying to configure an AI Assistant in the future, the MCP server web page will have an example of how to configure it with other AI assistants. Explore more from <a href="https://docs.tavily.com/documentation/mcp" target="_blank" rel="noopener">Tavily MCP</a></p>
+<p><strong>Note:</strong> Other AI assistants might use JSON files instead of YAML. If you configure a different AI assistant, the MCP server web page will have configuration examples. Explore more at <a href="https://docs.tavily.com/documentation/mcp" target="_blank" rel="noopener">Tavily MCP</a></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Copy the file content and <strong>paste</strong> it into the new-mcp-server.yaml file created by continue.</p>
+<p>Copy the file content and <strong>paste</strong> it into the new-mcp-server.yaml file.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>You are replacing the <strong>MCP SERVER NAME CONFIG</strong>, <strong>MCP SERVER NAME</strong>, <strong>ARGS</strong>, as it shows on the following picture:</p>
+<p>You are replacing the <strong>MCP SERVER NAME CONFIG</strong>, <strong>MCP SERVER NAME</strong>, <strong>ARGS</strong>, as shown here:</p>
 </li>
 </ul>
 </div>
@@ -641,17 +748,14 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-config-new.png" alt="mcp server config new" width="100%"></span></p>
 </div>
 <div class="sect2">
-<h3 id="_access_your_account_on_the_tavily_website"><a class="anchor" href="#_access_your_account_on_the_tavily_website"></a>Access your account on the Tavily website</h3>
+<h3 id="_access_your_tavily_account"><a class="anchor" href="#_access_your_tavily_account"></a>Access your Tavily account</h3>
 <div class="ulist">
 <ul>
 <li>
 <p>Access <a href="https://app.tavily.com" target="_blank" rel="noopener">https://app.tavily.com</a></p>
 </li>
 <li>
-<p>Click on <strong>Login</strong> to create a new account</p>
-</li>
-<li>
-<p>Choose your sign up method, as previously selected: <strong>Google</strong>, <strong>GitHub</strong>, <strong>Email address</strong></p>
+<p>Click Login and choose your previously selected sign-up method (Google, GitHub, Email address).</p>
 </li>
 </ul>
 </div>
@@ -661,7 +765,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Click on continue, and once logged in, you will see a screen like this one:</p>
+<p>Click continue, and once logged in, you will see a screen like this one:</p>
 </li>
 </ul>
 </div>
@@ -671,7 +775,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Click on add <strong>API KEY</strong> , copy the <strong>API KEY VALUE</strong>:</p>
+<p>Click <strong>API KEY</strong> and copy the <strong>API KEY VALUE</strong>:</p>
 </li>
 </ul>
 </div>
@@ -679,12 +783,12 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/tavily-apikey-view.png" alt="tavily apikey view" width="100%"></span></p>
 </div>
 <div class="paragraph">
-<p><strong>NOTE: KEEP THE API-KEY SECRET, keep it save, keep it secret. DO NOT PUBLISH IT OR SHARE IT WITH ANYONE, NOT ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY</strong></p>
+<p><strong>NOTE: KEEP THE API KEY SECRET. Keep it safe. DO NOT PUBLISH IT, SHARE IT, OR COMMIT IT TO ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY.</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Paste your key to include it after the <strong>?tavilyApiKey=</strong></p>
+<p>Paste your key after <strong>?tavilyApiKey=</strong></p>
 </li>
 </ul>
 </div>
@@ -697,21 +801,27 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <p>Save the changes.</p>
 </li>
 <li>
-<p>Now, you will see <strong>Tavily MCP server</strong> in the MCP server configuration.</p>
+<p><strong>Tavily MCP server will now appear in the MCP server configuration</strong>.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>If the server is not yet ready, click on the <strong>refresh</strong> icon:
+<p>If the server is not ready, click the <strong>refresh</strong> icon:
 <span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-refresh.png" alt="mcp server refresh" width="70%"></span></p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_testing_the_mcp_server_in_the_ai_assistant"><a class="anchor" href="#_testing_the_mcp_server_in_the_ai_assistant"></a>Testing the <strong>MCP server in the AI Assistant</strong></h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_the_mcp_server_in_the_ai_assistant_to_learn_about_tavily"><a class="anchor" href="#_use_the_mcp_server_in_the_ai_assistant_to_learn_about_tavily"></a>Use the <strong>MCP server in the AI Assistant</strong> to learn about Tavily</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tavily provides tools including Tavily Search and Tavily Extract.</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>back icon</strong> to go back to the continue chat</p>
+<p>Click the <strong>back icon</strong> to return to the Continue chat.</p>
 </li>
 </ul>
 </div>
@@ -721,7 +831,7 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <div class="ulist">
 <ul>
 <li>
-<p>Select the <strong>agent</strong> changing the current <strong>chat</strong> option.</p>
+<p>Ensure <strong>agent</strong> is selected in the Continue terminal. This agent interacts with the MCP server tools..</p>
 </li>
 </ul>
 </div>
@@ -729,20 +839,31 @@ In many organizations, developers must use an AI Assistant to increase productiv
 <p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-select-agent.png" alt="mcp server select agent" width="60%"></span></p>
 </div>
 <div class="paragraph">
-<p>We need an agent to interact with the <strong>mcp server tools</strong></p>
+<p>An agent to interact with the <strong>mcp server tools</strong>.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ask the AI Agent any questions to use the recently added MCP server, such as:</p>
-</li>
-</ul>
+<div class="sect2">
+<h3 id="_ask_the_ai_agent_questions_about_tavily_search"><a class="anchor" href="#_ask_the_ai_agent_questions_about_tavily_search"></a>Ask the AI Agent questions about <strong>Tavily Search</strong>:</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">tell me about tavily search</code></pre>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-chat.png" alt="mcp server chat" width="60%"></span></p>
 </div>
 <div class="paragraph">
-<p><strong>Congratulations</strong>, you have successfully configured an <strong>MCP Server in Red Hat OpenShift Dev Spaces</strong> as part of the AI assistant.</p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-chat.png" alt="mcp server chat" width="100%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ask_the_ai_agent_questions_about_tavily_extract"><a class="anchor" href="#_ask_the_ai_agent_questions_about_tavily_extract"></a>Ask the AI Agent questions about <strong>Tavily Extract</strong>:</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">tell me about tavily extract</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-chat-extract.png" alt="mcp server chat extract" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Congratulations</strong>, you have successfully configured an <strong>MCP Server in Red Hat OpenShift Dev Spaces</strong> as part of the AI assistant and learned about the AI Agent&#8217;s tools.</p>
 </div>
 </div>
 </div>

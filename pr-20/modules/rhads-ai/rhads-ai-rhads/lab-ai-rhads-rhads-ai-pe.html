@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>AI Platform Engineering: Using pre-existing software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <title>AI Platform Engineering: Using software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-pe.html">
     <link rel="prev" href="lab-ai-rhads-overview-rhads-ai.html">
     <link rel="next" href="lab-ai-rhads-rhads-ai-dev.html">
@@ -283,13 +283,12 @@
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">AI Platform Engineering: Using pre-existing software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite</h1>
+<h1 class="page">AI Platform Engineering: Using software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite</h1>
 <div class="sect1">
 <h2 id="_objectives"><a class="anchor" href="#_objectives"></a>Objectives</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>From the pre-existing software templates, you will bring a new resource in Red Hat Developer Hub, which will serve as a blank template for developers for the AI Engineers to build an AI agent. As part of the Platform Engineering team you will be setting up this resource with all kubernetes manifests including, trusted software supply chain, deployments and application promotion.
-In the next lab, the AI Engineers will bring their application source code to the new resource to be part of the software development lifecycle.</p>
+<p>Using a pre-existing software template, you will create a new resource in Red Hat Developer Hub. This resource will serve as a blank template for AI Engineers to build an AI agent. As part of the Platform Engineering team, you will set up this resource with all necessary Kubernetes manifests, including the trusted software supply chain, deployments, and application promotion. In the next lab, AI Engineers will add their application source code to this new resource, integrating it into the software development lifecycle.</p>
 </div>
 </div>
 </div>
@@ -297,7 +296,7 @@ In the next lab, the AI Engineers will bring their application source code to th
 <h2 id="_scenario"><a class="anchor" href="#_scenario"></a>Scenario</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are part of the AI Platform Engineering team and are responsible for providing the tools and best practices with your organization&#8217;s guidelines for the AI team to build an AI agent in OpenShift.</p>
+<p>You are part of the AI Platform Engineering team, responsible for providing the tools and best practices—aligned with your organization&#8217;s guidelines—for the AI team to build an AI agent in OpenShift.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s get started.</p>
@@ -305,32 +304,52 @@ In the next lab, the AI Engineers will bring their application source code to th
 </div>
 </div>
 <div class="sect1">
-<h2 id="_understanding_the_software_templates"><a class="anchor" href="#_understanding_the_software_templates"></a>Understanding the software templates</h2>
+<h2 id="_understanding_software_templates"><a class="anchor" href="#_understanding_software_templates"></a>Understanding software templates</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Software templates can build, deploy, and promote any application that can run on a container or Kubernetes component/configuration. Software templates ensure that development teams will start from the beginning with best practices and organization guidelines to ensure guardrails and compliance are in place before the application runs on the cluster.</p>
+<p>Software templates can build, deploy, and promote any application that runs in a container or as a Kubernetes component. They ensure development teams start with established best practices and organizational guidelines, putting guardrails and compliance in place before the application ever runs on the cluster.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_about_pre_defined_software_templates"><a class="anchor" href="#_about_pre_defined_software_templates"></a>About pre-defined Software templates</h2>
+<h2 id="_about_pre_defined_software_templates"><a class="anchor" href="#_about_pre_defined_software_templates"></a>About pre-defined software templates</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Pre-defined software templates are offered with the RHADS installation and provide receipts that users can leverage to start bringing applications into OpenShift. The pre-defined Software Templates are built to give customers a starting point and a reference to make any application using Trusted Software Supply Chain (TSSC). They are not meant for production; customers can bring their own configurations on top of these templates following the documentation provided in the [product documentation]<a href="https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-" class="bare">https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-</a><em>software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite</em>-_software_supply_chain</p>
+<p>Pre-defined software templates are included with the RHADS installation. They provide recipes users can leverage to start bringing applications into OpenShift. These templates offer a starting point and reference for building applications using the Trusted Software Supply Chain (TSSC). They are not intended for production use; customers can add their own configurations on top of these templates by following the <a href="https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/index" target="_blank" rel="noopener">Customizing Red Hat Trusted Application Pipeline documentation</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_create_the_component"><a class="anchor" href="#_create_the_component"></a>Create the component</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s create a new component from the pre-existing Software Template in Red Hat Developer Hub.</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Let&#8217;s bring the pre-existing Software Template to Red Hat Developer Hub.</p>
+<p>Click on <strong>catalog</strong>:</p>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-catalogicon.png" alt="rhdh catalogicon" width="30%"></span></p>
+</div>
+<div class="ulist">
+<ul>
 <li>
-<p>From <strong>catalog</strong>, select <strong>Self-service</strong>, then select <strong>Python - Trusted Application Pipeline</strong></p>
+<p>Next, click on <strong>Self-service</strong>:</p>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-selfservice.png" alt="rhdh selfservice" width="30%"></span></p>
+</div>
+<div class="paragraph">
+<p>Then select the software template: Python - Trusted Application Pipeline</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Click on <strong>Choose</strong></p>
 </li>
@@ -339,20 +358,21 @@ In the next lab, the AI Engineers will bring their application source code to th
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-catalog-python.png" alt="rhdh catalog python" width="60%"></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Follow the steps to create the object in Red Hat Developer Hub</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Add the name <strong>Ai-agent</strong>,</p>
-</li>
-<li>
-<p>Select the user <strong>user1</strong> from the dropdown</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Follow the steps to create the component in Red Hat Developer Hub, adding the following input data for each section.</p>
 </div>
+<div class="sect2">
+<h3 id="_application_information"><a class="anchor" href="#_application_information"></a>Application Information</h3>
+<div class="paragraph">
+<p>Enter the following data:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Name: ai-agent</strong></p>
+</li>
+<li>
+<p><strong>Owner: Select the user: user1 from the dropdown:</strong></p>
 </li>
 </ul>
 </div>
@@ -362,92 +382,106 @@ In the next lab, the AI Engineers will bring their application source code to th
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Next</strong></p>
+<p><strong>Click on *Next</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python.png" alt="rhdh python" width="100%"></span></p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_application_repository_information"><a class="anchor" href="#_application_repository_information"></a>Application Repository Information</h3>
+<div class="paragraph">
+<p>Change only the following fields:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Add the following inputs:</p>
+<p><strong>Host Type: GitLab</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Host Type: GitLab</strong></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-gitselection.png" alt="rhdh gitselection" width="30%"></span></p>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-gitselection.png" alt="rhdh gitselection" width="60%"></span></p>
-</div>
-<div class="paragraph">
-<p><strong>Repository Name: Ai-agent</strong></p>
-</div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Repository Name: ai-agent</strong></p>
+</li>
+<li>
 <p><strong>Repository Owner: rhdh</strong></p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p><strong>Repository Server: gitlab-gitlab.{openshift_cluster_ingress_domain}</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p><strong>Repository Server: tssc</strong></p>
-</div>
-<div class="paragraph">
-<p>Your screen should like similar like this:</p>
+<p>Your screen should look similar to this:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python2.png" alt="rhdh python2" width="100%"></span></p>
 </div>
 <div class="paragraph">
-<p>Notice that the GitLab URL might be different since the cluster domain will change.</p>
+<p>Keep Repository Default Branch and CI Provider with the default values.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> The GitLab URL may differ, as the cluster domain will vary.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on Next</p>
+<p>Click on <strong>Next</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deployment_information"><a class="anchor" href="#_deployment_information"></a>Deployment Information</h3>
+<div class="paragraph">
+<p>Change only the following inputs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Image Registry: quay-my-guid.{openshift_cluster_ingress_domain}</strong></p>
 </li>
 <li>
-<p>Add the following inputs:</p>
+<p><strong>Image Organization: tssc</strong></p>
+</li>
+<li>
+<p><strong>Image Name: ai-agent</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Image Organization : rhdh</strong></p>
-</div>
-<div class="paragraph">
-<p><strong>Image Name: rhdh</strong></p>
-</div>
-<div class="paragraph">
-<p>Your screen should like similar like this:</p>
+<p>Your screen should look similar to this:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python3.png" alt="rhdh python3" width="100%"></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click on Review</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p>Your screen should like similar like this:</p>
+<p>Keep Deployment Namespace with the default value.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_click_on_review"><a class="anchor" href="#_click_on_review"></a>Click on Review</h3>
+<div class="paragraph">
+<p>Your screen should look similar to this:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python4.png" alt="rhdh python4" width="100%"></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click on the <strong>Create</strong> button</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p>Red Hat Developer Hub will run the tasks defined on the <strong>template.yaml</strong> file and rest of the manifests.
-Once it finishes, you will see all the steps in green.</p>
+<p>Ensure your information matches the image, except for the cluster domain.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_click_on_the_create_button"><a class="anchor" href="#_click_on_the_create_button"></a>Click on the Create button</h3>
+<div class="paragraph">
+<p>Red Hat Developer Hub will run the tasks defined in the <strong>template.yaml</strong> file and other manifests. Once finished, all steps will appear in green.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-python5.png" alt="rhdh python5" width="100%"></span></p>
@@ -460,27 +494,28 @@ Once it finishes, you will see all the steps in green.</p>
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_exploring_the_software_template"><a class="anchor" href="#_exploring_the_software_template"></a>Exploring the Software template</h2>
+<h2 id="_exploring_the_software_template"><a class="anchor" href="#_exploring_the_software_template"></a>Exploring the software template</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section, you will learn what was created and how to understand these configurations.</p>
+<p>In this section, you will review what was created and learn how to understand these configurations.</p>
 </div>
 <div class="paragraph">
-<p>We now have two repositories available, both of which are needed to build and deploy the application:</p>
+<p>Two repositories were created, both required to build and deploy the application:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Source Repository: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production).</p>
+<p><strong>Source Repository</strong>: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production).</p>
 </li>
 <li>
-<p>GitOps Repository: represents the AI application, now with only a sample app. This is the repository where the AI Engineers will be working to include the AI Agent.</p>
-</li>
-<li>
-<p>Learn more about these templates at [Sample Pipelines]<a href="https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-" class="bare">https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-</a><em>software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite</em>-_software_supply_chain/about-sample-pipelines_default</p>
+<p><strong>GitOps Repository</strong>: Represents the AI application, which currently contains only a sample app. AI Engineers will use this repository to add the AI Agent.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Learn more about these templates at <a href="https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/customizing-sample-pipelines_default" target="_blank" rel="noopener">Customizing Sample Pipelines</a>.</p>
 </div>
 </div>
 </div>
@@ -488,51 +523,53 @@ Once it finishes, you will see all the steps in green.</p>
 <h2 id="_adding_more_configurations"><a class="anchor" href="#_adding_more_configurations"></a>Adding more configurations</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You have received some requests from the AI Engineering team:</p>
+<p>You have received new requests from the AI Engineering team:</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>The application will use environment configurations to connect to an AI model and an API</p>
+<p>Update the <strong>dev.yaml</strong> file with application configurations.</p>
 </li>
 <li>
-<p>Integrate with Red Hat OpenShift Dev Spaces</p>
+<p>Integrate Red Hat Developer Hub with <strong>Red Hat OpenShift Dev Spaces</strong>.</p>
 </li>
 <li>
-<p>Create a webhook in GitLab to trigger Pipelines</p>
+<p>Configure the application to use <strong>environment variables</strong> to connect to an AI model and an API.</p>
 </li>
-</ul>
+<li>
+<p>Create a <strong>GitLab webhook</strong> to trigger the OpenShift Pipelines.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>As Platform Engineer you will need to update the software templates or components managing custom configurations. In this case, we are applying these configurations to the component created.
-Let&#8217;s work on these requests!</p>
+<p>As a Platform Engineer, you must update the software templates or components to manage custom configurations. In this case, you will apply these configurations directly to the newly created component. Let&#8217;s work on these requests!</p>
 </div>
 <div class="sect2">
-<h3 id="_integrating_rh_openshift_dev_spaces"><a class="anchor" href="#_integrating_rh_openshift_dev_spaces"></a>Integrating RH OpenShift Dev Spaces</h3>
+<h3 id="_1_update_the_dev_yaml_file"><a class="anchor" href="#_1_update_the_dev_yaml_file"></a>1- Update the dev.yaml file</h3>
 <div class="paragraph">
-<p>In this template, you will include the integration with RH OpenShift Dev Spaces. The integration will be done by including a link in the component&#8217;s overview UI. To achieve this, you need to include this information in the catalog-info.yaml file.</p>
+<p>In this section, you will replace the <strong>whole content</strong> of the dev.yaml file.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Go to the GitLab source code repository:</p>
+<p>Go to the <strong>GitLab source code</strong> repository:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>On the same screen, click on <strong>Source Repository</strong></p>
+</li>
+<li>
+<p>Or  use the following URL, <a href="{gitlab_url}/rhdh/ai-agent" target="_blank" rel="noopener">GitLab AI Agent</a>.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>On the same screen, click on <strong>Source Repository</strong></p>
-</div>
-<div class="paragraph">
-<p>Or  use the following URL, <a href="{gitlab_url}/rhdh/ai-agent" target="_blank" rel="noopener">GitLab AI Agent</a>.</p>
-</div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Log in to GitLab using your credentials:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Sign in</strong></p>
+<p>Click on <strong>Sign in</strong>:</p>
 </li>
 </ul>
 </div>
@@ -552,37 +589,148 @@ Let&#8217;s work on these requests!</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on the <strong>catalog-info.yaml file</strong></p>
+<p>Click the <strong>dev.yaml file</strong> in the project&#8217;s root directory.</p>
 </li>
 <li>
-<p>Click on <strong>Edit</strong>, then <strong>Edit Single File</strong>
-<span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></span></p>
+<p>Click on <strong>Edit</strong>, then <strong>Edit Single File</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></span></p>
+</div>
 </li>
 <li>
-<p>Copy the following code:</p>
+<p>Copy the content provided by clicking the icon:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
 </li>
 </ul>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">- url: https://devspaces.apps.{openshift_ingress}/dashboard/#https://gitlab-gitlab.{openshift_ingress}/rhdh/ai-agent
-  title: RH OpenShift Dev Spaces
-  icon: dashboard
-  type: admin-dashboard</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">schemaVersion: 2.2.2
+metadata:
+  name: ai-agent
+  displayName: "AI Research Agent"
+  description: "Web-based AI research agent with search capabilities"
+components:
+  - name: python
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel9:3.23
+      volumeMounts:
+        - name: venv
+          path: /home/user/.venv
+      memoryLimit: '2Gi'
+      memoryRequest: '1Gi'
+      cpuLimit: '2'
+      cpuRequest: '1'
+      mountSources: true
+      env:
+        - name: FLASK_ENV
+          value: development
+        - name: FLASK_DEBUG
+          value: "1"
+  - name: venv
+    volume:
+      size: 1G
+commands:
+  - id: install
+    exec:
+      label: "Install Dependencies"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: python -m venv .venv &amp;&amp; . .venv/bin/activate &amp;&amp; pip install -r requirements.txt
+      group:
+        kind: build
+  - id: run
+    exec:
+      label: "Run AI Agent Server"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: . .venv/bin/activate &amp;&amp; gunicorn --bind 0.0.0.0:8080 --workers 2 --threads 4 --reload app:app
+      group:
+        kind: run
+  - id: dev
+    exec:
+      label: "Run Development Server"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: . .venv/bin/activate &amp;&amp; python app.py
+      group:
+        kind: run
+  - id: health
+    exec:
+      label: "Health Check"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: curl -f http://localhost:8080/health || echo "Service not ready"
+      group:
+        kind: test</code></pre>
 </div>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Paste it into catalog in line 11.</p>
+<p>Paste it into the file <strong>REPLACING THE WHOLE CONTENT</strong></p>
 </li>
 <li>
-<p>Your file should look like this:</p>
+<p>Commit your changes:</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-commit.png" alt="gitlab commit" width="60%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_integrating_red_hat_openshift_dev_spaces"><a class="anchor" href="#_integrating_red_hat_openshift_dev_spaces"></a>Integrating Red Hat OpenShift Dev Spaces</h3>
+<div class="paragraph">
+<p>Next, you will integrate Red Hat OpenShift Dev Spaces. You will add a link to the component&#8217;s overview UI. To accomplish this task, you will add the information to the the <strong>catalog-info.yaml</strong> file.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Go back to the project&#8217;s root folder and find the <strong>catalog-info.yaml file</strong>:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-catalog.png" alt="gitlab catalog" width="60%"></span></p>
+</div>
+</li>
+<li>
+<p>Click the file</p>
+</li>
+<li>
+<p>Click <strong>Edit</strong>, then <strong>Edit Single File</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>Copy the following code:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
 </li>
 </ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">    - url: https://devspaces.{openshift_cluster_ingress_domain}/dashboard/#https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/ai-agent
+      title: RH OpenShift Dev Spaces
+      icon: dashboard
+      type: admin-dashboard</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste it at line 11, <strong>without replacing the existing content</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Your file should look similar to this, although the cluster domain will be different:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-catalog-info.png" alt="ai agent catalog info" width="100%"></span></p>
@@ -604,10 +752,10 @@ Let&#8217;s work on these requests!</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Go back to {rhdh_url/catalog/default/component/ai-agent/}[Red Hat Developer Hub UI - AI Agent^]</p>
+<p>Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]</p>
 </li>
 <li>
-<p>You should see an link similar like this:</p>
+<p>You should see a new link in the component&#8217;s overview:</p>
 </li>
 </ul>
 </div>
@@ -617,74 +765,95 @@ Let&#8217;s work on these requests!</p>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-click.png" alt="rhdh devspaces click" width="100%"></span></p>
 </div>
-<div class="paragraph">
-<p><strong>Note:</strong> Do not click on the link. You will be working with RH OpenShift Dev Spaces later in the next lab.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Note:</strong>  Do not click the link. You will use Red Hat OpenShift Dev Spaces in the next lab as an AI Engineer.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_creating_the_webhook"><a class="anchor" href="#_creating_the_webhook"></a>Creating the webhook</h3>
+<h3 id="_create_the_webhook"><a class="anchor" href="#_create_the_webhook"></a>Create the webhook</h3>
 <div class="paragraph">
-<p>Webhooks are not part of the pre-defined software templates; however, we need them to ensure pipelines will be triggered once the source is changed.
-Now, we must create a webhook in the source code repository in GitLab.</p>
+<p>Webhooks are not part of the pre-defined software templates, but they are required to trigger pipelines when the source code changes. Now, create a webhook in the source code repository in GitLab.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on Settings &#8594; Webhooks</p>
+<p>Go to the source code repository or access it directly: <a href="{gitlab_url}/rhdh/ai-agent" target="_blank" rel="noopener">GitLab AI Agent</a></p>
+</li>
+<li>
+<p>Click <strong>Settings &gt; Webhooks</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook.png" alt="gitlab webhook" width="100%"></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook.png" alt="gitlab webhook" width="80%"></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Copy the URL and past it on the <strong>URL</strong></p>
+<p>Click <strong>Add new webhook</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-new.png" alt="gitlab webhook new" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the URL and paste it in the URL field.</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://pipelines-as-code-controller-openshift-pipelines.{openshift_ingress}</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://pipelines-as-code-controller-openshift-pipelines.{openshift_cluster_ingress_domain}</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Check on the trigger option and select the following:</p>
+<p>In the <strong>Trigger</strong> section, select the following:</p>
+</li>
+<li>
+<p>Push events</p>
+</li>
+<li>
+<p>Tag Push events</p>
+</li>
+<li>
+<p>Comments</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-config.png" alt="gitlab webhook config" width="100%"></span></p>
 </div>
-<div class="paragraph">
-<p>Next, on the same screen, you will test the webhook to ensure it works properly.</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Scroll down and <strong>Click on the Add Webhook button</strong>.</p>
-</li>
-</ul>
-</div>
+<p>Scroll to the bottom and click <strong>Add webhook</strong>.</p>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-add-webhook.png" alt="gitlab add webhook" width="100%"></span></p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_trigger_the_pipeline"><a class="anchor" href="#_trigger_the_pipeline"></a>Trigger the Pipeline</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>On the webhook screen, click on <strong>Test</strong> and <strong>Push events</strong></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-test.png" alt="gitlab webhook test" width="100%"></span></p>
+<p>Next, you will test the webhook from this screen to ensure it works.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_test_the_webhook"><a class="anchor" href="#_test_the_webhook"></a>Test the webhook</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Next, we&#8217;ll see the pipeline being triggered.</p>
+<p>On the <strong>Webhooks</strong> screen, click <strong>Test</strong> and select <strong>Push events</strong>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-test.png" alt="gitlab webhook test" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>This will trigger the pipeline.</p>
 </li>
 </ul>
 </div>
@@ -694,60 +863,71 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Go back to {rhdh_url/catalog/default/component/ai-agent/}[Red Hat Developer Hub UI - AI Agent^]</p>
+<p>Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]</p>
 </li>
 <li>
-<p>Click on the <strong>ci tab</strong></p>
+<p>Click the <strong>CI</strong> tab.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhads-tssc.png" alt="rhads tssc" width="100%"></span></p>
+</div>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhads-tssc.png" alt="rhads tssc" width="100%"></span></p>
+<p><strong>Note:</strong> The pipeline will take a few minutes to complete all steps.</p>
 </div>
 <div class="paragraph">
-<p>The AI agent will be built with all security best practices and organization guardrails that are already in place before the development team starts building the application implementing Trusted Software Supply Chain thanks to Red Hat Advanced Developer Suite. As a best practices we want development teams to use the shift-left security approach on any development type. This approach applies to any kind of application.</p>
+<p>The AI agent will be built using the Trusted Software Supply Chain (TSSC) provided by Red Hat Advanced Developer Suite. This ensures all security best practices and organizational guardrails are in place <strong>before</strong> development begins. As a best practice, this applies a shift-left security approach to all development.</p>
 </div>
 <div class="paragraph">
-<p>To learn more about Trusted Software Supply Chain, ensure you review the modules Trusted Software Supply Chain.</p>
+<p>The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) <strong>roxctl</strong> CLI: <strong>acs-image-check</strong> verifies the image signature against security policies, and <strong>acs-image-scan</strong> identifies vulnerabilities. Red Hat Quay acts as the secure registry, storing the signed images, SBOMs, and metadata.</p>
+</div>
+<div class="paragraph">
+<p>To learn more, review <a href="../../tssc-overview.html" class="xref page">Module 11: Trusted Software Supply Chain</a>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> If you face a 500 error during the build container image step, restart the <strong>quay-quay-app.</strong> pods (2 pods) in the <strong>quay-enterprise</strong> namespace.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_adding_environment_variables"><a class="anchor" href="#_adding_environment_variables"></a>Adding environment variables</h3>
+<h3 id="_add_environment_variables"><a class="anchor" href="#_add_environment_variables"></a>Add environment variables</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Go to the GitLab gitops repository: <a href="{gitlab_url}/rhdh/ai-agent-gitops/-/blob/main/components/ai-agent/base/deployment.yaml" target="_blank" rel="noopener">GitLab AI Agent deployment.yaml</a>.</p>
+<p>Go to the AI Agent GitOps repository&#8217;s <strong>deployment.yaml</strong>: <a href="{gitlab_url}/rhdh/ai-agent-gitops/-/blob/main/components/ai-agent/base/deployment.yaml" target="_blank" rel="noopener">ai-agent-gitops deployment.yaml</a>.</p>
 </li>
 <li>
-<p>Click on <strong>Edit</strong>, then <strong>Edit Single File</strong>
-<span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></span></p>
+<p>Click <strong>Edit</strong>, then <strong>Edit Single File</strong>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></span></p>
+</div>
 </li>
 <li>
-<p>In line 52 paste the new source code to include integrations with LLM models including name, URL and API key. Additionally, the integration with Tavily API to be used as part of the AI Agent tools.</p>
+<p>At line 52, paste the new code. This adds integrations for LLM models (name, URL, API key) and the Tavily API, which will be used as an AI Agent tool. <strong>Ensure you are not replacing the current content.</strong></p>
+</li>
+</ul>
+</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">        - name: LLM_API_BASE_URL
           valueFrom:
             secretKeyRef:
-              name: ai-agent-secrets
+              name: ai-agent-secrets-llm
               key: LLM_API_BASE_URL
         - name: TAVILY_API_KEY
           valueFrom:
             secretKeyRef:
-              name: ai-agent-secrets
+              name: ai-agent-secrets-tavily
               key: TAVILY_API_KEY
         - name: LLM_API_KEY
           valueFrom:
             secretKeyRef:
-              name: ai-agent-secrets
+              name: ai-agent-secrets-llm
               key: LLM_API_KEY</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Your file should look like this, ensure the identation is correct:</p>
-</div>
-</li>
-</ul>
+<p>Your file should look like this. <strong>Ensure the indentation is correct</strong>:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-deployment.png" alt="ai agent deployment" width="100%"></span></p>
@@ -756,17 +936,17 @@ Now, we must create a webhook in the source code repository in GitLab.</p>
 <ul>
 <li>
 <p>Commit your changes:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-commit.png" alt="gitlab commit" width="60%"></span></p>
+</div>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../_images/rhads-ai/rhads/gitlab-commit.png" alt="gitlab commit" width="60%"></span></p>
+<p><strong>Note:</strong> In the next lab, the developer will create the secret with the keys. This is not a recommended practice, but it is done for this lab to avoid sharing private keys in a public repository.</p>
 </div>
 <div class="paragraph">
-<p><strong>Note:</strong> In the next lab, the developer will be creating the secret with the keys. This is not a recommended practice, but for the purpose of this lab and not share private keys on a public repository.</p>
-</div>
-<div class="paragraph">
-<p>Great job! We have successfully built the tools for the AI Engineering team to start building their agent.</p>
+<p>Great job! You have successfully built the tools for the AI Engineering team to start building the AI Agent.</p>
 </div>
 </div>
 </div>
