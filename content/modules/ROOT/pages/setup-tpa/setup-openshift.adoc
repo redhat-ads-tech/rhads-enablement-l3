@@ -407,6 +407,7 @@ oc apply -f secret-oidc-cli.yaml
 [source,console]
 ----
 bash-5.1 ~ $ cd ~/l3-enablement-helpers/prerequisites/
+oc project student-tpa-operator
 oc apply -f secret-oidc-cli.yaml
 secret/oidc-cli created
 ---- 
@@ -532,6 +533,24 @@ Sticking with `s3`, we need to get the actual bucket name to be set in the `spec
 
 We can get that from the `tpa-bucket-claim` ConfigMap in our namespace, or by running the `s3.sh` script (which will also give us the `s3` endpoint, which we already changed above).
 
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd ~/l3-enablement-helpers/prerequisites
+oc project student-tpa-operator
+./s3.sh 
+----
+[source,console]
+----
+bash-5.1 ~/l3-enablement-helpers/prerequisites $ ./s3.sh 
+Access Key ID:       uQJELScAXek96XcUUrAl
+Secret Access Key:   OFCB8spseTxVPFrUTc3nZecqi+D51IpIpvLBo9gt
+Endpoint:            https://s3-openshift-storage.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+Bucket Name:         trustify-c443fd04-cc20-4455-ac54-f02921669428
+----
+
+
+
 *What else?*
 
 *Importers*
@@ -551,6 +570,119 @@ Ok, changed the values? Then let's hit "Create"!
 
 image:m3-tpa-openshift/duck-cover-watch.gif[]
 
+As expected (see the note in the beginning) the Operator install seemingly fails with helm error messages.
+
+image:m3-tpa-openshift/operator-tpa-failed.png[]
+image:m3-tpa-openshift/operator-tpa-failed-detailed.png[]
+
+However, if you go to the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments[Deployments Page^,window="console"], you can see the importer and server deployments with 1/1 pods.
+
+image:m3-tpa-openshift/operator-tpa-failed-deployment.png[]
+
+So, let's quickly check the pod logs for:
+
+1) The https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/importer/pods[importer pod^,window="console"]
+
+image:m3-tpa-openshift/operator-tpa-importer-logs.png[]
+
+If configured correctly, the importer will start with cloning the cve repository and importing them into the graph database.
+
+
+2) The https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/server/pods[server pod^,window="console"]
+
+image:m3-tpa-openshift/operator-tpa-server-logs.png[]
+
+If configured correctly, the server will start but there will not be much activity, aside from the health/readiness probes. 
+
+Lastly, we should check the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/route.openshift.io\~v1~Route[Route^,window="console"] that has been created:
+
+image:m3-tpa-openshift/operator-tpa-route.png[]
+
+[TIP]
+====
+[cols="2,5", frame=none, grid=none, stripes=none]
+|===
+a| image:m3-tpa-openshift/operator-tpa-route-redirect-error.png[]
+a| If you are seeing this error, check the URL for the parameters `client_id=` and `redirect_uri=` and go back to Keycloak and the client definition. Check if the client exists (typo?) and the pattern in the clients redirect URIs matches the one in the `redirect_uri=` parameter.
+|===
+====
+
+=== Verification
+
+==== *Frontend*
+
+After opening the route URL and logging in with `user1` or `admin`, you should see the TPA UI ✅:
+
+image:m3-tpa-openshift/operator-tpa-dashboard.png[]
+
+[TIP] 
+==== 
+Should you see network-related errors in the TPA UI, this is most likely due to some OIDC misconfiguration. Open the developer perspective of your browser of choice and check if you get `403` (forbidden) errors.  
+
+image:m3-tpa-openshift/operator-tpa-dashboard-debug.png[]
+
+Then, copy the `Authorization: Bearer` token from any erroneous (403) request and run it through a JWT Debugger, such as https://www.jwt.io/[jwt.io^] 
+
+Take note of the "scope" OIDC claim - in this case it contains the `create:document read:document` scopes that we defined - therefore TPA allows us to view the data (and create/upload SBOMs).
+[source,console]
+----
+{
+[...]
+  "scope": "openid create:document read:document email profile",
+  "sid": "0131571b-4f84-44e6-b80a-6ef7bdbae88d",
+  "email_verified": true,
+  "name": "user1 TSSC",
+  "preferred_username": "user1",
+  "given_name": "user1",
+  "family_name": "TSSC",
+  "email": "user1@demo.redhat.com"
+}
+----
+====
+
+==== *CLI*
+
+To verify the CLI (REST API) connectivity, go to the {openshift_console_url}/terminal[terminal^,window="terminal"] and inspect the `verify-sbom-upload.sh` we prepared for you:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd ~/l3-enablement-helpers/tpa-operator
+oc project student-tpa-operator
+cat verify-sbom-upload.sh
+----
+
+The verification is quite straightforward:
+
+. We obtain the `access token` using the `client_id` and `client_secret` that we set earlier
+. Using that `access token`, we post to the `/api/v2/sbom` endpoint (we have prepared a simple SBOM to test this with).
+
+In the same way, you would use that in a CI Task, uploading an SBOM that has just been generated.
+
+Now, let's do this:
+
+[source,bash,role=execute,subs=attributes+]
+----
+./verify-sbom-upload.sh
+----
+
+[source,console]
+----
+bash-5.1 ~/l3-enablement-helpers/tpa-operator $ ./verify-sbom-upload.sh 
+Access Token: 
+==================================================================================================
+eyJhbG[...]GGHw
+==================================================================================================
+
+Uploading homebanking SBOM
+
+{"id":"urn:uuid:0199fdf6-f4ce-7fd1-8d7e-89c8b03cafb8","document_id":"urn:uuid:18ca2b81-e4d2-4c6a-8bb5-54bfb6ae47a3/1"}
+
+bash-5.1 ~/l3-enablement-helpers/tpa-operator $ 
+----
+
+You should see this now in your https://server-student-tpa-operator.{openshift_cluster_ingress_domain}/sboms[TPA instance^,window="TPA"] after a few moments, including the labels we assigned ✅.
+
+image:m3-tpa-openshift/operator-tpa-sbom.png[]
 
 
 
