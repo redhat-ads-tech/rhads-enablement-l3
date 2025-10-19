@@ -362,6 +362,9 @@ image:rhads-ai/rhads/rhads-tssc.png[width=100%]
 
 The AI agent will be built with all security best practices and organization guardrails that are already in place before the development team starts building the application implementing Trusted Software Supply Chain thanks to Red Hat Advanced Developer Suite. As a best practices we want development teams to use the shift-left security approach on any development type. This approach applies to any kind of application.
 
+
+The pipeline builds a trusted software supply chain using OpenShift Pipelines, starting with a task that builds a container image, generates an SBOM, and pushes both to Red Hat Quay. Tekton Chains then automatically signs the image, providing crucial attestations. Subsequent tasks leverage the Red Hat Advanced Cluster Security (ACS) roxctl CLI to enforce security: acs-image-check verifies the image's signature against security policies, while acs-image-scan identifies components and vulnerabilities. Red Hat Quay serves as the secure registry, storing the signed images, SBOMs, and metadata for validation.
+
 To learn more about Trusted Software Supply Chain, ensure you review the modules Trusted Software Supply Chain, xref:tssc-overview.adoc[Module 11: Trusted Software Supply Chain]. 
 
 === Adding environment variables

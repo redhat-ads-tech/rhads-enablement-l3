@@ -1170,6 +1170,8 @@ image:rhads-ai/rhads/devspaces-commit.png[width=100%]
 
 image:rhads-ai/rhads/rhads-tssc.png[width=100%]
 
+As a Developer you are building an AI application with the security guardrails setup already by the Platform Engineering team. 
+Red Hat Advanced Developer Suite safeguards software artifacts including AI applications by digital signing, cryptographic integrity checks, and comprehensive provenance tracking from start to finish. This capability facilitates the automation to build and deploy AI applications, allowing developers to focus on source code while pipelines validating and packaging images ensuring that adhere to Supply Trusted Supply Chain for Software Artifacts (SLSA) standards while improving developer productivity.
 
 === Test the AI Agent
 
