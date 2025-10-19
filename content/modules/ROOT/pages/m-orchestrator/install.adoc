@@ -1,0 +1,81 @@
+
+= Installation
+
+== Prerequisites
+
+Since the Orchestrator plugin for {product_rhdh_name} relies on Serverless Workflow, it requires the OpenShift Serverless Workflow Operator to provide the primitives it relies on.
+
+This Operator provides the necessary *SonataFlow* https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resources^] that Orchestrator uses to facilitate the execution of custom workflows.
+
+== Install Serverless Workflow Operator
+
+Confirm the operator is installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com{tilde}v1alpha1{tilde}ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
+
+[NOTE]: Login as *{openshift_admin_user}* using the password `{openshift_admin_password}`.
+
+image:orchestrator-overview/install-operators.png[]
+
+If the Operator is not installed, use Operator Hub to install the stable release with *Automatic Approval* enabled:
+
+. Visit *Operator Hub* and view the Red Hat OpenShift Serverless Operators - https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/all-namespaces?keyword=openshift+serverless&source=%5B%22Red+Hat%22%5D[use this link to jump right there!^]
++
+image::orchestrator-overview/serverless-operators.png[]
+. Select the *OpenShift Serverless Logic Operator*, select version 1.36.0, and click *Install*.
+. On the install form, keep the default settings and click *Install* a final time.
+. Wait for the installation to complete.
+
+== Add the Orchestrator Plugins to {product_rhdh_name}
+
+Similar to the Operators, your environment has been pre-configured with the necessary dynamic plugins. 
+
+NOTE: Module 2 provides an in-depth overview of {product_rhdh_name}'s dynamic plugins feature. Visit that module if you'd like a deep-dive on deployment and configuration for {product_rhdh_name}.
+
+Verify that the dynamic plugins have been configured correctly:
+
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core{tilde}v1{tilde}ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
+  * Username: {openshift_admin_user}
+  * Password: {openshift_admin_password}
+. Select and view the YAML for the *tssc-developer-hub-dynamic-plugins* ConfigMap.
+. Verify that the following plugins are listed in the `plugins` array:
+  * @redhat/backstage-plugin-orchestrator
+  * @redhat/backstage-plugin-orchestrator-backend-dynamic
+  * @redhat/backstage-plugin-scaffolder-backend-module-orchestrator-dynamic
+  * @redhat/backstage-plugin-orchestrator-form-widgets
+. Inspect the `@redhat/backstage-plugin-orchestrator-backend-dynamic` - note that it has an additional dependencies property:
++
+[source,yaml,subs=attributes+]
+----
+dependencies:
+  - ref: sonataflow
+----
+. Inspect the *pluginConfig* associated with the `@redhat/backstage-plugin-scaffolder-backend-module-orchestrator-dynamic`. Notice that it specifies a `dataIndexService.url` property? This is the URL to a component of the SonataFlow Platform deployed in the same namespace as {product_rhdh_name}.
++
+[source,yaml,subs=attributes+]
+----
+pluginConfig:
+    orchestrator:
+      dataIndexService:
+        url: http://sonataflow-platform-data-index-service
+----
+. Before proceeding, change `disabled: true` to `disabled: false` for the listed plugins.
+
+So, why are these additional keys provided to the plugins?  In the case of `dependencies.ref`, it tells the {product_rhdh_name} Operator to provision the SonataFlow components, specifically a *SonataFlowPlatform* CR. The `dataIndexService.url` instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as {product_rhdh_name} - you can opt to host and install the SonataFlowPlatform elsewhere if required.
+
+== Verify the SonataFlowPlatform
+
+You've confirmed that the Orchestrator plugins are configured correctly - now you'll confirm that the *SonataFlowPlatform* was created and the Pods are healthy.
+
+. Return to the https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/{ns_tssc_rhdh}?view=graph[Topology View^] for the *{ns_tssc_rhdh}* namespace.
+. You should see the *SonataFlowPlatform* (or *SFP* for short) - click the three dots next to its name and select *Edit SonataFlowPlatform* to view the CR created as a result of the `dependencies.ref` you saw earlier.
++
+image::orchestrator-overview/sonataflow-platform-topology.png[]
+. Confirm that `ownerReferences` in the *YAML* view shows that the {product_rhdh_name} instance is managing this SonataFlowPlatform.
+. Additionally, you should notice that `spec.services` is connecting SonataFlow to the {product_rhdh_name} PostgreSQL database - this is to manage and track workflow state.
++
+image:orchestrator-overview/sonataflow-db-connection.png[]
+
+// TODO add note about Service URL to link back to the plugin config
+
+== Conclusion
+
+Now that you're familiar with the installation and configuration of the Orchestrator plugins, Operators, and backing *SonataFlowPlatform*, it's time to learn about building and managing workflows.

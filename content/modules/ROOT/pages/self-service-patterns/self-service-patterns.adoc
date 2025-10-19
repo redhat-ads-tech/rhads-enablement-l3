@@ -3,13 +3,12 @@
 [#introduction]
 == Introduction
 
-Software templates are the heart of Red Hat Developer Hub (RHDH). This section will explore leveraging software templates to enable self-service integration of third-party tools and platform capabilities.
-During this session, you will explore the different patterns and self-service approach to reduce cognitive load, scale operations, and promote best practices across the organization.
+Software templates are the heart of Red Hat Developer Hub (RHDH). In this section, you will learn how to leverage software templates to enable self-service integration of third-party tools and platform capabilities. During this session, you will explore different patterns and self-service approaches to reduce cognitive load, scale operations, and promote best practices across the organization.
 
-For this module, you are a Platform Architect working for an Online market store. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is having problems to self-service third-party components, and right now they are spending too much time creating namespaces, configurations, and bringing up databases. We want to unlock them so they can start focusing on AI capabilities on top of the platform. Your challenge is to find the best pattern to fulfill the organization and team's needs. Now, let's explore the different architectures and designs for self-service.
+For this module, you are a Platform Architect working for an online marketplace. The organization has already set up Red Hat Developer Hub and has many applications built and deployed. However, the Platform Engineering team is struggling to implement self-service for third-party components and is currently spending too much time manually creating namespaces, configurations, and provisioning databases. The goal is to free them up so they can focus on developing AI capabilities on top of the platform. Your challenge is to identify the best patterns to meet both the organization's and the team's needs. Let's explore different architectures and design patterns for self-service.
 
 
-== Prerequisites
+== Related Articles
 
 * link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps,window='_blank']
 * link:https://www.redhat.com/en/topics/devops/what-is-helm[What is Helm,window='_blank']
@@ -17,168 +16,180 @@ For this module, you are a Platform Architect working for an Online market store
 [#architecting-software-templates]
 == Architecting Software Templates
 
-Architecting software templates is essential for implementing Platform Engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to advancing a successful self-service approach.
+Architecting software templates is essential for implementing platform engineering best practices, enabling scalability, and accelerating the adoption of cloud-native tools. Establishing repeatable patterns that align with organizational guidelines and industry standards is key to building a successful self-service approach. Let's review the core structure of software templates:
 
-*Let's review the core structure of software templates:*
+=== *Software Template Structure*
 
-==== *Software Templates Structure*
+The software template structure in folders and files will vary depending on the component type, technology used, and specific requirements. Our approach is to separate different responsibilities into distinct folders and files, such as separating application source code from deployment manifests for each component.
 
-The software templates' structure in folders and files will vary depending on the component's type, technology used, etc. Our approach is to separate as many different responsibilities into folders and files. Such as separating the application source code, manifests from each component.
+[source,console]
+----
+my-template
+├── manifests
+│   ├── argocd
+│   │   ├── ${{values.component_id}}-argocd-app-dev.yaml
+│   │   └── ${{values.component_id}}-argocd-repo.yaml
+│   └── helm
+│       └── app
+│           ├── Chart.yaml
+│           ├── templates
+│           │   ├── _helpers.tpl
+│           │   └── vm.yaml
+│           └── values.yaml
+├── skeleton
+│   └── catalog-info.yaml
+└── template.yaml
+----
 
-==== *Folder for skeleton*
+=== *`skeleton` Folder*
 
-This folder contains the application source code and catalog file, including the information to be displayed on the component's UI in RHDH.
+This folder contains the application source code and catalog file, including the information to be displayed in the component's UI within RHDH.
 
+=== *`manifests` Folder*
 
-==== *Folder for manifests*
+This folder contains the application's Kubernetes manifests and additional files that enable RHDH to build and deploy that component in a Kubernetes cluster.
 
-This folder contains the application Kubernetes manifests and additional files that enable RHDH to build and deploy that component in a Kubernetes cluster. 
+=== *`template.yaml` File*
 
-==== *Template.yaml*
-
-The template yaml file defines how the component creation will interact with RHDH by defining the UI experience for the end-user, including fields, inputs, and workflow for the end user. Additionally, it describes the backend interactions and activities after the end user clicks on the create button, including creating repositories, creating GitOps objects, etc.
+The `template.yaml` file defines how component creation will interact with RHDH by specifying the UI experience for end users, including fields, inputs, and workflow. Additionally, it describes backend interactions and activities that occur after the end user clicks the create button, such as creating repositories and GitOps objects.
 
 *Template actions* 
 
-The following actions can be used to define the steps and actions in the template.yaml representing the backend tasks required.
+The following actions can be used to define the steps and actions in the `template.yaml` representing the backend tasks required.
 
-* **fetch:template**: Retrieves and processes template files
-* **publish:github**: Creates repositories in version control
-* **register:catalog**: Adds the new component to the service catalog
-* **Custom actions**: Organization-specific automation
+* `fetch:template`: Retrieves and processes template files
+* `publish:github`: Creates repositories in version control (both the application and GitOps repositories)
+* `argocd:create-resources`: Creates Argo CD applications and point at the newly created GitOps repository
+* `register:catalog`: Adds the new component to the service catalog
+* Other custom actions: Organization-specific automation
  
 
-=== The mechanics of Software Templates
+== The Mechanics of Software Templates
 
-We will explore the use case where resources need to be created on the cluster, and the recommended approach is GitOps. Helm will use variables in the Helm Charts received from the RHDH UI to build the chart.
+We will explore the use case where resources need to be created on the cluster, using the recommended GitOps approach. Helm will use variables from the Helm Charts received from the RHDH UI to build the chart.
 
 
 image::self-service-patterns/software_templates_flow.jpg[]
 
 [#patterns]
-== Patterns for third-party tools integrations using software templates for self-service
+== Patterns for Third-Party Tool Integrations Using Software Templates for Self-Service
 
-Different patterns can be created to accomplish business and technical needs according to your organization's guidelines.
-As a Platform Architect, you want to identify these specific patterns and how they will be customized according to the Software Development Lifecycle.
+Different patterns can be created to accomplish business and technical needs according to your organization's guidelines. As a Platform Architect, you need to identify these specific patterns and understand how they will be customized according to the Software Development Lifecycle.
 
-Here are some potential integrations that you will explore:
+Here are some potential integrations you will explore:
 
 image::self-service-patterns/pe_integrations.png[]
 
 
-=== Building Patterns
+== Building Patterns
 
-When building different patterns, it is critical to understand the main key points:
+When building different patterns, it is critical to understand these key considerations:
 
-* *The use case:* What is the use case for this component? When and why should it be created, updated, or removed? 
-** *Example:* An in-memory database will be created only on the development environment for development purposes.
-* *Who is the end-user?* This is a key question to grant access to specific users and understand how much "power" and flexibility we will grant to end users, such as developers, data scientists, and AI engineers.
-** *Example:* In this case, the Java team will be the only ones creating this component. However, the legacy team wants to have read access.
-* *The technology required* (database, VM): understanding which database and how this can be customized/configured. Mainly learning about basic vs custom configurations and how these configurations can fulfill the end-user needs. Which information will be filled out by the user, default values, which information is mandatory vs optional, and which data will be part of the manifests and not customized by the end-user.
-** *Example:* Many configurations could arise, from knowing the type of database, origin (vendor, community), version, and any specifics such as storage, etc.
-* *Environments required for the components*, including development, QA, staging and any customizations such as resource consumptions that need to be applied/updated in comparison with the development environment. Additionally, understanding who and how the promotion to different environments will happen, and who will have access to read or update this process.
-** *Example:* If a component needs to be created in production, this could only be managed by the Platform Engineering team, yet visible to the development team.
+* *Use Case:* What is the specific use case for this component? When and why should it be created, updated, or removed?
+** *Example:* An in-memory database will be created only in the development environment for development purposes.
 
-Let's explore some potential configurations you will create during the hands-on lab, from building a database to namespace as a service or VM.
+* *End Users:* Who are the intended users? This determines access control and the level of flexibility granted to different user groups, such as developers, data scientists, and AI engineers.
+** *Example:* The Java team will be the only group authorized to create this component, while the legacy team will have read-only access.
+
+* *Technology Requirements:* What specific technology is needed (database, VM, etc.), and how can it be customized and configured? This includes understanding basic versus custom configurations and how these meet end-user needs. Consider which information users will provide, default values, mandatory versus optional fields, and which data will be part of the manifests without user customization.
+** *Example:* Configuration options may include database type, origin (vendor or community), version, and specifications such as storage requirements.
+
+* *Environment Requirements:* Which environments are required for the components (development, QA, staging), including any customizations such as resource consumption that differ from the development environment. Additionally, determine who manages promotion to different environments and who has read or update access to this process.
+** *Example:* Production components may only be managed by the Platform Engineering team while remaining visible to the development team.
+
+Let's explore the configurations you will create during the hands-on lab, from building a database to providing namespace-as-a-service or virtual machines.
 
 image::self-service-patterns/database.png[]
 image::self-service-patterns/namespace_service.png[]
 image::self-service-patterns/vm.png[]
 
-=== Building Virtual Machines (VM)
+== Building Virtual Machines (VMs)
 
-*Defining the steps for the VM creation:*
+*Defining the Steps for VM Creation:*
 
-After the user clicks the *Create button*, a series of actions will happen that are all part of the VM's creation process to build a VM using OpenShift Virtualization and Red Hat Developer Hub. These steps are customizable and will be defined on the *template.yaml* file as part of the Software templates. 
+When creating a component from a template in Developer Hub, after the user clicks the *Create* button, a series of actions will occur as part of the VM creation process to build a virtual machine using OpenShift Virtualization and Red Hat Developer Hub. These steps are customizable and will be defined in the `template.yaml` file as part of the software templates.
 
-**Using OpenShift GitOps to create a VM**
+*Using OpenShift GitOps to Create VMs*
 
-The OpenShift GitOps controller will ensure that the desired state defined on the project and application are applied into the cluster. The OpenShift Virtualization operator will ensure that the VMs are being created, pods are running, and the VNC Console is accessible. 
+The OpenShift GitOps controller will ensure that the desired state defined in the project and application are applied to the cluster. The OpenShift Virtualization operator will ensure that VMs are created, pods are running, and the VNC Console is accessible.
 
+*Building VM Helm Charts*
 
-**Building VMs Helm charts**
+Below, we detail the benefits of using Helm Charts in conjunction with virtual machines (VMs).
 
-Below, we detail the utility of using Helm Charts in conjunction with virtual machines (VMs).
+*Using VMs from Instance Types*
 
-**Using VMs from instance types**
+You can simplify virtual machine (VM) creation by using instance types, which provide an easy way to define your VM's manifest. You can customize the Helm Charts extensively and use specific configurations to build your VM.
 
-You can simplify virtual machine (VM) creation by using instance types, an easy way to define your VM's manifest. You can customize the Helm Charts as much as you want and use specific configurations to build your VM. Creating virtual machines from instance types. 
+Your Helm chart files can represent all virtual machine definitions. For this use case, the Helm charts include:
 
-Your Helm chart files can represent all the virtual machine definitions. For this use case, the Helm charts are: 
+* `_template/helpers.tpl`: Holds variables such as labels and annotations to be used in the manifest files.
 
-* _template/helpers.tpl: to hold the variables such as labels, annotations to be used on the manifest files.
+* `template/vm.yaml`:  a _VirtualMachine_ object representing the instance of the virtual machine that will be created in OpenShift.
 
-* template/vm.yaml: kubevirt.io/v1 VirtualMachine object representing the instance of the virtual machine that will be created in OpenShift.
+* `chart.yaml`: Contains the Chart's definition, such as name and version.
 
-* chart.yaml: Including the Chart's definition, such as name and version.
+* `values.yaml`: Variables from the `template.yaml` file provided by RHDH. 
 
-* values.yaml: Variables coming from the template.yaml provided by RHDH. 
+*The steps in the `template.yaml` file*
 
-**Building the template.yaml file**
+*Step 1:* Generating the Source Code Component
 
-**Step 1:** Generating the source code component
+Developer Hub reads the parameters from the UI and software template definitions:
 
-Developer Hub reads from the parameters coming from the UI and software templates definitions:
-
-[.console-input]
-[source,bash,subs="+attributes",role=execute]
+[source,bash,subs="+attributes"]
 ----
 action: fetch:template
 ----
 
+*Step 2:* Publishing to Source Code Repository
 
-**Step 2:** Publishing to source code repository
+The system clones the repository with new source code representing the VM source code. In this case, we only have one file: the `catalog-info.yaml`:
 
-From there, it clones the repo with a new source code representing the VM source code. In this case, we only have one file, the catalog-info.yaml:
-
-[.console-input]
-[source,bash,subs="+attributes",role=execute]
+[source,bash,subs="+attributes"]
 ----
 action: publish:gitlab
 ----
 
-**Step 3:** Registering the source code component
+*Step 3:* Registering the Source Code Component
 
-Using the catalog-info.yaml file, Developer Hub will register this component, making it available in the Developer Hub UI:
+Using the `catalog-info.yaml` file, Developer Hub registers this component, making it available in the Developer Hub UI:
 
-[.console-input]
-[source,bash,subs="+attributes",role=execute]
+[source,bash,subs="+attributes"]
 ----
 action: catalog:register
 ----
 
-**Step 4:** Generating the deployment resources and artifacts
+*Step 4:* Generating the GitOps Deployment Resources and Artifacts
 
-Building the templates using the software templates defined in the manifest folder and reading from the template.yaml file to create the manifests in a new repository representing the values required to build the VM:
+The system builds the GitOps resource files using the software templates defined in the `manifest` folder to create the manifests in a new GitOps repository containing the values required to build the VM:
 
-[.console-input]
-[source,bash,subs="+attributes",role=execute]
+[source,bash,subs="+attributes"]
 ----
 action: fetch:template
 ----
 
-**Step 5:** Publishing to deployment resource repository
+*Step 5:* Publishing the GitOps Deployment Resource Repository
 
-Publish the templated source code into the GitLab repository:
+The templated GitOps resource files are published to the GitLab repository:
 
-[.console-input]
-[source,bash,subs="+attributes",role=execute]
+[source,bash,subs="+attributes"]
 ----
 action: publish:gitlab
 ----
 
-**Step 6:** Create Argo CD resources
+*Step 6:* Creating Argo CD Resources
 
-Request Argo CD  to create a GitOps application based on the previous source repository published in the last step:
+Argo CD creates a GitOps application based on the source repository published in the previous step:
 
-[.console-input]
-[source,bash,subs="+attributes",role=execute]
+[source,bash,subs="+attributes"]
 ----
 action: argocd:create-resources
 ----
 
-=== Conclusion
-Understanding the potential of RHDH and how it can be used to scale operations and platform engineering practices is a powerful tool that will benefit any organization. In the next labs, you will explore how to put this module into practice.
+== Conclusion
+
+Understanding the potential of RHDH and how it can be used to scale operations and implement platform engineering practices provides powerful capabilities that will benefit any organization. In the next labs, you will explore how to put these concepts into practice.
 
 === Resources
 * link:https://developers.redhat.com/articles/2025/03/17/10-tips-better-backstage-software-templates[10 tips for better Backstage Software Templates,window='_blank']

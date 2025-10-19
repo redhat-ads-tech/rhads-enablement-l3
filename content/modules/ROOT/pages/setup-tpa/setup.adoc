@@ -1,0 +1,52 @@
+= Setup TPA
+
+== Overview
+
+The Trusted Profile Analyzer (TPA) is a critical component for analyzing and evaluating software profiles in secure environments. This module provides comprehensive guidance for installing and configuring TPA in different environments to meet your organization's security and compliance requirements.
+
+TPA helps organizations:
+
+* Analyze software profiles for security vulnerabilities
+* Ensure compliance with security policies
+* Integrate with trusted software supply chain workflows
+* Provide detailed reporting and analytics
+
+== Installation Options
+
+TPA can be deployed in multiple environments depending on your infrastructure and requirements. Choose the appropriate installation guide for your environment:
+
+=== xref:setup-tpa/setup-openshift.adoc[Setup TPA on OpenShift]
+
+Install and configure TPA on OpenShift Container Platform for containerized environments. This option provides:
+
+* Scalable deployment using Kubernetes operators
+* Integration with OpenShift security features
+* Container-based analysis workflows
+* Integration with OpenShift monitoring and logging
+
+=== xref:setup-tpa/setup-rhel.adoc[Setup TPA on RHEL]
+
+Install and configure TPA directly on Red Hat Enterprise Linux systems for traditional server deployments. This option provides:
+
+* Direct installation on RHEL 8/9 systems
+* System-level integration
+* Traditional service management
+* Bare-metal or VM deployment options
+
+== Prerequisites
+
+Before proceeding with either installation option, ensure you have:
+
+* Appropriate system access and administrative privileges
+* Network connectivity for downloading packages and dependencies
+* Understanding of your organization's security policies
+* Access to required Red Hat subscriptions and repositories
+
+== Next Steps
+
+Select the appropriate installation guide based on your target environment:
+
+1. **For container-based deployments**: Follow the xref:setup-tpa/setup-openshift.adoc[OpenShift installation guide]
+2. **For traditional server deployments**: Follow the xref:setup-tpa/setup-rhel.adoc[RHEL installation guide]
+
+Both installation methods will result in a fully functional TPA deployment that can be integrated into your trusted software supply chain workflows. 

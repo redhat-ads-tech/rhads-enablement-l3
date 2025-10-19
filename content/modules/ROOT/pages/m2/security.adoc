@@ -38,7 +38,7 @@ The permission plugin provides the RBAC functionality for {product_rhdh_name}. Y
 
 === Add the RBAC Dynamic Plugin
 
-. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
+. Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:
   * Username: `{openshift_admin_user}`
   * Password: `{openshift_admin_password}`
 . Navigate to *Workloads > ConfigMaps* and select the *{m2_rhdh_plugins_cm_name}* ConfigMap.
@@ -69,7 +69,7 @@ permission:
 +
 [NOTE]
 ====
-In this exercise you're using `user:default/admin` since this is the administrative user in the lab environment. Replace this with a valid user entity reference in real-world scenarios - you can view valid user entities in the {product_rhdh_name} Software Catalog by filtering by *Kind: User*.
+In this exercise you're using `user:default/admin` as the administrative user in the lab environment. Replace this with a valid user entity reference in real-world scenarios - you can view valid user entities in the {product_rhdh_name} Software Catalog by filtering by *Kind: User*.
 ====
 . Save the configuration changes and wait for the {product_rhdh_name} instance to restart and apply the new configuration.
 
@@ -91,7 +91,7 @@ image::setup-rhdh/security-deny-by-default.png[]
 
 === Confirm Administrator Access
 
-. Log out from {product_rhdh_name}.
+. Log out from {product_rhdh_name} using the dropdown in the top-right corner.
 . Log in again, but as:
     * *Username*: `{openshift_admin_user}`
     * *Password*: `{openshift_admin_password}`
@@ -121,6 +121,7 @@ image::setup-rhdh/security-rbac-view-admin.png[]
 
 You'll create a policy that grants basic catalog viewing permissions to users in the `tssc` group. Recall that the *Group* entities in your Software Catalog have been synchronized from Keycloak.
 
+. Return to the  *Administration > RBAC* screen.
 . Click *Create* to start creating a new policy.
 . Configure the policy with the following settings:
   * *Policy Name*: `tssc-catalog-view`
@@ -165,10 +166,10 @@ Test the newly created policy to ensure it grants the expected access while main
 
 === Test Group Member Access
 
-. Log out from the *admin* account.
-. Log in as a user who is a member of the `tssc` group (such as *user1*).
+. Log out from {product_rhdh_name}.
+. Log in as a user who is a non-privileged user that's member of the `tssc` group (`{rhdh_user}` / `{rhdh_user_password}`).
 . Visit the Software Catalog to confirm that entities are visible.
-. Select the *HTTP Sink Application* to confirm *user1* can view it.
+. Select the *HTTP Sink Application* to confirm *{rhdh_user}* can view it.
 . Navigate to the *CD* tab - you should notice a permission error.
 + 
 image::setup-rhdh/security-restricted-user1.png[]
@@ -196,7 +197,8 @@ In this section you'll learn how to define policies using Casbin and load them i
 
 . Login to the OpenShift Web Console.
 . Ensure the *{m2_rhdh_project}* is selected in the project selector.
-. Expand *Workloads >ConfigMaps* and click *Create ConfigMap*.
+. Expand *Workloads > ConfigMaps* and click *Create ConfigMap*.
+. Select the *Form view*.
 . Set the *Name* to `rbac-policies`.
 . Set the *Key* to `rbac-policies.csv`.
 . Enter the following value in the text field:
@@ -295,7 +297,7 @@ image::setup-rhdh/security-casbin-cr.png[]
 
 === Verify the Casbin-based Policies 
 
-. Login to {product_rhdh_name} as the *admin* user.
+. Login to {product_rhdh_name} as the `{openshift_admin_user}` user using the passowrd `{openshift_admin_password}`.
 . Visit the *Administration > RBAC* screen.
 . Your new roles should be listed, and reflect the values in the ConfigMap.
 +

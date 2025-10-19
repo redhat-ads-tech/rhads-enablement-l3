@@ -28,11 +28,11 @@ To facilitate secure communication between {product_rhdh_name} and the GitLab AP
 +
 [NOTE]
 ====
-You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console] and viewing the `gitlab` project. Do not edit or delete anything in this project!
+You can find the GitLab instance deployment by accessing the {openshift_console_url}[OpenShift Web Console^] and viewing the `gitlab` project. Do not edit or delete anything in this project!
 ====
-. Login using the root credentials:
+. Login to GitLab using the root credentials:
   * Username: `root`
-  * Password: {gitlab_user_password}
+  * Password: `{gitlab_user_password}`
 . Click on your user's profile picture, select *Edit profile*, then *Access tokens*.
 . Click the *Add new token* button, then set the following values for the token:
   * *Token name*: `developer-hub-integration`
@@ -48,7 +48,7 @@ image::setup-rhdh/gitlab-token-created.png[]
 
 Create a Secret to store the GitLab token and hostname:
 
-. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
+. Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:
   * Username: `{openshift_admin_user}`
   * Password: `{openshift_admin_password}`
 . Navigate to *Workloads > Secrets* and click *Create > From YAML*.
@@ -82,7 +82,7 @@ Similar to the *{m2_keycloak_secret_name}* you created in the previous section, 
 
 Update your Backstage CR to include the GitLab secret:
 
-. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and change to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/clusterserviceversions/rhdh-operator.v1.7.1/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and change to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *gitlab-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -142,7 +142,7 @@ catalog:
         entityFilename: discovery-example/catalog-info.yaml
         schedule:
           frequency:
-            minutes: 5
+            minutes: 1
           timeout:
             minutes: 3
 ----
@@ -173,6 +173,11 @@ image::setup-rhdh/gitlab-discovery-log.png[]
 . Navigate to the *Catalog* to see imported items of *Kind* Component from GitLab repositories - specifically a *HTTP Sink Application*.
 +
 image::setup-rhdh/gitlab-component-httpsink.png[]
++
+[NOTE]
+====
+If the HTTP Sink Application isn't listed in the Catalog, wait a minute or two and refresh the Catalog page.
+====
 . Visit the *APIs* screen using the link in the side menu and you'll find a matching API Entity. Click it.
 . A *Relations* pane shows that the API is provided by the *HTTP Sink Application*.
 . Click the *Definition* tab - an Swagger UI is rendered from the OpenAPI Spec.
@@ -184,5 +189,5 @@ The system automatically discovers and imports `catalog-info.yaml` files from re
 
 [NOTE]
 ====
-The GitLab integration will scan the specified group (`rhdh` in this example) for repositories containing `discovery-example/catalog-info.yaml` files and automatically import them into the Backstage catalog. Normally the `discovery-example/` prefix is not used, but to avoid cluttering the software catalog, it's used to narrow the scope in this example.
+The GitLab integration will scan the specified group (`rhdh` in this example) for repositories containing `discovery-example/catalog-info.yaml` files and automatically import them into the Backstage catalog. Normally the `discovery-example/` prefix is not used, but it's used to narrow the scope in this example to avoid cluttering the software catalog.
 ====

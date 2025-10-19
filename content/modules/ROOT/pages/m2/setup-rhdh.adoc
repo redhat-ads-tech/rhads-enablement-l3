@@ -21,19 +21,13 @@ Your environment has been preconfigured with the {product_rhdh_name} Operator pr
 
 === Access OperatorHub and Installed Operators
 
-. Log in to the {openshift_console_url}[OpenShift Web Console] using the following credentials:
+. Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:
     * Username: `{openshift_admin_user}`
     * Password: `{openshift_admin_password}`
 . Dismiss any popups that appear.
-. Click the *Cluster Selector* in the top-left and select *local-cluster*.
 +
 image::setup-rhdh/select-cluster.png[]
-+
-[NOTE]
-====
-Your environment is equipped with Red Hat Advanced Cluster Management, hence the requirement to select a cluster context. In a real-world scenario, you'd have multiple clusters to choose from, but your environment is limited to a single OpenShift cluster.
-====
-. Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
+. If the *Developer* perspective is enabled, switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Expand *Operators* section in the side menu and click the *Installed Operators* link.
 
 You're now viewing the operators that have been preinstalled in your environment.
@@ -83,8 +77,7 @@ Before creating a Backstage CR, we need to satisfy some prerequisites. So don't 
 
 === Create a Project/Namespace
 
-. Visit the {openshift_console_url}[OpenShift Web Console].
-. Click the *Cluster Selector* in the top-left, and select *local-cluster*.
+. Visit the {openshift_console_url}[OpenShift Web Console^].
 . Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Navigate to *Home > Projects*, then click the *Create project* button. 
 +
@@ -99,12 +92,11 @@ As mentioned earlier, {product_rhdh_name} is based on the Backstage CNCF project
 
 In this section you'll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the `{m2_rhdh_project}` namespace.
 
-. Login to the {openshift_console_url}[OpenShift Web Console].
-. Go to *Workloads > ConfigMaps* using the side navigation.
+. Select *Workloads > ConfigMaps* using the side navigation.
 . Click the *Create ConfigMap* button on the *ConfigMaps* screen.
 +
 image::setup-rhdh/create-rhdh-configmap.png[]
-. Switch to the YAML view and paste the following into the editor:
+. Switch to the *YAML view* and paste the following into the editor:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -169,6 +161,8 @@ image::setup-rhdh/backstage-cr.png[]
 
 This Backstage CR will be detected by the {product_rhdh_name} Operator. The Operator will deploy Postgres and Backstage Pods in the `{m2_rhdh_project}` namespace. Verify the status of the Pods by visiting *Workloads > Pods* and checking that both Pods are marked as running and ready - this will take a minute or two.
 
+NOTE: If you don't see the expected Pods, make sure to select the *{m2_rhdh_project}* in the *Project* dropdown.
+
 image::setup-rhdh/backstage-pods.png[]
 
 === Visit your {product_rhdh_name} Instance
@@ -179,14 +173,18 @@ You can access your instance of {product_rhdh_name} using a https://docs.redhat.
 . Ensure that the *{m2_rhdh_project}* project is selected in the project selector.
 . Click the URL in the *Location* column on the *Routes* page. The {product_rhdh_name} sign-in page will appear.
 +
+NOTE: If an *Application is not available* message is displayed when you click the Location, wait another minute. This simply means the Pod readiness check has not passed yet, but will soon.
++
 image::setup-rhdh/backstage-route.png[]
 . Select the *Guest* sign-in option. You'll automatically be logged in as a *Guest* user, and the home page will be displayed.
 +
 image::setup-rhdh/rhdh-homepage.png[]
 
-NOTE: If an *Application is not available* message is displayed when you click the Location, wait another minute. This simply means the Pod readiness check has not passed yet, but will soon.
+== Conclusion
 
-Nice work! You deployed an instance of {product_rhdh_name} with a minimal *app-config.yaml*. An internal developer portal is only valuable when it has been connected to sources of data and configured with templates. In the following sections you'll learn how to connect {product_rhdh_name} to:
+Nice work! You deployed an instance of {product_rhdh_name} with a minimal *app-config.yaml*. 
+
+An internal developer portal is only valuable when it has been connected to sources of data and configured with templates. In the following sections you'll learn how to connect {product_rhdh_name} to:
 
 * Source Control (GitLab in this environment)
 * Single Sign-On (Keycloak in this environment)

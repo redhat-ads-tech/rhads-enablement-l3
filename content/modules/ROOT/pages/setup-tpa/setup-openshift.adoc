@@ -1,0 +1,9 @@
+= Setup TPA on OpenShift
+
+== Overview
+
+This guide covers the installation and configuration of Trusted Profile Analyzer (TPA) on OpenShift Container Platform. TPA on OpenShift leverages container orchestration for scalable and efficient security analysis workflows.
+
+== TBD
+
+// TODO: Add content for TPA installation and setup on OpenShift

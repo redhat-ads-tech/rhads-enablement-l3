@@ -18,7 +18,9 @@ asciidoc:
     product_rhdh_version: "1.6"
     product_gitops_name: Red Hat OpenShift GitOps
 
+    # Namespaces for pre-installed TSSC components
     ns_tssc_gitops: tssc-gitops
+    ns_tssc_rhdh: tssc-dh
 
     keycloak_realm_name: trusted-artifact-signer
     keycloak_client_id: rhdh
