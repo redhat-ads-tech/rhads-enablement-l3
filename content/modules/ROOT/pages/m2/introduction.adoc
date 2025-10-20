@@ -1,4 +1,4 @@
-= Module 2 - Install and Configure {product_rhdh_name}
+= Install and Configure {product_rhdh_name}
 
 {product_rhdh_name} is based on the https://backstage.io/[Backstage^, window="content"] project for building internal developer portals. This project was donated to the https://www.cncf.io/projects/backstage/[CNCF^, window="content"] by Spotify in 2020. Platform engineers can use {product_rhdh_name} to build internal developer portals. Doing so involves integrating {product_rhdh_name} with various data sources, cataloging existing software components, infrastructure, and resources, configuring authentication, and more.
 

@@ -342,7 +342,7 @@ The AI agent will be built using the Trusted Software Supply Chain (TSSC) provid
 
 The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) *roxctl* CLI: *acs-image-check* verifies the image signature against security policies, and *acs-image-scan* identifies vulnerabilities. Red Hat Quay acts as the secure registry, storing the signed images, SBOMs, and metadata.
 
-To learn more, review xref:tssc-overview.adoc[Module 11: Trusted Software Supply Chain].
+To learn more, review the xref:tssc-overview.adoc[Trusted Software Supply Chain] module.
 
 *Note:* If you face a 500 error during the build container image step, restart the *quay-quay-app.* pods (2 pods) in the *quay-enterprise* namespace.
 

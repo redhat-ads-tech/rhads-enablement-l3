@@ -55,7 +55,7 @@ By the end of this workshop, you will be able to:
 
 == Workshop Structure
 
-This workshop consists of 20 comprehensive modules covering everything from initial setup to advanced production implementations. Each module includes hands-on exercises, real-world scenarios, and practical configuration examples.
+This workshop consists of a number of comprehensive modules covering everything from initial setup to advanced production implementations. Each module includes hands-on exercises, real-world scenarios, and practical configuration examples.
 
 Ready to dive deep into RHADS? Let's begin your journey toward mastering Red Hat Advanced Developer Suite!
 
