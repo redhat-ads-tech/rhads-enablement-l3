@@ -26,7 +26,7 @@ Organizations seek to integrate AI into their software ecosystems to drive busin
 
 Foundational models are enhanced using Retrieval-Augmented Generation (RAG) techniques to improve large language models (LLMs) output with domain-specific business knowledge, such as information about bank-specific products or customer loyalty programs.
 
-A potential use case is a chatbot trained on a bank’s products and services, enabling it to provide customers with the product and services information when they are looking to open a bank account or explore additional financial products.
+A potential use case is a chatbot trained on a bank's products and services, enabling it to provide customers with the product and services information when they are looking to open a bank account or explore additional financial products.
 
 === How does RAG work?
 
