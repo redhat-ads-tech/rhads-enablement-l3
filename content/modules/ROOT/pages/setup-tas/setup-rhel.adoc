@@ -55,7 +55,7 @@ Follow these steps to provision your RHTAS on RHEL workshop environment:
 
 . **Access and Order the Workshop**
 +
-Navigate to the https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/openshift-cnv.etx-rhads.prod[RHADS on RHEL - Technical Enablement Level 3^] catalog item and click the *Order* button:
+Navigate to the https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/openshift-cnv.rhads-rhel-lab.prod[Product Enablement: Red Hat Advanced Developer Suite on RHEL (TL3)^] catalog item and click the *Order* button:
 +
 image::setup-tas/rhel-workshop-catalog.png[width=80%]
 
@@ -66,6 +66,7 @@ Once you click the *Order* button, you'll be presented with a provisioning form.
 * *Activity*: _Practice / Enablement_
 * *Purpose*: _Learning about the product_
 * *Confirm* the important note at the bottom of the form.
+* *Leave* all other values as-is.
 * Click the *Order* button.
 +
 image::setup-tas/rhel-workshop-form.png[width=80%]
