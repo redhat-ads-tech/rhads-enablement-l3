@@ -164,7 +164,8 @@
     "gunicorn",
     "roxctl",
     "PYTHONDONTWRITEBYTECODE",
-    "PYTHONUNBUFFERED"
+    "PYTHONUNBUFFERED",
+    "langgraph"
   ],
   "ignorePaths": [
     "node_modules/**",
