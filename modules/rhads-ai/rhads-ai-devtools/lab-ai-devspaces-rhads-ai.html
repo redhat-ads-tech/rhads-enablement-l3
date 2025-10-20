@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Configure AI Tools in Red Hat OpenShift Dev Spaces (Bonus Lab) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">
+    <link rel="prev" href="lab-intro-rhads-ai.html">
+    <link rel="next" href="lab-ai-podman-rhads-ai.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="icon" href="../../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m2/introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m2/introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m2/concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m2/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../production-rhdh/tssc-rhdh.html">Module 12: Deep dive into RHADS (RHDH and TSSC combined)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../production-rhdh/lab.html">Hands on Lab for full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai-rhads/lab-ai-rhads-rhads-ai-pe.html">Hands-on Lab: AI Platform Engineering: Using pre-existing software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Using Pre-existent software templates to build an AI Agent with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a></li>
+    <li><a href="lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a></li>
+    <li><a href="lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Configure AI Tools in Red Hat OpenShift Dev Spaces (Bonus Lab)</h1>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab explores how <strong>Red Hat Advanced Developer Suite</strong> (RHADS) integrates with other products and third-party tools to bring AI into developers' daily activities. It also shows how developer tools like <strong>Red Hat OpenShift Dev Spaces</strong> provide opportunities to adopt AI practices.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_objectives"><a class="anchor" href="#_objectives"></a>Objectives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab showcases how to configure an AI assistant and expand its capabilities by configuring a <strong>Tavily MCP server</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s get started.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_scenario"><a class="anchor" href="#_scenario"></a>Scenario</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You are part of the Python AI Development team. Your team has already built the AI agent; now it is your time to learn about this implementation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a>Getting started</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Access Red Hat OpenShift Dev Spaces from the component already created in Red Hat Developer Hub:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Go back to {rhdh_url}/catalog/default/component/ai-agent[Red Hat Developer Hub UI^]</p>
+</li>
+<li>
+<p>Log in with your user credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: {rhdh_user}</p>
+</li>
+<li>
+<p><strong>Password</strong>: {rhdh_user_password}</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Next, click the <strong>ai-agent</strong> component.</p>
+</li>
+<li>
+<p>From the component&#8217;s overview, click the <strong>Red Hat OpenShift Dev Spaces</strong> link.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-click.png" alt="rhdh devspaces click" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Log in with your user credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: {devspaces_user}</p>
+</li>
+<li>
+<p><strong>Password</strong>: {devspaces_user_password}</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_the_ai_assistant_in_red_hat_openshift_dev_spaces"><a class="anchor" href="#_configure_the_ai_assistant_in_red_hat_openshift_dev_spaces"></a>Configure the AI Assistant in Red Hat OpenShift Dev Spaces</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We want to use an AI assistant within OpenShift Dev Spaces. For this lab, we&#8217;ll use <strong><a href="https://www.continue.dev" target="_blank" rel="noopener">Continue</a></strong>. Organizations might use others, such as <strong>Claude</strong> or <strong>Microsoft Copilot</strong>.
+In many organizations, developers use AI Assistants to increase productivity. Learning about these tools is key to understanding how AI can be leveraged within Red Hat products.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In <strong>Red Hat OpenShift Dev Spaces</strong>, click <strong>Extensions</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-extension.png" alt="devspaces extension" width="15%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search for the <strong>continue</strong> extension and select <strong>Install Release version</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-continue-install-release.png" alt="devspaces continue install release" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>Trust the Publisher and Install</strong> button.
+<span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-trust.png" alt="devspaces trust" width="60%"></span></p>
+</li>
+<li>
+<p>After a successful installation, you will see a screen similar to this:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-continue-page.png" alt="devspaces continue page" width="100%"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_the_llm_in_the_ai_assistant"><a class="anchor" href="#_configure_the_llm_in_the_ai_assistant"></a>Configure the LLM in the AI Assistant</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Next, click the <strong>continue</strong> icon.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-continue-icon.png" alt="devspaces continue icon" width="40%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>Add Chat model</strong> option, then click <strong>config file</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-continue-config-assistant.png" alt="devspaces continue config assistant" width="80%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A new file named <strong>config.yaml</strong> will be created.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-continue-config-yaml.png" alt="devspaces continue config yaml" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the following content and paste it, <strong>replacing the whole current content</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the provided content by clicking the icon:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">name: Local Assistant
+version: 1.0.0
+schema: v1
+models:
+  - name: llama-3-2-3b
+    provider: openai
+    model: llama-3-2-3b
+    apiBase:
+    apiKey: ""
+    roles:
+      - chat
+      - edit
+      - apply
+tabAutocompleteModel:
+  title: RamaLama (AutoComplete)
+  provider: custom
+  model: default
+allowAnonymousTelemetry: false
+context:
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+  - provider: problems
+  - provider: folder
+  - provider: codebase</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml" target="_blank" rel="noopener">config.yaml AI assistant config file</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Paste</strong> it into the config.yaml file created by continue.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Next, you will add the Model&#8217;s <strong>apiBase</strong> and <strong>apiKey</strong> from the <strong>Internal MaaS Demo from the AI BU</strong>.</p>
+</div>
+<div class="sect2">
+<h3 id="_get_your_api_key_for_the_self_hosted_model"><a class="anchor" href="#_get_your_api_key_for_the_self_hosted_model"></a>Get your API key for the self-hosted Model</h3>
+<div class="paragraph">
+<p>Configuring an AI assistant requires an LLM. Organizations might use their own self-hosted models or remote ones. For this lab, we will use the Model as a Service portal to access an LLM.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Access the URL and sign in with your Red Hat account: <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> The <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a> is not an official Red Hat service. It is for Red Hat associates' internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <strong>Sign in</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/maas-sign-in.png" alt="maas sign in" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <strong>Authenticate with RH SSO</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/maas-authrh.png" alt="maas authrh" width="80%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <strong>Google</strong> to sign in to <strong>RHOAI</strong>, where the model is deployed with your account.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/maas-rhoai.png" alt="maas rhoai" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click applications</p>
+</li>
+<li>
+<p>Click the <strong>llama-3-2-3b</strong> model</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/maas-model-select.png" alt="maas model select" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the <strong>API Key</strong> and paste it into the <strong>config.yaml</strong> file&#8217;s <strong>apiKey:"  "</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/maas-key.png" alt="maas key" width="80%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the <strong>Endpoint URL</strong> and paste it into the <strong>config.yaml</strong> file&#8217;s <strong>apiBase:</strong> and add <strong>/v1</strong> to the end of the URL.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Save the file and close the  <strong>Config update</strong> message</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-config-updated.png" alt="devspaces config updated" width="60%"></span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test_the_ai_assistant"><a class="anchor" href="#_test_the_ai_assistant"></a>Test the AI Assistant</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Click the recently added model <strong>llama-3-2-3b</strong>, to add it to the Continue chat:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-llama-select.png" alt="continue llama select" width="60%"></span></p>
+</div>
+<div class="sect2">
+<h3 id="_ask_the_ai_assistant_a_question_such_as"><a class="anchor" href="#_ask_the_ai_assistant_a_question_such_as"></a>Ask the AI assistant a question, such as:</h3>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat1.png" alt="continue chat1" width="60%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_learn_about_the_search_agent_py_file"><a class="anchor" href="#_learn_about_the_search_agent_py_file"></a>Learn about the <strong>search_agent.py</strong> file</h3>
+<div class="paragraph">
+<p>Learn about the implementation. Let&#8217;s start with the search_agent.py file.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@search_agent.py  tell me about this file</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> ensure you add @search_agent.py at the beginning of the prompt</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat2.png" alt="continue chat2" width="100%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_learn_about_the_requirements_txt_file"><a class="anchor" href="#_learn_about_the_requirements_txt_file"></a>Learn about the requirements.txt file</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@requirements.txt  tell me about this file</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> ensure you add @requirements.txt *at the beginning of the prompt</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat3.png" alt="continue chat3" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Congratulations</strong>, you have successfully configured an <strong>AI Assistant in Red Hat OpenShift Dev Spaces</strong> using a self-hosted LLM and learned about the AI Agent implementation.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_an_mcp_server_in_the_ai_assistant"><a class="anchor" href="#_configure_an_mcp_server_in_the_ai_assistant"></a>Configure an <strong>MCP server in the AI Assistant</strong></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The AI assistant will use <strong>Tavily</strong> for <strong>tools</strong>, such as Web Search. We want to include the <strong>Tavily MCP server</strong> in our Development environment to learn about the AI agent development.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>Continue chat</strong> and click the <strong>tools icon</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-configure-tools.png" alt="mcp configure tools" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In the tools window, click the <strong>plus icon</strong> to configure the <strong>MCP server</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-configure-new.png" alt="mcp configure new" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A new file named <strong>new-mcp-server.yaml</strong> will be created.</p>
+</li>
+<li>
+<p>Copy the following content and paste it, <strong>replacing the whole current content</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the provided content by clicking on the icon:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">name: Tavily MCP
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Tavily MCP server
+    command: npx
+    args:
+      - -y
+      - mcp-remote
+      - https://mcp.tavily.com/mcp/?tavilyApiKey=
+    env: {}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We have provided a configuration to set up the <strong>Tavily MCP server</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml" target="_blank" rel="noopener">tavily-mcp-server config file</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> Other AI assistants might use JSON files instead of YAML. If you configure a different AI assistant, the MCP server web page will have configuration examples. Explore more at <a href="https://docs.tavily.com/documentation/mcp" target="_blank" rel="noopener">Tavily MCP</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the file content and <strong>paste</strong> it into the new-mcp-server.yaml file.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>You are replacing the <strong>MCP SERVER NAME CONFIG</strong>, <strong>MCP SERVER NAME</strong>, <strong>ARGS</strong>, as shown here:</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-config-new.png" alt="mcp server config new" width="100%"></span></p>
+</div>
+<div class="sect2">
+<h3 id="_access_your_tavily_account"><a class="anchor" href="#_access_your_tavily_account"></a>Access your Tavily account</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Access <a href="https://app.tavily.com" target="_blank" rel="noopener">https://app.tavily.com</a></p>
+</li>
+<li>
+<p>Click Login and choose your previously selected sign-up method (Google, GitHub, Email address).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/tavily-web.png" alt="tavily web" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click continue, and once logged in, you will see a screen like this one:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/tavily-main.png" alt="tavily main" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <strong>API KEY</strong> and copy the <strong>API KEY VALUE</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/tavily-apikey-view.png" alt="tavily apikey view" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>NOTE: KEEP THE API KEY SECRET. Keep it safe. DO NOT PUBLISH IT, SHARE IT, OR COMMIT IT TO ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY.</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste your key after <strong>?tavilyApiKey=</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-config-apikey.png" alt="mcp server config apikey" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Save the changes.</p>
+</li>
+<li>
+<p><strong>Tavily MCP server will now appear in the MCP server configuration</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the server is not ready, click the <strong>refresh</strong> icon:
+<span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-refresh.png" alt="mcp server refresh" width="70%"></span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_the_mcp_server_in_the_ai_assistant_to_learn_about_tavily"><a class="anchor" href="#_use_the_mcp_server_in_the_ai_assistant_to_learn_about_tavily"></a>Use the <strong>MCP server in the AI Assistant</strong> to learn about Tavily</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tavily provides tools including Tavily Search and Tavily Extract.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>back icon</strong> to return to the Continue chat.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-back.png" alt="mcp server back" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ensure <strong>agent</strong> is selected in the Continue terminal. This agent interacts with the MCP server tools..</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-select-agent.png" alt="mcp server select agent" width="60%"></span></p>
+</div>
+<div class="paragraph">
+<p>An agent to interact with the <strong>mcp server tools</strong>.</p>
+</div>
+<div class="sect2">
+<h3 id="_ask_the_ai_agent_questions_about_tavily_search"><a class="anchor" href="#_ask_the_ai_agent_questions_about_tavily_search"></a>Ask the AI Agent questions about <strong>Tavily Search</strong>:</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">tell me about tavily search</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-chat.png" alt="mcp server chat" width="100%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ask_the_ai_agent_questions_about_tavily_extract"><a class="anchor" href="#_ask_the_ai_agent_questions_about_tavily_extract"></a>Ask the AI Agent questions about <strong>Tavily Extract</strong>:</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">tell me about tavily extract</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-chat-extract.png" alt="mcp server chat extract" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Congratulations</strong>, you have successfully configured an <strong>MCP Server in Red Hat OpenShift Dev Spaces</strong> as part of the AI assistant and learned about the AI Agent&#8217;s tools.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="lab-intro-rhads-ai.html" class="query-params-link">Hands-on Lab on other developer tools</a></span>
+  <span class="next"><a href="lab-ai-podman-rhads-ai.html" class="query-params-link">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../../_/js/vendor/clipboard.js"></script>
+<script src="../../../_/js/site.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

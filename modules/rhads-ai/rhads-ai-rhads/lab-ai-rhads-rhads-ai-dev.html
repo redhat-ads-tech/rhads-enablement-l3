@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AI Engineering: Using Software Templates to Build an AI Agent with Red Hat Advanced Developer Suite :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">
+    <link rel="prev" href="lab-ai-rhads-rhads-ai-pe.html">
+    <link rel="next" href="../rhads-ai-devtools/lab-intro-rhads-ai.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="icon" href="../../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m2/introduction.html">Module 2: Install &amp; Administer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m2/introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m2/concepts.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/concepts.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m2/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../m2/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tpa/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tas/setup.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../customer-configurations.html">Module 5: MOVED TO MODULE 2</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../customizing-rhdh.html">Module 6: Customer configurations RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../m-orchestrator/overview.html">Module 7: Orchestrator Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../m-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../security-practices.html">Module 8: Getting started with security best practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-tpa.html">Module 9: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-tas.html">Module 10: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-overview.html">Module 11: Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../production-rhdh/tssc-rhdh.html">Module 12: Deep dive into RHADS (RHDH and TSSC combined)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../production-rhdh/lab.html">Hands on Lab for full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-3rdparty-ci.html">Module 13: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html">Module 14: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../ai-intro.html">Module 15: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-ai-rhads-rhads-ai-pe.html">Hands-on Lab: AI Platform Engineering: Using pre-existing software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Using Pre-existent software templates to build an AI Agent with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../trustworthy-ai-intro.html">Module 17: Intro to Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../trustworthy-ai.html">Module 18: Trustworthy AI</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../rhads-datascience.html">Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../end-to-end.html">Module 20: End to End with RHADS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="../rhads-ai.html">Module 16: RHADS for AI Engineers</a></li>
+    <li><a href="lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a></li>
+    <li><a href="lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Using Pre-existent software templates to build an AI Agent with Red Hat Advanced Developer Suite</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">AI Engineering: Using Software Templates to Build an AI Agent with Red Hat Advanced Developer Suite</h1>
+<div class="sect1">
+<h2 id="_objectives"><a class="anchor" href="#_objectives"></a>Objectives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you will build an AI Agent using the component pre-created by the Platform Engineering team in Red Hat Developer Hub. You will add the new application source code to this component, making it part of the software development lifecycle.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_scenario"><a class="anchor" href="#_scenario"></a>Scenario</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You are now a member of the Python AI Development team. Your responsibility is to build an AI agent using the tools provided by the AI Platform Engineering team.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s get started.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ai_agent_overview"><a class="anchor" href="#_ai_agent_overview"></a>AI Agent Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An AI agent requires the following components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Planning and Reasoning</strong>: The agent uses an LLM for reasoning. This module uses a Red Hat self-hosted model.</p>
+</li>
+<li>
+<p><strong>Tools and Actions</strong>: An AI Engineer can build custom tools, but many pre-existing tools are available. Integrations with custom systems are also possible.</p>
+</li>
+<li>
+<p><strong>Memory</strong>: The ability to store and learn from data, using short-term or long-term memory.</p>
+</li>
+<li>
+<p><strong>Input</strong>: A website or any device that provides information to the agent.</p>
+</li>
+<li>
+<p><strong>Guardrails/Safety Layer</strong>: The rules that keep the agent&#8217;s actions in check.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_ai_agent_use_cases"><a class="anchor" href="#_ai_agent_use_cases"></a>AI Agent Use Cases</h3>
+<div class="paragraph">
+<p>An AI Agent can fulfill many use cases, including:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Web Search</p>
+</li>
+<li>
+<p>Planning / Coordination</p>
+</li>
+<li>
+<p>Fraud Prevention</p>
+</li>
+<li>
+<p>Event Management</p>
+</li>
+<li>
+<p>Automated Code Generation &amp; Testing</p>
+</li>
+<li>
+<p>Customer Support</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ai_research_agent"><a class="anchor" href="#_ai_research_agent"></a>AI Research Agent</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Our AI Agent is a Search Agent. It will search the internet and specific websites based on the user&#8217;s prompt. The agent will decide which tool to use to return the required information.</p>
+</div>
+<div class="sect2">
+<h3 id="_ai_research_agent_characteristics"><a class="anchor" href="#_ai_research_agent_characteristics"></a>AI Research Agent Characteristics</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Planning and Reasoning:</strong> We are using a Red Hat self-hosted model for this module.</p>
+</li>
+<li>
+<p><strong>Tools and Actions:</strong> This agent uses tools from <strong>(<a href="https://www.tavily.com)" target="_blank" rel="noopener">Tavily</a></strong>. Tavily provides tools for web search, extracting specific information from web pages (<strong>TavilyExtract</strong>), and discovering/indexing new content (<strong>TavilyCrawl</strong>).</p>
+</li>
+<li>
+<p><strong>Memory:</strong> This AI agent uses short-term memory.</p>
+</li>
+<li>
+<p><strong>Input:</strong> This solution includes a website to interact with the agent.</p>
+</li>
+<li>
+<p><strong>Guardrails/Security:</strong> Security starts with the prompt provided to the agent and is enforced by Red Hat Advanced Developer Suite, which provides integrated security, image scanning, and policies.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ai_research_agent_architecture"><a class="anchor" href="#_ai_research_agent_architecture"></a>AI Research Agent Architecture</h3>
+<div class="paragraph">
+<p>The following image describes the AI agent architecture, including the Red Hat products that interact with the application throughout the Software Development Lifecycle.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/architecture.png" alt="architecture" width="100%"></span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_the_ai_research_agent"><a class="anchor" href="#_create_the_ai_research_agent"></a>Create the AI Research Agent</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_lets_build_the_ai_agent"><a class="anchor" href="#_lets_build_the_ai_agent"></a>Let&#8217;s build the AI Agent</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Access the {rhdh_url}/catalog-import[Red Hat Developer Hub UI - Components^] with your credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: {openshift_admin_user}</p>
+</li>
+<li>
+<p>Password: {openshift_admin_password}</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>From <strong>catalog</strong>, select <strong>Self-service</strong>, then click <strong>AI Agent</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-ai-agent.png" alt="rhdh ai agent" width="100%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_getting_started_with_red_hat_openshift_dev_spaces"><a class="anchor" href="#_getting_started_with_red_hat_openshift_dev_spaces"></a>Getting started with Red Hat OpenShift Dev Spaces</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>OpenShift Dev Spaces</strong> link from the <strong>component overview</strong> screen.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-click.png" alt="rhdh devspaces click" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Log in with your user credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: {devspaces_user}</p>
+</li>
+<li>
+<p><strong>Password</strong>: {devspaces_user_password}</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-login.png" alt="rhdh devspaces login" width="60%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Red Hat OpenShift Dev Spaces</strong> will automatically analyze the repository. After reviewing it, Dev Spaces will select a suitable development environment. It will read the <strong>dev.yaml</strong> file and automatically configure the workspace with the specified container image, tools, and commands.</p>
+</div>
+<div class="paragraph">
+<p>Once it finishes creating the workspace, you will see an environment similar to this:</p>
+</div>
+<div class="sect3">
+<h4 id="_follow_the_steps_to_access_the_environment"><a class="anchor" href="#_follow_the_steps_to_access_the_environment"></a>Follow the steps to access the environment</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <strong>Trust Authors</strong>.
+<span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-creating-continue.png" alt="rhdh devspaces creating continue" width="100%"></span></p>
+</li>
+<li>
+<p>Authorize <strong>OpenShift Dev Spaces</strong> to connect with GitLab.
+<span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-authorize.png" alt="rhdh devspaces authorize" width="100%"></span></p>
+</li>
+<li>
+<p><strong>Welcome to Red Hat OpenShift Dev Spaces</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You should see a screen similar to this:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-welcome.png" alt="rhdh devspaces welcome" width="100%"></span></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bring_the_ai_agent"><a class="anchor" href="#_bring_the_ai_agent"></a>Bring the AI agent</h3>
+<div class="paragraph">
+<p>The blank project does not yet have the AI Agent implementation. We have provided the solution for you. As a developer, you will implement your changes using the integrated Red Hat OpenShift Dev Spaces.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_connecting_your_ai_agent_to_apis"><a class="anchor" href="#_connecting_your_ai_agent_to_apis"></a>Connecting your AI Agent to APIs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First, you must connect your Agent with the LLM and API tools required for it to function. You will gather the API information and store it in a Kubernetes Secret to be used by the AI Agent.</p>
+</div>
+<div class="paragraph">
+<p><strong>NOTE: KEEP THE APIs KEY SECRET. Keep it safe. DO NOT PUBLISH IT, SHARE IT, OR COMMIT IT TO ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY.</strong></p>
+</div>
+<div class="sect2">
+<h3 id="_set_up_your_account_on_the_tavily_website"><a class="anchor" href="#_set_up_your_account_on_the_tavily_website"></a>Set up your account on the Tavily website</h3>
+<div class="paragraph">
+<p>The AI Search Agent will use <strong>Tavily</strong> for <strong>tools</strong>, such as Web Search. We want to include the <strong>Tavily</strong> in our development environment as part of the AI agent implementation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Access <a href="https://app.tavily.com" target="_blank" rel="noopener">https://app.tavily.com</a></p>
+</li>
+<li>
+<p>Click <strong>Sign up</strong> to create a new account.</p>
+</li>
+<li>
+<p>Choose your sign-up method: <strong>Google</strong>, <strong>GitHub</strong>, or <strong>Email address</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/tavily-web.png" alt="tavily web" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click <strong>Continue</strong>, and once logged in, you will see a screen like this:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/tavily-main.png" alt="tavily main" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Close the <strong>Get started</strong> pop-up.</p>
+</li>
+<li>
+<p>Click <strong>Add API Key</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/tavily-appkey-add.png" alt="tavily appkey add" width="30%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create an API key named <strong>agent</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> The API key is <strong>free</strong>. The next screenshot shows additional information about limits.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/tavily-appkey-create.png" alt="tavily appkey create" width="70%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>After creating the API key, copy the <strong>API KEY VALUE</strong>:</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_the_secret_in_kubernetes"><a class="anchor" href="#_create_the_secret_in_kubernetes"></a>Create the secret in Kubernetes</h3>
+<div class="paragraph">
+<p>You will create a Kubernetes secret with the Tavily API key.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Open a <strong>Terminal</strong> by clicking <strong>New Terminal</strong>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-terminal.png" alt="devspaces terminal" width="70%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: Ignore any message from Red Hat Dev Spaces:
+"Some keybindings don&#8217;t go to the terminal by default and are handled by Red Hat OpenShift Dev Spaces with Microsoft Visual Studio Code - Open Source IDE instead."</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the following content:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl create secret generic ai-agent-secrets-tavily \
+  --from-literal=TAVILY_API_KEY= \
+  -n tssc-app-development</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste the content in the terminal.</p>
+</li>
+<li>
+<p>Paste your key <strong>after</strong> the <strong>TAVILY_API_KEY=</strong> in the kubernetes secret.</p>
+</li>
+<li>
+<p>Press enter to create the secret. You should see the message: <strong>"secret/ai-agent-secrets-tavily created"</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_your_api_key_for_the_self_hosted_model"><a class="anchor" href="#_get_your_api_key_for_the_self_hosted_model"></a>Get your API key for the self-hosted Model</h3>
+<div class="paragraph">
+<p>Now, set up your account on the <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Internal MaaS Demo from the AI BU</a>. This account provides the <strong>API KEY</strong> needed to access the self-hosted model for this lab. Knowing how to access a self-hosted model is useful for building applications or connecting to third-party tools, like an AI assistant.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Access the URL and sign in with your <strong>Red Hat account</strong>:<a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> The <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Maas website</a> is not an official Red Hat service. It is for Red Hat associates' internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use.
+** Click Sign in.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/maas-sign-in.png" alt="maas sign in" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click Authenticate with RH SSO.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/maas-authrh.png" alt="maas authrh" width="80%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click Google to sign in to RHOAI with your account.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/maas-rhoai.png" alt="maas rhoai" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the llama-3-2-3b model.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/maas-model-select.png" alt="maas model select" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create an application named assistant to get the API Key.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/maas-app-assistant.png" alt="maas app assistant" width="80%"></span></p>
+</div>
+<div class="sect3">
+<h4 id="_environment_variables_kubernetes_create_a_secret_with_your_api_keys"><a class="anchor" href="#_environment_variables_kubernetes_create_a_secret_with_your_api_keys"></a>Environment Variables (Kubernetes) Create a secret with your API keys:</h4>
+<div class="paragraph">
+<p>Create a secret with your API keys:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl create secret generic ai-agent-secrets-llm \
+  --from-literal=LLM_API_BASE_URL=\
+  --from-literal=LLM_API_KEY= \
+  --from-literal=MODEL_NAME=Llama-3.2-3B \
+  -n tssc-app-development</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste the secret in the terminal.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the <strong>Endpoint URL</strong> from the Maas website and paste it after <strong>LLM_API_BASE_URL=</strong> in the kubernetes secret</p>
+</li>
+<li>
+<p>Copy the <strong>API Key</strong> and paste it after <strong>LLM_API_KEY=</strong> in the kubernetes secret</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Press Enter. You should see the message: <strong>"secret/ai-agent-secrets-llm created"</strong></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_the_ai_agent_implementation"><a class="anchor" href="#_add_the_ai_agent_implementation"></a>Add the AI Agent implementation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will add new files and update existing content.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Create a new folder</strong> and within it, a <strong>new file, index.html</strong>: this file represents the UI.</p>
+</li>
+<li>
+<p>Create a <strong>new python file</strong>, search_agent.py: this file contains the Agent Logic.</p>
+</li>
+<li>
+<p><strong>Update the app.py</strong> python file: This is the main file the index.html will communicate with</p>
+</li>
+<li>
+<p><strong>Update Dockerfile</strong>: this file defines the container specification.</p>
+</li>
+<li>
+<p><strong>Update the requirements.txt</strong> file : this file holds the required libraries for the Python AI app.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_1_create_the_index_html_file"><a class="anchor" href="#_1_create_the_index_html_file"></a>1. Create the index.html file</h3>
+<div class="paragraph">
+<p>The <strong>index.html file needs to be located in the templates folder</strong>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In Red Hat Red Hat OpenShift Dev Spaces, click the <strong>ai-agent</strong> project:</p>
+</li>
+<li>
+<p>Create a new folder named: <strong>templates</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-newfolder.png" alt="devspaces newfolder" width="80%"></span></p>
+</div>
+</li>
+<li>
+<p>Next, <strong>inside this folder</strong>, add a new file with the name <strong>index.html</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-newfile.png" alt="devspaces newfile" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>In the index.html file, copy the provided content by clicking on the icon:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;AI Research Agent&lt;/title&gt;
+    &lt;style&gt;
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success-color: #16a34a;
+            --error-color: #dc2626;
+            --warning-color: #d97706;
+            --background: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .form-card {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        #prompt {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+            background: var(--card-background);
+        }
+
+        #prompt:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .result-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cache-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .cache-hit {
+            background: #dcfce7;
+            color: var(--success-color);
+        }
+
+        .cache-miss {
+            background: #fef3c7;
+            color: var(--warning-color);
+        }
+
+        .result-content {
+            padding: 1.5rem;
+        }
+
+        .question {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .question-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .answer {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            white-space: pre-wrap;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: var(--error-color);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+            margin-top: 1rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            display: none;
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2px;
+            animation: progress 2s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-card, .result-card {
+                padding: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;🤖 AI Research Agent&lt;/h1&gt;
+        &lt;p class="subtitle"&gt;Get comprehensive research answers powered by web search and AI analysis&lt;/p&gt;
+
+        &lt;div class="form-card"&gt;
+            &lt;form id="research-form" onsubmit="return false;"&gt;
+                &lt;label for="prompt"&gt;What would you like to research?&lt;/label&gt;
+                &lt;textarea
+                    id="prompt"
+                    name="prompt"
+                    placeholder="Enter your research question here... For example: 'What are the latest developments in renewable energy?'"
+                    required
+                &gt;&lt;/textarea&gt;
+
+                &lt;div class="form-actions"&gt;
+                    &lt;button type="submit" class="btn btn-primary" id="submit-btn"&gt;
+                        &lt;span id="submit-text"&gt;🔍 Start Research&lt;/span&gt;
+                    &lt;/button&gt;
+                    &lt;button type="button" class="btn btn-secondary" onclick="clearForm()"&gt;
+                        Clear
+                    &lt;/button&gt;
+                &lt;/div&gt;
+
+                &lt;div class="loading" id="loading"&gt;
+                    &lt;div class="spinner"&gt;&lt;/div&gt;
+                    &lt;span&gt;Researching your question...&lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;div class="progress-bar" id="progress-bar"&gt;
+                    &lt;div class="progress-fill"&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+
+        &lt;div id="result-container"&gt;&lt;/div&gt;
+
+        {% if prompt and result %}
+        &lt;div class="result-card"&gt;
+            &lt;div class="result-header"&gt;
+                &lt;h2 class="result-title"&gt;Research Results&lt;/h2&gt;
+                &lt;span class="cache-badge cache-miss"&gt;🔄 Research Result&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="result-content"&gt;
+                &lt;div class="question"&gt;
+                    &lt;div class="question-label"&gt;Your Question&lt;/div&gt;
+                    &lt;div&gt;{{ prompt }}&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="answer"&gt;{{ result }}&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        {% endif %}
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        let isProcessing = false;
+
+        document.getElementById('research-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!isProcessing) {
+                submitQuestion();
+            }
+        });
+
+        document.getElementById('prompt').addEventListener('keydown', function(e) {
+            if (e.ctrlKey &amp;&amp; e.key === 'Enter' &amp;&amp; !isProcessing) {
+                e.preventDefault();
+                submitQuestion();
+            }
+        });
+
+        function submitQuestion() {
+            const prompt = document.getElementById('prompt').value.trim();
+            if (!prompt) {
+                alert('Please enter a research question.');
+                return;
+            }
+
+            setLoadingState(true);
+
+            fetch('/ask_async', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt })
+            })
+            .then(response =&gt; response.json())
+            .then(data =&gt; {
+                if (data.error) {
+                    showError(data.error);
+                } else {
+                    showResult(prompt, data.result);
+                }
+            })
+            .catch(error =&gt; {
+                console.error('Error:', error);
+                showError('Network error. Please check your connection and try again.');
+            })
+            .finally(() =&gt; {
+                setLoadingState(false);
+            });
+        }
+
+        function setLoadingState(loading) {
+            isProcessing = loading;
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const loadingDiv = document.getElementById('loading');
+            const progressBar = document.getElementById('progress-bar');
+            const promptTextarea = document.getElementById('prompt');
+
+            if (loading) {
+                submitBtn.disabled = true;
+                submitText.textContent = '🔄 Researching...';
+                loadingDiv.style.display = 'flex';
+                progressBar.style.display = 'block';
+                promptTextarea.disabled = true;
+            } else {
+                submitBtn.disabled = false;
+                submitText.textContent = '🔍 Start Research';
+                loadingDiv.style.display = 'none';
+                progressBar.style.display = 'none';
+                promptTextarea.disabled = false;
+            }
+        }
+
+        function showResult(prompt, result) {
+            const container = document.getElementById('result-container');
+
+            container.innerHTML = `
+                &lt;div class="result-card"&gt;
+                    &lt;div class="result-header"&gt;
+                        &lt;h2 class="result-title"&gt;Research Results&lt;/h2&gt;
+                        &lt;span class="cache-badge cache-miss"&gt;🔄 Research Result&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="result-content"&gt;
+                        &lt;div class="question"&gt;
+                            &lt;div class="question-label"&gt;Your Question&lt;/div&gt;
+                            &lt;div&gt;${escapeHtml(prompt)}&lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="answer"&gt;${escapeHtml(result)}&lt;/div&gt;
+                        &lt;div class="stats"&gt;
+                            &lt;span&gt;🤖 Source: AI Research Agent&lt;/span&gt;
+                            &lt;span&gt;🔍 Powered by Tavily Search&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            const container = document.getElementById('result-container');
+            container.innerHTML = `
+                &lt;div class="error"&gt;
+                    &lt;strong&gt;❌ Error:&lt;/strong&gt; ${escapeHtml(message)}
+                &lt;/div&gt;
+            `;
+        }
+
+        function clearForm() {
+            document.getElementById('prompt').value = '';
+            document.getElementById('result-container').innerHTML = '';
+            document.getElementById('prompt').focus();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Focus on textarea when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('prompt').focus();
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste the content in the <strong>index.html</strong> file, replacing the whole content.</p>
+</li>
+<li>
+<p>Save the file.</p>
+</li>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/index.html" target="_blank" rel="noopener">index.html solution file</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_add_the_search_agent_py_file"><a class="anchor" href="#_2_add_the_search_agent_py_file"></a>2. Add the search_agent.py file</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the project, then click <strong>New file</strong></p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-newfile.png" alt="devspaces newfile" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>Paste the following name and press Enter:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">search_agent.py</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the provided content, by clicking on the icon:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">import os
+import datetime
+from dotenv import load_dotenv
+from tavily import TavilyClient
+from langchain_core.messages import HumanMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.agents import create_openai_tools_agent, AgentExecutor
+from langgraph.prebuilt import create_react_agent
+from langchain_tavily import TavilySearch, TavilyExtract, TavilyCrawl
+from langchain.chat_models import init_chat_model
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+
+class SearchAgent:
+    """
+    A class to encapsulate the web research agent's functionality.
+    """
+    def __init__(self):
+        """
+        Initializes the agent by loading environment variables and setting up
+        the LLM, tools, and the agent executor.
+        """
+        self._load_config()
+        self._init_llm()
+        self._init_search_tools()
+        self._init_tavily_client()
+
+    def _load_config(self):
+        """Loads environment variables from a .env file."""
+        load_dotenv()
+        self.llm_api_base = os.getenv("LLM_API_BASE_URL")
+        self.model_name = os.getenv("MODEL_NAME")
+        self.llm_api_key = os.getenv("LLM_API_KEY")
+        self.tavily_api_key = os.getenv("TAVILY_API_KEY")
+
+        if not all([self.llm_api_base, self.model_name, self.llm_api_key, self.tavily_api_key]):
+            raise ValueError("One or more required environment variables are missing.")
+
+    def _init_llm(self):
+        self.llm = ChatOpenAI(
+            base_url=self.llm_api_base,
+            api_key=self.llm_api_key,
+            model=self.model_name,
+            temperature=0
+        )
+
+
+        query = "Hi!"
+        response = self.llm.invoke([{"role": "user", "content": query}])
+        print(response.text())
+        return response.text()
+
+    def _init_tavily_client(self):
+        """Initialize direct TavilyClient for crawl functionality"""
+        self.tavily_client = TavilyClient(api_key=self.tavily_api_key)
+
+    def direct_crawl_website(self, url: str) -&gt; str:
+        """Crawl a website using direct TavilyClient to avoid LangChain wrapper issues"""
+        try:
+            crawl_results = self.tavily_client.crawl(url=url)
+            return str(crawl_results)
+        except Exception as e:
+            return f"Crawl failed for {url}: {str(e)}"
+
+    def direct_extract_content(self, urls: str) -&gt; str:
+        """Extract content from specific URLs using direct TavilyClient"""
+        try:
+            # Handle both single URL and comma-separated URLs
+            if ',' in urls:
+                url_list = [url.strip() for url in urls.split(',')]
+            else:
+                url_list = [urls.strip()]
+
+            extract_results = self.tavily_client.extract(urls=url_list)
+            return str(extract_results)
+        except Exception as e:
+            return f"Extract failed for {urls}: {str(e)}"
+
+    def _init_search_tools(self):
+        search = TavilySearch()
+
+        # Create custom tools using direct TavilyClient
+        @tool
+        def tavily_crawl_direct(url: str) -&gt; str:
+            """Crawl a website comprehensively. Provide just the URL."""
+            return self.direct_crawl_website(url)
+
+        @tool
+        def tavily_extract_direct(urls: str) -&gt; str:
+            """Extract content from specific web pages. Provide URL or comma-separated URLs."""
+            return self.direct_extract_content(urls)
+
+        self.tools = [search, tavily_crawl_direct, tavily_extract_direct]
+
+    def run(self, query: str):
+        print("run method" )
+        model_with_tools = self.llm.bind_tools(self.tools)
+        today = datetime.datetime.today().strftime("%A, %B %d, %Y")
+        self.prompt = ChatPromptTemplate.from_messages([
+            ("system",
+                        f"""
+                    You are a research agent equipped with web search, website crawling, and content extraction tools. Your mission is to conduct comprehensive, accurate, and up-to-date research, grounding your findings in credible web sources.
+
+                    **CRITICAL TOOL USAGE:**
+                    - Tavily Search: Use only 'query' parameter for web search
+                    - Tavily Crawl Direct: Use only 'url' parameter for comprehensive website exploration
+                    - Tavily Extract Direct: Use only 'urls' parameter for extracting specific page content
+
+                    **Today's Date:** {today}
+
+                    **Available Tools:**
+
+                    1. **Tavily Web Search**
+                    * **Purpose:** Retrieve relevant web pages based on a query.
+                    * **Usage:** ONLY use 'query' parameter
+                    * **Example:** Search for "LinkedIn NYC jobs"
+
+                    2. **Tavily Crawl Direct**
+                    * **Purpose:** Comprehensively explore a website's structure and content.
+                    * **Usage:** ONLY use 'url' parameter
+                    * **When to use:** When you need complete coverage of a website's content
+                    * **Example:** Crawl "https://docs.python.org" for comprehensive documentation overview
+
+                    3. **Tavily Extract Direct**
+                    * **Purpose:** Extract detailed content from specific web pages.
+                    * **Usage:** ONLY use 'urls' parameter (single URL or comma-separated)
+                    * **When to use:** When you have specific page URLs and need their detailed content
+                    * **Example:** Extract content from "https://docs.python.org/3/tutorial/introduction.html"
+
+
+                    **Guidelines for Conducting Research:**
+                    * **Citations:** Always support findings with source URLs as in-text citations.
+                    * **Accuracy:** Rely solely on data obtained via provided tools—never fabricate information.
+                    * **Methodology:** Follow a structured approach: Thought, Action, Observation, and repeat until you can provide a Final Answer.
+
+                    **CRITICAL TOOL USAGE RULES - FOLLOW EXACTLY:**
+                    * Tavily Search: Use ONLY query parameter. Example: tavily_search(query="your search text")
+                    * Tavily Crawl: Use ONLY url parameter. Example: tavily_crawl(url="https://example.com")
+                    * Tavily Extract: Use ONLY urls parameter as proper list. Example: tavily_extract(urls=["https://example.com"])
+                    * NEVER use string representations of lists like '["url"]' - use actual lists ["url"]
+                    * NEVER wrap parameters in 'properties' objects
+                    * NEVER use optional parameters like include_domains, extract_depth, search_depth, time_range
+                    You will now receive a research question from the user:
+                    """,
+                     ),
+            MessagesPlaceholder(variable_name="messages"),
+            MessagesPlaceholder(variable_name="agent_scratchpad"),  # Required for tool calls
+        ])
+
+        model = create_openai_tools_agent(llm=model_with_tools, tools=self.tools, prompt=self.prompt)
+        #model = create_react_agent(model=self.llm, tools="")
+        #input_message = {"role": "user", "content": query}
+        #response= model.invoke({"messages": [input_message]})
+
+        # Create an Agent Executor to handle tool execution
+        agent_executor = AgentExecutor(agent=model,  tools=self.tools, prompt=self.prompt, verbose=True)
+        # Construct input properly as a dictionary
+        output = agent_executor.invoke({"messages": [HumanMessage(content=query)]})
+        response = output['output']
+
+        print("Printing response from agent." + response)
+        return response
+
+
+
+    def _search(self):
+        search = TavilySearch(max_results=2)
+        search_results = search.invoke("What is the weather in SF")
+        print(search_results)
+        # If we want, we can create other tools.
+        # Once we have all the tools we want, we can put them in a list that we will reference later.
+        tools = [search]
+
+# --- Example of How to Use the Class ---
+if __name__ == "__main__":
+    # 1. Instantiate the agent
+    research_agent = SearchAgent()</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Save the file.</p>
+</li>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/search_agent.py" target="_blank" rel="noopener">search_agent.py solution file</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_update_the_app_py_file"><a class="anchor" href="#_3_update_the_app_py_file"></a>3. Update the app.py file</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Go to the app.py file and open it:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-app.png" alt="devspaces app" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>Copy the provided content by clicking the icon:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">from flask import Flask, render_template, request, jsonify
+from search_agent import SearchAgent
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Initialize the search agent
+print("Initializing AI Research Agent...")
+try:
+    search_agent = SearchAgent()
+    print("Agent initialized successfully!")
+except Exception as e:
+    print(f"Failed to initialize agent: {e}")
+    search_agent = None
+
+@app.route('/')
+def home():
+    """Render the home page with input form."""
+    return render_template('index.html')
+
+@app.route('/ask', methods=['POST'])
+def ask():
+    """Handle form submission and return results."""
+    user_prompt = request.form.get('prompt', '').strip()
+
+    if not user_prompt:
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result="Please enter a research question.")
+
+    if not search_agent:
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result="Error: Agent not available. Check your API keys.")
+
+    try:
+        print(f"Processing query: {user_prompt[:50]}...")
+        result = search_agent.run(user_prompt)
+        print("Query completed successfully!")
+
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result=result)
+    except Exception as e:
+        print(f"Error processing query: {e}")
+        return render_template('index.html',
+                             prompt=user_prompt,
+                             result=f"Error: {str(e)}")
+
+@app.route('/ask_async', methods=['POST'])
+def ask_async():
+    """Handle AJAX requests and return JSON."""
+    user_prompt = request.json.get('prompt', '').strip()
+
+    if not user_prompt:
+        return jsonify({'error': 'Please provide a valid prompt'}), 400
+
+    if not search_agent:
+        return jsonify({'error': 'Agent not available'}), 500
+
+    try:
+        result = search_agent.run(user_prompt)
+        return jsonify({'result': result, 'cached': False})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint."""
+    if search_agent:
+        return jsonify({'status': 'healthy'})
+    return jsonify({'status': 'unhealthy'}), 503
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=8080)</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste the content in the app.py file, replacing the whole content.</p>
+</li>
+<li>
+<p>Save the file.</p>
+</li>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/app.py" target="_blank" rel="noopener">app.py solution file</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_update_dockerfile"><a class="anchor" href="#_4_update_dockerfile"></a>4. Update Dockerfile</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>In Red Hat Red Hat OpenShift Dev Spaces, click the Dockerfile file</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-dockerfile.png" alt="devspaces dockerfile" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>Copy the content provided, by clicking on the icon:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Workshop-optimized Dockerfile with security best practices
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# Create non-root user
+RUN groupadd --gid 1001 appgroup &amp;&amp; \
+    useradd --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies and Python packages
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends curl &amp;&amp; rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code and set ownership
+COPY app.py search_agent.py ./
+COPY templates/ templates/
+RUN chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
+
+# Expose the port
+EXPOSE 8081
+
+
+# Production command (removed --reload for production)
+CMD ["gunicorn", "--bind", "0.0.0.0:8081", "--workers", "2", "--threads", "4", "app:app"]</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste the content in the Dockerfile file, <strong>replacing the whole content</strong>.</p>
+</li>
+<li>
+<p>Save the file.</p>
+</li>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/Dockerfile" target="_blank" rel="noopener">Dockerfile solution file</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_update_requirements_txt"><a class="anchor" href="#_5_update_requirements_txt"></a>5. Update requirements.txt</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>In Red Hat Red Hat OpenShift Dev Spaces, click the requirements.txt file</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-requirements.png" alt="devspaces requirements" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>Copy the provided content by clicking on the icon:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># AI Agent Core - let pip resolve compatible versions
+langchain-openai&gt;=0.2.0,&lt;0.3.0
+langchain-tavily&gt;=0.1.0,&lt;0.3.0
+langgraph&gt;=0.2.0,&lt;0.3.0
+langchain&gt;=0.3.0,&lt;0.4.0
+langchain-core&gt;=0.3.0,&lt;0.4.0
+
+# Direct Tavily Client
+tavily-python&gt;=0.4.0,&lt;1.0.0
+
+# Web Framework
+Flask==3.0.3
+
+# Configuration
+python-dotenv==1.0.1
+
+# Production Server
+gunicorn==23.0.0</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Paste the content in the requirements.txt file, <strong>replacing the whole content</strong>.</p>
+</li>
+<li>
+<p>Save the file.</p>
+</li>
+<li>
+<p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/requirements.txt" target="_blank" rel="noopener">requirements.txt solution file</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> Depending on the organization, Platform Engineering teams might be responsible for defining the Dockerfile.</p>
+</div>
+<div class="paragraph">
+<p>Now, we are ready to push the source code.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_push_the_source_code"><a class="anchor" href="#_push_the_source_code"></a>Push the source code</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Verify your changes:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Your directories and source code should look similar to this:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-folders.png" alt="devspaces folders" width="60%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Next, push your changes to the GitLab repository.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>Source control</strong> icon:</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-sourceicon.png" alt="devspaces sourceicon" width="20%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add a commit message by copying the following description:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">add agent</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>Commit &amp; Push</strong> icon.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-commit.png" alt="devspaces commit" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> If you face an authentication issue when pushing changes, restart the Red Hat Dev Spaces workspace.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Go to {devspaces_url}/dashboard/#/workspaces[Red Hat OpenShift Dev Spaces Workspaces^]</p>
+</li>
+<li>
+<p>Click <strong>Restart Workspace</strong> from the three dots on the running workspace.</p>
+</li>
+<li>
+<p>Click <strong>Open</strong> from the three dots and try to push the changes again.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_explore_the_trusted_software_supply_chain"><a class="anchor" href="#_explore_the_trusted_software_supply_chain"></a>Explore the Trusted Software Supply Chain</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Go back to {rhdh_url}/catalog/default/component/ai-agent[Red Hat Developer Hub UI^]</p>
+</li>
+<li>
+<p>Click the <strong>CI</strong> tab and review the running pipeline. Wait for all stages to finish and appear in green, as shown in the picture:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhads-tssc.png" alt="rhads tssc" width="100%"></span></p>
+</div>
+<div class="paragraph">
+<p>As a developer, you are building an AI application with security guardrails already set up by the Platform Engineering team.
+Red Hat Advanced Developer Suite safeguards software artifacts (including AI applications) using digital signing, cryptographic integrity checks, and comprehensive provenance tracking. This capability automates building and deploying AI applications. Developers can focus on source code, while Software templates validate and package images, ensuring they adhere to Trusted Software Supply Chain for Software Artifacts (SLSA) standards and improving developer productivity.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test_the_ai_agent"><a class="anchor" href="#_test_the_ai_agent"></a>Test the AI Agent</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>Topology</strong> tab and review the deployed component.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> For this lab, we have only deployed to the Development environment. The other deployments use a "dummy" image.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <strong>arrow</strong> on <strong>ai-agent-development</strong> to access the AI Agent.</p>
+</li>
+<li>
+<p>You should see a screen similar to this:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-live.png" alt="ai agent live" width="100%"></span></p>
+</div>
+<div class="sect2">
+<h3 id="_say_hi_to_the_agent"><a class="anchor" href="#_say_hi_to_the_agent"></a>Say Hi to the agent:</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Hi</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-hi.png" alt="ai agent hi" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Let&#8217;s try something else</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_test_tavily_search_by_asking_a_question_the_agent_should_find_on_the_internet"><a class="anchor" href="#_test_tavily_search_by_asking_a_question_the_agent_should_find_on_the_internet"></a>Test Tavily Search by asking a question the agent should find on the Internet:</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">What are the latest developments in quantum computing from the past month?</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-quantum.png" alt="ai agent quantum" width="100%"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_test_tavily_extract_by_asking_the_agent_to_extract_information_from_a_specific_web_page"><a class="anchor" href="#_test_tavily_extract_by_asking_the_agent_to_extract_information_from_a_specific_web_page"></a>Test Tavily Extract by asking the agent to extract information from a specific web page::</h3>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Extract information from  https://commons.openshift.org/gatherings/ and tell me when is the next gathering</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-extract.png" alt="ai agent extract" width="100%"></span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_congratulations_on_building_an_ai_agent"><a class="anchor" href="#_congratulations_on_building_an_ai_agent"></a>Congratulations on Building an AI Agent</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You have completed this lab! You learned how to build and deploy an AI agent in OpenShift using Red Hat Advanced Developer Suite, incorporating best practices for Developer Productivity, Security, and Scalability.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="lab-ai-rhads-rhads-ai-pe.html" class="query-params-link">Hands-on Lab: AI Platform Engineering: Using pre-existing software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite</a></span>
+  <span class="next"><a href="../rhads-ai-devtools/lab-intro-rhads-ai.html" class="query-params-link">Hands-on Lab on other developer tools</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../../_/js/vendor/clipboard.js"></script>
+<script src="../../../_/js/site.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
