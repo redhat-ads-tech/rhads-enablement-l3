@@ -28,7 +28,7 @@ image::orchestrator-overview/serverless-operators.png[]
 
 Similar to the Operators, your environment has been pre-configured with the necessary dynamic plugins. 
 
-NOTE: The xref:m2/introduction.adoc[Setup Red Hat Developer Hub] module provides an in-depth overview of {product_rhdh_name}'s dynamic plugins feature. Visit that module if you'd like a deep-dive on deployment and configuration for {product_rhdh_name}.
+NOTE: The xref:setup-rhdh/foundations.adoc[Setup Red Hat Developer Hub] module provides an in-depth overview of {product_rhdh_name}'s dynamic plugins feature. Visit that module if you'd like a deep-dive on deployment and configuration for {product_rhdh_name}.
 
 Verify that the dynamic plugins have been configured correctly:
 

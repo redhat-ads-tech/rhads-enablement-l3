@@ -1,4 +1,4 @@
-= Setup TPA
+= Setup Trusted Profile Analyzer
 
 == Overview
 

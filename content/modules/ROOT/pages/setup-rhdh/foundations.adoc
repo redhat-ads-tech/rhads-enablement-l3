@@ -1,5 +1,16 @@
+= Setup {product_rhdh_name}
 
-= Backstage Concepts
+{product_rhdh_name} is a component of Red Hat Advanced Developer Suite that enables platform engineers to build internal developer portals for their organization. It is based on the https://backstage.io/[Backstage^, window="content"] project for building internal developer portals. This project was donated to the https://www.cncf.io/projects/backstage/[CNCF^, window="content"] by Spotify in 2020. Platform engineers can use {product_rhdh_name} to build internal developer portals. Doing so involves integrating {product_rhdh_name} with various data sources, cataloging existing software components, infrastructure, and resources, configuring authentication, and more.
+
+In this module you'll learn how to install and bootstrap an instance of {product_rhdh_name} with the necessary configuration to kick-start an internal developer portal for a group of developers within an organization - this involves:
+
+* Installing and configuring {product_rhdh_name} using the Operator
+* Setting up authentication
+* Integrating with a Git hosting provider
+* Learning how to ensure smooth deployments with zero downtime
+* Configuring role-based access control (RBAC)
+
+Before that though, you'll learn about the fundamentals of Backstage and {product_rhdh_name}.
 
 == Core Features
 
