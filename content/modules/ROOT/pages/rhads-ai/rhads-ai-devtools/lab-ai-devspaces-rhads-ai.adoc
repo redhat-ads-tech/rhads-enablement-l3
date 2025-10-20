@@ -16,7 +16,7 @@ You are part of the Python AI Development team. Your team has already built the 
 
 * Access Red Hat OpenShift Dev Spaces from the component already created in Red Hat Developer Hub:
 
-** Go back to {rhdh_url/catalog/default/component/ai-agent}[Red Hat Developer Hub UI^]
+** Go back to {rhdh_url}/catalog/default/component/ai-agent[Red Hat Developer Hub UI^]
 
 ** Log in with your user credentials:
 

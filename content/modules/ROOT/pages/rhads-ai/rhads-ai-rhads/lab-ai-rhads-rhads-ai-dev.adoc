@@ -47,7 +47,7 @@ image:rhads-ai/rhads/architecture.png[width=100%]
 == Create the AI Research Agent
 === Let's build the AI Agent
 
-* Access the {rhdh_url/catalog-import}[Red Hat Developer Hub UI - Components^] with your credentials:
+* Access the {rhdh_url}/catalog-import[Red Hat Developer Hub UI - Components^] with your credentials:
 
 ** Username: {openshift_admin_user}
 ** Password: {openshift_admin_password}
@@ -1150,13 +1150,16 @@ image:rhads-ai/rhads/devspaces-commit.png[width=100%]
 
 
 *Note:* If you face an authentication issue when pushing changes, restart the Red Hat Dev Spaces workspace. 
-** Go to {devspaces_url/dashboard/#/workspaces}[Red Hat OpenShift Dev Spaces Workspaces^] 
+
+** Go to {devspaces_url}/dashboard/#/workspaces[Red Hat OpenShift Dev Spaces Workspaces^] 
+
 ** Click *Restart Workspace* from the three dots on the running workspace. 
+
 ** Click *Open* from the three dots and try to push the changes again.
 
 === Explore the Trusted Software Supply Chain
 
-** Go back to {rhdh_url/catalog/default/component/ai-agent}[Red Hat Developer Hub UI^]
+** Go back to {rhdh_url}/catalog/default/component/ai-agent[Red Hat Developer Hub UI^]
 
 ** Click the *CI* tab and review the running pipeline. Wait for all stages to finish and appear in green, as shown in the picture:
 
