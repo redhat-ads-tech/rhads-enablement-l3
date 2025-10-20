@@ -165,7 +165,7 @@ persistentvolumeclaim/tpa-postgresql-data created
 deployment.apps/tpa-postgresql created
 service/tpa-postgresql created
 bash-5.1 ~/l3-enablement-helpers/prerequisites $
----- 
+----
 
 
 
@@ -191,7 +191,7 @@ image:m3-tpa-openshift/keycloak-users.png[]
 
 Applications might have different requirements for authentication, though. Therefore, it is a good practice to define one or more clients for each application that allows the users of a given realm to authenticate. 
 
-For the realm we're about to use, we have a set of default clients (for typical OIDC and Keycloak usecases) as well as a client for Trusted Artifact Signer, one for Developer Hub and one for OpenShift.
+For the realm we're about to use, we have a set of default clients (for typical OIDC and Keycloak use cases) as well as a client for Trusted Artifact Signer, one for Developer Hub and one for OpenShift.
 
 We will add our clients here (we'll name them `tpa-frontend` and `tpa-cli`)
 

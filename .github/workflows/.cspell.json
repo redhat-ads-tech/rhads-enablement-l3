@@ -136,7 +136,16 @@
     "serverlessworkflow",
     "rhdhorchestrator",
     "Kogito",
-    "Knative"
+    "Knative",
+    "parameterised",
+    "configmap",
+    "tpauser",
+    "RHBOK",
+    "trustification",
+    "ingressdomain",
+    "trustify",
+    "untar",
+    "GUAC"
   ],
   "ignoreWords": [
     "sysout",
@@ -151,7 +160,6 @@
     "platformengineer",
     "httpsink",
     "Backstages",
-    "webkitallowfullscreen",
     "mozallowfullscreen",
     "rhdatagrid",
     "getenv",
@@ -179,6 +187,8 @@
     {
       "filename": "**/*.adoc",
       "ignoreRegExpList": [
+        "/^\\s*----[\\s\\S]*?^\\s*----\\s*$/gm",
+        "/^\\s*\\+\\+\\+\\+[\\s\\S]*?^\\s*\\+\\+\\+\\+\\s*$/gm",
         "\\[source,.*\\]",
         "\\[.*,role=.*\\]",
         "\\{.*\\}",
