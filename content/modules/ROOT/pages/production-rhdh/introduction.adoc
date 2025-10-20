@@ -162,15 +162,9 @@ steps:
           port: 8080
           verifyCommits: ${{ parameters.repoVerifyCommits }}
 ```
-<<<<<<< HEAD
-Firstly note that every step has an ‘action:’ field. This refers to either a built in action (the fetch:template and catalog:fetch are pre-built actions in the core Backstage framework) or an action provided by a plugin. In the hands-on lab we will see that the next step is actually `publish:gitlab`, which is an action to push the generated files to GitLab. This functionality is provided in the https://backstage.io/docs/reference/plugin-scaffolder-backend-module-gitlab/#functions[appropriate plugin^] added to the core framework.
+Firstly note that every step has an `action:` field. This refers to either a built in action (the `fetch:template` and `catalog:fetch` are pre-built actions in the core Backstage framework) or an action provided by a plugin. In the hands-on lab we will see that the next step is actually `publish:gitlab`, which is an action to push the generated files to GitLab. This functionality is provided in the https://backstage.io/docs/reference/plugin-scaffolder-backend-module-gitlab/#functions[appropriate plugin^] added to the core framework.
 
-At the end of the template are a set of ‘outputs’. These are rendered components on the portal that can link to entities created by the template, or display links and text of your choosing:
-=======
-Firstly note that every step has an `action:` field. This refers to either a built in action (the `fetch:template` and `catalog:fetch` are pre-built actions in the core framework) or an action provided by a plugin; in the hands-on lab we will see that the next step is actually `publish:gitlab`, which is an action to push the file system created to GitLab. This functionality is provided in the appropriate plugin added to the core framework.
-
-At the end of the template are a set of 'outputs'. These are rendered components on the portal that link to entities physically created by the template:
->>>>>>> c3c99998e51b857fe7fa4bcb9ea8ac0d77da55dd
+At the end of the template are a set of 'outputs'. These are rendered components on the portal that can link to entities created by the template, or display links and text of your choosing:
 
 ```yaml
 output:
@@ -186,11 +180,7 @@ output:
         icon: catalog
         entityRef: ${{ steps['register-gitops'].output.entityRef }}
 ```
-<<<<<<< HEAD
 Note that like the parameter variables, the Backsatge scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, `${{ steps['publish-gitlab-source'].output.remoteUrl }}`, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/[Nunjucks based templates in the docs^].
-=======
-Note that like the parameters, the framework will generate tokens based on the output of the steps - everything bound by double curly-brackets is a token replacement - example here is `steps['publish-gitlab-source'].output.remoteUrl`, which is the URL that is created for the repo that is scaffolded by one of the steps.
->>>>>>> c3c99998e51b857fe7fa4bcb9ea8ac0d77da55dd
 
 It is also worth being aware of the way that the templates actually work behind the scenes; when a template is instantiated it has a working directory. In the example above the catalog:fetch and fetch:template actually copy files into this temporary area. Then the action (not shown) for publishing to gitlab pushes this area as the files into the repo. 
 
