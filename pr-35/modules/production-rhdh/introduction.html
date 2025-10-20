@@ -543,20 +543,10 @@ metadata:
 </div>
 </div>
 <div class="paragraph">
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Firstly note that every step has an ‘action:’ field. This refers to either a built in action (the fetch:template and catalog:fetch are pre-built actions in the core Backstage framework) or an action provided by a plugin. In the hands-on lab we will see that the next step is actually <code>publish:gitlab</code>, which is an action to push the generated files to GitLab. This functionality is provided in the <a href="https://backstage.io/docs/reference/plugin-scaffolder-backend-module-gitlab/#functions" target="_blank" rel="noopener">appropriate plugin</a> added to the core framework.</p>
+<p>Firstly note that every step has an <code>action:</code> field. This refers to either a built in action (the <code>fetch:template</code> and <code>catalog:fetch</code> are pre-built actions in the core Backstage framework) or an action provided by a plugin. In the hands-on lab we will see that the next step is actually <code>publish:gitlab</code>, which is an action to push the generated files to GitLab. This functionality is provided in the <a href="https://backstage.io/docs/reference/plugin-scaffolder-backend-module-gitlab/#functions" target="_blank" rel="noopener">appropriate plugin</a> added to the core framework.</p>
 </div>
 <div class="paragraph">
-<p>At the end of the template are a set of ‘outputs’. These are rendered components on the portal that can link to entities created by the template, or display links and text of your choosing:</p>
-</div>
-<div class="exampleblock">
-<div class="content">
-<div class="paragraph">
-<p>Firstly note that every step has an <code>action:</code> field. This refers to either a built in action (the <code>fetch:template</code> and <code>catalog:fetch</code> are pre-built actions in the core framework) or an action provided by a plugin; in the hands-on lab we will see that the next step is actually <code>publish:gitlab</code>, which is an action to push the file system created to GitLab. This functionality is provided in the appropriate plugin added to the core framework.</p>
-</div>
-<div class="paragraph">
-<p>At the end of the template are a set of 'outputs'. These are rendered components on the portal that link to entities physically created by the template:
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; c3c99998e51b857fe7fa4bcb9ea8ac0d77da55dd</p>
+<p>At the end of the template are a set of 'outputs'. These are rendered components on the portal that can link to entities created by the template, or display links and text of your choosing:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -575,14 +565,7 @@ Firstly note that every step has an ‘action:’ field. This refers to either a
 </div>
 </div>
 <div class="paragraph">
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Note that like the parameter variables, the Backsatge scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, <code>${{ steps['publish-gitlab-source'].output.remoteUrl }}</code>, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these <a href="https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/" target="_blank" rel="noopener">Nunjucks based templates in the docs</a>.</p>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Note that like the parameters, the framework will generate tokens based on the output of the steps - everything bound by double curly-brackets is a token replacement - example here is <code>steps['publish-gitlab-source'].output.remoteUrl</code>, which is the URL that is created for the repo that is scaffolded by one of the steps.
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; c3c99998e51b857fe7fa4bcb9ea8ac0d77da55dd</p>
+<p>Note that like the parameter variables, the Backsatge scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, <code>${{ steps['publish-gitlab-source'].output.remoteUrl }}</code>, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these <a href="https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/" target="_blank" rel="noopener">Nunjucks based templates in the docs</a>.</p>
 </div>
 <div class="paragraph">
 <p>It is also worth being aware of the way that the templates actually work behind the scenes; when a template is instantiated it has a working directory. In the example above the catalog:fetch and fetch:template actually copy files into this temporary area. Then the action (not shown) for publishing to gitlab pushes this area as the files into the repo.</p>
