@@ -499,7 +499,7 @@ Also, don't paste & save just yet, there are some fields that you need to change
 ====
 
 
-==== *What's inside and what needs to be changed*
+=== *What's inside and what needs to be changed*
 
 In the `spec.appDomain`, replace `<your-cluster-ingressdomain-here>` with `{openshift_cluster_ingress_domain}`:
 
