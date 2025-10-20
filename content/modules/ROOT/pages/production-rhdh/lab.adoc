@@ -19,8 +19,6 @@ For this part of the lab we will be using a lot of the tooling and interfaces pr
 ** Admin Username: `{openshift_admin_user}`
 ** Password: `{openshift_admin_password}`
 
-* The ArgoCD application URL and the password (again, for ArgoCD we will use the admin user to look at what gets physically created when the template executes)
-
 The point of this part of the hands-on lab is to give you a feel of what the end user experience is whilst making you aware of the technical components that are being used so that you can describe them to end customers.
 
 Start by logging into the {rhdh_url}[Red Hat Developer Hub^]. The screen will look like this:
