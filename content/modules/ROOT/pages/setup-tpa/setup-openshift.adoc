@@ -684,7 +684,10 @@ You should see this now in your https://server-student-tpa-operator.{openshift_c
 
 image:m3-tpa-openshift/operator-tpa-sbom.png[]
 
-
+[NOTE]
+====
+If you are wondering why there are no vulnerabilities - we have imported the SBOM right after installation, but the importer is still running, importing CVEs and security advisories. So, this will take a while - on a system with fully imported advisory/cve sources, the vulnerabilities will be available momentarily.
+====
 
 == Helm Installation
 
@@ -701,6 +704,110 @@ The template file you'd need to modify (with the RWO PVC) is
 *This is not possible for the operator-based install, since the helm chart being used cannot be modified and the official chart uses RWO.*
 ====
 
-== TBD
+For the `helm`-based installation, we will use the `student-tpa-helm` namespace, and we had created the appropriate `redirect_URIs` in the frontend OIDC client, which we will reuse.
 
-// TODO: Add content for TPA installation and setup on OpenShift
+So, first, let's get ready to configure the database, s3 bucket and the OIDC secret in this namespace:
+
+Go to your {openshift_console_url}/terminal[terminal^,window="terminal"] and run the following commands:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd ~/l3-enablement-helpers/prerequisites
+oc project student-tpa-helm
+oc apply -f postgresql-openshift.yaml
+oc apply -f tpa_objectbucketclaim.yaml
+oc apply -f secret-oidc-cli.yaml
+./s3.sh
+cd ../tpa-helm/
+ls -al
+----
+
+Same as in the operator-based exercise, we have prepared values files for you:
+
+. A https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-helm/values.yaml[values.yaml^] file for the S3-based installation
+. A https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-helm/values-fs.yaml[values-fs.yaml^] file, if you want to try with the filesystem (for quick testing and PoC/non-production)
+. A https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-helm/values-importers.yaml[values-importers.yaml^] file, with the default settings (osv-github and cve enabled, the others disabled). There is no need to modify any value here, unless you want to.
+
+Since we're running `helm` to install, you don't have to download them - but you need to modify them in your terminal session from above:
+
+Use your editor of choice (`nano` or `vim`) and change the following values (for `values.yaml` or 'values-fs.yaml'):
+
+In the `storage.region` field, replace `<your-cluster-ingressdomain-here>` with `{openshift_cluster_ingress_domain}`:
+
+`region: https://s3-openshift-storage.<your-cluster-ingressdomain-here>:443`
+
+In `storage.bucket`, paste the value for the `trustify` bucket that we just got as output from the `s3.sh` script. 
+
+`bucket: trustify-<run_s3.sh_from_your_namespace_to_get_the_bucket_name>`
+
+In the `oidc.issuerUrl` field, also replace the cluster ingress domain:
+
+`issuerUrl: https://sso.<your-cluster-ingressdomain-here>/realms/trusted-artifact-signer`
+
+NOTE: If you decide to try out the `filesystem` storage, obviously you don't have to change any value there - these are left in the `values-fs.yaml` file for reference, but commented out. You still need to change the `oidc.issuerUrl` field, but that's all.
+
+Ok, ready to go? 
+
+Let's helm!
+
+[source,bash,role=execute,subs=attributes+]
+----
+source appdomain.sh 
+helm repo add openshift-helm-charts https://charts.openshift.io/
+helm repo update
+helm upgrade --install redhat-trusted-profile-analyzer openshift-helm-charts/redhat-trusted-profile-analyzer -n $NAMESPACE --values values.yaml --values values-importers.yaml --set-string appDomain=$APP_DOMAIN_URL
+----
+
+[source,console]
+----
+source appdomain.sh
+helm repo add openshift-helm-charts https://charts.openshift.io/
+helm repo update
+helm upgrade --install redhat-trusted-profile-analyzer openshift-helm-charts/redhat-trusted-profile-analyzer -n $NAMESPACE --values values.yaml --values values-importers.yaml --set-string appDomain=$APP_DOMAIN_URL
+NAMESPACE is: student-tpa-helm
+APP_DOMAIN_URL (needed in helm values) set to: 
+-student-tpa-helm.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+"openshift-helm-charts" already exists with the same configuration, skipping
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "backstage" chart repository
+...Successfully got an update from the "rhtap" chart repository
+...Successfully got an update from the "openshift-helm-charts" chart repository
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈Happy Helming!⎈
+Release "redhat-trusted-profile-analyzer" does not exist. Installing it now.
+NAME: redhat-trusted-profile-analyzer
+LAST DEPLOYED: Mon Oct 20 14:38:19 2025
+NAMESPACE: student-tpa-helm
+STATUS: deployed
+REVISION: 1
+NOTES:
+OpenShift:
+  Detected:       true
+  Use Service CA: true
+
+Console:
+    server-student-tpa-helm.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+----
+
+=== Verification
+
+==== *Frontend*
+
+So, you can open your `helm`-based install of TPA now from https://server-student-tpa-helm.{openshift_cluster_ingress_domain}[here^,window="TPA"], and after logging in with `user1` or `admin`, you should see the TPA UI based off of the `student-tpa-helm` namespace ✅:
+
+image:m3-tpa-openshift/helm-tpa-dashboard.png[]
+
+==== *CLI* 
+
+We have prepared the verification script in the `tpa-helm` directory as well:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd ~/l3-enablement-helpers/tpa-helm
+oc project student-tpa-helm
+./verify-sbom-upload.sh
+----
+
+So, we should see the uploaded SBOM now in the https://server-student-tpa-helm.{openshift_cluster_ingress_domain}/sboms[TPA SBOM View^,window="TPA"] after a few moments, including the labels we assigned ✅.
+
+image:m3-tpa-openshift/helm-tpa-sbom.png[]
