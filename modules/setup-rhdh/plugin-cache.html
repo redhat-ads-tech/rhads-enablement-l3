@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Hands-on Lab: Software Template Patterns for Self-service :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
-    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/self-service-patterns/lab-intro-self-service-patterns.html">
-    <link rel="prev" href="self-service-patterns.html">
-    <link rel="next" href="lab-vm-self-service-patterns.html">
+    <title>Enable Dynamic Plugin Caching :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/setup-rhdh/plugin-cache.html">
+    <link rel="prev" href="configure-your-first-plugin.html">
+    <link rel="next" href="connect-gitlab-scm.html">
     <meta name="generator" content="Antora 3.1.14">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -48,47 +48,47 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
+    <a class="nav-link" href="foundations.html">Module 2: Setup Red Hat Developer Hub</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../setup-rhdh/foundations.html">Foundations</a>
+    <a class="nav-link" href="foundations.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/foundations.html#_core_features">Core Features</a>
+    <a class="nav-link" href="foundations.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+    <a class="nav-link" href="foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/foundations.html#_plugins">Plugins</a>
+    <a class="nav-link" href="foundations.html#_plugins">Plugins</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+    <a class="nav-link" href="foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
+    <a class="nav-link" href="setup-rhdh.html">Hands-on Lab</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
+    <a class="nav-link" href="setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+    <a class="nav-link" href="configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="plugin-cache.html">Plugin Caching</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/plugin-cache.html">Plugin Caching</a>
+    <a class="nav-link" href="connect-gitlab-scm.html">GitLab Integration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
+    <a class="nav-link" href="connect-argocd.html">Argo CD Integration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/connect-argocd.html">Argo CD Integration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="../setup-rhdh/security.html">Enable Role-Based Access Control</a>
+    <a class="nav-link" href="security.html">Enable Role-Based Access Control</a>
   </li>
 </ul>
   </li>
@@ -192,38 +192,38 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="self-service-patterns.html">Module 13: Patterns for third-party tools integrations</a>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 13: Patterns for third-party tools integrations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="self-service-patterns.html">Foundations</a>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="self-service-patterns.html#introduction">Introduction</a>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
   </li>
 </ul>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="lab-intro-self-service-patterns.html">Hands-on Lab</a>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#introduction">Hands-on Lab Overview</a>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
   </li>
 </ul>
   </li>
@@ -326,70 +326,239 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
-    <li><a href="self-service-patterns.html">Module 13: Patterns for third-party tools integrations</a></li>
-    <li><a href="lab-intro-self-service-patterns.html">Hands-on Lab</a></li>
+    <li><a href="foundations.html">Module 2: Setup Red Hat Developer Hub</a></li>
+    <li><a href="setup-rhdh.html">Hands-on Lab</a></li>
+    <li><a href="plugin-cache.html">Plugin Caching</a></li>
   </ul>
 </nav>
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Hands-on Lab: Software Template Patterns for Self-service</h1>
-<div class="sect1">
-<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<h1 class="page">Enable Dynamic Plugin Caching</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this lab, you will gain hands-on experience working with Software Templates to build new integrations into OpenShift, including:</p>
+<p>You might have noticed that the <strong>install-dynamic-plugins</strong> container can take a few minutes to run. Dynamic plugin caching improves the startup performance and reliability of your Red Hat Developer Hub deployment by storing plugin packages in a <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank" rel="noopener">persistent volume</a>. This provides several benefits:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Deploying a database using Red Hat Data Grid</p>
+<p><strong>Faster deployments</strong>: Plugins are cached locally and don&#8217;t need to be downloaded when pods start</p>
 </li>
 <li>
-<p>Creating a virtual machine using OpenShift Virtualization</p>
+<p><strong>Reduced bandwidth consumption</strong>: Plugin packages are only downloaded once and reused across deployments</p>
 </li>
 <li>
-<p>Using software templates to create a properly configured namespace</p>
+<p><strong>Improved reliability</strong>: Reduces dependency on external registries during pod startup</p>
 </li>
 <li>
-<p>Using software templates to set up observability</p>
+<p><strong>Better resource utilization</strong>: Reduces CPU and memory usage during plugin installation by avoiding repeated downloads</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Without dynamic plugin caching, the Red Hat Developer Hub downloads and installs plugins fresh with each pod restart. This process can be slow and bandwidth-intensive, especially in environments with many plugins and frequent deployments.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a>Getting Started</h2>
+<h2 id="_create_a_persistentvolumeclaim"><a class="anchor" href="#_create_a_persistentvolumeclaim"></a>Create a PersistentVolumeClaim</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
+<div class="paragraph">
+<p>First, create a PersistentVolumeClaim (PVC) that will store the cached plugin packages. This PVC will be mounted into the Red Hat Developer Hub pods to provide persistent storage for downloaded plugins.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Access the Red Hat Developer Hub UI: {rhdh_url}[Red Hat Developer Hub UI^]</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Log in with your administrator credentials:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Username</strong>: <code>{openshift_admin_user}</code></p>
+<p>Navigate to <strong>Storage &gt; PersistentVolumeClaims</strong> in the OpenShift Web Console.</p>
 </li>
 <li>
-<p><strong>Password</strong>: <code>{openshift_admin_password}</code></p>
+<p>Ensure the <code>setup-rhdh</code> project is selected.</p>
 </li>
-</ul>
+<li>
+<p>Click the <strong>Create PersistentVolumeClaim</strong> button and select <strong>With Form</strong>.</p>
+</li>
+<li>
+<p>Use the following settings:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>StorageClass</strong>: Use the default value</p>
+</li>
+<li>
+<p><strong>Name</strong>:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">dynamic-plugins-root</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Access mode</strong>: Single-user RWO</p>
+</li>
+<li>
+<p><strong>Size</strong>: 5Gi</p>
+</li>
+<li>
+<p><strong>Volume mode</strong>: Filesystem</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/plugin-cache-pvc.png" alt="plugin cache pvc">
+</div>
 </div>
 </li>
 </ul>
 </div>
 </li>
-</ul>
+<li>
+<p>Click <strong>Create</strong> to create the PersistentVolumeClaim.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The 5GiB storage allocation provides sufficient space for caching multiple plugins while maintaining reasonable resource consumption. The <code>ReadWriteOnce</code> access mode is appropriate since the cache will be accessed by a single Red Hat Developer Hub pod at a time.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_patch_the_red_hat_developer_hub_cr"><a class="anchor" href="#_patch_the_red_hat_developer_hub_cr"></a>Patch the Red Hat Developer Hub CR</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Next, update your Backstage Custom Resource to mount a volume. This configuration uses the Red Hat Developer Hub Operator&#8217;s patch functionality to modify the underlying Deployment.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Operators &gt; Installed Operators</strong> in the OpenShift Web Console.</p>
+</li>
+<li>
+<p>Click on the <strong>Red Hat Developer Hub</strong> operator.</p>
+</li>
+<li>
+<p>Select the <strong>Red Hat Developer Hub</strong> tab, then click on your <code>rhdh</code> instance.</p>
+</li>
+<li>
+<p>Click the <strong>YAML</strong> tab to edit the resource.</p>
+</li>
+<li>
+<p>Add the following <code>deployment.patch</code> configuration to your Backstage CR&#8217;s <code>spec</code> field:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
+  # Add this deployment patch configuration
+  deployment:
+    patch:
+      spec:
+        template:
+          spec:
+            volumes:
+              - $patch: replace
+                name: dynamic-plugins-root
+                persistentVolumeClaim:
+                  claimName: dynamic-plugins-root</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Do not remove or overwrite existing sections. Only add the new <code>deployment</code> field to the existing <code>spec</code> with other the fields inside <code>spec</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>$patch: replace</code> directive tells the operator to replace the existing <code>dynamic-plugins-root</code> volume (which is an <a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir" target="_blank" rel="noopener">emptyDir</a> by default) with a PersistentVolumeClaim-backed volume. This ensures that plugin cache data persists across pod restarts.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong> to apply the changes.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verify_plugin_cache_configuration"><a class="anchor" href="#_verify_plugin_cache_configuration"></a>Verify Plugin Cache Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After updating the Backstage CR, a new pod will be created with the persistent volume mounted for plugin caching.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Workloads &gt; Pods</strong> and select the latest Backstage pod.</p>
+</li>
+<li>
+<p>Click the <strong>Details</strong> tab and scroll down to the <strong>Volumes</strong> section.</p>
+</li>
+<li>
+<p>Verify that the <code>dynamic-plugins-root</code> volume shows a <strong>PersistentVolumeClaim</strong> source instead of <strong>EmptyDir</strong>.</p>
+</li>
+<li>
+<p>Select the <strong>Events</strong> tab and you&#8217;ll notice an event that references <code>AttachVolume.Attach</code> for your new volume.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/plugin-cache-attached.png" alt="plugin cache attached">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Next, you&#8217;ll observe just how much faster a new pod starts with plugin caching enabled.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Return to the <strong>Workloads &gt; Pods</strong>.</p>
+</li>
+<li>
+<p>Wait for the new deployment to report a ready status, and for the old pod to be deleted.</p>
+</li>
+<li>
+<p>Click the three dots to the right of the new pod and select <strong>Delete Pod</strong> - a new pod will immediately be created to replace the missing Backstage pod.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/setup-rhdh/plugin-cache-delete-pod.png" alt="plugin cache delete pod">
+</div>
+</div>
+</li>
+<li>
+<p>Visit the logs for the new pod and you&#8217;ll find that the <strong>install-dynamic-plugins</strong> container reports that it is <code>Skipping download of already installed dynamic plugin</code>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/setup-rhdh/plugin-cache-install-skip.png" alt="plugin cache install skip"></span></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Did you notice how much faster the plugin installation process has become?</p>
+</div>
+<div class="paragraph">
+<p>With dynamic plugin caching enabled, subsequent deployments will continue to use cached plugin packages, significantly improving startup performance and reducing external dependencies during pod initialization.</p>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="self-service-patterns.html" class="query-params-link">Module 13: Patterns for third-party tools integrations</a></span>
-  <span class="next"><a href="lab-vm-self-service-patterns.html" class="query-params-link">Hands-on Lab: VM as a Service</a></span>
+  <span class="prev"><a href="configure-your-first-plugin.html" class="query-params-link">Configure your First Plugin (Authentication)</a></span>
+  <span class="next"><a href="connect-gitlab-scm.html" class="query-params-link">GitLab Integration</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
