@@ -1412,6 +1412,20 @@ bash-5.1 ~/l3-enablement-helpers/tpa-operator $</code></pre>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-sbom.png" alt="operator tpa sbom"></span></p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you are wondering why there are no vulnerabilities - we have imported the SBOM right after installation, but the importer is still running, importing CVEs and security advisories. So, this will take a while - on a system with fully imported advisory/cve sources, the vulnerabilities will be available momentarily.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -1445,12 +1459,155 @@ bash-5.1 ~/l3-enablement-helpers/tpa-operator $</code></pre>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>For the <code>helm</code>-based installation, we will use the <code>student-tpa-helm</code> namespace, and we had created the appropriate <code>redirect_URIs</code> in the frontend OIDC client, which we will reuse.</p>
+</div>
+<div class="paragraph">
+<p>So, first, let&#8217;s get ready to configure the database, s3 bucket and the OIDC secret in this namespace:</p>
+</div>
+<div class="paragraph">
+<p>Go to your {openshift_console_url}/terminal[terminal^,window="terminal"] and run the following commands:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/l3-enablement-helpers/prerequisites
+oc project student-tpa-helm
+oc apply -f postgresql-openshift.yaml
+oc apply -f tpa_objectbucketclaim.yaml
+oc apply -f secret-oidc-cli.yaml
+./s3.sh
+cd ../tpa-helm/
+ls -al</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_tbd"><a class="anchor" href="#_tbd"></a>TBD</h2>
-<div class="sectionbody">
+<div class="paragraph">
+<p>Same as in the operator-based exercise, we have prepared values files for you:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A <a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-helm/values.yaml" target="_blank" rel="noopener">values.yaml</a> file for the S3-based installation</p>
+</li>
+<li>
+<p>A <a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-helm/values-fs.yaml" target="_blank" rel="noopener">values-fs.yaml</a> file, if you want to try with the filesystem (for quick testing and PoC/non-production)</p>
+</li>
+<li>
+<p>A <a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-helm/values-importers.yaml" target="_blank" rel="noopener">values-importers.yaml</a> file, with the default settings (osv-github and cve enabled, the others disabled). There is no need to modify any value here, unless you want to.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Since we&#8217;re running <code>helm</code> to install, you don&#8217;t have to download them - but you need to modify them in your terminal session from above:</p>
+</div>
+<div class="paragraph">
+<p>Use your editor of choice (<code>nano</code> or <code>vim</code>) and change the following values (for <code>values.yaml</code> or 'values-fs.yaml'):</p>
+</div>
+<div class="paragraph">
+<p>In the <code>storage.region</code> field, replace <code>&lt;your-cluster-ingressdomain-here&gt;</code> with <code>{openshift_cluster_ingress_domain}</code>:</p>
+</div>
+<div class="paragraph">
+<p><code>region: <a href="https://s3-openshift-storage.&lt;your-cluster-ingressdomain-here&gt;:443" class="bare">https://s3-openshift-storage.&lt;your-cluster-ingressdomain-here&gt;:443</a></code></p>
+</div>
+<div class="paragraph">
+<p>In <code>storage.bucket</code>, paste the value for the <code>trustify</code> bucket that we just got as output from the <code>s3.sh</code> script.</p>
+</div>
+<div class="paragraph">
+<p><code>bucket: trustify-&lt;run_s3.sh_from_your_namespace_to_get_the_bucket_name&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>In the <code>oidc.issuerUrl</code> field, also replace the cluster ingress domain:</p>
+</div>
+<div class="paragraph">
+<p><code>issuerUrl: <a href="https://sso.&lt;your-cluster-ingressdomain-here&gt;/realms/trusted-artifact-signer" class="bare">https://sso.&lt;your-cluster-ingressdomain-here&gt;/realms/trusted-artifact-signer</a></code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you decide to try out the <code>filesystem</code> storage, obviously you don&#8217;t have to change any value there - these are left in the <code>values-fs.yaml</code> file for reference, but commented out. You still need to change the <code>oidc.issuerUrl</code> field, but that&#8217;s all.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ok, ready to go?</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s helm!</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">source appdomain.sh
+helm repo add openshift-helm-charts https://charts.openshift.io/
+helm repo update
+helm upgrade --install redhat-trusted-profile-analyzer openshift-helm-charts/redhat-trusted-profile-analyzer -n $NAMESPACE --values values.yaml --values values-importers.yaml --set-string appDomain=$APP_DOMAIN_URL</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">source appdomain.sh
+helm repo add openshift-helm-charts https://charts.openshift.io/
+helm repo update
+helm upgrade --install redhat-trusted-profile-analyzer openshift-helm-charts/redhat-trusted-profile-analyzer -n $NAMESPACE --values values.yaml --values values-importers.yaml --set-string appDomain=$APP_DOMAIN_URL
+NAMESPACE is: student-tpa-helm
+APP_DOMAIN_URL (needed in helm values) set to:
+-student-tpa-helm.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+"openshift-helm-charts" already exists with the same configuration, skipping
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "backstage" chart repository
+...Successfully got an update from the "rhtap" chart repository
+...Successfully got an update from the "openshift-helm-charts" chart repository
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈Happy Helming!⎈
+Release "redhat-trusted-profile-analyzer" does not exist. Installing it now.
+NAME: redhat-trusted-profile-analyzer
+LAST DEPLOYED: Mon Oct 20 14:38:19 2025
+NAMESPACE: student-tpa-helm
+STATUS: deployed
+REVISION: 1
+NOTES:
+OpenShift:
+  Detected:       true
+  Use Service CA: true
 
+Console:
+    server-student-tpa-helm.apps.cluster-mdt2d.dynamic.redhatworkshops.io</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_verification_2"><a class="anchor" href="#_verification_2"></a>Verification</h3>
+<div class="sect3">
+<h4 id="_frontend_2"><a class="anchor" href="#_frontend_2"></a><strong>Frontend</strong></h4>
+<div class="paragraph">
+<p>So, you can open your <code>helm</code>-based install of TPA now from <a href="https://server-student-tpa-helm.{openshift_cluster_ingress_domain}" target="TPA">here</a>, and after logging in with <code>user1</code> or <code>admin</code>, you should see the TPA UI based off of the <code>student-tpa-helm</code> namespace ✅:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m3-tpa-openshift/helm-tpa-dashboard.png" alt="helm tpa dashboard"></span></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cli_2"><a class="anchor" href="#_cli_2"></a><strong>CLI</strong></h4>
+<div class="paragraph">
+<p>We have prepared the verification script in the <code>tpa-helm</code> directory as well:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/l3-enablement-helpers/tpa-helm
+oc project student-tpa-helm
+./verify-sbom-upload.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, we should see the uploaded SBOM now in the <a href="https://server-student-tpa-helm.{openshift_cluster_ingress_domain}/sboms" target="TPA">TPA SBOM View</a> after a few moments, including the labels we assigned ✅.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m3-tpa-openshift/helm-tpa-sbom.png" alt="helm tpa sbom"></span></p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">
