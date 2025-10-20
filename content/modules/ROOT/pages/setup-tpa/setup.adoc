@@ -11,6 +11,21 @@ TPA helps organizations:
 * Integrate with trusted software supply chain workflows
 * Provide detailed reporting and analytics
 
+
+
+
+[cols="1,3", frame=none, grid=none]
+|===
+.2+| image:m3-tpa-openshift/guac-logo.png[width=100]
+| TPA is the Red Hat distribution of the https://github.com/guacsec/trustify[_trustify_ project] under the https://guac.sh/trustify/[GUAC Community]. GUAC is an acronym for _Graph for Understanding Artifact Composition_
+
+| In essence, TPA is a graph database with a user frontend and rich REST API (that the frontend also uses) aggregating and correlating components and packages from SBOMs with CVEs and Security Advisories, providing you with a 360° view of your software stack. 
+|===
+
+
+
+
+
 == Installation Options
 
 TPA can be deployed in multiple environments depending on your infrastructure and requirements. Choose the appropriate installation guide for your environment:
