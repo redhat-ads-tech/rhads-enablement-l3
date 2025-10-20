@@ -124,7 +124,7 @@ Update your *app-config.yaml* to include GitLab integration and provider configu
 . Click *Edit ConfigMap*.
 . Add the following `gitlab` configuration to the `catalog.providers` section of your *app-config.yaml*:
 +
-[source,yaml,role=execute,subs=attributes+]
+[source,yaml,role=execute]
 ----
 catalog:
   providers:
@@ -148,7 +148,7 @@ catalog:
 ----
 . Additionally, add a new `integrations` section at the root level of the *app-config.yaml*, i.e. the same indentation level as the `catalog` and `app` keys:
 +
-[source,yaml,role=execute,subs=attributes+]
+[source,yaml,role=execute]
 ----
 integrations:
   gitlab:

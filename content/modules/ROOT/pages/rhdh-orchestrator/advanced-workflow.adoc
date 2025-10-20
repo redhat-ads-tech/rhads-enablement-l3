@@ -116,7 +116,7 @@ Backstage, and therefore {product_rhdh_name} supports https://backstage.io/docs/
 . Open the YAML editor for the *tssc-developer-hub-app-config* ConfigMap.
 . Update the `backend.auth` section to enable `externalAccess` - do not replace or remove existing properties in the `backend` object:
 +
-[source,bash,role=execute,subs=attributes+]
+[source,bash,role=execute]
 ----
 backend:
   auth:
@@ -185,7 +185,7 @@ helm repo add advanced-workflows https://redhat-ads-tech.github.io/orchestrator-
 ----
 * Define pre-requisite authentication tokens first:
 +
-[source,bash,role=execute,subs=attributes+]
+[source,bash,role=execute]
 ----
 export BACKSTAGE_TOKEN=$(oc get secret tssc-developer-hub-env -n tssc-dh -o jsonpath='{.data.BACKEND_SECRET}' | base64 -d)
 export GITLAB_TOKEN=$(oc get secret root-user-personal-token -n gitlab -o jsonpath='{.data.token}' | base64 -d)

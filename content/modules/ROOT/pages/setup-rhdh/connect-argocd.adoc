@@ -167,7 +167,7 @@ Update your *app-config.yaml* to include Argo CD integration configuration:
 . Click *Edit ConfigMap*.
 . Add the following `argocd` configuration at the root level of the *app-config.yaml*:
 +
-[source,yaml,role=execute,subs=attributes+]
+[source,yaml,role=execute]
 ----
 argocd:
   appLocatorMethods:
