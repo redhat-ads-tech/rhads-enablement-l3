@@ -17,6 +17,10 @@ asciidoc:
     product_rhdh_name: Red Hat Developer Hub
     product_rhdh_version: "1.6"
     product_gitops_name: Red Hat OpenShift GitOps
+    product_tpa_name: Red Hat Trusted Profile Analyzer
+    product_tas_name: Red Hat Trusted Artifact Signer
+    product_rhads_name: Red Hat Advanced Developer Suite
+    product_tssc_name: Trusted Software Supply Chain
 
     # Namespaces for pre-installed TSSC components
     ns_tssc_gitops: tssc-gitops

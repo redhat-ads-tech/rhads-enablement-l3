@@ -1,4 +1,4 @@
-= Trusted Software Supply Chain with RHDH for Production (RHADS)
+= Trusted Software Supply Chain with {product_rhdh_name} for Production (RHADS)
 
 == Deep dive into the Red Hat Advanced Developer Suite components
 

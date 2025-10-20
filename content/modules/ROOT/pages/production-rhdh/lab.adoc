@@ -1,4 +1,4 @@
-= Trusted Software Supply Chain with RHDH for Production
+= Trusted Software Supply Chain with {product_rhdh_name} for Production
 
 == Hands-on Lab
 This hands-on lab will use the Red Hat Demo RHADS TL3 item and walk you through the use of the product set from the perspective of a developer. We will examine and explain each step in terms of what is technically happening with the product, and then we will walk through altering an example TSSC pipeline (as stated before some customers may/will want to add additional security steps as part of their processes).
@@ -7,10 +7,10 @@ This hands-on lab will use the Red Hat Demo RHADS TL3 item and walk you through 
 
 For this part of the lab we will be using a lot of the tooling and interfaces provided by the product. To be prepared, please make a note of the following information from your Red Hat Demo “Red Hat Advanced Developer Suite - Technical Enablement Level 3” item:
 
-* The RHDH application URL, and the password (user will be user1 throughout this example unless otherwise stated)
-* The GitLab application URL, and the password (should be the same as the RHDH one)
-* The OpenShift Ux URL, and the password for admin (we will use the administrator login to examine some of the behaviours on the cluster resulting from the template and ArgoCD)
-* [Optional] The ArgoCD application URL and the password (again, for ArgoCD we will use the admin user to look at what gets physically created when the template executes)
+* {rhdh_url}[The {product_rhdh_name} URL^], and the password: `{rhdh_user}` / `{rhdh_user_password}`
+* {gitlab_url}[The GitLab URL^], and the password (should be the same as the RHDH one)
+* {openshift_console_url}[The OpenShift Web Console URL^], and the password for admin (we will use the administrator login to examine some of the behaviours on the cluster resulting from the template and ArgoCD)
+* [Optional] The https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}[ArgoCD URL^] and the password (again, for ArgoCD we will use the admin user to look at what gets created when the template executes)
 
 The point of this part of the hands-on lab is to give you a feel of what the end user experience is whilst making you aware of the technical components that are being used so that you can describe them to end customers.
 
@@ -24,7 +24,7 @@ The RHDH screen will render; if it is the first time, you will get a helpful inf
 
 image::production-rhdh/2.png[RHDH Frontpage]
 
-Click on ‘Catalog’ on the left-hand navigation panel. This will default to showing the ‘Components’ you have access to; as discussed earlier in the modules, RHDH works with a database of different types of objects and an RBAC which gives you access to them. In this case you should see a single service, ‘provisioning-data’, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a button labelled ‘Self Service’. Click on this.
+Click on ‘Catalog’ on the left-hand navigation panel. This will default to showing the ‘Components’ you have access to; as discussed earlier in the modules, RHDH works with a database of different types of objects and an RBAC which gives you access to them. In this case you should see a single service, ‘provisioning-data’, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a plus button (*+* icon) labelled ‘Self Service’. Click on this.
 
 This will render all the templates currently registered in the system that you, as user1, have access to. For the sake of this lab we are going to walk through the creation of a Quarkus application with secure build via TSSC - scroll to the bottom of the tiles and you will see one labelled ‘Securing a Quarkus Service Software Supply Chain (Tekton)’. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on ‘Choose’.
 
@@ -40,7 +40,7 @@ Now you will see the Registry parameters; you can leave these as they are (the d
 
 The next wizard prompts for the repository information; again, leave as is as the demo has Gitlab setup and integrated. Click ‘Review’.
 
-The final generated content page contains the information you have provided; click on ‘Create’ to start the process of executing the template within RHDH.
+The final generated content page contains a summary of the information you have provided; click on ‘Create’ to start the process of executing the template within RHDH.
 
 The template will process all of the defined steps and give you a real-time view of the progress. It should succeed at this point and the screen will look like this:
 
@@ -64,16 +64,16 @@ This is a very powerful part of the RHDH offering; the sub-tabs on this page are
 
 [NOTE]
 ====
-Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the Quay Ux and login again using the quayadmin username and the password provided in the lab. You can then do a commit of the code (more in a moment) and the pipeline will automatically re-run, successfully.
+Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the {quay_url}[Quay UI^] and login again using the quayadmin username and the password provided in the lab. You can then do a commit of the code (more in a moment) and the pipeline will automatically re-run, successfully.
 ====
 
-Expand the information panel for the Pipeline Run (the small arrow at the left and the Ux will render the output of the pipeline that was automatically executed as part of the creation of the git repo. Notice the icon indication of the potential vulnerabilities shown as part of the run as well.
+Expanding the information panel for the Pipeline Run (using the small arrow to the left of the build ID) will render the output of the pipeline that was automatically executed as part of the creation of the git repo. Notice the icon indicating the potential vulnerabilities shown as part of the run as well.
 
 You can use the cursor to move around the pipeline. As an example click on the ‘Build Container’ step and it will show you the direct logs of the processes executed as part of that process:
 
 image::production-rhdh/8.png[Examining the Pipeline]
 
-Now click on the ‘Topology’ tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the RHDH approach, it removes the need for a developer to both login and navigate to the appropriate screens in the OpenShift/Kubernetes Ux.
+Now click on the ‘Topology’ tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the RHDH approach, it removes the need for a developer to login and navigate to the appropriate screens in the OpenShift Web Console.
 
 image::production-rhdh/9.png[Examining the Topology plugin]
 
@@ -87,7 +87,7 @@ Switch back to the CI (continuous integration) tab; on the far right of the pipe
 
 image::production-rhdh/11.png[Highlighting the SBOM link]
 
-What we will do now is to act as a developer; switch to the overview tab of the component, and click on the ‘OpenShift Dev Spaces (VS Code)’ link. 
+What we will do now is act as a developer; switch to the overview tab of the component, and click on the ‘OpenShift Dev Spaces (VS Code)’ link. 
 
 image::production-rhdh/12.png[Highlighting the Dev Spaces link]
 
@@ -95,9 +95,9 @@ This link will spin off a browser tab with the OpenShift Dev Spaces component; t
 
 It will ask if you trust the authors of the repository; click ‘continue’.
 
-The first time you go into the Dev Spaces it will prompt you to allow access and also prompt for adding additional components; let it settle for a couple of minutes so all the components have been loaded correctly.
+The first time you go into the Dev Spaces it will prompt you to allow access, login to GitLab, and also prompt for adding additional components; let it settle for a couple of minutes so all the components have been loaded correctly.
 
-Before we force a restart of the build pipeline, click on the Explorer icon on the far left if the code structure is not displayed yet. When the (WORKSPACE) appears, click on the ‘pom.xml’ file.
+Before we trigger a new build, click on the Explorer icon on the far left if the code structure is not displayed yet. When the (WORKSPACE) appears, click on the ‘pom.xml’ file.
 
 Dev Spaces works by maintaining a realtime copy of the files on the cluster, nothing is stored locally. In addition the RHADS adds code monitoring components; the pom.xml should have a direct vulnerability. The code outline on the far right will contain red where the code has a potential issue. Scroll down so the lines are visible in the editor.
 
@@ -119,7 +119,7 @@ On the far left navigation icons, click on the ‘Git’ icon - it will have a b
 
 The Commit button will change to ‘Sync Changes’. This will push the code changes to the git repo created by the template and, using the webhooks also instantiated by the template, start the secure build pipeline again. Click it now.
 
-Switch back to the RHDH Ux, go to the catalog, click on the component and switch to the ‘CI” tab; you will see the pipeline has restarted (due to the commit of code). 
+Switch back to the RHDH UI, go to the catalog, click on the component and switch to the ‘CI” tab; you will see the pipeline has restarted (due to the commit of code). 
 
 image::production-rhdh/16.png[Pipeline automatically run as part of a code submit]
 
@@ -131,9 +131,10 @@ As mentioned earlier, a customer can add (or remove) components of the base secu
 
 Firstly, remember that the application of the template scaffolds all the code and components needed for the end-to-end developer/ops functionality. As part of that, the base pipelines that back the TSSC templates are installed as well.
 
+// Use GitLab link from showroom vars. Can link direct to repo
 From the information provided in the demo lab setup, get the GitLab URL and the password (username will be admin). In a separate browser tab, go to the GitLab URL.
 
-At the high level project view there will be a number of repos; these are either in the ‘development’ realm or in the ‘rhdh’ realm. Find the rhdh/sample-pipelines repository, as shown in the image below:
+At the high level project view there will be a number of repos; these are either in the ‘development’ realm or in the ‘rhdh’ realm. Find the rhdh/tssc-sample-pipelines repository, as shown in the image below:
 
 image::production-rhdh/17.png[Locating the default pipeline definitions]
 
