@@ -1,0 +1,12 @@
+= Hands-on Lab: Red Hat Advanced Developer Suite for AI Engineers
+
+[#Introduction]
+== Introduction
+
+In this lab, you will use Red Hat Advanced Developer Suite  and developer tools to build AI applications. 
+
+You will:
+
+* Experiment with an AI application locally using Podman AI Lab
+* Explore how Red Hat Advanced Developer Suite integrates with Red Hat OpenShift Dev Spaces to bring AI into developers' daily activities
+

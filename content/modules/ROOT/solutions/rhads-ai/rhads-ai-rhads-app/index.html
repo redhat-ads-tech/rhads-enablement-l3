@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Research Agent</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success-color: #16a34a;
+            --error-color: #dc2626;
+            --warning-color: #d97706;
+            --background: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .form-card {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        #prompt {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+            background: var(--card-background);
+        }
+
+        #prompt:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .result-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cache-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .cache-hit {
+            background: #dcfce7;
+            color: var(--success-color);
+        }
+
+        .cache-miss {
+            background: #fef3c7;
+            color: var(--warning-color);
+        }
+
+        .result-content {
+            padding: 1.5rem;
+        }
+
+        .question {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .question-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .answer {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            white-space: pre-wrap;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: var(--error-color);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+            margin-top: 1rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            display: none;
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2px;
+            animation: progress 2s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-card, .result-card {
+                padding: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Research Agent</h1>
+        <p class="subtitle">Get comprehensive research answers powered by web search and AI analysis</p>
+
+        <div class="form-card">
+            <form id="research-form" onsubmit="return false;">
+                <label for="prompt">What would you like to research?</label>
+                <textarea
+                    id="prompt"
+                    name="prompt"
+                    placeholder="Enter your research question here... For example: 'What are the latest developments in renewable energy?'"
+                    required
+                ></textarea>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-btn">
+                        <span id="submit-text">🔍 Start Research</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                        Clear
+                    </button>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <span>Researching your question...</span>
+                </div>
+
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </form>
+        </div>
+
+        <div id="result-container"></div>
+
+        {% if prompt and result %}
+        <div class="result-card">
+            <div class="result-header">
+                <h2 class="result-title">Research Results</h2>
+                <span class="cache-badge cache-miss">🔄 Research Result</span>
+            </div>
+            <div class="result-content">
+                <div class="question">
+                    <div class="question-label">Your Question</div>
+                    <div>{{ prompt }}</div>
+                </div>
+                <div class="answer">{{ result }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        let isProcessing = false;
+
+        document.getElementById('research-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!isProcessing) {
+                submitQuestion();
+            }
+        });
+
+        document.getElementById('prompt').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter' && !isProcessing) {
+                e.preventDefault();
+                submitQuestion();
+            }
+        });
+
+        function submitQuestion() {
+            const prompt = document.getElementById('prompt').value.trim();
+            if (!prompt) {
+                alert('Please enter a research question.');
+                return;
+            }
+
+            setLoadingState(true);
+
+            fetch('/ask_async', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showError(data.error);
+                } else {
+                    showResult(prompt, data.result);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('Network error. Please check your connection and try again.');
+            })
+            .finally(() => {
+                setLoadingState(false);
+            });
+        }
+
+        function setLoadingState(loading) {
+            isProcessing = loading;
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const loadingDiv = document.getElementById('loading');
+            const progressBar = document.getElementById('progress-bar');
+            const promptTextarea = document.getElementById('prompt');
+
+            if (loading) {
+                submitBtn.disabled = true;
+                submitText.textContent = '🔄 Researching...';
+                loadingDiv.style.display = 'flex';
+                progressBar.style.display = 'block';
+                promptTextarea.disabled = true;
+            } else {
+                submitBtn.disabled = false;
+                submitText.textContent = '🔍 Start Research';
+                loadingDiv.style.display = 'none';
+                progressBar.style.display = 'none';
+                promptTextarea.disabled = false;
+            }
+        }
+
+        function showResult(prompt, result) {
+            const container = document.getElementById('result-container');
+
+            container.innerHTML = `
+                <div class="result-card">
+                    <div class="result-header">
+                        <h2 class="result-title">Research Results</h2>
+                        <span class="cache-badge cache-miss">🔄 Research Result</span>
+                    </div>
+                    <div class="result-content">
+                        <div class="question">
+                            <div class="question-label">Your Question</div>
+                            <div>${escapeHtml(prompt)}</div>
+                        </div>
+                        <div class="answer">${escapeHtml(result)}</div>
+                        <div class="stats">
+                            <span>🤖 Source: AI Research Agent</span>
+                            <span>🔍 Powered by Tavily Search</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            const container = document.getElementById('result-container');
+            container.innerHTML = `
+                <div class="error">
+                    <strong>❌ Error:</strong> ${escapeHtml(message)}
+                </div>
+            `;
+        }
+
+        function clearForm() {
+            document.getElementById('prompt').value = '';
+            document.getElementById('result-container').innerHTML = '';
+            document.getElementById('prompt').focus();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Focus on textarea when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('prompt').focus();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+schemaVersion: 2.2.2
+metadata:
+  name: ai-agent
+  displayName: "AI Research Agent"
+  description: "Web-based AI research agent with search capabilities"
+components:
+  - name: python
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel9:3.23
+      volumeMounts:
+        - name: venv
+          path: /home/user/.venv
+      memoryLimit: '2Gi'
+      memoryRequest: '1Gi'
+      cpuLimit: '2'
+      cpuRequest: '1'
+      mountSources: true
+      env:
+        - name: FLASK_ENV
+          value: development
+        - name: FLASK_DEBUG
+          value: "1"
+  - name: venv
+    volume:
+      size: 1G
+commands:
+  - id: install
+    exec:
+      label: "Install Dependencies"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+      group:
+        kind: build
+  - id: run
+    exec:
+      label: "Run AI Agent Server"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: . .venv/bin/activate && gunicorn --bind 0.0.0.0:8080 --workers 2 --threads 4 --reload app:app
+      group:
+        kind: run
+  - id: dev
+    exec:
+      label: "Run Development Server"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: . .venv/bin/activate && python app.py
+      group:
+        kind: run
+  - id: health
+    exec:
+      label: "Health Check"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/ai-agent
+      commandLine: curl -f http://localhost:8080/health || echo "Service not ready"
+      group:
+        kind: test
