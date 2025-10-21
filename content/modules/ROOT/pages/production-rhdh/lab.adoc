@@ -31,7 +31,7 @@ The {product_rhdh_name} screen will render; if it is the first time, you will ge
 
 image::production-rhdh/2.png[{product_rhdh_name} Frontpage]
 
-Click on _Catalog_ on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, {product_rhdh_name} works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, `provisioning-data`, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a plus button (*+* icon) labelled ‘Self Service’. Click on this
+Click on _Catalog_ on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, {product_rhdh_name} works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, `provisioning-data`, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a plus button (*+* icon) labelled _Self Service_. Click on this
 
 This will render all the templates currently registered in the system that you, as `{rhdh_user}`, have access to. For the sake of this lab we are going to walk through the creation of a Quarkus application with secure build via TSSC - scroll to the bottom of the tiles and you will see one labelled *Securing a Quarkus Service Software Supply Chain (Tekton)*. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on *Choose*.
 
