@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Trusted Software Supply Chain with RHADS for Production :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <title>Trusted Software Supply Chain with Red Hat Developer Hub for Production :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/production-rhdh/lab.html">
     <link rel="prev" href="introduction.html">
     <link rel="next" href="../tssc-3rdparty-ci.html">
@@ -333,7 +333,7 @@
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Trusted Software Supply Chain with RHADS for Production</h1>
+<h1 class="page">Trusted Software Supply Chain with Red Hat Developer Hub for Production</h1>
 <div class="sect1">
 <h2 id="_hands_on_lab"><a class="anchor" href="#_hands_on_lab"></a>Hands-on Lab</h2>
 <div class="sectionbody">
@@ -411,7 +411,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Click on <em>Catalog</em> on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, Red Hat Developer Hub works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, <code>provisioning-data</code>, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a button labelled <em>Self Service</em>. Click on this.</p>
+<p>Click on <em>Catalog</em> on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, Red Hat Developer Hub works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, <code>provisioning-data</code>, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a plus button (<strong>+</strong> icon) labelled <em>Self Service</em>. Click on this</p>
 </div>
 <div class="paragraph">
 <p>This will render all the templates currently registered in the system that you, as <code>{rhdh_user}</code>, have access to. For the sake of this lab we are going to walk through the creation of a Quarkus application with secure build via TSSC - scroll to the bottom of the tiles and you will see one labelled <strong>Securing a Quarkus Service Software Supply Chain (Tekton)</strong>. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on <strong>Choose</strong>.</p>
@@ -439,7 +439,7 @@
 <p>The next wizard prompts for the repository information; again, leave as is as the demo has GitLab setup and integrated. Click <strong>Review</strong>.</p>
 </div>
 <div class="paragraph">
-<p>The final generated content page contains the information you have provided; click on <strong>Create</strong> to start the process of executing the template within Red Hat Developer Hub.</p>
+<p>The final generated content page contains a summary of the information you have provided; click on <strong>Create</strong> to start the process of executing the template within Red Hat Developer Hub.</p>
 </div>
 <div class="paragraph">
 <p>The template will process all of the defined steps and give you a real-time view of the progress. It should succeed at this point and the screen will look like this:</p>
@@ -503,7 +503,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Now click on the <strong>Topology</strong> tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the Red Hat Developer Hub approach, it removes the need for a developer to both login and navigate to the appropriate screens in the OpenShift Web Console.</p>
+<p>Now click on the <strong>Topology</strong> tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the Red Hat Developer Hub approach, it removes the need for a developer to login and navigate to the appropriate screens in the OpenShift Web Console.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -530,7 +530,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>What we will do now is to act as a developer; switch to the overview tab of the component, and click on the <strong>OpenShift Dev Spaces (VS Code)</strong> link.</p>
+<p>What we will do now is act as a developer; switch to the overview tab of the component, and click on the <strong>OpenShift Dev Spaces (VSCode)</strong> link.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -547,7 +547,7 @@
 <p>The first time you go into Dev Spaces it will prompt you to allow access and also prompt for adding additional components; let it settle for a couple of minutes so all the components have been loaded correctly.</p>
 </div>
 <div class="paragraph">
-<p>Before we force a restart of the build pipeline, click on the Explorer icon on the far left if the code tree structure is not displayed yet. When the Workspace appears, click on the <code>pom.xml</code> file.</p>
+<p>Before we trigger a new build, click on the Explorer icon on the far left if the code tree structure is not displayed yet. When the Workspace appears, click on the <code>pom.xml</code> file.</p>
 </div>
 <div class="paragraph">
 <p>Dev Spaces works by maintaining a realtime copy of the files on the cluster, nothing is stored locally. In addition RHADS adds code monitoring components to the IDE; the <code>pom.xml</code> should have a direct vulnerability. The code outline on the far right will contain red "squigglies" where the code has a potential issue. Scroll down so the lines are visible in the editor.</p>
