@@ -468,7 +468,10 @@ Quarkus is the application framework that exposes REST endpoints, performs valid
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Click the <strong>Workflows</strong> link inside the <strong>Serverless Workflows Tools</strong> box. Workflows will be listed.</p>
+<p>Click the <strong>Workflows</strong> link inside the <strong>Serverless Workflows Tools</strong> box.</p>
+</li>
+<li>
+<p>Click the <strong>Workflow Definitions</strong> tab. Workflow definitions including the new <em>greeting</em> workflow will be listed.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/orchestrator-overview/quarkus-devui-workflows.png" alt="quarkus devui workflows">
@@ -492,7 +495,7 @@ Quarkus is the application framework that exposes REST endpoints, performs valid
 </div>
 </li>
 <li>
-<p>Return to the workflows screen. Your workflow run will be listed.</p>
+<p>Return to the <em>Workflow Instances</em> tab. Your workflow run will be listed.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/orchestrator-overview/quarkus-devui-workflow-run.png" alt="quarkus devui workflow run">
@@ -508,7 +511,7 @@ Quarkus is the application framework that exposes REST endpoints, performs valid
 </div>
 </li>
 <li>
-<p>Scroll down and you&#8217;ll see that "Hello from JSON Workflow" is in the outputs.</p>
+<p>Scroll down and you&#8217;ll see that "Hello from JSON Workflow" is in the <code>workflowdata</code> output.</p>
 </li>
 </ol>
 </div>
@@ -650,7 +653,7 @@ The source code and scripts to build this sample workflow can be found in <a hre
 </div>
 </li>
 <li>
-<p>Additionally, if you login to Red Hat Developer Hub (using <code>{rhdh_user}</code> / <code>{rhdh_user_password}</code> ) you&#8217;ll now see that <strong>Greeting workflow</strong> is listed.</p>
+<p>Additionally, if you log into {rhdh_url}[Red Hat Developer Hub^] (using <code>{rhdh_user}</code> / <code>{rhdh_user_password}</code> ) you&#8217;ll now see that <strong>Greeting workflow</strong> is listed.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/orchestrator-overview/rhdh-workflow-list.png" alt="rhdh workflow list">
@@ -666,7 +669,9 @@ The source code and scripts to build this sample workflow can be found in <a hre
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the greeting workflow doesn&#8217;t appear in the Red Hat Developer Hub UI, delete the Red Hat Developer Hub Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
+<div class="paragraph">
+<p>If the greeting workflow doesn&#8217;t appear in the Red Hat Developer Hub UI, delete the Red Hat Developer Hub Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.</p>
+</div>
 </td>
 </tr>
 </table>

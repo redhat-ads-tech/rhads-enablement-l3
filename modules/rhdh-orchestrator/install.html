@@ -462,7 +462,7 @@ The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Dev
 </div>
 </li>
 <li>
-<p>Before proceeding, change <code>disabled: true</code> to <code>disabled: false</code> for the listed plugins.</p>
+<p>Before proceeding, change <code>disabled: true</code> to <code>disabled: false</code> for the listed plugins, and click <strong>Save</strong>.</p>
 </li>
 </ol>
 </div>
@@ -480,10 +480,10 @@ The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Dev
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Return to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/tssc-dh?view=graph" target="_blank" rel="noopener">Topology View</a> for the <strong>tssc-dh</strong> namespace.</p>
+<p>Return to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/tssc-dh?view=graph" target="_blank" rel="noopener">Topology View</a> for the <strong>tssc-dh</strong> namespace and wait for the SonataFlowPlatform pods to become ready (dark blue circle). This may take a few minutes for both the Orchestrator plugins and SonataFlowPlatform pods to become ready.</p>
 </li>
 <li>
-<p>You should see the <strong>SonataFlowPlatform</strong> (or <strong>SFP</strong> for short) - click the three dots next to its name and select <strong>Edit SonataFlowPlatform</strong> to view the CR created as a result of the <code>dependencies.ref</code> you saw earlier.</p>
+<p>Once ready, you should see the <strong>SonataFlowPlatform</strong> (or <strong>SFP</strong> for short) - click the three dots next to its name (<code>sonataflow-platform</code>) and select <strong>Edit SonataFlowPlatform</strong> to view the CR created as a result of the <code>dependencies.ref</code> you saw earlier.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/orchestrator-overview/sonataflow-platform-topology.png" alt="sonataflow platform topology">
