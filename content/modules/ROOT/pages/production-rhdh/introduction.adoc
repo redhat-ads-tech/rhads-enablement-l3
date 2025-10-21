@@ -180,7 +180,7 @@ output:
         icon: catalog
         entityRef: ${{ steps['register-gitops'].output.entityRef }}
 ```
-Note that like the parameter variables, the Backsatge scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, `${{ steps['publish-gitlab-source'].output.remoteUrl }}`, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/[Nunjucks based templates in the docs^].
+Note that like the parameter variables, the Backstage scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, `${{ steps['publish-gitlab-source'].output.remoteUrl }}`, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/[Nunjucks based templates in the docs^].
 
 It is also worth being aware of the way that the templates actually work behind the scenes; when a template is instantiated it has a working directory. In the example above the catalog:fetch and fetch:template actually copy files into this temporary area. Then the action (not shown) for publishing to gitlab pushes this area as the files into the repo. 
 
