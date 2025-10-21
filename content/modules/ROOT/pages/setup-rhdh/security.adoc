@@ -278,7 +278,7 @@ Next, update the Backstage CR to load the new ConfigMap:
 
 . Select *Home > Search* in the OpenShift Web Console.
 . Ensure the *{m2_rhdh_project}* is selected in the project selector.
-. Type `back` the _Resources_ box to find the `Backstage` CR, and click it to select, and close the drop-down using the `x` button in the top-right.
+. Type `back` in the _Resources_ box to find the `Backstage` CR, and click it to select, and close the drop-down using the `x` button in the top-right.
 . Select the *rhdh* entry in the *Backstages* list.
 . Switch to the YAML view and add the *rbac-policies* ConfigMap to the `spec.application.extraFiles` section.
 +
