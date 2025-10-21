@@ -169,7 +169,7 @@ After the new Backstage pod has started:
 . Check the Backstage pod logs to confirm successful synchronization with GitLab.
 +
 image::setup-rhdh/gitlab-discovery-log.png[]
-. Next, log in to your {product_rhdh_name} instance.
+. Next, log in to your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}[{product_rhdh_name} instance^].
 . Navigate to the *Catalog* to see imported items of *Kind* Component from GitLab repositories - specifically a *HTTP Sink Application*.
 +
 image::setup-rhdh/gitlab-component-httpsink.png[]
