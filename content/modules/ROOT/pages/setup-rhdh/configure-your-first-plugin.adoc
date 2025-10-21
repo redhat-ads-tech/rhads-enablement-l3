@@ -101,7 +101,7 @@ Get started by creating a minimal `{m2_rhdh_plugins_cm_name}` ConfigMap that ena
 . Navigate to *Workloads > ConfigMaps*.
 . Ensure the `{m2_rhdh_project}` project is selected.
 . Click the *Create ConfigMap* button.
-. Switch to the YAML view and paste the following configuration:
+. Switch to the YAML view, delete the existing content, then paste the following configuration:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -199,14 +199,14 @@ First, create a Secret to store Keycloak connection details:
 ----
 +
 image::setup-rhdh/keycloak-secret.png[]
-. Add the following key-value pairs:
+. Add the following key-value pairs (enter the Key name in the `Key` field, then the value in the text box _below_ the "Value" box, and click "Add key/value" to add the next pair):)
 +
 [cols="1,1"]
 |===
 |Key |Value
 
 |`KEYCLOAK_BASE_URL`
-|`\https://sso.{openshift_cluster_ingress_domain}`
+|`https://sso.{openshift_cluster_ingress_domain}`
 
 |`KEYCLOAK_LOGIN_REALM`
 |`{keycloak_realm_name}`
@@ -218,7 +218,7 @@ image::setup-rhdh/keycloak-secret.png[]
 |`{keycloak_client_id}`
 
 |`KEYCLOAK_CLIENT_SECRET`
-|`\{rhdh_user_password}`
+|`{rhdh_user_password}`
 |===
 . Click *Create*.
 

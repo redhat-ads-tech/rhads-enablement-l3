@@ -41,7 +41,7 @@ The permission plugin provides the RBAC functionality for {product_rhdh_name}. Y
 . Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:
   * Username: `{openshift_admin_user}`
   * Password: `{openshift_admin_password}`
-. Navigate to *Workloads > ConfigMaps* and select the *{m2_rhdh_plugins_cm_name}* ConfigMap.
+. Navigate to *Workloads > ConfigMaps* and select the *{m2_rhdh_plugins_cm_name}* ConfigMap (make sure the project is set to *{m2_rhdh_project}*).
 . Edit the ConfigMap to include the RBAC plugin in the `plugins` entry.
 +
 [source,yaml,role=execute]
@@ -55,7 +55,7 @@ The permission plugin provides the RBAC functionality for {product_rhdh_name}. Y
 
 To manage RBAC policies though the {product_rhdh_name} UI, you must designate specific users as RBAC administrators. These users will have permission to create, modify, and delete access policies through the *Administration > RBAC* view in the UI.
 
-. In your {product_rhdh_name} *{m2_rhdh_cm_name}* ConfigMap, add the permission plugin settings to the *app-config.yaml*:
+. In your {product_rhdh_name} *{m2_rhdh_cm_name}* ConfigMap, add the permission plugin settings to the *app-config.yaml* at the top level (aligned with the existing top-level keys like `app` or `integrations`).
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -81,9 +81,9 @@ Once RBAC is enabled, you'll verify that the deny-by-default policy is working c
 
 . Navigate to your {product_rhdh_name} instance and log as *user1*.
 . Observe that access is now restricted:
-  * No entities are visible in the Software Catalog
-  * Self-service templates are not accessible  
-  * Entity import functionality is disabled
+  * No entities are visible in the Software Catalog (click _Catalog_ on the left)
+  * Self-service templates are not accessible  (click the `+` button at the top)
+  * No APIs are available (click _APIs_ on the left)
 
 This confirms that the deny-by-default policy is in effect. You can see that no entities are visible to *user1* in the following screenshot.
 
@@ -261,7 +261,7 @@ To actually use your new RBAC policies you'll need to load the ConfigMap into th
 . Navigate to *Workloads > ConfigMaps* in the *{m2_rhdh_project}* project.
 . Select the *{m2_rhdh_cm_name}* ConfigMap.
 . Choose *Actions > Edit ConfigMap* and select the YAML editor.
-. Update the `permissions` section to include a `policies-csv-file` key that reads the loaded `rbac-policies.csv`:
+. Update the `permissions` section to include a `policies-csv-file` key that reads the loaded `rbac-policies.csv`, and click *Save*.
 +
 [source,yaml,subs=attributes+,role=execute]
 ----
@@ -278,7 +278,7 @@ Next, update the Backstage CR to load the new ConfigMap:
 
 . Select *Home > Search* in the OpenShift Web Console.
 . Ensure the *{m2_rhdh_project}* is selected in the project selector.
-. Use the search box to find the `Backstage` CR.
+. Type `back` the _Resources_ box to find the `Backstage` CR, and click it to select, and close the drop-down using the `x` button in the top-right.
 . Select the *rhdh* entry in the *Backstages* list.
 . Switch to the YAML view and add the *rbac-policies* ConfigMap to the `spec.application.extraFiles` section.
 +

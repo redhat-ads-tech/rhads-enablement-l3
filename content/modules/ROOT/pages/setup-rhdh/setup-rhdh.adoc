@@ -96,7 +96,7 @@ In this section you'll create a basic Backstage configuration and store it as a 
 . Click the *Create ConfigMap* button on the *ConfigMaps* screen.
 +
 image::setup-rhdh/create-rhdh-configmap.png[]
-. Switch to the *YAML view* and paste the following into the editor:
+. Switch to the *YAML view*, delete the existing content, then paste the following into the editor:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
