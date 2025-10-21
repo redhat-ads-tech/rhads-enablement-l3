@@ -82,7 +82,8 @@ An important part of the *SonataFlow* workflow CR you deployed is the `sonataflo
 
 Use the Quarkus Dev UI to test a workflow.
 
-. Click the *Workflows* link inside the *Serverless Workflows Tools* box. Workflows will be listed.
+. Click the *Workflows* link inside the *Serverless Workflows Tools* box. 
+. Click the *Workflow Definitions* tab. Workflow definitions including the new _greeting_ workflow will be listed.
 +
 image::orchestrator-overview/quarkus-devui-workflows.png[]
 . Click the play button under the *Actions* column for the *greeting*.
@@ -94,13 +95,13 @@ image::orchestrator-overview/quarkus-devui-start-workflow.png[]
 ----
 { "language": "English"}
 ----
-. Return to the workflows screen. Your workflow run will be listed.
+. Return to the _Workflow Instances_ tab. Your workflow run will be listed.
 +
 image::orchestrator-overview/quarkus-devui-workflow-run.png[]
 . Click the *greeting* link. The workflow run details are listed, showing that that the English branch was executed. 
 +
 image::orchestrator-overview/quarkus-devui-workflow-outline.png[]
-. Scroll down and you'll see that "Hello from JSON Workflow" is in the outputs.
+. Scroll down and you'll see that "Hello from JSON Workflow" is in the `workflowdata` output.
 
 ### Edit the Workflow
 
@@ -162,11 +163,15 @@ helm install greeting-workflow workflows/greeting -n {ns_tssc_rhdh}
 . The new *greeting* service will appear in the Topology view.
 +
 image::orchestrator-overview/sonataflow-helm-install.png[]
-. Additionally, if you login to {product_rhdh_name} (using `{rhdh_user}` / `{rhdh_user_password}` ) you'll now see that *Greeting workflow* is listed.
++
+. Additionally, if you log into {rhdh_url}[Red Hat Developer Hub^] (using `{rhdh_user}` / `{rhdh_user_password}` ) you'll now see that *Greeting workflow* is listed.
 +
 image::orchestrator-overview/rhdh-workflow-list.png[]
 
-NOTE: If the greeting workflow doesn't appear in the {product_rhdh_name} UI, delete the {product_rhdh_name} Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
+[NOTE]
+====
+If the greeting workflow doesn't appear in the {product_rhdh_name} UI, delete the {product_rhdh_name} Pod to force a refresh of the workflows. Failing that, check the logs and verify the Pods are all healthy.
+====
 
 ### Run the Workflow
 

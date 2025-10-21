@@ -57,7 +57,7 @@ pluginConfig:
       dataIndexService:
         url: http://sonataflow-platform-data-index-service
 ----
-. Before proceeding, change `disabled: true` to `disabled: false` for the listed plugins.
+. Before proceeding, change `disabled: true` to `disabled: false` for the listed plugins, and click *Save*. 
 
 So, why are these additional keys provided to the plugins?  In the case of `dependencies.ref`, it tells the {product_rhdh_name} Operator to provision the SonataFlow components, specifically a *SonataFlowPlatform* CR. The `dataIndexService.url` instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as {product_rhdh_name} - you can opt to host and install the SonataFlowPlatform elsewhere if required.
 
@@ -65,8 +65,8 @@ So, why are these additional keys provided to the plugins?  In the case of `depe
 
 You've confirmed that the Orchestrator plugins are configured correctly - now you'll confirm that the *SonataFlowPlatform* was created and the Pods are healthy.
 
-. Return to the https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/{ns_tssc_rhdh}?view=graph[Topology View^] for the *{ns_tssc_rhdh}* namespace.
-. You should see the *SonataFlowPlatform* (or *SFP* for short) - click the three dots next to its name and select *Edit SonataFlowPlatform* to view the CR created as a result of the `dependencies.ref` you saw earlier.
+. Return to the https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/{ns_tssc_rhdh}?view=graph[Topology View^] for the *{ns_tssc_rhdh}* namespace and wait for the SonataFlowPlatform pods to become ready (dark blue circle). This may take a few minutes for both the Orchestrator plugins and SonataFlowPlatform pods to become ready.
+. Once ready, you should see the *SonataFlowPlatform* (or *SFP* for short) - click the three dots next to its name (`sonataflow-platform`) and select *Edit SonataFlowPlatform* to view the CR created as a result of the `dependencies.ref` you saw earlier.
 +
 image::orchestrator-overview/sonataflow-platform-topology.png[]
 . Confirm that `ownerReferences` in the *YAML* view shows that the {product_rhdh_name} instance is managing this SonataFlowPlatform.
