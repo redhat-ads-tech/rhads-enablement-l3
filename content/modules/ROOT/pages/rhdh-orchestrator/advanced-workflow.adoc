@@ -128,7 +128,7 @@ backend:
 ----
 . Scroll down and click *Save*.
 
-The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mountain a Secret with a securely generated token, e.g using the `openssl` CLI:
+The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mounting a Secret with a securely generated token, e.g using the `openssl` CLI:
 
 ```bash
 openssl rand 24 | base64 | cut -c1-32
@@ -190,7 +190,7 @@ helm repo add advanced-workflows https://redhat-ads-tech.github.io/orchestrator-
 export BACKSTAGE_TOKEN=$(oc get secret tssc-developer-hub-env -n tssc-dh -o jsonpath='{.data.BACKEND_SECRET}' | base64 -d)
 export GITLAB_TOKEN=$(oc get secret root-user-personal-token -n gitlab -o jsonpath='{.data.token}' | base64 -d)
 ----
-* Install the namespace request workflow, making passing the tokens and URLs to your {product_rhdh_name} and GitLab instances:
+* Install the namespace request workflow, passing the tokens and URLs to your {product_rhdh_name} and GitLab instances as Helm environment variables:
 +
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -263,7 +263,7 @@ image:orchestrator-overview/orchestrator-workflow-small-ns-quota.png[]
 
 . Return to {product_rhdh_name} to run another instance of the workflow, this time for a large namespace request.
 . Select the *Orchestrator* item in the left-hand menu.
-. Click the *Run* icon on the left of the workflow name.
+. Click the *Run* icon on the right of the _Create OpenShift Namespace_ workflow name.
 . Fill in the form as follows:
 .. *Namespace name*: `{rhdh_user}-large`
 .. *GitLab Host* `gitlab-gitlab.{openshift_cluster_ingress_domain}`
