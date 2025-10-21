@@ -565,7 +565,7 @@ metadata:
 </div>
 </div>
 <div class="paragraph">
-<p>Note that like the parameter variables, the Backsatge scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, <code>${{ steps['publish-gitlab-source'].output.remoteUrl }}</code>, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these <a href="https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/" target="_blank" rel="noopener">Nunjucks based templates in the docs</a>.</p>
+<p>Note that like the parameter variables, the Backstage scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, <code>${{ steps['publish-gitlab-source'].output.remoteUrl }}</code>, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these <a href="https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/" target="_blank" rel="noopener">Nunjucks based templates in the docs</a>.</p>
 </div>
 <div class="paragraph">
 <p>It is also worth being aware of the way that the templates actually work behind the scenes; when a template is instantiated it has a working directory. In the example above the catalog:fetch and fetch:template actually copy files into this temporary area. Then the action (not shown) for publishing to gitlab pushes this area as the files into the repo.</p>
