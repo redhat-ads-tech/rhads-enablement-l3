@@ -442,7 +442,7 @@
 </div>
 </li>
 <li>
-<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> and select the <strong>dynamic-plugins-rhdh</strong> ConfigMap.</p>
+<p>Navigate to <strong>Workloads &gt; ConfigMaps</strong> and select the <strong>dynamic-plugins-rhdh</strong> ConfigMap (make sure the project is set to <strong>setup-rhdh</strong>).</p>
 </li>
 <li>
 <p>Edit the ConfigMap to include the RBAC plugin in the <code>plugins</code> entry.</p>
@@ -467,7 +467,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In your Red Hat Developer Hub <strong>rhdh-config</strong> ConfigMap, add the permission plugin settings to the <strong>app-config.yaml</strong>:</p>
+<p>In your Red Hat Developer Hub <strong>rhdh-config</strong> ConfigMap, add the permission plugin settings to the <strong>app-config.yaml</strong> at the top level (aligned with the existing top-level keys like <code>app</code> or <code>integrations</code>).</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">permission:
@@ -519,13 +519,13 @@
 <div class="ulist">
 <ul>
 <li>
-<p>No entities are visible in the Software Catalog</p>
+<p>No entities are visible in the Software Catalog (click <em>Catalog</em> on the left)</p>
 </li>
 <li>
-<p>Self-service templates are not accessible</p>
+<p>Self-service templates are not accessible  (click the <code>+</code> button at the top)</p>
 </li>
 <li>
-<p>Entity import functionality is disabled</p>
+<p>No APIs are available (click <em>APIs</em> on the left)</p>
 </li>
 </ul>
 </div>
@@ -920,7 +920,7 @@ g, group:default/tssc, role:default/location_read</code></pre>
 <p>Choose <strong>Actions &gt; Edit ConfigMap</strong> and select the YAML editor.</p>
 </li>
 <li>
-<p>Update the <code>permissions</code> section to include a <code>policies-csv-file</code> key that reads the loaded <code>rbac-policies.csv</code>:</p>
+<p>Update the <code>permissions</code> section to include a <code>policies-csv-file</code> key that reads the loaded <code>rbac-policies.csv</code>, and click <strong>Save</strong>.</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">permission:
@@ -947,7 +947,7 @@ g, group:default/tssc, role:default/location_read</code></pre>
 <p>Ensure the <strong>setup-rhdh</strong> is selected in the project selector.</p>
 </li>
 <li>
-<p>Use the search box to find the <code>Backstage</code> CR.</p>
+<p>Type <code>back</code> in the <em>Resources</em> box to find the <code>Backstage</code> CR, and click it to select, and close the drop-down using the <code>x</code> button in the top-right.</p>
 </li>
 <li>
 <p>Select the <strong>rhdh</strong> entry in the <strong>Backstages</strong> list.</p>

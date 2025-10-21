@@ -558,7 +558,7 @@
 <p>Click the <strong>Create ConfigMap</strong> button.</p>
 </li>
 <li>
-<p>Switch to the YAML view and paste the following configuration:</p>
+<p>Switch to the YAML view, delete the existing content, then paste the following configuration:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
@@ -730,7 +730,7 @@ data:
 </div>
 </li>
 <li>
-<p>Add the following key-value pairs:</p>
+<p>Add the following key-value pairs (enter the Key name in the <code>Key</code> field, then the value in the text box <em>below</em> the "Value" box, and click "Add key/value" to add the next pair):)</p>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -745,7 +745,7 @@ data:
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>KEYCLOAK_BASE_URL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>https://sso.{openshift_cluster_ingress_domain}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="https://sso.{openshift_cluster_ingress_domain}" class="bare">https://sso.{openshift_cluster_ingress_domain}</a></code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>KEYCLOAK_LOGIN_REALM</code></p></td>
