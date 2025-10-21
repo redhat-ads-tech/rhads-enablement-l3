@@ -1,4 +1,4 @@
-= Trusted Software Supply Chain with RHADS for Production
+= Trusted Software Supply Chain with {product_rhdh_name} for Production
 
 == Hands-on Lab
 This hands-on lab will walk you through the use of RHADS from the perspective of a developer. We will examine and explain each step in terms of what is technically happening with the product, and then we will walk through altering an example TSSC pipeline (as stated before some customers may/will want to add additional security steps as part of their processes).
@@ -31,7 +31,7 @@ The {product_rhdh_name} screen will render; if it is the first time, you will ge
 
 image::production-rhdh/2.png[{product_rhdh_name} Frontpage]
 
-Click on _Catalog_ on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, {product_rhdh_name} works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, `provisioning-data`, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a button labelled _Self Service_. Click on this.
+Click on _Catalog_ on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, {product_rhdh_name} works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, `provisioning-data`, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a plus button (*+* icon) labelled _Self Service_. Click on this
 
 This will render all the templates currently registered in the system that you, as `{rhdh_user}`, have access to. For the sake of this lab we are going to walk through the creation of a Quarkus application with secure build via TSSC - scroll to the bottom of the tiles and you will see one labelled *Securing a Quarkus Service Software Supply Chain (Tekton)*. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on *Choose*.
 
@@ -47,7 +47,7 @@ Now you will see the Registry parameters; you can leave these as they are (the d
 
 The next wizard prompts for the repository information; again, leave as is as the demo has GitLab setup and integrated. Click *Review*.
 
-The final generated content page contains the information you have provided; click on *Create* to start the process of executing the template within {product_rhdh_name}.
+The final generated content page contains a summary of the information you have provided; click on *Create* to start the process of executing the template within {product_rhdh_name}.
 
 The template will process all of the defined steps and give you a real-time view of the progress. It should succeed at this point and the screen will look like this:
 
@@ -80,7 +80,7 @@ You can use the cursor to move around the pipeline. As an example click on the '
 
 image::production-rhdh/8.png[Examining the Pipeline]
 
-Now click on the *Topology* tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the {product_rhdh_name} approach, it removes the need for a developer to both login and navigate to the appropriate screens in the OpenShift Web Console.
+Now click on the *Topology* tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the {product_rhdh_name} approach, it removes the need for a developer to login and navigate to the appropriate screens in the OpenShift Web Console.
 
 image::production-rhdh/9.png[Examining the Topology plugin]
 
@@ -94,7 +94,7 @@ Switch back to the *CI* (continuous integration) tab; on the far right of the pi
 
 image::production-rhdh/11.png[Highlighting the SBOM link]
 
-What we will do now is to act as a developer; switch to the overview tab of the component, and click on the *OpenShift Dev Spaces (VS Code)* link. 
+What we will do now is act as a developer; switch to the overview tab of the component, and click on the *OpenShift Dev Spaces (VSCode)* link. 
 
 image::production-rhdh/12.png[Highlighting the Dev Spaces link]
 
@@ -104,7 +104,7 @@ It will ask if you trust the authors of the repository; click *Continue*.
 
 The first time you go into Dev Spaces it will prompt you to allow access and also prompt for adding additional components; let it settle for a couple of minutes so all the components have been loaded correctly.
 
-Before we force a restart of the build pipeline, click on the Explorer icon on the far left if the code tree structure is not displayed yet. When the Workspace appears, click on the `pom.xml` file.
+Before we trigger a new build, click on the Explorer icon on the far left if the code tree structure is not displayed yet. When the Workspace appears, click on the `pom.xml` file.
 
 Dev Spaces works by maintaining a realtime copy of the files on the cluster, nothing is stored locally. In addition RHADS adds code monitoring components to the IDE; the `pom.xml` should have a direct vulnerability. The code outline on the far right will contain red "squigglies" where the code has a potential issue. Scroll down so the lines are visible in the editor.
 
