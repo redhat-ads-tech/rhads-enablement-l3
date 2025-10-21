@@ -145,7 +145,8 @@
     "ingressdomain",
     "trustify",
     "untar",
-    "GUAC"
+    "GUAC",
+    "workflowdata"
   ],
   "ignoreWords": [
     "sysout",
