@@ -331,8 +331,7 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Installation</h1>
-<div class="sect1">
-<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Since the Orchestrator plugin for Red Hat Developer Hub relies on Serverless Workflow, it requires the OpenShift Serverless Workflow Operator to provide the primitives it relies on.</p>
@@ -348,14 +347,23 @@
 <div class="paragraph">
 <p>Confirm the operator is installed by visiting the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com~v1alpha1~ClusterServiceVersion" target="_blank" rel="noopener">Installed Operators section</a> of the OpenShift Web Console.</p>
 </div>
-<div class="paragraph">
-<p>[NOTE]: Login as <strong>{openshift_admin_user}</strong> using the password <code>{openshift_admin_password}</code>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You must login as <strong>{openshift_admin_user}</strong> using the password <code>{openshift_admin_password}</code> to manage operators.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/orchestrator-overview/install-operators.png" alt="install operators"></span></p>
 </div>
 <div class="paragraph">
-<p>If the Operator is not installed, use Operator Hub to install the stable release with <strong>Automatic Approval</strong> enabled:</p>
+<p>If the Operator is not installed, use Operator Hub to install it with <strong>Automatic Approval</strong> enabled:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -384,7 +392,7 @@
 <h2 id="_add_the_orchestrator_plugins_to_red_hat_developer_hub"><a class="anchor" href="#_add_the_orchestrator_plugins_to_red_hat_developer_hub"></a>Add the Orchestrator Plugins to Red Hat Developer Hub</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Similar to the Operators, your environment has been pre-configured with the necessary dynamic plugins.</p>
+<p>Your environment has been pre-configured with the necessary dynamic plugins, but they&#8217;re disabled by default.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -393,7 +401,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> module provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic plugins feature. Visit that module if you&#8217;d like a deep-dive on deployment and configuration for Red Hat Developer Hub.
+The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> module provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic plugins feature. Visit that module if you&#8217;d like a deep-dive on deployment and configuration for Red Hat Developer Hub and the dynamic plugins feature.
 </td>
 </tr>
 </table>
@@ -408,10 +416,10 @@ The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Dev
 <div class="ulist">
 <ul>
 <li>
-<p>Username: {openshift_admin_user}</p>
+<p>Username: <code>{openshift_admin_user}</code></p>
 </li>
 <li>
-<p>Password: {openshift_admin_password}</p>
+<p>Password: <code>{openshift_admin_password}</code></p>
 </li>
 </ul>
 </div>
@@ -448,7 +456,7 @@ The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Dev
 </div>
 </li>
 <li>
-<p>Inspect the <strong>pluginConfig</strong> associated with the <code>@redhat/backstage-plugin-scaffolder-backend-module-orchestrator-dynamic</code>. Notice that it specifies a <code>dataIndexService.url</code> property? This is the URL to a component of the SonataFlow Platform deployed in the same namespace as Red Hat Developer Hub.</p>
+<p>Inspect the <strong>pluginConfig</strong> associated with the <code>@redhat/backstage-plugin-scaffolder-backend-module-orchestrator-dynamic</code>. Notice that it specifies a <code>dataIndexService.url</code> property? This is the URL to a component of the SonataFlow Platform that will be deployed in the same namespace as Red Hat Developer Hub.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">pluginConfig:
@@ -459,7 +467,7 @@ The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Dev
 </div>
 </li>
 <li>
-<p>Before proceeding, change <code>disabled: true</code> to <code>disabled: false</code> for the listed plugins, and click <strong>Save</strong>.</p>
+<p>Before proceeding, edit the ConfigMap by changing <code>disabled: true</code> to <code>disabled: false</code> for the listed plugins, and clicking <strong>Save</strong>.</p>
 </li>
 </ol>
 </div>
@@ -477,7 +485,7 @@ The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Dev
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Return to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/tssc-dh?view=graph" target="_blank" rel="noopener">Topology View</a> for the <strong>tssc-dh</strong> namespace and wait for the SonataFlowPlatform pods to become ready (dark blue circle). This may take a few minutes for both the Orchestrator plugins and SonataFlowPlatform pods to become ready.</p>
+<p>Return to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/tssc-dh?view=graph" target="_blank" rel="noopener">Topology View</a> for the <strong>tssc-dh</strong> namespace and wait for the SonataFlowPlatform pods to become ready (dark blue circle). It might take a few minutes for both the Red Hat Developer Hub and SonataFlowPlatform pods to become ready and stabilise, since the SonataFlow pods depend on the new instance of Red Hat Developer Hub to initialise with the newly enabled plugins.</p>
 </li>
 <li>
 <p>Once ready, you should see the <strong>SonataFlowPlatform</strong> (or <strong>SFP</strong> for short) - click the three dots next to its name (<code>sonataflow-platform</code>) and select <strong>Edit SonataFlowPlatform</strong> to view the CR created as a result of the <code>dependencies.ref</code> you saw earlier.</p>
