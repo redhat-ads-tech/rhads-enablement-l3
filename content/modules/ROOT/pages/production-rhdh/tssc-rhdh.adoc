@@ -1,7 +1,7 @@
 = RHADS End-to-End: Production-Ready Development Lifecycle
 
-In this module we will cover the deep dive technical overview of the composite product set (Advanced Developer Suite). This is a SKU that contains an opinionated Installation
-of Red Hat Developer Hub and the TSSC, TAS and TPA components described earlier. 
+In this module we will cover the deep dive technical overview of the composite product set *Red Hat Advanced Developer Suite*. This is a SKU that contains an opinionated Installation
+of Red Hat Developer Hub, Trusted Artifact Signer (TAS) and Trusted Profile Analyzer (TPA) components described earlier, along with pipelines for a trusted software supply chain (TSSC).
 
 This is designed to provide end users with a configurable and highly secure development lifecycle from code to production.
 
