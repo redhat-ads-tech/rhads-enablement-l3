@@ -4,7 +4,9 @@ image::rhads-logo.png[RHADS Logo,align="center",width=200]
 
 == Welcome to RHADS Technical Training Workshop
 
-This comprehensive workshop provides **deep technical understanding** of Red Hat Advanced Developer Suite (RHADS) components and their implementation. Designed for platform engineers, DevOps practitioners, and technical leaders, this hands-on learning experience will equip you with the expertise to deploy, configure, and optimize RHADS in production environments.
+This hands-on comprehensive workshop provides **deep technical understanding** of Red Hat Advanced Developer Suite (RHADS) components and their implementation. Designed for platform engineers, DevOps practitioners, and technical leaders, this hands-on learning experience will equip you with the expertise to deploy, configure, and optimize RHADS in production environments.
+
+It is a follow-on to the Technical Overview & Positioning enablement courses available in the https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkbrowseXLR8AMPERSANDin_keyword%3DRHADS[Red Hat Learning Portal^] (login required).
 
 == About Red Hat Advanced Developer Suite
 
@@ -70,7 +72,3 @@ This workshop consists of a number of comprehensive modules covering everything 
 
 
 Ready to dive deep into RHADS? Let's begin your journey toward mastering Red Hat Advanced Developer Suite!
-
----
-
-_For more information about Red Hat Advanced Developer Suite, visit: https://www.redhat.com/en/products/advanced-developer-suite_

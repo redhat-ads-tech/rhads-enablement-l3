@@ -1,4 +1,4 @@
-= Trusted Software Supply Chain with {product_rhdh_name} for Production
+= RHADS End-to-End: Production-Ready Development Lifecycle
 
 == What is 'end product'?
 

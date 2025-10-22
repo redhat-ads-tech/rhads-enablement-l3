@@ -1,4 +1,4 @@
-= Trusted Software Supply Chain with {product_rhdh_name} for Production
+= RHADS End-to-End: Production-Ready Development Lifecycle
 
 == Hands-on Lab
 This hands-on lab will walk you through the use of RHADS from the perspective of a developer. We will examine and explain each step in terms of what is technically happening with the product, and then we will walk through altering an example TSSC pipeline (as stated before some customers may/will want to add additional security steps as part of their processes).
@@ -7,7 +7,7 @@ This hands-on lab will walk you through the use of RHADS from the perspective of
 
 For this part of the lab we will be using a lot of the tooling and interfaces provided by the product. You will visit a number of different URLs to complete the lab. Here's a list of them you can use when needed:
 
-* The {rhdh_url}[Red Hat Developer Hub URL^]
+* The {rhdh_url}[{product_rhdh_name} URL^]
 ** Username: `{rhdh_user}`
 ** Password: `{rhdh_user_password}`
 
@@ -21,7 +21,7 @@ For this part of the lab we will be using a lot of the tooling and interfaces pr
 
 The point of this part of the hands-on lab is to give you a feel of what the end user experience is whilst making you aware of the technical components that are being used so that you can describe them to end customers.
 
-Start by logging into the {rhdh_url}[Red Hat Developer Hub^]. The screen will look like this:
+Start by logging into the {rhdh_url}[{product_rhdh_name}^]. The screen will look like this:
 
 image::production-rhdh/1.png[Logon]
 
@@ -213,7 +213,7 @@ This is how a customer may add additional tasks into the appropriate pipeline.
 
 The TSSC sample pipelines included in RHADS also adds the ability to promote code releases from development to staging and then to production, as part of an automated process. If you remember when we looked at the topology, the default deployment for the TSSC template produces three applications: _development_, _staging_ and _production_.
 
-Staging is triggered by _tagging_ the code repository post-development. To do this, go to {rhdh_url}[Red Hat Developer Hub^], select your component from the catalog, and then click on the `<> View Source` icon in the *About* section on the Overview tab. This will take you directly to the scaffolded code repository in GitLab.
+Staging is triggered by _tagging_ the code repository post-development. To do this, go to {rhdh_url}[{product_rhdh_name}^], select your component from the catalog, and then click on the `<> View Source` icon in the *About* section on the Overview tab. This will take you directly to the scaffolded code repository in GitLab.
 
 image::production-rhdh/19.png[Gitlab source page]
 
@@ -235,7 +235,8 @@ image::production-rhdh/21.png[Promoting to production]
 
 When this is completed, the application running in the production deployment will be based on the image that has been promoted from development, having been built there in a secure pipeline, to staging, and then promoted to production.
 
-This is an opinionated but thorough and secure approach provided directly by the template instantiated through the RHDH Ux; we have automated and secured all the phases of development through to production.
+This is an opinionated but thorough and secure approach provided directly by the template instantiated through the 
+{product_rhdh_name} portal; we have automated and secured all the phases of development through to production.
 
 
 
