@@ -1,4 +1,4 @@
-= End-to-End with RHADS
+= RHADS Complete: Summary and Next Steps
 
 == Overview
 
@@ -12,9 +12,9 @@ Below is a high-level summary of each module covered in this workshop. We'll rev
     - Review of customizing RHADS with RHDH configurations and the role of the Orchestrator. Learning how to tailor RHADS to your organization's needs and implement automated workflows that streamline development processes.
 * **Modules 7-9: Security Best Practices**
     - Summary of RHADS security practices including keyless signing, attestations, SBOMs, and policy enforcement with TPA and TAS. Implementing robust security controls throughout your software supply chain using RHADS components.
-* **Modules 10-13: Trusted Software Supply Chain (TSSC)**
+* **Modules 10-12: Trusted Software Supply Chain (TSSC)**
     - Revisiting RHADS TSSC implementation in OpenShift, integration with RHDH, and patterns for third-party tools. Mastering how to build secure, compliant pipelines with RHADS that integrate security scanning and connect seamlessly with existing CI/CD tools.
-* **Modules 14-15: Artificial Intelligence**
+* **Modules 13-14: Artificial Intelligence**
     - Overview of building AI agents with RHADS and enabling Data Scientists with a secure AI supply chain. Building and deploying AI applications responsibly using RHADS while maintaining security and governance throughout the AI/ML lifecycle.
 
 Congratulations on completing the Red Hat Advanced Developer Suite workshop! You are now equipped with the knowledge to build a secure, efficient, and customized developer platform that accelerates application delivery while enforcing security and compliance.

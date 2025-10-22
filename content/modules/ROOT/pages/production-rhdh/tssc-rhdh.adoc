@@ -1,6 +1,4 @@
-= Trusted Software Supply Chain with {product_rhdh_name} for Production (RHADS)
-
-== Deep dive into the Red Hat Advanced Developer Suite components
+= RHADS End-to-End: Production-Ready Development Lifecycle
 
 In this module we will cover the deep dive technical overview of the composite product set (Advanced Developer Suite). This is a SKU that contains an opinionated Installation
 of Red Hat Developer Hub and the TSSC, TAS and TPA components described earlier. 
