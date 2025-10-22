@@ -246,7 +246,7 @@ Before wrapping up, let's review the other included secure software supply chain
 
 To get started, examine the source files for the template:
 
-. View the Template in the https://backstage-developer-hub-tssc-dh.apps.cluster-b56lf.dynamic.redhatworkshops.io/create?filters%5Bkind%5D=template&filters%5Btext%5D=jenkins&filters%5Buser%5D=all&limit=20[{product_rhdh_name} Self-Service screen^].
+. View the Template in the {rhdh_url}/create?filters%5Bkind%5D=template&filters%5Btext%5D=jenkins&filters%5Buser%5D=all&limit=20[{product_rhdh_name} Self-Service screen^].
 . Click on the _Show template entity details_ icon.
 +
 image::production-rhdh/rhdh-view-template.png[Show template entity details]
