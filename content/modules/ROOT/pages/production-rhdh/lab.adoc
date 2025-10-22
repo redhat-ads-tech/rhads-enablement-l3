@@ -256,7 +256,8 @@ You'll be directed to a repository that contains the _template.yaml_ that define
 +
 image:production-rhdh/rhdh-jenkins-tpl-repo.png[Jenkins Template GitLab Repository]
 . Open the _skeleton_ directory, and select the _Jenkinsfile.push_ file.
-+ This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template.
++
+This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template.
 . Click *Edit > Edit single file* at the top of the file. Login as `root` using the password `{gitlab_user_password}` if prompted.
 . Modify the file by adding a new _stage_ with a single _step_ directly between the the `verify-commit` and `mvn package` stages:
 +
