@@ -337,8 +337,11 @@
 <div class="paragraph">
 <p>This hands-on lab will walk you through the use of RHADS from the perspective of a developer. We will examine and explain each step in terms of what is technically happening with the product, and then we will walk through altering an example TSSC pipeline (as stated before some customers may/will want to add additional security steps as part of their processes).</p>
 </div>
-<div class="sect2">
-<h3 id="_walk_through_of_end_to_end_interaction"><a class="anchor" href="#_walk_through_of_end_to_end_interaction"></a>Walk-through of end-to-end interaction</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_walk_through_of_end_to_end_interaction"><a class="anchor" href="#_walk_through_of_end_to_end_interaction"></a>Walk-through of end-to-end interaction</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>For this part of the lab we will be using a lot of the tooling and interfaces provided by the product. You will visit a number of different URLs to complete the lab. Here&#8217;s a list of them you can use when needed:</p>
 </div>
@@ -388,9 +391,12 @@
 <div class="paragraph">
 <p>The point of this part of the hands-on lab is to give you a feel of what the end user experience is whilst making you aware of the technical components that are being used so that you can describe them to end customers.</p>
 </div>
-<div class="paragraph">
+<div class="sect2">
+<h3 id="_login_and_explore_the_catalog"><a class="anchor" href="#_login_and_explore_the_catalog"></a>Login and explore the Catalog</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
 <p>Start by logging into the {rhdh_url}[Red Hat Developer Hub^]. The screen will look like this:</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/1.png" alt="Logon">
@@ -407,12 +413,25 @@
 <img src="../_images/production-rhdh/2.png" alt="Red Hat Developer Hub Frontpage">
 </div>
 </div>
-<div class="paragraph">
-<p>Click on <em>Catalog</em> on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, Red Hat Developer Hub works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, <code>provisioning-data</code>, which is a bootstrap service for adding user specific information to the templates. In the top right you will see a plus button (<strong>+</strong> icon) labelled <em>Self Service</em>. Click on this</p>
+</li>
+<li>
+<p>Click on <em>Catalog</em> on the left-hand navigation panel. This will default to showing the 'Components' you have access to; as discussed earlier in the modules, Red Hat Developer Hub works with a database of different types of objects and RBAC configuration which gives you access to them. In this case you should see a single service, <code>provisioning-data</code>, which is a bootstrap service for adding user specific information to the templates.</p>
+</li>
+</ol>
 </div>
-<div class="paragraph">
-<p>This will render all the templates currently registered in the system that you, as <code>{rhdh_user}</code>, have access to. For the sake of this lab we are going to walk through the creation of a Quarkus application with secure build via TSSC - scroll to the bottom of the tiles and you will see one labelled <strong>Securing a Quarkus Service Software Supply Chain (Tekton)</strong>. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on <strong>Choose</strong>.</p>
 </div>
+<div class="sect2">
+<h3 id="_use_the_self_service_template"><a class="anchor" href="#_use_the_self_service_template"></a>Use the Self Service Template</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the top right you will see a plus button (<strong>+</strong> icon) labelled <em>Self Service</em>. Click on it.</p>
+<div class="paragraph">
+<p>This will render all the templates currently registered in the system that you, as <code>{rhdh_user}</code>, have access to. For the sake of this lab we are going to walk through the creation of a <a href="https://quarkus.io/" target="_blank" rel="noopener">Quarkus</a> application with secure build via TSSC.</p>
+</div>
+</li>
+<li>
+<p>Scroll to the bottom of the tiles and you will see one labelled <strong>Securing a Quarkus Service Software Supply Chain (Tekton)</strong>. Note the labels; as we described earlier the metadata of the template is rendered here as labels to assist developer selection. Click on it.</p>
 <div class="paragraph">
 <p>This is where the power of templates starts to shine; if you remember looking at the structure in the earlier section we described the use of parameters that the framework interprets as a wizard; we are now seeing that in action.</p>
 </div>
@@ -422,21 +441,27 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Notice the breadcrumb trail at the top; this matches the individual parameter sections we described previously. Change the name of the component to <code>tl3test1</code>. Change the artifact ID to <code>tl3test1</code> as well. Change the description to something different. Click <strong>Next</strong>.</p>
+<p>Notice the breadcrumb trail at the top; this matches the individual parameter sections we described previously.</p>
 </div>
+</li>
+<li>
+<p>Change the name of the component to <code>tl3test1</code>. Change the artifact ID to <code>tl3test1</code> as well. Change the description to something different. Click <strong>Next</strong>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/4.png" alt="Template parameters">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Now you will see the Registry parameters; you can leave these as they are (the demo has its own instance of Quay installed and the organisation setup correctly). Click <strong>Next</strong>.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>The next wizard prompts for the repository information; again, leave as is as the demo has GitLab setup and integrated. Click <strong>Review</strong>.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>The final generated content page contains a summary of the information you have provided; click on <strong>Create</strong> to start the process of executing the template within Red Hat Developer Hub.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>The template will process all of the defined steps and give you a real-time view of the progress. It should succeed at this point and the screen will look like this:</p>
@@ -454,26 +479,33 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_what_is_scaffolded_example"><a class="anchor" href="#_what_is_scaffolded_example"></a>What is Scaffolded (example)?</h3>
+<h3 id="_what_has_been_scaffolded"><a class="anchor" href="#_what_has_been_scaffolded"></a>What has been Scaffolded?</h3>
 <div class="paragraph">
-<p>First, click on the <em>Catalog</em> navigation link again. You will see you now have an active component (the result of the completed template).</p>
+<p>Let&#8217;s take a look at what has been scaffolded by the template.</p>
 </div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>First, click on the <em>Catalog</em> navigation link again. You will see you now have an active component (the result of the completed template).</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/6.png" alt="Catalog Components">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Click on the name of the component. This takes you to the core interaction content page for the developer, which should look similar to this:</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/7.png" alt="Component Summary">
 </div>
 </div>
 <div class="paragraph">
-<p>This is a very powerful part of the Red Hat Developer Hub offering; the sub-tabs on this page are generated by the plugins added to the framework (see earlier modules). If you now click on <strong>CI</strong> (and assuming you have waited a couple of minutes) the TSSC pipeline will have completed, using the base repository and code.</p>
+<p>This is a very powerful part of the Red Hat Developer Hub offering; the sub-tabs on this page are generated by the plugins added to the framework (see earlier modules).</p>
 </div>
+</li>
+<li>
+<p>If you now click on <strong>CI</strong> (and assuming you have waited a couple of minutes) the TSSC pipeline will have completed, using the base repository and code.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -482,15 +514,15 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the quay_url[Quay Console] and login again using the <code>{quay_admin_user}</code> username and the password: <code>{quay_admin_password}</code>. This will re-set the expiration of the access token, and your next commit and pipeline run will be successful later on in this exercise, so just ignore the error for now.</p>
+<p>Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the {quay_url}[Quay Console] and login again using the <code>{quay_admin_user}</code> username and the password: <code>{quay_admin_password}</code>. This will re-set the expiration of the access token, and your next commit and pipeline run will be successful later on in this exercise, so just ignore the error for now.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Expand the information panel for the Pipeline Run (the small arrow at the left) and you will see the output of the pipeline that was automatically executed as part of the creation of the git repo. Notice the icon indication of the potential vulnerabilities shown as part of the run as well.</p>
-</div>
 <div class="paragraph">
 <p>You can use the cursor to move around the pipeline. As an example click on the 'Build Container' step and it will show you the direct logs of the processes executed as part of that process:</p>
 </div>
@@ -499,9 +531,9 @@
 <img src="../_images/production-rhdh/8.png" alt="Examining the Pipeline">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Now click on the <strong>Topology</strong> tab. This will render the plugin for visualising the application running on the target cluster; this is another strength of the Red Hat Developer Hub approach, it removes the need for a developer to login and navigate to the appropriate screens in the OpenShift Web Console.</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/9.png" alt="Examining the Topology plugin">
@@ -510,32 +542,32 @@
 <div class="paragraph">
 <p>Note that it has deployed three versions of the Application: <em>development</em>, <em>stage</em> and <em>production</em>.</p>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Now click on the <strong>CD</strong> tab (continuous deployment). This will show the state of the ArgoCD components that were scaffolded to deploy the application, and, interestingly, the pipeline components (the <code>*-ci</code> components). Later on in the lab we will examine how to promote the software through the development, staging and production lifecycles simply and in an automated fashion.</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/10.png" alt="Examining the CD plugin">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Switch back to the <strong>CI</strong> (continuous integration) tab; on the far right of the pipeline run are a set of icons, labelled <strong>view logs</strong>, <strong>view output</strong> and <strong>view SBOM</strong>. Click on the <strong>view SBOM</strong> icon; this will render the SBOM (Software Bill of Materials) created as part of this build, which is an immutable <em>receipt</em> for this individual build.</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/11.png" alt="Highlighting the SBOM link">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>What we will do now is act as a developer; switch to the overview tab of the component, and click on the <strong>OpenShift Dev Spaces (VSCode)</strong> link.</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/12.png" alt="Highlighting the Dev Spaces link">
 </div>
 </div>
 <div class="paragraph">
-<p>This link will spin off a browser tab with the OpenShift Dev Spaces component; this is an in-browser full IDE and when it starts up it will be pointing directly at the git repository created as part of the scaffolding.</p>
+<p>This link will open a browser tab with the OpenShift Dev Spaces component; this is an in-browser full IDE and when it starts up it will be pointing directly at the git repository created as part of the scaffolding.</p>
 </div>
 <div class="paragraph">
 <p>It will ask if you trust the authors of the repository; click <strong>Continue</strong>.</p>
@@ -543,9 +575,9 @@
 <div class="paragraph">
 <p>The first time you go into Dev Spaces it will prompt you to allow access and also prompt for adding additional components; let it settle for a couple of minutes so all the components have been loaded correctly.</p>
 </div>
-<div class="paragraph">
-<p>Before we trigger a new build, click on the Explorer icon on the far left if the code tree structure is not displayed yet. When the Workspace appears, click on the <code>pom.xml</code> file.</p>
-</div>
+</li>
+<li>
+<p>Before we trigger a new build, click on the <strong>Explorer</strong> icon on the far left if the code tree structure is not displayed yet. When the Workspace appears, click on the <code>pom.xml</code> file.</p>
 <div class="paragraph">
 <p>Dev Spaces works by maintaining a realtime copy of the files on the cluster, nothing is stored locally. In addition RHADS adds code monitoring components to the IDE; the <code>pom.xml</code> should have a direct vulnerability. The code outline on the far right will contain red "squigglies" where the code has a potential issue. Scroll down so the lines are visible in the editor.</p>
 </div>
@@ -554,44 +586,57 @@
 <img src="../_images/production-rhdh/13.png" alt="Dev Spaces">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>When the initial scan is done you will get a pop-up on the right bottom (shown in the preceding figure). If you hang the cursor over the red lines in the editor the information will pop up as shown below:</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/14.png" alt="Highlighting the potential security issue">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Click on 'Quick Fix' and the dependency report will appear within Dev Spaces. In the report you can scroll down to the vulnerabilities and check the remediation information:</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/15.png" alt="Examining the potential security issue">
 </div>
 </div>
-<div class="paragraph">
-<p>Now we will act as a developer and change some code; click on the <code>README.md</code> file on the left-hand navigation.</p>
+</li>
+</ol>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_change_some_code_and_trigger_a_new_build"><a class="anchor" href="#_change_some_code_and_trigger_a_new_build"></a>Change some code and trigger a new build</h3>
 <div class="paragraph">
+<p>Now we will act as a developer and change some code.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the <code>README.md</code> file on the left-hand navigation.</p>
+</li>
+<li>
 <p>Where it shows the description you entered earlier in the template wizard, add a line of text (anything you want). Dev Spaces will save the changes and indicate that there are differences in your local files to the repository (which was created and scaffolded by the template).</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>On the far left navigation icons, click on the <em>Git</em> icon - it will have a blue circle with a number in it, probably 1, indicating changes made to the files. In the message box type <code>Changed README.md</code> and then click <strong>Commit</strong>. It will ask you to stage the changes - select <strong>Yes</strong>.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>The Commit button will change to <strong>Sync Changes</strong>. This will push the code changes to the git repo created by the template and, using the webhooks also instantiated by the template, start the secure build pipeline again. Click it now.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>Switch back to Red Hat Developer Hub, go to the <em>Catalog</em>, click on the component you just created and switch to the <strong>CI</strong> tab; you will see the pipeline has restarted (due to the commit of code).</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/16.png" alt="Pipeline automatically run as part of a code submit">
 </div>
 </div>
 <div class="paragraph">
-<p>This is the hook back that links the developer&#8217;s committing code (end product) to the automatic start of the secure build.</p>
+<p>This is the end result of the process (a webhook trigger) that links the developer&#8217;s committing code (end product) to the automatic start of the secure build.</p>
+</div>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -600,11 +645,12 @@
 <p>As mentioned earlier, a customer can add (or remove) components of the base secure pipelines depending on their organization&#8217;s needs. What we have seen so far is a standard developer interaction with the product. In this section we will show you where and how to alter the flow of the base pipelines to add customer/organization additional steps in.</p>
 </div>
 <div class="paragraph">
-<p>First, remember that by using the Red Hat Developer Hub template, it creates all the code and components needed for the end-to-end developer/ops functionality. As part of that, the base pipelines that back the TSSC templates are installed as well.</p>
+<p>Remember that by using the Red Hat Developer Hub template, it creates all the code and components needed for the end-to-end developer/ops functionality. As part of that, the base pipelines that back the TSSC templates are installed as well.</p>
 </div>
-<div class="paragraph">
-<p>Next navigate to the {gitlab_url}[GitLab URL^]. And login:</p>
-</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to the {gitlab_url}[GitLab URL^]. And login:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -612,62 +658,62 @@
 </li>
 <li>
 <p>Password: <code>{gitlab_user_password}</code></p>
+<div class="paragraph">
+<p>At the high level project view, there will be a number of repos; these are either in the <em>development</em> group or in the <em>rhdh</em> group.</p>
+</div>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>At the high level project view, there will be a number of repos; these are either in the <em>development</em> group or in the <em>rhdh</em> group. Find the <code>rhdh/tssc-sample-pipelines</code> repository, as shown in the image below:</p>
-</div>
+</li>
+<li>
+<p>Find the <code>rhdh/tssc-sample-pipelines</code> repository, as shown in the image below:</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/17.png" alt="Locating the default pipeline definitions">
 </div>
 </div>
-<div class="paragraph">
-<p>Click on the <code>tssc-sample-pipelines</code> repo, and then click on the <code>pipelines</code> subfolder when it appears.</p>
-</div>
-<div class="paragraph">
-<p>There should be two sample pipelines in this folder; click on the <code>maven-build-ci.yaml</code> one.</p>
-</div>
-<div class="paragraph">
-<p>In the content page for this one, including the source, click on the <strong>Edit</strong> button - we are going to add a separate step to the trusted pipeline that is executed as part of any template that instantiates this. Choose <strong>Edit Single File</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Scroll down to where the tasks are defined. We are going to add a task after the init, as follows:</p>
-</div>
+</li>
+<li>
+<p>Click on the <code>tssc-sample-pipelines</code> repo, and then click on the <code>pipelines</code> subfolder when it appears. There should be two sample pipelines in this folder; click on the <code>maven-build-ci.yaml</code> one.</p>
+</li>
+<li>
+<p>In the content page for this one, including the source, click on the <strong>Edit</strong> dropdown and select <strong>Edit Single File</strong> - we are going to add a separate step to the trusted pipeline that is executed as part of any template that instantiates this.</p>
+</li>
+<li>
+<p>Scroll down to where the tasks are defined. We are going to add a new task named <code>octest</code> after the <code>init</code> task, as follows:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">tasks:
-   - name: init
-     params:
-       - name: image-url
-         value: $(params.output-image)
-       - name: rebuild
-         value: $(params.rebuild)
-     taskRef:
-       name: init
+  - name: init
+    params:
+      - name: image-url
+        value: $(params.output-image)
+      - name: rebuild
+        value: $(params.rebuild)
+    taskRef:
+      name: init
 
 ## Add this task after the above init task:
-    - name: octest
-      taskRef:
-        resolver: hub
-        params:
-          - name: kind
-            value: task
-          - name: name
-            value: openshift-client
-          - name: version
-            value: '0.2'
+  - name: octest
+    taskRef:
+      resolver: hub
       params:
-        - name: SCRIPT
-          value: oc whoami
-        - name: VERSION
-          value: '4.18'
-      runAfter:
-        - init
+        - name: kind
+          value: task
+        - name: name
+          value: openshift-client
+        - name: version
+          value: '0.2'
+    params:
+      - name: SCRIPT
+        value: oc whoami
+      - name: VERSION
+        value: '4.18'
+    runAfter:
+      - init
 ## End of the new task
 
-   - name: clone-repository</code></pre>
+  - name: clone-repository</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -687,21 +733,21 @@
 <div class="paragraph">
 <p>What we are doing is adding a simple task that echoes the OpenShift user context; it runs after the init task. The task itself is trivial, but this will show how easy it is to add a task to the base secure pipelines.</p>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>When you have changed the code, scroll down and click <strong>Commit Changes</strong>.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>Now switch back to your Dev Spaces tab. If you have closed it, go to Red Hat Developer Hub, select your component from the catalog, and click the <strong>OpenShift Dev Spaces</strong> link in the overview.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>In the Dev Spaces tab, select the <code>README.md</code> file again, and add another line of text below the top header (where you entered text before to trigger the pipeline).</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>As before, commit this change using the gitops icon on the far left, providing a Commit message and then syncing the changes.</p>
-</div>
-<div class="paragraph">
-<p>If you switch back to the Red Hat Developer Hub tab, select your component from the catalog, and look at the <strong>CI</strong> tab you will see another pipeline has started. Let it complete, then expand the pipeline run. The new task, <code>octest</code>, will appear as part of the process as shown below:</p>
-</div>
+</li>
+<li>
+<p>Switch back to the Red Hat Developer Hub tab, select your component from the catalog, and look at the <strong>CI</strong> tab you will see another pipeline has started. Let it complete, then expand the pipeline run. The new task, <code>octest</code>, will appear as part of the process as shown below:</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/18.png" alt="Showing the new task as part of the executed secure pipeline">
@@ -710,43 +756,50 @@
 <div class="paragraph">
 <p>This is how a customer may add additional tasks into the appropriate pipeline.</p>
 </div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_promoting_the_code_releases_through_development_staging_and_production"><a class="anchor" href="#_promoting_the_code_releases_through_development_staging_and_production"></a>Promoting the code releases through development, staging and production</h3>
 <div class="paragraph">
-<p>The TSSC sample pipelines included in RHADS also adds the ability to promote code releases from development to staging and then to production, as part of an automated process. If you remember when we looked at the topology, the default deployment for the TSSC template produces three applications: <em>development</em>, <em>staging</em> and <em>production</em>.</p>
+<p>The TSSC sample pipelines included in RHADS also adds the ability to promote code releases from development to staging and then to production, as part of an automated process. If you remember when we looked at the topology, the default deployment for the TSSC template produces three applications: <em>development</em>, <em>staging</em> and <em>production</em>. Staging is triggered by <em>tagging</em> the code repository post-development.</p>
 </div>
-<div class="paragraph">
-<p>Staging is triggered by <em>tagging</em> the code repository post-development. To do this, go to {rhdh_url}[Red Hat Developer Hub^], select your component from the catalog, and then click on the <code>&lt;&gt; View Source</code> icon in the <strong>About</strong> section on the Overview tab. This will take you directly to the scaffolded code repository in GitLab.</p>
-</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To do this, go to {rhdh_url}[Red Hat Developer Hub^], select your component from the catalog, and then click on the <code>&lt;&gt; View Source</code> icon in the <strong>About</strong> section on the Overview tab. This will take you directly to the scaffolded code repository in GitLab.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/19.png" alt="Gitlab source page">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>On the right hand side, under the <strong>Project Information</strong>, click on <strong>Tags</strong> (yours should have 0). When the tag page appears, click on <strong>New Tag</strong>, add some descriptive text, and then click on <strong>Create Tag</strong>. This will add a valid tag to the code repository. The scaffolded webhooks will then perform a pipeline run in the cluster to redeploy the staging application using the new tag as an identifier (typically you&#8217;d use release versions like <code>v1.0</code> or some other meaningful identifier).</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>Switch back to Red Hat Developer Hub, click on the <em>Catalog</em>, choose your component, and then click on <strong>CI</strong>. You will see another pipeline has executed to promote the current build to the staging project:</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/20.png" alt="The promotion pipeline in action">
 </div>
 </div>
 <div class="paragraph">
-<p>Now we will complete the development&#8594;staging&#8594;release cycle. In Red Hat Developer Hub, again select your component through the catalog. Again, click on the <code>&lt;&gt; View Source</code> icon to get to the GitLab repository (which was scaffolded by the template and has been tagged by yourself).</p>
+<p>Now we will complete the development&#8594;staging&#8594;release cycle.</p>
 </div>
-<div class="paragraph">
+</li>
+<li>
+<p>In Red Hat Developer Hub, again select your component through the catalog. Again, click on the <code>&lt;&gt; View Source</code> icon to get to the GitLab repository (which was scaffolded by the template and has been tagged by yourself).</p>
+</li>
+<li>
 <p>Click on the <strong>Tag</strong> item again. Next to your created tag you will see a <strong>Create Release</strong> button; click on this now.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>In the New Release dialog, give the release a title. Leave everything else as is, and click on the <strong>Create Release</strong>; in an actual environment this would be done post functional and non-functional testing of tagged staging application in the cluster.</p>
-</div>
-<div class="paragraph">
+</li>
+<li>
 <p>Switch back to Red Hat Developer Hub, select your component and click on <strong>CI</strong>. If you are quick enough you will see that another pipeline has been triggered by the creation of a release; the system is promoting the image from the staging application to the production one.</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/production-rhdh/21.png" alt="Promoting to production">
@@ -754,6 +807,9 @@
 </div>
 <div class="paragraph">
 <p>When this is completed, the application running in the production deployment will be based on the image that has been promoted from development, having been built there in a secure pipeline, to staging, and then promoted to production.</p>
+</div>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>This is an opinionated but thorough and secure approach provided directly by the template instantiated through the

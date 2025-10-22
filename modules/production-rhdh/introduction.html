@@ -337,35 +337,63 @@
 <div class="paragraph">
 <p>So far in this course we have looked at the individual components of the composite solution. This module will explain how they all work together, and more importantly why this is a crucial product set for end customers.</p>
 </div>
+<div class="sect2">
+<h3 id="_the_modern_developers_end_product"><a class="anchor" href="#_the_modern_developers_end_product"></a>The Modern Developer&#8217;s End Product</h3>
 <div class="paragraph">
-<p>In order to understand this we need to look at the concept of 'End Product'. This is the deliverable from one part of an organisation to another; the value in motion. It used to vary widely; some organisations wanted developers to deliver code, some binaries, some composite packages. In the new world of DevSecOps and the advent of the inner and outer loops, we now have a defined point of delivery for developers - code in a Git repository.</p>
+<p>In modern DevSecOps, the developer&#8217;s end product is clearly defined: code committed to a Git repository. This standardization comes with a critical separation of responsibilities:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Inner Loop</strong> (Developers): Code generation, functional testing, and delivery via Git</p>
+</li>
+<li>
+<p><strong>Outer Loop</strong> (Platform Engineers): Builds, security scanning, non-functional testing, and deployment</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>With the separation of the inner loop — where developers handle code generation, functional testing, and delivery via Git — and the outer loop — where Ops and Platform Engineers manage builds, functional and non-functional testing, and deployment — it became critical to apply and assess security much earlier in the software lifecycle.</p>
+<p>This separation made it critical to apply and assess security much earlier in the software lifecycle, not as a final gate.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_shift_left_approach"><a class="anchor" href="#_the_shift_left_approach"></a>The Shift-Left Approach</h3>
+<div class="paragraph">
+<p>In traditional <a href="https://www.atlassian.com/agile/project-management/waterfall-methodology" target="_blank" rel="noopener">Waterfall</a> development, security was checked last—if at all. When security checks failed late in the cycle, entire development processes had to restart from the beginning.</p>
 </div>
 <div class="paragraph">
-<p>In the old days of <a href="https://www.atlassian.com/agile/project-management/waterfall-methodology" target="_blank" rel="noopener">Waterfall</a>, security was usually the last thing to be checked - if at all. This meant that it was at the point of functional/non-functional testing that security checks were applied. If they failed, it was back to the beginning, with the developers having to produce code which went through the entire lifecycle again.</p>
+<p>The <a href="https://www.redhat.com/en/topics/devops/shift-left-vs-shift-right" target="_blank" rel="noopener">shift-left</a> approach brings security much earlier into the software development cycle. Red Hat Developer Hub and Trusted Software Supply Chain provide secure tooling to detect potential security issues as developers type their code, with TSSC recording these issues as part of the standard build approach.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_rhads_components_work_together"><a class="anchor" href="#_how_rhads_components_work_together"></a>How RHADS Components Work Together</h3>
+<div class="paragraph">
+<p><strong>During Development:</strong></p>
 </div>
 <div class="paragraph">
-<p>The concept of <a href="https://www.redhat.com/en/topics/devops/shift-left-vs-shift-right" target="_blank" rel="noopener">shift-left</a> brings security much earlier in the software development cycle. Red Hat Developer Hub (RHDH) and Trusted Software Supply Chain (TSSC) provide secure tooling to allow developers to see potential security issues as they type their code, with TSSC detecting and recording potential security issues as part of the standard build approach.</p>
+<p>Red Hat Developer Hub provides the configurable Internal Developer Portal (IDP), including direct linkage to in-browser editors via OpenShift Dev Spaces. Red Hat Advanced Developer Suite provides extensions for these editors to highlight potential CVE exploit points, so developers can see issues as they develop.</p>
 </div>
 <div class="paragraph">
-<p>How this works from the product perspective is as follows: RHDH provides the configurable Internal Developer Portal (IDP), including direct linkage to in-browser editors, via OpenShift Dev Spaces. Red Hat Advanced Developer Suite (RHADS) provides extensions for these in-browser editors to highlight potential CVE exploit points, so a developer can directly see the issues as they develop.</p>
+<p><strong>During Build:</strong></p>
 </div>
 <div class="paragraph">
-<p>TSSC provides pre-built Tekton pipelines (for continuous integration) that transform source code into container image, and apply a set of security protocols to it as part of the build process. This locks the generation of 'end-product', in this case the application container image, into a "security-gate" approach, where if any of the checks fail, the build fails.</p>
+<p>Trusted Software Supply Chain provides pre-built Tekton pipelines that transform source code into container images while applying security protocols. This "security-gate" approach means if any checks fail, the build fails. TSSC also generates SBOMs (Software Bills of Material) which record exactly what components were used to create the artifacts.</p>
 </div>
 <div class="paragraph">
-<p>In addition, TSSC generates SBOMs (Software Bill of Material) which record exactly what components were used to create the digital artifacts. These SBOMs are also now part of the 'end-product', and are generated and maintained as part of the build pipeline.</p>
+<p><strong>During Deployment:</strong></p>
 </div>
 <div class="paragraph">
-<p>Finally, to make it all seamless, templates can be used for application scaffolding, to generate a code repository, webhooks (so <strong>any</strong> update to the code repository causes the TSSC pipeline to start), and generates all the deployable components for the Application on OpenShift using ArgoCD.</p>
+<p>Templates handle application scaffolding: generating code repositories, webhooks (so any update to the repository triggers the TSSC pipeline), and all deployable components for the application on OpenShift using ArgoCD.</p>
 </div>
 <div class="paragraph">
-<p>This last point is very important; rather than interact directly with the cluster from the scaffolding perspective, all components/objects are applied via GitOps. This allows the template, executed in RHDH, to scaffold not only the developer environment (the Git repositories and in-browser editors) but the TSSC pipelines <strong>and</strong> the end deployment components.</p>
+<p>Rather than interact directly with the cluster, all components are applied via GitOps. This allows templates to scaffold not only the developer environment (Git repositories and in-browser editors) but also the TSSC pipelines and end deployment components.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_complete_automation"><a class="anchor" href="#_complete_automation"></a>Complete Automation</h3>
 <div class="paragraph">
-<p>The entire process, from the point at which the developer submits the code ('end-product') to final deployment post-build and security check, is fully automated.</p>
+<p>The entire process, from the moment a developer submits code (the "End-Product") to final deployment post-build and security check, is fully automated.</p>
+</div>
 </div>
 </div>
 </div>
@@ -373,13 +401,13 @@
 <h2 id="_why_do_we_need_rhdh_and_tssc"><a class="anchor" href="#_why_do_we_need_rhdh_and_tssc"></a>Why do we need RHDH and TSSC?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As it stands, TSSC provides the pre-defined Tekton pipelines for performing all of the checks and build components to take a piece of source and generate a useable Image along with all the receipts (SBOMs) in the case of a successful build, or pinpoint log information as to why the build failed or was stopped by security. However these are just a set of Tekton pipeline definitions; you need to be able to run them (i.e. OpenShift).</p>
+<p>Trusted Software Supply Chain provides pre-defined Tekton pipelines for security checks and build components to generate container images with SBOMs. However, these pipelines need to run somewhere (OpenShift) and be properly configured.</p>
 </div>
 <div class="paragraph">
-<p>With the advent of Red Hat Trusted Profile Analyzer (TPA), the SBOM generator and maintainer, and {product_as_name} (TAS), which provides cryptographic signing and verification, the combination of TSSC, TAS and TPA provides the whole secure process, but again you need to parameterise it appropriately.</p>
+<p>Red Hat Trusted Profile Analyzer (TPA) generates and maintains SBOMs, while Red Hat Trusted Artifact Signer (TAS) provides cryptographic signing and verification. Together, TSSC, TAS, and TPA provide the complete secure process—but they need to be parameterized appropriately.</p>
 </div>
 <div class="paragraph">
-<p>With RHDH you have the capability of writing templates which walk the user through a sequential set of steps in order to scaffold an environment. What we have done with RHADS is to build an opinionated approach, through templates in RHDH, for using TSSC and the other components. This approach makes it much easier for a Platform Engineer to setup the process, and much easier (with way less cognitive load) for a Developer to use. In fact a Developer will be largely insulated from the process, which makes a Developer&#8217;s life easier.</p>
+<p>Red Hat Developer Hub solves this with templates that walk users through a sequential set of steps to scaffold environments. RHADS provides an opinionated approach using these templates, making it significantly easier for Platform Engineers to set up the process and reducing cognitive load for Developers. Developers are largely insulated from the complexity, focusing on writing code rather than managing infrastructure.</p>
 </div>
 </div>
 </div>
@@ -387,26 +415,23 @@
 <h2 id="_positioning_the_technical_components"><a class="anchor" href="#_positioning_the_technical_components"></a>Positioning the technical components</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>From a technical sales perspective, Red Hat Advanced Developer Suite is an easy pitch because it delivers clear value to two key personas:</p>
+<p>From a technical sales perspective, Red Hat Advanced Developer Suite is an easy pitch because it&#8217;s positioned to deliver clear value to two key personas:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>For Developers: They gain a simplified way to write software without getting bogged down in the minutiae of the processes for getting started, building, and delivering the end product. This is precisely where Backstage/RHDH is positioned—to provide a smooth, self-service experience.</p>
+<p><strong>Developers:</strong> Red Hat Developer Hub is positioned to provide a simplified way to write software without getting bogged down in build and delivery processes—delivering a smooth, self-service experience.</p>
 </li>
 <li>
-<p>For Operations (Ops) Teams: They get secured software that has been rigorously tested for potential exploits before it reaches the final functional and non-functional testing phases. This directly addresses the "Shift-Left" need for early, enforced security.</p>
+<p><strong>Operations Teams:</strong> Red Hat Advanced Developer Suite is positioned to deliver secured software rigorously tested for exploits before reaching final testing phases, directly addressing the shift-left security imperative.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Put simply, TSSC, TAS, and TPA give you automated build and security scanning, point of truth (SBOM generation and maintenance) and the stamp of security approval (cryptographic signing).</p>
+<p>Put simply, TSSC, TAS, and TPA are positioned to provide automated build and security scanning, SBOM generation and maintenance, and cryptographic signing—the stamp of security approval.</p>
 </div>
 <div class="paragraph">
-<p>Most customers are doing these things already but the diversity of solutions means it is a headache to maintain these build factories/pipelines. RHADS, through the developer facing components of RHDH and the Ops facing components of end-product generation with TSSC, TAS and TPA, solves a lot of this complexity and provides clear and defined interaction points; the developers work with templates (which can be extended if the organisation needs additional steps for scaffolding), the Ops/Platform Engineers work by maintaining the template and pre-generated Tekton pipelines from TSSC.</p>
-</div>
-<div class="paragraph">
-<p>For the majority of organisations, the out-of-the-box functionality provided by the templates and the standard TSSC pipelines will suffice to provide a solid secure development/build lifecycle.</p>
+<p>Most customers already perform these functions, but the diversity of solutions makes maintaining build pipelines a headache. Red Hat Advanced Developer Suite is positioned to solve this complexity through clear interaction points: developers work with extensible templates, while Platform Engineers maintain those templates and pre-generated Tekton pipelines. For most organizations, the out-of-the-box functionality provides a solid, secure development lifecycle.</p>
 </div>
 </div>
 </div>
@@ -416,10 +441,10 @@
 <div class="sect2">
 <h3 id="_scaffolding_with_templates_and_the_tssc_pipelines"><a class="anchor" href="#_scaffolding_with_templates_and_the_tssc_pipelines"></a>Scaffolding with templates and the TSSC pipelines</h3>
 <div class="paragraph">
-<p>The key component in all of this approach is the RHDH template. This is a configurable object that defines a set of actions to be executed sequentially; if all actions complete successfully, the template is deemed to have completed. If any actions fail, the template stops at that point.</p>
+<p>The key component is the Red Hat Developer Hub template—a configurable object that defines <em>actions</em> to be executed sequentially. If all actions complete successfully, the template succeeds; if any fail, it stops.</p>
 </div>
 <div class="paragraph">
-<p>It is worth understanding what is meant by an action in a template; as you have seen in previous modules, the framework of Backstage and therefore RHDH provides massive extensibility using the concepts of 'plugins'. These provide multiple forms of extension for the framework, visual components that can be rendered as part of the composite portal provided to the end consumer, API endpoints that hosted by the developer portal, and actions that can be performed by templates. These actions are the powerful parts for us.</p>
+<p>Templates leverage Backstage plugins for extensibility. Plugins provide visual components for the portal, API endpoints, and the aforementioned template <em>actions</em>. These actions are what make templates powerful.</p>
 </div>
 <div class="paragraph">
 <p>Let’s look at an example template to show how they are used - this is the template will we execute as part of the hands-on lab:</p>
@@ -440,7 +465,7 @@ metadata:
 </div>
 </div>
 <div class="paragraph">
-<p>The template starts with metadata that is used within the framework for display and selection. The tags are actually rendered on the selection tile in the provisioned portal. As with all objects, the definition is split into the metadata, shown above, and the specification of the object, in this case the template definition.</p>
+<p>The template starts with metadata for display and selection. Tags are rendered on the selection "tile" (shown when choosing a template) in the portal. Like all objects, the definition has metadata (shown above) and a specification.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -450,7 +475,7 @@ metadata:
 </div>
 </div>
 <div class="paragraph">
-<p>The specification starts with some core definition fields, in this case the owner object and the type of object produced by the template. Now we have an extract of the parameters section of the specification:</p>
+<p>The specification defines the object&#8217;s owner and type. Next, we have the parameters section:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -506,7 +531,7 @@ metadata:
 </div>
 </div>
 <div class="paragraph">
-<p>When you, as a user of the portal generated by RHDH, instantiate a template, the framework parses all of the parameters required in the specification; these are rendered as wizards, with each <code>title:</code> group being rendered as a separate page in an overall form. This is an extract, but note the first 'form', 'Provide Information for Application'. This has the defined parameters name, groupID etc - each parameter can be defined to be optional or mandatory, and a default value can be provided. As we will see in the steps defined next in the template, these parameters can be passed into the action calls in each step. Here’s an example couple of steps:</p>
+<p>When instantiating a template, Red Hat Developer Hub parses parameters and renders them as "wizard" pages — each <code>title:</code> group (like "Provide Information for Application" in the above snippet) becomes a separate form page. Parameters can be optional or mandatory with default values. These parameters are passed into action calls in each step:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -540,10 +565,10 @@ metadata:
 </div>
 </div>
 <div class="paragraph">
-<p>Firstly note that every step has an <code>action:</code> field. This refers to either a built in action (the <code>fetch:template</code> and <code>catalog:fetch</code> are pre-built actions in the core Backstage framework) or an action provided by a plugin. In the hands-on lab we will see that the next step is actually <code>publish:gitlab</code>, which is an action to push the generated files to GitLab. This functionality is provided in the <a href="https://backstage.io/docs/reference/plugin-scaffolder-backend-module-gitlab/#functions" target="_blank" rel="noopener">appropriate plugin</a> added to the core framework.</p>
+<p>Every step has an <code>action:</code> field referencing either a built-in action (<code>fetch:template</code>, <code>catalog:fetch</code>) or one provided by a plugin. For example, <code>publish:gitlab</code> pushes files to GitLab via the <a href="https://backstage.io/docs/reference/plugin-scaffolder-backend-module-gitlab/#functions" target="_blank" rel="noopener">GitLab plugin</a>.</p>
 </div>
 <div class="paragraph">
-<p>At the end of the template are a set of 'outputs'. These are rendered components on the portal that can link to entities created by the template, or display links and text of your choosing:</p>
+<p>Templates define outputs that are rendered on the portal, displaying links to created entities or custom text once the template has been processed (or "instantiated"):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -562,34 +587,37 @@ metadata:
 </div>
 </div>
 <div class="paragraph">
-<p>Note that like the parameter variables, the Backstage scaffolder will also expose variables from the output of the steps. Everything bound by double curly-braces is considered an expression. For example, <code>${{ steps['publish-gitlab-source'].output.remoteUrl }}</code>, which is the URL that is created for the repo that is scaffolded by one of the steps will be evaluated and replaced by the actual value. You can read more about these <a href="https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/" target="_blank" rel="noopener">Nunjucks based templates in the docs</a>.</p>
+<p>Each step can produce <em>output</em>, and the scaffolder in turn exposes variables from step outputs for use in subsequent steps. Everything in double curly-braces is an expression that gets evaluated—for example, <code>${{ steps['publish-gitlab-source'].output.remoteUrl }}</code> becomes the actual repository URL. Learn more about <a href="https://backstage.io/docs/features/software-templates/writing-templates/#more-about-expressions/" target="_blank" rel="noopener">Nunjucks expressions</a> (the expression language used by Red Hat Developer Hub).</p>
 </div>
 <div class="paragraph">
-<p>It is also worth being aware of the way that the templates actually work behind the scenes; when a template is instantiated it has a working directory. In the example above the catalog:fetch and fetch:template actually copy files into this temporary area. Then the action (not shown) for publishing to gitlab pushes this area as the files into the repo.</p>
+<p>Behind the scenes, templates work with a temporary directory. Actions like <code>catalog:fetch</code> and <code>fetch:template</code> copy files there, then publishing actions push them to repositories (e.g. in GitLab in this example).</p>
 </div>
 <div class="paragraph">
-<p>In actuality the <code>fetch:template</code> gets <strong>all</strong> the files needed, including the YAML definitions for both the TSSC pipeline and the final deployed application (in various staging projects). RHDH and the template have no knowledge directly of the ArgoCD, Tekton or OpenShift objects, the template is working as a scaffolder. There are actions later in the template to <code>argocd:create-resources</code> which use a subdirectory of the scaffolded git repo as the location of the components to instantiate. Like the steps in the template, these are parametrised with content from the template, which allows for the unique creation of the pipelines and ArgoCD applications for this instance.</p>
+<p>The <code>fetch:template</code> action retrieves <em>all</em> needed files, including YAML definitions for TSSC pipelines and deployed applications. The template acts as a scaffolder with no direct knowledge of ArgoCD, Tekton, or OpenShift objects. Later, <code>argocd:create-resources</code> actions instantiate components from the scaffolded repository, parameterized for unique pipeline and ArgoCD application creation.</p>
 </div>
 <div class="paragraph">
-<p>It sounds complex but when you realise that the template is just marshaling, scaffolding and deploying files, and the actions of the plugins are doing the work in terms of creating and kicking off the pipelines for build and securing, it becomes simpler to visualise.</p>
+<p>Simply put: templates marshal, scaffold, and deploy files while plugin actions handle the actual pipeline creation and execution.</p>
 </div>
 <div class="paragraph">
-<p>The Tekton pipelines themselves are created by the <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications" target="_blank" rel="noopener">ArgoCD Applications</a> and initially contain the opinionated, secure pipelines provided out of the box by RHADS. It must be noted that customers can (and should, if needed) add and alter these pipelines if they have additional security checks and processes to execute as part of the build. In the hands-on lab we will dive into the definition to show where and how this can be changed, but, as said earlier, the majority of end customer security needs will be met by the default security actions provided in the base TSSC pipelines.</p>
+<p>The Tekton pipelines are created by <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications" target="_blank" rel="noopener">ArgoCD Applications</a> and contain the secure pipelines provided by RHADS. Customers can extend these pipelines with additional security checks as needed. The hands-on lab shows where and how to customize them, though most customer security needs are met by the default TSSC pipelines.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tying_the_loop_hooking_code_updates_to_pipeline"><a class="anchor" href="#_tying_the_loop_hooking_code_updates_to_pipeline"></a>Tying the loop; hooking code updates to pipeline</h3>
+<h3 id="_tying_the_loop_hooking_code_updates_to_pipeline"><a class="anchor" href="#_tying_the_loop_hooking_code_updates_to_pipeline"></a>Tying the loop: hooking code updates to pipeline</h3>
 <div class="paragraph">
-<p>So far we have looked at the templating mechanism and how it scaffolds the application; in addition it used ArgoCD to setup a number of effective release gates (<em>dev</em>, <em>pre-prod</em>, <em>production</em> etc) which can be configured by changing the ArgoCD application definitions and overlays. This, combined with the real-time code updates we discussed earlier (using the DevSpaces plugins) gives the framework for development and staging, but we are missing one vital component.</p>
+<p>Templates scaffold applications and use ArgoCD to set up release gates (<em>dev</em>, <em>pre-prod</em>, <em>production</em>) configurable through ArgoCD application definitions and overlays. Combined with real-time code updates via DevSpaces plugins, this provides the framework for development and staging—but one vital component remains.</p>
 </div>
 <div class="paragraph">
-<p>Tekton (the Pipeline functionality) was designed to allow for the creation of `PipelineRun`s (the actual execution of a Pipeline as opposed to the definition) through a web endpoint, using EventListeners. What we have done with RHADS is provide some out-of-the-box interactions with Git repositories providers (i.e. GitHub, GitLab) which setup webhooks based around the code repositories that are scaffolded as part of the template.</p>
+<p>Tekton creates <code>PipelineRuns</code> (actual pipeline executions) through webhook endpoints using EventListeners. RHADS provides out-of-the-box Git repository integrations (GitHub, GitLab) that set up webhook endpoints and triggers for scaffolded repositories. These triggers cause new `PipelineRun`s to be created and executed when code is changed by developers.</p>
 </div>
 <div class="paragraph">
-<p>In English, the instantiation of the template not only creates the code repositories to be used and the environments on the OpenShift cluster for the application deployment, it also adds triggers into the code repository to automatically repeat the build pipeline on commits - effectively when the end user commits code to the repository, the pipeline triggers in the appropriate created environments and repeats the entire secure build process.</p>
+<p>When the template is instantiated, it creates code repositories, OpenShift environments, <strong>and</strong> repository triggers that automatically run the build pipeline on every commit. When developers commit code, the pipeline triggers and repeats the entire secure build process.</p>
 </div>
 <div class="paragraph">
-<p>This guarantees that any code changes to the scaffolded git repos are automatically rebuilt, checked for security issues and receipted and signed using the TPA and TAS components. Again, this automation makes both the developer and the ops persona&#8217;s lives much easier.</p>
+<p>This guarantees automatic rebuilds with security checks, SBOMs, and signing via TPA and TAS—making life easier for both developers and operations teams.</p>
+</div>
+<div class="paragraph">
+<p>Now that you have a good understanding of how the components work together, let&#8217;s move on to the hands-on lab and see it in action.</p>
 </div>
 </div>
 </div>
