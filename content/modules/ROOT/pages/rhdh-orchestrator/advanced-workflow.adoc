@@ -1,6 +1,6 @@
 = Workflows with State and Integrations
 
-Now you will implement a stateful use case for developer self-service using the Orchestrator: requesting a namespace on an OpenShift cluster. The namespace has limited resources, defined by https://kubernetes.io/docs/concepts/policy/resource-quotas/[resource quota^] and https://kubernetes.io/docs/concepts/policy/limit-range/[limit ranges^]. In our case, the namespaces come in two sizes, small and large.
+Now you will implement a stateful use case for developer self-service using the Orchestrator: requesting a namespace on an OpenShift cluster. The namespace has limited resources, defined by https://kubernetes.io/docs/concepts/policy/resource-quotas/[resource quota^] and https://kubernetes.io/docs/concepts/policy/limit-range/[limit ranges^]. In our case, the namespaces come in three sizes, small, medium, and large.
 
 To illustrate the possibilities of the Orchestrator plugin, when a developer requests a large namespace in an OpenShift cluster the namespace requires approval.
 
@@ -282,7 +282,7 @@ image:orchestrator-overview/orchestrator-issue-notification.png[]
 image:orchestrator-overview/gitlab-issue-1.png[]
 . GitLab is not a ticketing system. To mimic the behavior of a ticketing system, we use labels on the issue to mark the request as approved or denied.
 +
-.. Make sure you are logged in into GitLab as `{gitlab_user}` / `{gitlab_user_password}`.
+.. Make sure you are logged in into GitLab as `root` / `{gitlab_user_password}`.
 .. Click on the *Edit* button next to *Labels* on the right.
 .. Select the *Approved* label.
 .. To actually add the label, you need to click on a different area of the page, outside of the *Labels* area.

@@ -1,8 +1,6 @@
 
 = Installation
 
-== Prerequisites
-
 Since the Orchestrator plugin for {product_rhdh_name} relies on Serverless Workflow, it requires the OpenShift Serverless Workflow Operator to provide the primitives it relies on.
 
 This Operator provides the necessary *SonataFlow* https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resources^] that Orchestrator uses to facilitate the execution of custom workflows.
@@ -11,11 +9,11 @@ This Operator provides the necessary *SonataFlow* https://kubernetes.io/docs/con
 
 Confirm the operator is installed by visiting the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/all-namespaces/operators.coreos.com{tilde}v1alpha1{tilde}ClusterServiceVersion[Installed Operators section^] of the OpenShift Web Console.
 
-[NOTE]: Login as *{openshift_admin_user}* using the password `{openshift_admin_password}`.
+NOTE: You must login as *{openshift_admin_user}* using the password `{openshift_admin_password}` to manage operators.
 
 image:orchestrator-overview/install-operators.png[]
 
-If the Operator is not installed, use Operator Hub to install the stable release with *Automatic Approval* enabled:
+If the Operator is not installed, use Operator Hub to install it with *Automatic Approval* enabled:
 
 . Visit *Operator Hub* and view the Red Hat OpenShift Serverless Operators - https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/all-namespaces?keyword=openshift+serverless&source=%5B%22Red+Hat%22%5D[use this link to jump right there!^]
 +
@@ -26,15 +24,15 @@ image::orchestrator-overview/serverless-operators.png[]
 
 == Add the Orchestrator Plugins to {product_rhdh_name}
 
-Similar to the Operators, your environment has been pre-configured with the necessary dynamic plugins. 
+Your environment has been pre-configured with the necessary dynamic plugins, but they're disabled by default. 
 
-NOTE: The xref:setup-rhdh/foundations.adoc[Setup Red Hat Developer Hub] module provides an in-depth overview of {product_rhdh_name}'s dynamic plugins feature. Visit that module if you'd like a deep-dive on deployment and configuration for {product_rhdh_name}.
+NOTE: The xref:setup-rhdh/foundations.adoc[Setup Red Hat Developer Hub] module provides an in-depth overview of {product_rhdh_name}'s dynamic plugins feature. Visit that module if you'd like a deep-dive on deployment and configuration for {product_rhdh_name} and the dynamic plugins feature.
 
 Verify that the dynamic plugins have been configured correctly:
 
 . Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core{tilde}v1{tilde}ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
-  * Username: {openshift_admin_user}
-  * Password: {openshift_admin_password}
+  * Username: `{openshift_admin_user}`
+  * Password: `{openshift_admin_password}`
 . Select and view the YAML for the *tssc-developer-hub-dynamic-plugins* ConfigMap.
 . Verify that the following plugins are listed in the `plugins` array:
   * @redhat/backstage-plugin-orchestrator
@@ -48,7 +46,7 @@ Verify that the dynamic plugins have been configured correctly:
 dependencies:
   - ref: sonataflow
 ----
-. Inspect the *pluginConfig* associated with the `@redhat/backstage-plugin-scaffolder-backend-module-orchestrator-dynamic`. Notice that it specifies a `dataIndexService.url` property? This is the URL to a component of the SonataFlow Platform deployed in the same namespace as {product_rhdh_name}.
+. Inspect the *pluginConfig* associated with the `@redhat/backstage-plugin-scaffolder-backend-module-orchestrator-dynamic`. Notice that it specifies a `dataIndexService.url` property? This is the URL to a component of the SonataFlow Platform that will be deployed in the same namespace as {product_rhdh_name}.
 +
 [source,yaml,subs=attributes+]
 ----
@@ -57,7 +55,7 @@ pluginConfig:
       dataIndexService:
         url: http://sonataflow-platform-data-index-service
 ----
-. Before proceeding, change `disabled: true` to `disabled: false` for the listed plugins, and click *Save*. 
+. Before proceeding, edit the ConfigMap by changing `disabled: true` to `disabled: false` for the listed plugins, and clicking *Save*. 
 
 So, why are these additional keys provided to the plugins?  In the case of `dependencies.ref`, it tells the {product_rhdh_name} Operator to provision the SonataFlow components, specifically a *SonataFlowPlatform* CR. The `dataIndexService.url` instructs the plugin to fetch available Workflows from the SonataFlowPlatform deployed in the same namespace as {product_rhdh_name} - you can opt to host and install the SonataFlowPlatform elsewhere if required.
 
@@ -65,7 +63,7 @@ So, why are these additional keys provided to the plugins?  In the case of `depe
 
 You've confirmed that the Orchestrator plugins are configured correctly - now you'll confirm that the *SonataFlowPlatform* was created and the Pods are healthy.
 
-. Return to the https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/{ns_tssc_rhdh}?view=graph[Topology View^] for the *{ns_tssc_rhdh}* namespace and wait for the SonataFlowPlatform pods to become ready (dark blue circle). This may take a few minutes for both the Orchestrator plugins and SonataFlowPlatform pods to become ready.
+. Return to the https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/{ns_tssc_rhdh}?view=graph[Topology View^] for the *{ns_tssc_rhdh}* namespace and wait for the SonataFlowPlatform pods to become ready (dark blue circle). It might take a few minutes for both the {product_rhdh_name} and SonataFlowPlatform pods to become ready and stabilise, since the SonataFlow pods depend on the new instance of {product_rhdh_name} to initialise with the newly enabled plugins.
 . Once ready, you should see the *SonataFlowPlatform* (or *SFP* for short) - click the three dots next to its name (`sonataflow-platform`) and select *Edit SonataFlowPlatform* to view the CR created as a result of the `dependencies.ref` you saw earlier.
 +
 image::orchestrator-overview/sonataflow-platform-topology.png[]

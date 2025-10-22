@@ -2,7 +2,7 @@
 
 Other modules demonstrate how to use Software Templates as a means for developers to scaffold new codebases that follow organisational standards, and self-service certain aspects of their daily activities. 
 
-However, developer self-service requests might require more than what a Software Template can provide natively. For example, certain activities require an approval step, or other *long-running, stateful processes* - this is where the Orchestrator for {product_rhdh_name} can address the fact that regular Software Templates are stateless run and done processes. 
+However, developer self-service requests might require more than what a Software Template can provide natively. For example, certain requests might require an approval, while others might involve *long-running, stateful processes* - this is where the Orchestrator for {product_rhdh_name} can help. It addresses the fact that regular Software Templates are stateless "run and done" processes. 
 
 The Orchestrator feature extends {product_rhdh_name} with support for workflows created using https://sonataflow.org/[SonataFlow^]. The Orchestrator project website and documentation is available at https://www.rhdhorchestrator.io/[rhdhorchestrator.io^].
 
@@ -12,7 +12,7 @@ _SonataFlow is a tool for building cloud-native workflow applications. You can u
 
 SonataFlow is part of a broader ecosystem of projects within Apache KIE, including Drools, jBPM, and Kogito. Specifically, SonataFlow is an implementation of the https://serverlessworkflow.io/[Serverless Workflow^] model. 
 
-Serverless Workflow is a cloud-native workflow engine which allows teams to design, deploy and execute arbitrarily complex workflows that integrate with external systems through several mechanisms. Teams define workflows in the Serverless Workflow format, and SonataFlow will take care of the build, state management, and serverless deployment aspects for you.
+Serverless Workflow is a cloud-native workflow engine that allows teams to design, deploy and execute arbitrarily complex workflows that integrate with external systems through several mechanisms. Teams define workflows in the Serverless Workflow format, and SonataFlow will take care of the build, state management, and serverless deployment aspects for you.
 
 The following workflow definition demonstrates functions, input validation using schema(s), and behavior modeling using https://en.wikipedia.org/wiki/Finite-state_machine[state machine^] semantics. A workflow like this can be built and deployed on OpenShift as a Quarkus-based application container using the SonataFlow Operator.
 
@@ -104,7 +104,7 @@ A https://sonataflow.org/serverlessworkflow/latest/tooling/serverless-workflow-e
 
 ## SonataFlow and Orchestrator
 
-The Orchestrator feature effectively acts as an interface between {product_rhdh_name} and SonataFlow-powered workflows - providing a listing and the ability view and run workflows directly from {product_rhdh_name}.
+The Orchestrator feature effectively acts as an interface between {product_rhdh_name} and SonataFlow-powered workflows, providing a listing and the ability view and run workflows directly from {product_rhdh_name}.
 
 Additionally, long running workflows can integrate with the https://backstage.io/docs/notifications/[Backstage Notifications^] plugin, to allow users or groups to be notified of milestones in the workflow execution. This is particularly useful for long running workflows where it's impractical for a user to wait for completion. 
 
