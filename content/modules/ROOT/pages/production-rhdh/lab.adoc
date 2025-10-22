@@ -238,15 +238,97 @@ When this is completed, the application running in the production deployment wil
 This is an opinionated but thorough and secure approach provided directly by the template instantiated through the 
 {product_rhdh_name} portal; we have automated and secured all the phases of development through to production.
 
+== End-to-End Secure Software Supply Chain with Jenkins and Commit Signing
 
+Before wrapping up, let's review the other included secure software supply chain template that uses Jenkins as the continuous integration (CI) provider. Functionally both templates deliver the same end-product: a signed container image, along with an SBOM and set of attestations, however it's important that we demonstrate support for alternative CI providers.
 
+=== Update the Jenkins Template
 
+To get started, examine the source files for the template:
 
+. View the Template in the https://backstage-developer-hub-tssc-dh.apps.cluster-b56lf.dynamic.redhatworkshops.io/create?filters%5Bkind%5D=template&filters%5Btext%5D=jenkins&filters%5Buser%5D=all&limit=20[{product_rhdh_name} Self-Service screen^].
+. Click on the _Show template entity details_ icon.
++
+image::production-rhdh/rhdh-view-template.png[Show template entity details]
+. Click the *View Source* link on the template entity's overview screen. 
++
+You'll be directed to a repository that contains the _template.yaml_ that defines the parameters collected, and actions performed by the template. Additionally it contains a _skeleton_ directory with source files that will be used to generate a new application when a developer uses the template in {product_rhdh_name}.
++
+image:production-rhdh/rhdh-jenkins-tpl-repo.png[Jenkins Template GitLab Repository]
+. Open the _skeleton_ directory, and select the _Jenkinsfile.push_ file.
++ This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template.
+. Click *Edit > Edit single file* at the top of the file. Login as `root` using the password `{gitlab_user_password}` if prompted.
+. Modify the file by adding a new _stage_ with a single _step_ directly between the the `verify-commit` and `mvn package` stages:
++
+[source,jenkinsfile,role=execute]
+----
+stage('print commit details') {
+    steps {
+        // Print the committer and timestamp of the commit in the build logs
+        sh 'git log -1 --pretty=format:"By %ae on %ad"'
+    }
+}
+----
++
+The end result will resemble this image.
++
+image:production-rhdh/rhdh-jenkins-tpl-modified.png[Modified Jenkinsfile.push]
+. Commit the changes by clicking the *Commit changes* button.
 
+=== Create a new Application using the Template
 
+. Return to {product_rhdh_name} and click *Choose* on the *Securing a Quarkus Service Software Supply Chain (Jenkins)* tile on the self-service screen.
+. On the *Provide Information for Application*, change the *Name* to `ssc-jenkins-sample`.
+. Accept the default values on the *Provide Image Registry Information* screen.
+. Enable commit verification on the *Application repository Information* screen.
+. Confirm that your parameters match those displayed in the following image.
++
+image:production-rhdh/rhdh-jenkins-params.png[Jenkins Template Parameters]
+. Click *Create* and wait for the template to finish processing.
++
+image:production-rhdh/rhdh-jenkins-ssc-created.png[Jenkins Template Run]
 
+=== Create Signed Commits and Verify the Jenkins Pipeline
 
+WARNING: Prior to following these steps, make sure you're not signed into the OpenShift Cluster as the `admin` user. Visit the {openshift_console_url}[OpenShift Web Console^], and if you are logged in as `admin`, click the dropdown in the top-right to logout.
 
+. Click the *Open Component in catalog* link, or visit the _Catalog_ in {product_rhdh_name} and select your new *ssc-jenkins-sample* component.
+. Use the link on the overview to launch *OpenShift Dev Spaces (VS Code)*:
+  * This will start a process that launches a Cloud Development Environment (CDE).
+  * When prompted login as `{rhdh_user}` using the password `{rhdh_user_password}`.
+  * Authorize the GitLab login too, being sure to use `rhdh_user`.
+  * Wait for the workspace to load.
+. Once the workspace is loaded, accept the popups asking to trust and load plugins and publishers.
+. Click on the _README.md_ file and make a small change, then use the menu icon in the top-left to launch a terminal as shown.
++
+image:production-rhdh/rhdh-jenkins-launch-term.png[Launch a Terminal in VSCode]
+. In the terminal run the following commands to add and commit your change:
++
+[source,bash,role=execute]
+----
+git add .
+git commit -m "doc: update the readme"
+----
+. You'll be prompted to follow a link to obtain a verification code to sign the commit. Click the link, and copy the code it displays.
+. Return to the terminal in Dev Spaces and paste the code.
++
+WARNING: If your browser requests access to copy/paste functionality make sure to click allow.
+. Press `Enter`/`Return` to sign the commit.
++
+image:production-rhdh/rhdh-jenkins-sign-commit.png[Commit Signing Link]
+. Push the commit using the `git push` command.
 
+=== Inspect the Jenkins Build
 
+Time to verify that your platform engineering efforts are reflected in the resulting builds. To do this you'll view the build output directly in Jenkins.
 
+. Return to the {rhdh_url}/catalog/default/component/ssc-jenkins-sample/ci[CI tab for your *ssc-jenkins-sample* application^] in {product_rhdh_name}.
+. A new *maven-build-ci* should be in progress. Click the *View build* (eye) icon.
++ 
+image:production-rhdh/rhdh-jenkins-view-build.png[View Build Icon for Jenkins]
+. Click the *Open Blue Ocean* link in the Jenkins UI - this displays a visual representation of each step of the build.
+. Select the *print-commit-details* node, and then click the arrow next to the displayed command to view the output.
++
+image:production-rhdh/rhdh-jenkins-blue-ocean.png[Jenkins Blue Ocean View]
+
+And just like that, you've learned how to modify and use the Jenkins-based secure software supply chain template so all developers can benefit from it.
