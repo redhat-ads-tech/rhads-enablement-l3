@@ -28,7 +28,7 @@ Red Hat Developer Hub can integrate with OpenShift AI through Software Templates
 == Other Developer Tools
 
 === Introduction to Podman Desktop
-When buildin an AI application, it's often helpful if developers can access their tools locally. Thanks to the *Podman AI Lab extension*, developers can leverage different models, try recipes, playgrounds, and more to learn, experiment, and develop AI applications.  
+When building an AI application, it's often helpful if developers can access their tools locally. Thanks to the *Podman AI Lab extension*, developers can leverage different models, try recipes, playgrounds, and more to learn, experiment, and develop AI applications.  
 
 image:rhads-ai/local-dev.png[Podman AI Lab]
 
