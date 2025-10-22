@@ -34,7 +34,7 @@ Our AI Agent is a Search Agent. It will search the internet and specific website
 === AI Research Agent Characteristics
 
 * *Planning and Reasoning:* We are using a Red Hat self-hosted model for this module.
-* *Tools and Actions:* This agent uses tools from *(https://www.tavily.com)[Tavily^]*. Tavily provides tools for web search, extracting specific information from web pages (*TavilyExtract*), and discovering/indexing new content (*TavilyCrawl*).
+* *Tools and Actions:* This agent uses tools from *https://www.tavily.com[Tavily^]*. Tavily provides tools for web search, extracting specific information from web pages (*TavilyExtract*), and discovering/indexing new content (*TavilyCrawl*).
 * *Memory:* This AI agent uses short-term memory.
 * *Input:* This solution includes a website to interact with the agent.
 * *Guardrails/Security:* Security starts with the prompt provided to the agent and is enforced by Red Hat Advanced Developer Suite, which provides integrated security, image scanning, and policies.
