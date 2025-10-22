@@ -10,6 +10,8 @@ In this section you'll learn how to:
 
 It's impractical to cover all aspects of development for SonataFlow and Serverless Workflow in this module, however you'll get hands on with a basic example that demonstrates a basic Operator-based development flow. After this, you'll learn how to make the workflow available in {product_rhdh_name}.
 
+NOTE: To learn about developing workflows locally using the `kn` CLI and the `workflow` extension for it, view the https://sonataflow.org/serverlessworkflow/1.45.0-SNAPSHOT/getting-started/create-your-first-workflow-service-with-kn-cli-and-vscode.html#proc-creating-app-with-kn-cli[relevant SonataFlow documentation^].
+
 ### Create a Workflow in Dev Mode
 
 . Visit the *tssc-dh* project in the OpenShift Web Console.
@@ -70,7 +72,7 @@ spec:
 . A new *SonataFlow* resource will appear in the Topology View. Click it and wait for the Pod to enter the *Running* status.
 +
 image::orchestrator-overview/sonataflow-pod-running.png[]
-. Click the arrow next to the Pod on the Topology view, then visit the `/q/dev-ui` endpoint to view the https://quarkus.io/guides/dev-ui[Quarkus Dev UI^]. Alternatively, https://greeting-tssc-dh.{openshift_cluster_ingress_domain}/q/dev-ui[this link^] also works.
+. Click the arrow next to the Pod on the Topology view, then visit the `/q/dev-ui` endpoint to view the https://quarkus.io/guides/dev-ui[Quarkus Dev UI^]. Alternatively, https://greeting-tssc-dh.{openshift_cluster_ingress_domain}/q/dev-ui[this link^] will take your directly to your Dev UI.
 +
 NOTE: Quarkus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as `sysout` in our sample workflow. The Serverless Logic Operator uses https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen[kogito-codegen^] to generate Java code from your workflow definition and JSON schemas.
 +
@@ -95,6 +97,8 @@ image::orchestrator-overview/quarkus-devui-start-workflow.png[]
 ----
 { "language": "English"}
 ----
++
+NOTE: You can expand the up arrow (this *^* icon) at the bottom of the Quarkus Dev UI to expand a pane showing the application logs. This provides additional insight into the workflow's execution.
 . Return to the _Workflow Instances_ tab. Your workflow run will be listed.
 +
 image::orchestrator-overview/quarkus-devui-workflow-run.png[]
@@ -110,7 +114,7 @@ image::orchestrator-overview/quarkus-devui-workflow-outline.png[]
 +
 image::orchestrator-overview/quarkus-devui-edit-sf.png[]
 . Switch to the YAML editor.
-. Update one the Spanish entry in `ChooseOnLanguage` conditions to check for "Irish" and change the `transition` to "GreetInIrish"
+. Update the Spanish entry in `ChooseOnLanguage` conditions to check for "Irish" and change the `transition` to "GreetInIrish"
 . Find the corresponding `GreetInSpanish` state and change it to `GreetInIrish`.
 . Additionally, change the `data.greeting` to `Háigh ó JSON workflow,`
 + 
