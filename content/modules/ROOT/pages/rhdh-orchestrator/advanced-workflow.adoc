@@ -294,7 +294,13 @@ The workflow instance checks the status of GitLab issue every 60 seconds. When t
 . You can check the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/cluster/projects/{rhdh_user}-large[namespace in the OpenShift console^, window="console"] in your OpenShift cluster. Also notice that the https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/orchestrator-approvals/-/issues/1[Issue in GitLab^, window="gitlab"] has been closed by the workflow.
 +
 image:orchestrator-overview/gitlab-issue-2.png[]
-. Feel free to create another request for a large namespace, but this time label the issue as *denied*. In this case, you should see a notification in {product_rhdh_name} that the request was denied, and there should be no namespace created in OpenShift.
+
+
+Create another request for a large namespace, but this time label the issue as *denied*. In this case, you should see a notification in {product_rhdh_name} that the request was denied, and there should be no namespace created in OpenShift.
+
+Additionally, if you visit the https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}/create/tasks[template tasks list^] and select the *All* filter, you'll see the *OpenShift Namespace Request* template invocation from the Orchestrator.
+
+image:orchestrator-overview/template-invocation.png[]
 
 === Conclusion
 
