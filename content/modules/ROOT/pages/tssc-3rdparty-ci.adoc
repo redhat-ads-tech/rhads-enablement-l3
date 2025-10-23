@@ -1,17 +1,199 @@
 = Trusted Software Supply Chain with Other CIs
 
-== Integration with Other CI Systems
+Red Hat's customers have varied requirements, including the need to integrate third party continuous integration (CI) systems with OpenShift, {product_rhdh_name}, and {product_tssc_name} (TSSC). Not all customers are ready to replace their existing CI with cloud-native CI based on OpenShift Pipelines (Tekton).
 
-// TODO: Add content for trusted software supply chain with other CIs
+Given Jenkins immense presence within enterprise environments, in this module we'll review an example that demonstrates how to implement TSSC using Jenkins as the CI provider. The scripts and implementation seen throughout this module can be adapted to alternative providers such as GitHub Actions and GitLab CI.
 
-== Supported CI Systems
+// Lifted from ADS workshop
+It makes sense to take this approach for:
 
-// TODO: Add supported CI systems
+* Organizations with Jenkins investments wanting to modernize without replacement
+* Enterprise teams with established Jenkins expertise and infrastructure
+* Platform engineers enhancing existing CI/CD capabilities
+* Organizations balancing innovation with investment protection
 
-== Integration Patterns
+Upon completion of this module you'll understand how to:
 
-// TODO: Add integration patterns
+* Provide modern Jenkins workflows using self-service software templates
+* Integrate enterprise security into existing Jenkins pipelines
+* Experience enhanced Jenkins with automatic security scanning and signing
+* Understand GitOps deployment from Jenkins-based CI/CD
 
-== Configuration Examples
+== Jenkins Environment
 
-// TODO: Add configuration examples 
+A Jenkins instance has been pre-deployed on your OpenShift Cluster - you can find it in the {openshift_console_url}/topology/ns/jenkins[*jenkins namespace*^]. 
+
+This is an example Jenkins instance with a minimal security configuration and is not intended as a production configuration. For example, you can https://jenkins-jenkins.{openshift_cluster_ingress_domain}/[view the Jenkins UI^] without authentication.
+
+Verify that the necessary credentials and TSSC component endpoints have been configured in Jenkins:
+
+. Open the https://jenkins-jenkins.{openshift_cluster_ingress_domain}/[Jenkins dashboard^].
+. Click login in the top-right, and login using:
+    * Username: `admin`
+    * Password: `{rhdh_user_password}`
+. Expand the *Jenkins Admin* menu and select *Credentials*.
+image::third-party-ci/rhdh-jenkins-admin-menu.png[The Jenkins Admin Menu]
+. Verify that the listed credentials match those shown.
++
+image::third-party-ci/rhdh-jenkins-credentials.png[Credentials Store in Jenkins]
+
+These credentials will be used in your pipeline to verify commit signatures, sign builds, and more.
+
+== Configure Jenkins Plugins for {product_rhdh_name}
+
+As thoughtful platform engineers, we want to streamline our developer workflows. To that end, we're going to integrate Jenkins with our Internal Developer Portal based on {product_rhdh_name}. Doing so means that the developer can view CI pipeline(s) and their status for software components directly in the {product_rhdh_name} software catalog - no bookmark hell required.
+
+The majority of integrations between {product_rhdh_name} and external systems require plugins. We've setup the plugins ahead of time, but let's review their configuration - this is so you can understand the work required by a platform engineer to configure them.
+
+NOTE: The Jenkins plugins are in https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/dynamic_plugins_reference/con-preinstalled-dynamic-plugins[Technology Preview as of {product_rhdh_name} v1.7^]. Detailed plugin information can be found in the https://github.com/backstage/community-plugins/tree/main/workspaces/jenkins/plugins/jenkins[Jenkins plugin README^].
+
+. View the {openshift_console_url}/k8s/ns/tssc-dh/configmaps/tssc-developer-hub-dynamic-plugins[tssc-developer-hub-dynamic-plugins ConfigMap^]. Login as `{openshift_admin_user}` using the password `{openshift_admin_password}` if prompted.
+. Scroll down until you find two plugins:
+    * *backstage-community-plugin-jenkins*
+    * *backstage-community-plugin-jenkins-backend-dynamic*
+
+The *backstage-community-plugin-jenkins* has a `pluginConfig` defined. This is a special directive used by {product_rhdh_name}'s dynamic plugin functionality. In this case, it's being used to mount the Jenkins React component as a pane (or card) in the CI section for an entity in the _Catalog_.
+
+In the case of *backstage-community-plugin-jenkins-backend-dynamic*, the configuration is found elsewhere:
+
+. View the {openshift_console_url}/k8s/ns/tssc-dh/configmaps/tssc-developer-hub-app-config[tssc-developer-hub-app-config ConfigMap^].
+. Scroll down. You'll see that it specifies a single instance under the `jenkins` configuration key. Application CI status information will be fetched from this instance if, and only if, the Backstage entity has the `jenkins.io/job-full-name` annotation.
+. The parameters passed in the format `${VARIABLE_NAME}` are defined in the {openshift_console_url}/k8s/ns/tssc-dh/secrets/tssc-developer-hub-env[tssc-developer-hub-env Secret^] that's loaded per the {openshift_console_url}/k8s/ns/tssc-dh/rhdh.redhat.com~v1alpha3~Backstage/developer-hub/yaml[Backstage CR definition^].
+
+NOTE: If you'd like a deep-dive on plugins and the Backstage CR, visit the *Setup {product_rhdh_name}* module.
+
+== Integrating Secure Software Supply Chain in Jenkins CI
+
+Creating a new Software Template and related skeleton code from scratch is beyond the scope of this module; instead we'll review a template provided by {product_tssc_name} and use it to test the Jenkins CI integration with {product_rhdh_name}.
+
+=== Viewing the Software Template
+
+The template is already loaded into your environment. Find it and view the backing source code:
+
+. View the Template in the {rhdh_url}/create?filters%5Bkind%5D=template&filters%5Btext%5D=jenkins&filters%5Buser%5D=all&limit=20[{product_rhdh_name} Self-Service screen^].
+. Click on the _Show template entity details_ icon.
++
+image::third-party-ci/rhdh-view-template.png[Show template entity details]
+. Click the *View Source* link on the template entity's overview screen. 
++
+You'll be directed to a repository that contains the _template.yaml_ that defines the parameters collected, and actions performed by the template. Additionally it contains a _skeleton_ directory with source files that will be used to generate a new application when a developer uses the template in {product_rhdh_name}.
++
+image:third-party-ci/rhdh-jenkins-tpl-repo.png[Jenkins Template GitLab Repository]
++
+NOTE: To learn more about Software Templates and their implementation, visit the *Setup {product_rhdh_name}* and *End-to-End: Production-Ready Development Lifecycle* modules.
+
+In summary, this _template.yaml_ defines a Software Template that collects parameters to scaffold a new Quarkus-based Java application that stores source code in GitLab and built container images in Quay. Additionally it has a toggle to enable commit signing, an element of a secure software pipeline.
+
+=== Inspect the Jenkins Push Pipeline
+
+. In GitLab, open the _skeleton_ directory, and select the _Jenkinsfile.push_ file.
++
+This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template.
++ Notably, this Jenkinsfile defines an execution environment using a container that's run on OpenShift (`agent > kubernetes`).
++
+The specified image, `quay.io/jkopriva/rhtap-jenkins-agent:`, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script] creates a builds container image and generates the SBOM.
+. Scroll down to the `environment` block. Dod you notice that it references the credentials you viewed earlier?
+. Examine the `mvn package` stage. Looks pretty standard right?
+. Scroll down a little more and you'll see that the `init` and `build` stages use the shared *rhtap* functions to implement aspects of the secure pipeline.
+
+There are two more Jenkinsfiles in the template repository. Each with a different purpose:
+
+// ADS content: https://github.com/rhpds/showroom-ads-workshop/blob/main/content/modules/ROOT/pages/jenkins-dev.adoc
+* *Jenkinsfile.push*: Triggered on Code Commits: Activates when you commit and push code changes to your repository. Runs development pipeline with build, test, and security scanning. Performs continuous integration validation for development workflow.
+* *Jenkinsfile.tag*: Triggered on Git Tags: Activates when you create a Git tag on a branch in your repository. Runs staging pipeline for release candidate validation. Prepares artifacts for staging environment deployment.
+* *Jenkinsfile.release* - Triggered on GitLab Releases: Activates when you create a release from an existing tag. Runs production pipeline with enhanced security validation. Deploys verified artifacts to production environment.
+
+Each pipeline includes comprehensive security features: cryptographic commit verification and image signing, https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/1.5/html-single/managing_compliance_with_enterprise_contract/index#con_enterprise-contract-for-rhtap_enterprise_contract-rhtap[Enterprise Contract^] policy enforcement, Software Bill of Materials (SBOM) generation, and Red Hat Advanced Cluster Security scanning.
+
+=== Modify the Jenkinsfile
+
+Let's make a minor edit to the _Jenkinsfile.push_ to see how it impacts the overall software template. This action would typically be performed by a Platform Engineer.
+
+. Open the {gitlab_url}rhdh/tssc-developer-hub-configuration/-/blob/main/scaffolder-templates/quarkus-stssc-jenkins-template/skeleton/Jenkinsfile.push[Jenkinsfile.push] file.
+. Click *Edit > Edit single file* at the top of the file. Login as `root` using the password `{gitlab_user_password}` if prompted.
+. Modify the file by adding a new _stage_ with a single _step_ directly between the the `verify-commit` and `mvn package` stages:
++
+[source,jenkinsfile,role=execute]
+----
+stage('print commit details') {
+    steps {
+        // Print the committer and timestamp of the commit in the build logs
+        sh 'git log -1 --pretty=format:"By %ae on %ad"'
+    }
+}
+----
++
+The end result will resemble this image.
++
+image:third-party-ci/rhdh-jenkins-tpl-modified.png[Modified Jenkinsfile.push]
+. Commit the changes by clicking the *Commit changes* button.
+
+== Create Signed Commits and Verify the Jenkins Pipeline
+
+=== Use your Jenkins-based Software Template
+
+. Return to the {rhdh_url}/create[{product_rhdh_name} Self-service UI^].
+. Click *Choose* on the *Securing a Quarkus Service Software Supply Chain (Jenkins)* tile.
+. On the *Provide Information for Application*, change the *Name* to:
++
+[source,bash,role=execute]
+----
+ssc-jenkins-sample
+----
+. Accept the default values on the *Provide Image Registry Information* screen.
+. Enable commit verification on the *Application repository Information* screen.
+. Confirm that your parameters match those displayed in the following image.
++
+image:production-rhdh/rhdh-jenkins-params.png[Jenkins Template Parameters]
+. Click *Create* and wait for the template to finish processing.
++
+image:production-rhdh/rhdh-jenkins-ssc-created.png[Jenkins Template Run]
+
+=== Test & Verify the Secure Jenkins Pipeline
+
+WARNING: Prior to following these steps, make sure you're not signed into the OpenShift Cluster as the `admin` user. Visit the {openshift_console_url}[OpenShift Web Console^], click the dropdown in the top-right to logout.
+
+. Click the *Open Component in catalog* link from the prior section, or visit the *Catalog* in {product_rhdh_name} and select your new *ssc-jenkins-sample* component.
+. Use the link on the overview to launch *OpenShift Dev Spaces (VS Code)*:
+  * This will start a process that launches a Cloud Development Environment (CDE).
+  * When prompted login as `{rhdh_user}` using the password `{rhdh_user_password}`.
+  * Authorize the GitLab login too, being sure to use `{gitlab_user}` and `{gitlab_user_password}` if prompted.
+  * Wait for the workspace to load.
+. Once the workspace is loaded, accept the popups asking to trust and load plugins and publishers.
+. Click on the _README.md_ file and make a small change, then use the menu icon in the top-left to launch a terminal as shown.
++
+image:third-party-ci/rhdh-jenkins-launch-term.png[Launch a Terminal in VSCode]
+. In the terminal run the following commands to add and commit your change:
++
+[source,bash,role=execute]
+----
+git add .
+git commit -m "doc: update the readme"
+----
+. You'll be prompted to follow a link to obtain a verification code to sign the commit. Click the link, and copy the code it displays.
+. Return to the terminal in Dev Spaces and paste the code.
++
+WARNING: If your browser requests access to copy/paste functionality make sure to click allow.
+. Press `Enter`/`Return` to sign the commit.
++
+image:third-party-ci/rhdh-jenkins-sign-commit.png[Commit Signing Link]
+. Push the commit using the `git push` command.
+
+=== Inspect the Jenkins Build
+
+Time to verify that your platform engineering efforts are reflected in the resulting builds. To do this you'll view the build output directly in Jenkins.
+
+. Return to the {rhdh_url}/catalog/default/component/ssc-jenkins-sample/ci[CI tab for your *ssc-jenkins-sample* application^] in {product_rhdh_name}.
+. A new *maven-build-ci* should be in progress. Click the *View build* (eye) icon.
++ 
+image:third-party-ci/rhdh-jenkins-view-build.png[View Build Icon for Jenkins]
+. Click the *Open Blue Ocean* link in the Jenkins UI - this displays a visual representation of each step of the build.
+. Select the *print-commit-details* node, and then click the arrow next to the displayed command to view the output.
++
+image:third-party-ci/rhdh-jenkins-blue-ocean.png[Jenkins Blue Ocean View]
+
+And just like that, you've learned how to modify and use the Jenkins-based secure software supply chain template so all developers can benefit from it.
+
+== Conclusion
+
+Nice work! You've learned how other CI systems can be integrated with {product_rhdh_name} and {product_tssc_name}. The {gitlab_url}/rhdh/tssc-sample-jenkins/-/tree/main/resources?ref_type=heads[scripts in the Jenkins module^] are portable to environments such as GitLab CI and GitHub Actions Try {gitlab_url}/development/ssc-jenkins-sample/-/tags[creating a new tag^] for your application and observing the tag promotion pipeline in action.

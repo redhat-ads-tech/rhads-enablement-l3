@@ -146,10 +146,12 @@
     "trustify",
     "untar",
     "GUAC",
-    "workflowdata"
+    "workflowdata",
+    "buildah"
   ],
   "ignoreWords": [
     "sysout",
+    "jkopriva",
     "adoc",
     "xref",
     "ifndef",
@@ -174,7 +176,8 @@
     "roxctl",
     "PYTHONDONTWRITEBYTECODE",
     "PYTHONUNBUFFERED",
-    "langgraph"
+    "langgraph",
+    "Jenkinsfiles"
   ],
   "ignorePaths": [
     "node_modules/**",
