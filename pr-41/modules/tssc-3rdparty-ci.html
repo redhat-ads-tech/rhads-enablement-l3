@@ -409,8 +409,12 @@
 </div>
 </li>
 <li>
-<p>Expand the <strong>Jenkins Admin</strong> menu and select <strong>Credentials</strong>.
-image::third-party-ci/rhdh-jenkins-admin-menu.png[The Jenkins Admin Menu]</p>
+<p>Expand the <strong>Jenkins Admin</strong> menu and select <strong>Credentials</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/third-party-ci/rhdh-jenkins-admin-menu.png" alt="The Jenkins Admin Menu">
+</div>
+</div>
 </li>
 <li>
 <p>Verify that the listed credentials match those shown.</p>
@@ -527,26 +531,19 @@ If you&#8217;d like a deep-dive on plugins and the Backstage CR, visit the <stro
 </li>
 <li>
 <p>Click the <strong>View Source</strong> link on the template entity&#8217;s overview screen.</p>
+</li>
+</ol>
+</div>
 <div class="paragraph">
 <p>You&#8217;ll be directed to a repository that contains the <em>template.yaml</em> that defines the parameters collected, and actions performed by the template. Additionally it contains a <em>skeleton</em> directory with source files that will be used to generate a new application when a developer uses the template in Red Hat Developer Hub.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="_images/third-party-ci/rhdh-jenkins-tpl-repo.png" alt="Jenkins Template GitLab Repository"></span></p>
+<p>+
+<span class="image"><img src="_images/third-party-ci/rhdh-jenkins-tpl-repo.png" alt="Jenkins Template GitLab Repository"></span></p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-To learn more about Software Templates and their implementation, visit the <strong>Setup Red Hat Developer Hub</strong> and <strong>End-to-End: Production-Ready Development Lifecycle</strong> modules.
-</td>
-</tr>
-</table>
-</div>
-</li>
-</ol>
+<div class="paragraph">
+<p>+
+NOTE: To learn more about Software Templates and their implementation, visit the <strong>Setup Red Hat Developer Hub</strong> and <strong>End-to-End: Production-Ready Development Lifecycle</strong> modules.</p>
 </div>
 <div class="paragraph">
 <p>In summary, this <em>template.yaml</em> defines a Software Template that collects parameters to scaffold a new Quarkus-based Java application that stores source code in GitLab and built container images in Quay. Additionally it has a toggle to enable commit signing, an element of a secure software pipeline.</p>
@@ -563,11 +560,11 @@ To learn more about Software Templates and their implementation, visit the <stro
 + Notably, this Jenkinsfile defines an execution environment using a container that&#8217;s run on OpenShift (<code>agent &gt; kubernetes</code>).</p>
 </div>
 <div class="paragraph">
-<p>The specified image, <code>quay.io/jkopriva/rhtap-jenkins-agent:</code>, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script] creates a builds container image and generates the SBOM.</p>
+<p>The specified image, <code>quay.io/jkopriva/rhtap-jenkins-agent</code>, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script] creates a builds container image and generates the SBOM.</p>
 </div>
 </li>
 <li>
-<p>Scroll down to the <code>environment</code> block. Dod you notice that it references the credentials you viewed earlier?</p>
+<p>Scroll down to the <code>environment</code> block. Did you notice that it references the credentials you viewed earlier in the Jenkins Admin UI?</p>
 </li>
 <li>
 <p>Examine the <code>mvn package</code> stage. Looks pretty standard right?</p>
@@ -667,13 +664,13 @@ To learn more about Software Templates and their implementation, visit the <stro
 <li>
 <p>Confirm that your parameters match those displayed in the following image.</p>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="production-rhdh/rhdh-jenkins-params.png" alt="Jenkins Template Parameters"></span></p>
+<p><span class="image"><img src="_images/third-party-ci/rhdh-jenkins-params.png" alt="Jenkins Template Parameters"></span></p>
 </div>
 </li>
 <li>
 <p>Click <strong>Create</strong> and wait for the template to finish processing.</p>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="production-rhdh/rhdh-jenkins-ssc-created.png" alt="Jenkins Template Run"></span></p>
+<p><span class="image"><img src="_images/third-party-ci/rhdh-jenkins-ssc-created.png" alt="Jenkins Template Run"></span></p>
 </div>
 </li>
 </ol>
