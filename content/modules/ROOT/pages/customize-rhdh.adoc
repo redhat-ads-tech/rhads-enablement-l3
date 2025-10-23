@@ -13,7 +13,7 @@ This module explains how to change the title and logo of the {product_rhdh_name}
 While more advanced project requirements might https://backstage.io/docs/conf/user-interface/#theming-architecture-overview[replace the entire theme^] with a custom provider or providers, this module focuses on the more common deployment task of modifying the included theme with visual elements that suit a company, brand, or team style.
 // "this code will create a simple functional home page": 3570 lines of YAML
 //
-//  Some reluctance to include above link to backstageio theme doc bc
+//  Some reluctance to include above link to backstage theme doc bc
 // our theme engine is JS MUI, labeled LEGACY right up top above the fold
 
 == Per-User Appearance Settings
@@ -45,9 +45,9 @@ In the Developer Hub app-config, you can customize theme components including:
 * Header color and gradient
 
 This module shows how to change the display title and logo to illustrate the procedure for customizing {product_rhdh_name} appearance. The setup-rhdh/foundations.html[Setup RHDH^] module uses the same method to configure functional aspects of a {product_rhdh_name} instance, like access control and plugin settings.
-//todone: check: intra-linking - is there a better notation? I'm just ~guessing the file ext .html and using any-ol external link notation
+//check: intra-linking - is there a better notation? I'm just ~guessing the file ext .html and using any-ol external link notation
 
-//todone: check: Removed sentence about icon logo (vs fullLogo).
+//check: Removed sentence about icon logo (vs fullLogo).
 // I think we don't load the icon logo in later versions.
 // Viz the dev hub deployed in the tssc-dh proj
 
@@ -113,7 +113,7 @@ In the OpenShift Web Console, Administrator perspective, select *Workloads* to e
 Click the *Create ConfigMap* button at top right.
 In the presented text entry field, delete the provided YAML skeleton entirely.
 
-Copy the complete ConfigMap declaration from  _<<Appendix A>>_ at the bottom of this page. The explanation of the keys above is abrigded for readability.
+Copy the complete ConfigMap declaration from  _<<Appendix A>>_ at the bottom of this page. The explanation of the keys above is abridged for readability.
 
 Paste the copied ConfigMap YAML into the empty text field, then click *Create* to commit your `brand-rhdh` ConfigMap.
 
@@ -219,7 +219,7 @@ The TechDocs feature is installed by default with Red Hat Developer Hub. TechDoc
 
 This is the complete ConfigMap definition including an embedded logo image. Used in § _<<Procedure: Create the ConfigMap>>_
 
-[source,yaml]
+[source,yaml,role=execute,subs=attributes+]
 ----
 apiVersion: v1
 kind: ConfigMap
