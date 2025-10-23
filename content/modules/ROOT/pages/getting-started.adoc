@@ -2,7 +2,7 @@
 
 == Why Red Hat Advanced Developer Suite?
 
-Organizations face a critical challenge: accelerating development with AI while securing against rising software supply chain threats. Despite open-source components comprising 90% of modern applications, malicious packages increased 156% year-on-year, causing an estimated $60 billion in damages in 2025. This environment demands an integrated platform engineering solution like https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-developer-suite[Red Hat Advanced Developer Suite (RHADS)^] to balance speed and security.
+Organizations face a critical challenge: accelerating development with AI while securing against rising software supply chain threats. Despite open-source components comprising 90% of modern applications, malicious packages increased 156% year-on-year, causing an estimated $60 billion in damages in 2025. This environment demands an integrated platform engineering solution like https://www.redhat.com/en/products/advanced-developer-suite[Red Hat Advanced Developer Suite (RHADS)^] to balance speed and security.
 
 RHADS combines platform engineering tools with enhanced security capabilities to help accelerate and simplify application development with new enhancements to speed the adoption of AI:
 
@@ -163,7 +163,7 @@ a| *https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub^]
 | Self-Managed OpenShift and Managed OpenShift Cloud Services deployments
 a| * RHADS is designed as an add-on offering for https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift^] and https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus[OpenShift Platform Plus^] and can be deployed wherever OpenShift is deployed, including on-premises, private cloud, and public cloud environments.
 * RHADS can also be sold and deployed on bare metal OpenShift clusters exclusively.
-* Furthermore, https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-developer-suite[Red Hat Advanced Developer Suite^] can be deployed on non-OpenShift Kubernetes platforms, and customers can purchase it on a per-core or per-user basis for these environments.
+* Furthermore, https://www.redhat.com/en/products/advanced-developer-suite[Red Hat Advanced Developer Suite^] can be deployed on non-OpenShift Kubernetes platforms, and customers can purchase it on a per-core or per-user basis for these environments.
 
 |===
 
