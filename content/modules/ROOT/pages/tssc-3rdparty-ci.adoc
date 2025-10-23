@@ -32,6 +32,7 @@ Verify that the necessary credentials and TSSC component endpoints have been con
     * Username: `admin`
     * Password: `{rhdh_user_password}`
 . Expand the *Jenkins Admin* menu and select *Credentials*.
++
 image::third-party-ci/rhdh-jenkins-admin-menu.png[The Jenkins Admin Menu]
 . Verify that the listed credentials match those shown.
 +
@@ -75,7 +76,7 @@ The template is already loaded into your environment. Find it and view the backi
 +
 image::third-party-ci/rhdh-view-template.png[Show template entity details]
 . Click the *View Source* link on the template entity's overview screen. 
-+
+
 You'll be directed to a repository that contains the _template.yaml_ that defines the parameters collected, and actions performed by the template. Additionally it contains a _skeleton_ directory with source files that will be used to generate a new application when a developer uses the template in {product_rhdh_name}.
 +
 image:third-party-ci/rhdh-jenkins-tpl-repo.png[Jenkins Template GitLab Repository]
@@ -91,8 +92,8 @@ In summary, this _template.yaml_ defines a Software Template that collects param
 This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template.
 + Notably, this Jenkinsfile defines an execution environment using a container that's run on OpenShift (`agent > kubernetes`).
 +
-The specified image, `quay.io/jkopriva/rhtap-jenkins-agent:`, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script] creates a builds container image and generates the SBOM.
-. Scroll down to the `environment` block. Dod you notice that it references the credentials you viewed earlier?
+The specified image, `quay.io/jkopriva/rhtap-jenkins-agent`, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script] creates a builds container image and generates the SBOM.
+. Scroll down to the `environment` block. Did you notice that it references the credentials you viewed earlier in the Jenkins Admin UI?
 . Examine the `mvn package` stage. Looks pretty standard right?
 . Scroll down a little more and you'll see that the `init` and `build` stages use the shared *rhtap* functions to implement aspects of the secure pipeline.
 
@@ -144,10 +145,10 @@ ssc-jenkins-sample
 . Enable commit verification on the *Application repository Information* screen.
 . Confirm that your parameters match those displayed in the following image.
 +
-image:production-rhdh/rhdh-jenkins-params.png[Jenkins Template Parameters]
+image:third-party-ci/rhdh-jenkins-params.png[Jenkins Template Parameters]
 . Click *Create* and wait for the template to finish processing.
 +
-image:production-rhdh/rhdh-jenkins-ssc-created.png[Jenkins Template Run]
+image:third-party-ci/rhdh-jenkins-ssc-created.png[Jenkins Template Run]
 
 === Test & Verify the Secure Jenkins Pipeline
 
