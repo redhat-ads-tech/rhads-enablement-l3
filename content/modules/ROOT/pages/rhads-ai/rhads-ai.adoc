@@ -45,7 +45,7 @@ Red Hat OpenShift Dev Spaces integrates with different extensions that allow Sof
 
 
 
-An example can be seen in the link:https://developers.redhat.com/articles/2024/08/12/integrate-private-ai-coding-assistant-ollama#the_devfile_and_how_it_works[Integrate a private AI coding assistant into your CDE using Ollama, Continue, and OpenShift Dev Spaces,window='_blank'] blogpost.
+An example can be seen in the link:https://developers.redhat.com/articles/2024/08/12/integrate-private-ai-coding-assistant-ollama#the_devfile_and_how_it_works[Integrate a private AI coding assistant into your CDE using Ollama, Continue, and OpenShift Dev Spaces,window='_blank'] blog post.
 
 
 == Introduction to Llama Stack Operator
