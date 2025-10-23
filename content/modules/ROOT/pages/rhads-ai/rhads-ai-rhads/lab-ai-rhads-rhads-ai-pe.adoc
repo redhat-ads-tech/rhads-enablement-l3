@@ -360,6 +360,11 @@ image:rhads-ai/rhads/gitlab-open.png[width=100%]
 
 [source,bash,role=execute,subs=attributes+]
 ----
+        - name: MODEL_NAME
+          valueFrom:
+            secretKeyRef:
+              name: ai-agent-secrets-llm
+              key: MODEL_NAME
         - name: LLM_API_BASE_URL
           valueFrom:
             secretKeyRef:
