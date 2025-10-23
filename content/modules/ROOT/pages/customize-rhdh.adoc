@@ -203,6 +203,22 @@ It can take a few minutes for a new deployment to completely roll out.
 // The same technique can be employed to set a custom baseURL in your app-config ConfigMap,
 // after arranging DNS and/or cluster resolution of the custom name to the Service
 
+=== Visit your {product_rhdh_name} Instance
+
+Access your {product_rhdh_name} deployment using the https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] established by the RHDH Operator:
+
+. Select *Networking > Routes* from the OpenShift Web Console's right-hand navigation.
+. Check that your *brand-rhdh* project is selected in the project selector.
+. Click the URL in the *Location* column on the *Routes* page. You should be presented with the {product_rhdh_name} sign-in dialog.
++
+NOTE: If an *Application is not available* message is displayed when you click the Location, wait another 1-2 minutes. It can take some time for the pod readiness check to pass after a pod restart.
++
+. Select *Guest* to log in with just enough privilege to see the results of your title and logo customizations.
+
+image::customize-rhdh/brand-rhdh-logo.png[]
+
+
+
 == Tech Docs
 
 The TechDocs feature is installed by default with Red Hat Developer Hub. TechDocs provides a central and standardized system for creating, finding, and reading technical documentation.
