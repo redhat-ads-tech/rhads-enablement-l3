@@ -2,7 +2,7 @@
 
 Red Hat's customers have varied requirements, including the need to integrate third party continuous integration (CI) systems with OpenShift, {product_rhdh_name}, and {product_tssc_name} (TSSC). Not all customers are ready to replace their existing CI with cloud-native CI based on OpenShift Pipelines (Tekton).
 
-Given Jenkins immense presence within enterprise environments, in this module we'll review an example that demonstrates how to implement TSSC using Jenkins as the CI provider. The scripts and implementation seen throughout this module can be adapted to alternative providers such as GitHub Actions and GitLab CI.
+Given Jenkins immense presence within enterprise environments, in this module we'll review an example that demonstrates how to implement TSSC using Jenkins as the CI provider. The scripts and implementation seen throughout this module can be adapted to alternative providers such as *GitHub Actions*, *Azure DevOps* and *GitLab CI* - plugins are also available for these platforms to connect to {product_rhdh_name}.
 
 // Lifted from ADS workshop
 It makes sense to take this approach for:
