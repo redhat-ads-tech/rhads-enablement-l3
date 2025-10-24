@@ -51,7 +51,7 @@ This module shows how to change the display title and logo to illustrate the pro
 // I think we don't load the icon logo in later versions.
 // Viz the dev hub deployed in the tssc-dh proj
 
-== Lab: Deploying {product_rhdh_name} with Custom Title and Logo
+== Lab
 
 At the overview level, specifying a title and logo for your {product_rhdh_name} takes 3 primary steps:
 First, you'll create a _Project_ (a namespace) for your custom RHDH instance. In that Project you'll create a _ConfigMap_ to store instance configuration, including an embedded image. Then, you'll create a short _CustomResource_ to define the RHDH instance you'd like the cluster to create and manage.
