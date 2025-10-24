@@ -258,16 +258,3 @@ When this is completed, the application running in the production deployment wil
 
 This is an opinionated but thorough and secure approach provided directly by the template instantiated through the 
 {product_rhdh_name} portal; we have automated and secured all the phases of development through to production.
-
-
-
-
-
-
-
-
-
-
-
-
-
