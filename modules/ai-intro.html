@@ -360,7 +360,7 @@ Before making recommendations or choosing an approach, you must learn critical c
 </div>
 </div>
 <div class="paragraph">
-<p>Platform Engineers build and maintain OpenShift, an application platform that provides foundational technologies with the necessary tools to support MLOps and AIOps engineers in efficiently deploying models to production while following best practices. Then, AI Engineers will build AI applications using the deployed LLMs that the Data Scientists first trained and built.</p>
+<p>Platform Engineers build and maintain ACME&#8217;s Application PLatform: OpenShift. An application platform that provides foundational technologies with the necessary tools to support MLOps and AIOps engineers efficiently deploy models to production while following best practices. Then, AI Engineers will build AI applications using the deployed large language models (LLMs) that the Data Scientists first trained and built.</p>
 </div>
 <div class="paragraph">
 <p>In the next sections, you will explore core AI concepts around AI applications, including standards, frameworks and protocols.</p>
@@ -371,23 +371,23 @@ Before making recommendations or choosing an approach, you must learn critical c
 <h2 id="_overview_of_retrieval_augmented_generation_rag"><a class="anchor" href="#_overview_of_retrieval_augmented_generation_rag"></a>Overview of Retrieval-Augmented Generation (RAG)</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Organizations seek to integrate AI into their software ecosystems to drive business value. To achieve this, AI applications must be capable of understanding technical concepts specific to the industries and organizations.</p>
+<p>Organizations seek to integrate AI into their software ecosystems to drive business value. To achieve this, AI applications must be capable of understanding technical concepts specific to their industry and organization.</p>
 </div>
 <div class="paragraph">
-<p>Foundational models are enhanced using Retrieval-Augmented Generation (RAG) techniques to improve large language models (LLMs) output with domain-specific business knowledge, such as information about bank-specific products or customer loyalty programs.</p>
+<p>Foundational models are enhanced using Retrieval-Augmented Generation (RAG) techniques to improve the LLM&#8217;s output with domain-specific business knowledge, such as information about bank-specific products or customer loyalty programs.</p>
 </div>
 <div class="paragraph">
-<p>A potential use case is a chatbot trained on a bank&#8217;s products and services, enabling it to provide customers with the product and services information when they are looking to open a bank account or explore additional financial products.</p>
+<p>A potential use case is a RAG-enabled chatbot that can query information related to ACME bank&#8217;s products and services. This enables the chatbot to provide customers with product and services information when they are looking to open a bank account or explore additional financial products.</p>
 </div>
 <div class="sect2">
 <h3 id="_how_does_rag_work"><a class="anchor" href="#_how_does_rag_work"></a>How does RAG work?</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Data Collection:</strong> Data is collected from both structured (databases) and unstructured data (documents, marketing materials, blogs). This process can be accomplished asynchronously to keep the system up to date with the latest sources.</p>
+<p><strong>Data Collection:</strong> Data is collected from both structured (databases) and unstructured data (documents, marketing materials, blogs). This process can be accomplished asynchronously to keep the system up to date with the latest sources. Think of this as an ETL process, but with a specialized step to convert data into a format the LLM can query.</p>
 </li>
 <li>
-<p><strong>Embedding system:</strong> Once the user submits a question, an intermediary system converts it into a numerical representation (embedding).</p>
+<p><strong>Embedding system:</strong> Once the user submits a question, an intermediary system converts it into a numerical representation (embedding) - this allows it to be compared to the existing data.</p>
 </li>
 <li>
 <p><strong>Retrieval:</strong> The system compares the resulting embedding against the data sources looking for similarities in content.</p>
@@ -396,7 +396,7 @@ Before making recommendations or choosing an approach, you must learn critical c
 <p><strong>Augmentation:</strong> This retrieved context and the question will be creating an augmented prompt to be sent to the LLM for processing.</p>
 </li>
 <li>
-<p><strong>Generation:</strong> The LLM will generate a response back to the user.</p>
+<p><strong>Generation:</strong> The LLM will generate a response for the user.</p>
 </li>
 </ol>
 </div>
@@ -431,7 +431,7 @@ Before making recommendations or choosing an approach, you must learn critical c
 <h2 id="_ai_agents"><a class="anchor" href="#_ai_agents"></a>AI Agents</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Agents are applications that, on behalf of the user and autonomously, will execute actions according to specific prompts using LLMs and third-party tools such as websites, databases.</p>
+<p>Agents are applications that, on behalf of the user and autonomously, execute actions according to specific prompts using LLMs and third-party tools such as websites, databases, and APIs.</p>
 </div>
 <div class="sect2">
 <h3 id="_ai_agents_vs_ai_workflows"><a class="anchor" href="#_ai_agents_vs_ai_workflows"></a>AI Agents vs AI workflows</h3>
@@ -439,7 +439,7 @@ Before making recommendations or choosing an approach, you must learn critical c
 <p>An AI workflow is a predefined series of steps to accomplish several tasks with one or many goals, including AI for logic or decision making based on previous information or specific parameters.</p>
 </div>
 <div class="paragraph">
-<p>Agents can make decisions and reasoning to achieve a specific outcome without a clear path. So, Agents do not need the predefined steps or sequences as the workflow needs and it could help solve different use cases.</p>
+<p>Agents can make decisions and use reasoning to achieve a specific outcome without a clear path. So, Agents do not need the predefined steps or sequences a workflow needs and can therefore solve varying cases.</p>
 </div>
 <div class="paragraph">
 <p>For example, an AI workflow could be deciding if bank customers should be managed by different services/departments based on certain information, credit check, salary range, etc.
@@ -452,9 +452,8 @@ The AI agent can process complex information and make decisions accordingly.</p>
 <div class="paragraph">
 <p>AI Agent Frameworks help developers to build AI agents by reducing boilerplate code, standardizing building blocks to be reused during agent implementation.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_benefits_2"><a class="anchor" href="#_benefits_2"></a>Benefits</h3>
+<div class="sect3">
+<h4 id="_benefits_2"><a class="anchor" href="#_benefits_2"></a>Benefits</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -469,28 +468,27 @@ The AI agent can process complex information and make decisions accordingly.</p>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_agent_protocols"><a class="anchor" href="#_agent_protocols"></a>Agent Protocols</h3>
-
 </div>
 <div class="sect2">
-<h3 id="_agent2agenta2a"><a class="anchor" href="#_agent2agenta2a"></a>Agent2Agent(A2A)</h3>
+<h3 id="_agent_protocols"><a class="anchor" href="#_agent_protocols"></a>Agent Protocols</h3>
+<div class="sect3">
+<h4 id="_agent2agent_a2a"><a class="anchor" href="#_agent2agent_a2a"></a>Agent2Agent (A2A)</h4>
 <div class="paragraph">
-<p>Agent2Agent is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. Provides security and agent discovery using Agent cards to access detailed information about an agent.</p>
+<p><a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/" target="_blank" rel="noopener">Agent2Agent</a> is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. The protocol supports standard security protocols, and enables agent discovery using Agent Cards to access detailed information about a available agents.</p>
 </div>
 <div class="paragraph">
 <p>This is one of the most well-known agent protocols within their respective domains. While there are other competing protocols, these represent the current leading standards. Red Hat is not backing a specific protocol, but watching the market and will continually evaluate each protocol for market efficacy.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_overview_model_context_protocol_mcp"><a class="anchor" href="#_overview_model_context_protocol_mcp"></a>Overview Model Context Protocol (MCP)</h3>
+<div class="sect3">
+<h4 id="_model_context_protocol_mcp"><a class="anchor" href="#_model_context_protocol_mcp"></a>Model Context Protocol (MCP)</h4>
 <div class="paragraph">
-<p>Model Context Protocol is an open protocol, created by Anthropic. It provides a standardized way to build AI agents and AI workflows. It defines how applications can call external tools, retrieve data, and interact with other systems to enhance their capabilities.
-MCP provides MCP clients and MCP servers. Developers can use MCP servers to enhance their applications by building functionalities that later will serve MPC clients that any AI applications will consume.</p>
+<p><a href="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener">Model Context Protocol</a> is an open protocol, created by <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener">Anthropic</a>. It provides a standardized way for AI agents to expose and interact with tools and data sources, making it easier to build AI agents, workflows, and applications. It defines how applications can call external tools, retrieve data, and interact with other systems to enhance their capabilities.
+MCP provides defines both MCP clients and MCP servers. Developers can use MCP servers to enhance their applications by building functionalities that later will serve MCP clients that any AI applications will consume.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_benefits_3"><a class="anchor" href="#_benefits_3"></a>Benefits</h3>
+<div class="sect3">
+<h4 id="_benefits_3"><a class="anchor" href="#_benefits_3"></a>Benefits</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -508,6 +506,7 @@ MCP provides MCP clients and MCP servers. Developers can use MCP servers to enha
 </div>
 <div class="paragraph">
 <p><a href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener">Model Context Protocol- Anthropic website</a></p>
+</div>
 </div>
 </div>
 </div>
@@ -599,13 +598,10 @@ MCP provides MCP clients and MCP servers. Developers can use MCP servers to enha
 <p><a href="https://llama-stack.readthedocs.io/en/latest/" target="_blank" rel="noopener">Llama Stack</a></p>
 </li>
 <li>
-<p><a href="https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai" target="_blank" rel="noopener">blog AI Agents</a></p>
+<p><a href="https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai" target="_blank" rel="noopener">Enterprise-Ready AI Agents Blog (Red Hat)</a></p>
 </li>
 <li>
-<p><a href="https://www.redhat.com/en/topics/ai/what-is-agentic-ai?intcmp=7013a000003Sq0iAAC" target="_blank" rel="noopener">What&#8217;s Agentic AI</a></p>
-</li>
-<li>
-<p><a href="https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai" target="_blank" rel="noopener">AI Agents</a></p>
+<p><a href="https://www.redhat.com/en/topics/ai/what-is-agentic-ai?intcmp=7013a000003Sq0iAAC" target="_blank" rel="noopener">What is Agentic AI (Red Hat)</a></p>
 </li>
 <li>
 <p><a href="https://a2a-protocol.org/latest/specification/" target="_blank" rel="noopener">A2A</a></p>
