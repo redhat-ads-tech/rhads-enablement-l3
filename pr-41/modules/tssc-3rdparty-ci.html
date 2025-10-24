@@ -336,7 +336,7 @@
 <p>Red Hat&#8217;s customers have varied requirements, including the need to integrate third party continuous integration (CI) systems with OpenShift, Red Hat Developer Hub, and Trusted Software Supply Chain (TSSC). Not all customers are ready to replace their existing CI with cloud-native CI based on OpenShift Pipelines (Tekton).</p>
 </div>
 <div class="paragraph">
-<p>Given Jenkins immense presence within enterprise environments, in this module we&#8217;ll review an example that demonstrates how to implement TSSC using Jenkins as the CI provider. The scripts and implementation seen throughout this module can be adapted to alternative providers such as <strong>GitHub Actions</strong>, <strong>Azure DevOps</strong> and <strong>GitLab CI</strong> - plugins are also available for these platforms to connect to Red Hat Developer Hub.</p>
+<p>Given Jenkins' immense presence within enterprise environments, in this module we&#8217;ll review an example that demonstrates how to implement TSSC using Jenkins as the CI provider. The scripts and implementation seen throughout this module can be adapted to alternative providers such as <strong>GitHub Actions</strong>, <strong>Azure DevOps</strong> and <strong>GitLab CI</strong> - plugins are also available for these platforms to connect to Red Hat Developer Hub.</p>
 </div>
 <div class="paragraph">
 <p>It makes sense to take this approach for:</p>
@@ -369,7 +369,7 @@
 <p>Integrate enterprise security into existing Jenkins pipelines</p>
 </li>
 <li>
-<p>Experience enhanced Jenkins with automatic security scanning and signing</p>
+<p>Enhance Jenkins pipelines with automatic security scanning and signing</p>
 </li>
 <li>
 <p>Understand GitOps deployment from Jenkins-based CI/CD</p>
@@ -487,7 +487,7 @@ The Jenkins plugins are in <a href="https://docs.redhat.com/en/documentation/red
 <p>Scroll down. You&#8217;ll see that it specifies a single instance under the <code>jenkins</code> configuration key. Application CI status information will be fetched from this instance if, and only if, the Backstage entity has the <code>jenkins.io/job-full-name</code> annotation.</p>
 </li>
 <li>
-<p>The parameters passed in the format <code>${VARIABLE_NAME}</code> are defined in the {openshift_console_url}/k8s/ns/tssc-dh/secrets/tssc-developer-hub-env[tssc-developer-hub-env Secret^] that&#8217;s loaded per the {openshift_console_url}/k8s/ns/tssc-dh/rhdh.redhat.com<sub>v1alpha3</sub>Backstage/developer-hub/yaml[Backstage CR definition^].</p>
+<p>The parameters passed in the format <code>${VARIABLE_NAME}</code> are defined in the {openshift_console_url}/k8s/ns/tssc-dh/secrets/tssc-developer-hub-env[tssc-developer-hub-env Secret^] that&#8217;s loaded per the {openshift_console_url}/k8s/ns/tssc-dh/rhdh.redhat.com~v1alpha3~Backstage/developer-hub/yaml[Backstage CR definition^].</p>
 </li>
 </ol>
 </div>
@@ -498,7 +498,9 @@ The Jenkins plugins are in <a href="https://docs.redhat.com/en/documentation/red
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you&#8217;d like a deep-dive on plugins and the Backstage CR, visit the <strong>Setup Red Hat Developer Hub</strong> module.
+<div class="paragraph">
+<p>If you&#8217;d like a deep-dive on plugins and the Backstage CR, visit the <a href="setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> module.</p>
+</div>
 </td>
 </tr>
 </table>
@@ -519,7 +521,7 @@ If you&#8217;d like a deep-dive on plugins and the Backstage CR, visit the <stro
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>View the Template in the {rhdh_url}/create?filters%5Bkind%5D=template&amp;filters%5Btext%5D=jenkins&amp;filters%5Buser%5D=all&amp;limit=20[Red Hat Developer Hub Self-Service screen^].</p>
+<p>View the Template in the {rhdh_url}/create?filters%5Bkind%5D=template&amp;filters%5Btext%5D=jenkins&amp;filters%5Buser%5D=all&amp;limit=20[Red Hat Developer Hub Self-Service screen^]. If needed, login as <code>{rhdh_user}</code> using the password <code>{rhdh_user_password}</code>.</p>
 </li>
 <li>
 <p>Click on the <em>Show template entity details</em> icon.</p>
@@ -531,22 +533,33 @@ If you&#8217;d like a deep-dive on plugins and the Backstage CR, visit the <stro
 </li>
 <li>
 <p>Click the <strong>View Source</strong> link on the template entity&#8217;s overview screen.</p>
+<div class="paragraph">
+<p>You&#8217;ll be directed to a repository that contains the <code>template.yaml</code> that defines the parameters collected, and actions performed by the template. Additionally it contains a <code>skeleton</code> directory with source files that will be used to generate a new application when a developer uses the template in Red Hat Developer Hub.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/third-party-ci/rhdh-jenkins-tpl-repo.png" alt="Jenkins Template GitLab Repository">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>To learn more about Software Templates and their implementation, visit the <a href="setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> and <a href="production-rhdh/introduction.html" class="xref page">End-to-End: Production-Ready Development Lifecycle</a> modules.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>You&#8217;ll be directed to a repository that contains the <em>template.yaml</em> that defines the parameters collected, and actions performed by the template. Additionally it contains a <em>skeleton</em> directory with source files that will be used to generate a new application when a developer uses the template in Red Hat Developer Hub.</p>
-</div>
-<div class="paragraph">
-<p>+
-<span class="image"><img src="_images/third-party-ci/rhdh-jenkins-tpl-repo.png" alt="Jenkins Template GitLab Repository"></span></p>
-</div>
-<div class="paragraph">
-<p>+
-NOTE: To learn more about Software Templates and their implementation, visit the <strong>Setup Red Hat Developer Hub</strong> and <strong>End-to-End: Production-Ready Development Lifecycle</strong> modules.</p>
-</div>
-<div class="paragraph">
-<p>In summary, this <em>template.yaml</em> defines a Software Template that collects parameters to scaffold a new Quarkus-based Java application that stores source code in GitLab and built container images in Quay. Additionally it has a toggle to enable commit signing, an element of a secure software pipeline.</p>
+<p>In summary, this <code>template.yaml</code> defines a Software Template that collects parameters to scaffold a new Quarkus-based Java application that stores source code in GitLab and built container images in Quay. Additionally it has a toggle to enable commit signing, an element of a secure software pipeline.</p>
 </div>
 </div>
 <div class="sect2">
@@ -554,10 +567,9 @@ NOTE: To learn more about Software Templates and their implementation, visit the
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In GitLab, open the <em>skeleton</em> directory, and select the <em>Jenkinsfile.push</em> file.</p>
+<p>In GitLab, open the <code>skeleton</code> directory, and select the <code>Jenkinsfile.push</code> file.</p>
 <div class="paragraph">
-<p>This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template.
-+ Notably, this Jenkinsfile defines an execution environment using a container that&#8217;s run on OpenShift (<code>agent &gt; kubernetes</code>).</p>
+<p>This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template. Notably, this Jenkinsfile defines an execution environment using a container that&#8217;s run on OpenShift (<code>agent &gt; kubernetes</code>).</p>
 </div>
 <div class="paragraph">
 <p>The specified image, <code>quay.io/jkopriva/rhtap-jenkins-agent</code>, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script] creates a builds container image and generates the SBOM.</p>
@@ -575,18 +587,18 @@ NOTE: To learn more about Software Templates and their implementation, visit the
 </ol>
 </div>
 <div class="paragraph">
-<p>There are two more Jenkinsfiles in the template repository. Each with a different purpose:</p>
+<p>There are a total of three Jenkinsfiles in this template repository, each with a different purpose:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Jenkinsfile.push</strong>: Triggered on Code Commits: Activates when you commit and push code changes to your repository. Runs development pipeline with build, test, and security scanning. Performs continuous integration validation for development workflow.</p>
+<p><code>Jenkinsfile.push</code>: Triggered on Code Commits: Activates when you commit and push code changes to your repository. Runs development pipeline with build, test, and security scanning. Performs continuous integration validation for development workflow.</p>
 </li>
 <li>
-<p><strong>Jenkinsfile.tag</strong>: Triggered on Git Tags: Activates when you create a Git tag on a branch in your repository. Runs staging pipeline for release candidate validation. Prepares artifacts for staging environment deployment.</p>
+<p><code>Jenkinsfile.tag</code>: Triggered on Git Tags: Activates when you create a Git tag on a branch in your repository. Runs staging pipeline for release candidate validation. Prepares artifacts for staging environment deployment.</p>
 </li>
 <li>
-<p><strong>Jenkinsfile.release</strong> - Triggered on GitLab Releases: Activates when you create a release from an existing tag. Runs production pipeline with enhanced security validation. Deploys verified artifacts to production environment.</p>
+<p><code>Jenkinsfile.release</code> - Triggered on GitLab Releases: Activates when you create a release from an existing tag. Runs production pipeline with enhanced security validation. Deploys verified artifacts to production environment.</p>
 </li>
 </ul>
 </div>
@@ -597,12 +609,12 @@ NOTE: To learn more about Software Templates and their implementation, visit the
 <div class="sect2">
 <h3 id="_modify_the_jenkinsfile"><a class="anchor" href="#_modify_the_jenkinsfile"></a>Modify the Jenkinsfile</h3>
 <div class="paragraph">
-<p>Let&#8217;s make a minor edit to the <em>Jenkinsfile.push</em> to see how it impacts the overall software template. This action would typically be performed by a Platform Engineer.</p>
+<p>Let&#8217;s make a minor edit to the <code>Jenkinsfile.push</code> to see how it impacts the overall software template. This action would typically be performed by a Platform Engineer.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the {gitlab_url}rhdh/tssc-developer-hub-configuration/-/blob/main/scaffolder-templates/quarkus-stssc-jenkins-template/skeleton/Jenkinsfile.push[Jenkinsfile.push] file.</p>
+<p>Open the {gitlab_url}/rhdh/tssc-developer-hub-configuration/-/blob/main/scaffolder-templates/quarkus-stssc-jenkins-template/skeleton/Jenkinsfile.push[Jenkinsfile.push^] file.</p>
 </li>
 <li>
 <p>Click <strong>Edit &gt; Edit single file</strong> at the top of the file. Login as <code>root</code> using the password <code>{gitlab_user_password}</code> if prompted.</p>
@@ -642,7 +654,7 @@ NOTE: To learn more about Software Templates and their implementation, visit the
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Return to the {rhdh_url}/create[Red Hat Developer Hub Self-service UI^].</p>
+<p>Return to the {rhdh_url}/create[Red Hat Developer Hub Self-service UI^]. If needed, login as <code>{rhdh_user}</code> using the password <code>{rhdh_user_password}</code>.</p>
 </li>
 <li>
 <p>Click <strong>Choose</strong> on the <strong>Securing a Quarkus Service Software Supply Chain (Jenkins)</strong> tile.</p>
@@ -654,12 +666,15 @@ NOTE: To learn more about Software Templates and their implementation, visit the
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssc-jenkins-sample</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>And click <strong>Next</strong>.</p>
+</div>
 </li>
 <li>
-<p>Accept the default values on the <strong>Provide Image Registry Information</strong> screen.</p>
+<p>Accept the default values on the <strong>Provide Image Registry Information</strong> screen. Click <strong>Next</strong>.</p>
 </li>
 <li>
-<p>Enable commit verification on the <strong>Application repository Information</strong> screen.</p>
+<p>Enable commit verification on the <strong>Application repository Information</strong> screen. Click <strong>Review</strong>.</p>
 </li>
 <li>
 <p>Confirm that your parameters match those displayed in the following image.</p>
@@ -685,7 +700,7 @@ NOTE: To learn more about Software Templates and their implementation, visit the
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Prior to following these steps, make sure you&#8217;re not signed into the OpenShift Cluster as the <code>admin</code> user. Visit the {openshift_console_url}[OpenShift Web Console^], click the dropdown in the top-right to logout.
+Prior to following these steps, make sure you&#8217;re not signed into the OpenShift Cluster as the <code>admin</code> user. Visit the {openshift_console_url}[OpenShift Web Console^], click the dropdown in the top-right to logout. This may cause you to also be logged out of Red Hat Developer Hub. If so, log back in as <code>{rhdh_user}</code> using the password <code>{rhdh_user_password}</code> when needed.
 </td>
 </tr>
 </table>
@@ -693,7 +708,7 @@ Prior to following these steps, make sure you&#8217;re not signed into the OpenS
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Click the <strong>Open Component in catalog</strong> link from the prior section, or visit the <strong>Catalog</strong> in Red Hat Developer Hub and select your new <strong>ssc-jenkins-sample</strong> component.</p>
+<p>Click the {rhdh_url}/catalog/default/component/ssc-jenkins-sample[Open Component in catalog^] link (or visit the <strong>Catalog</strong> in Red Hat Developer Hub and select your new <strong>ssc-jenkins-sample</strong> component).</p>
 </li>
 <li>
 <p>Use the link on the overview to launch <strong>OpenShift Dev Spaces (VS Code)</strong>:</p>
@@ -703,7 +718,10 @@ Prior to following these steps, make sure you&#8217;re not signed into the OpenS
 <p>This will start a process that launches a Cloud Development Environment (CDE).</p>
 </li>
 <li>
-<p>When prompted login as <code>{rhdh_user}</code> using the password <code>{rhdh_user_password}</code>.</p>
+<p>If prompted login as <code>{rhdh_user}</code> using the password <code>{rhdh_user_password}</code>.</p>
+</li>
+<li>
+<p>Click <strong>Continue</strong> when prompted for <em>Do you trust the authors of this repository?</em></p>
 </li>
 <li>
 <p>Authorize the GitLab login too, being sure to use <code>{gitlab_user}</code> and <code>{gitlab_user_password}</code> if prompted.</p>
@@ -724,19 +742,21 @@ Prior to following these steps, make sure you&#8217;re not signed into the OpenS
 </div>
 </li>
 <li>
-<p>In the terminal run the following commands to add and commit your change:</p>
+<p>In the terminal run the following commands to set your Git identity and commit your change:</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git add .
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git config --global user.name "{gitlab_user}"
+git config --global user.email "{gitlab_user}@demo.redhat.com"
+git add .
 git commit -m "doc: update the readme"</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>You&#8217;ll be prompted to follow a link to obtain a verification code to sign the commit. Click the link, and copy the code it displays.</p>
+<p>You&#8217;ll be prompted to follow a link to obtain a verification code to sign the commit. Click the link, and copy the code it displays to your clipboard (<kbd>CTRL-C</kbd> or <kbd>CMD-C</kbd> on macOS).</p>
 </li>
 <li>
-<p>Return to the terminal in Dev Spaces and paste the code.</p>
+<p>Return to the terminal in Dev Spaces and paste the code into the terminal using (<kbd>CTRL-V</kbd> or <kbd>CMD-V</kbd> on macOS).</p>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -751,13 +771,13 @@ If your browser requests access to copy/paste functionality make sure to click a
 </div>
 </li>
 <li>
-<p>Press <code>Enter</code>/<code>Return</code> to sign the commit.</p>
+<p>Press [<kbd>ENTER</kbd> or <kbd>RETURN</kbd>] to sign the commit.</p>
 <div class="paragraph">
 <p><span class="image"><img src="_images/third-party-ci/rhdh-jenkins-sign-commit.png" alt="Commit Signing Link"></span></p>
 </div>
 </li>
 <li>
-<p>Push the commit using the <code>git push</code> command.</p>
+<p>Push the commit using the <code>git push</code> command. This will trigger the Jenkins pipeline.</p>
 </li>
 </ol>
 </div>
@@ -799,7 +819,7 @@ If your browser requests access to copy/paste functionality make sure to click a
 <h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Nice work! You&#8217;ve learned how other CI systems can be integrated with Red Hat Developer Hub and Trusted Software Supply Chain. The {gitlab_url}/rhdh/tssc-sample-jenkins/-/tree/main/resources?ref_type=heads[scripts in the Jenkins module^] are portable to environments such as GitLab CI and GitHub Actions Try {gitlab_url}/development/ssc-jenkins-sample/-/tags[creating a new tag^] for your application and observing the tag promotion pipeline in action.</p>
+<p>Nice work! You&#8217;ve learned how other CI systems can be integrated with Red Hat Developer Hub and Trusted Software Supply Chain. The {gitlab_url}/rhdh/tssc-sample-jenkins/-/tree/main/resources?ref_type=heads[scripts in the Jenkins module^] are portable to environments such as GitLab CI and GitHub Actions. Try {gitlab_url}/development/ssc-jenkins-sample/-/tags[creating a new tag^] for your application and observing the tag promotion pipeline in action on your {rhdh_url}/catalog/default/component/ssc-jenkins-sample/ci[component&#8217;s CI tab^] in Red Hat Developer Hub (you can also click the "Eye" icon next to the pipeline run and select the <em>Blue Ocean</em> tab to view the build output in Jenkins).</p>
 </div>
 </div>
 </div>
