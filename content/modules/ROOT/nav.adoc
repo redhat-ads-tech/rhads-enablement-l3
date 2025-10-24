@@ -20,7 +20,7 @@
 ** xref:setup-tas/setup.adoc[Overview]
 ** xref:setup-tas/setup-openshift.adoc[Setup Trusted Artifact Signer on OpenShift]
 ** xref:setup-tas/setup-rhel.adoc[Setup Trusted Artifact Signer on RHEL]
-* xref:customizing-rhdh.adoc[Module 5: Customer configurations RHDH]
+* xref:customize-rhdh.adoc[Module 5: Customize Red Hat Developer Hub]
 * xref:rhdh-orchestrator/overview.adoc[Module 6: Orchestrator for Red Hat Developer Hub]
 ** xref:rhdh-orchestrator/overview.adoc[Foundations]
 ** xref:rhdh-orchestrator/install.adoc[Hands-on Lab]
