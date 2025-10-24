@@ -13,7 +13,7 @@ Module 12: Trusted Software Supply Chain with {product_rhdh_name} for production
 Module 13: Trusted Software Supply Chain with other CIs
 Module 14: Patterns for third-party tools integrations using software templates for self-service
 Module 15: Intro to AI for AI Engineers
-Module 16: RHADS for AI Engineers
+Module 16: {product_rhads_name} for AI Engineers
 Module 17: Intro to Trustworthy AI
 Module 18: Trustworthy AI
 Module 19: RHADS for Data scientists using AI Trusted Software Supply Chain
