@@ -20,7 +20,7 @@ Learn more about link:https://www.redhat.com/en/products/ai[Red Hat AI,window='_
 Next, we'll explore key integrations for building AI applications and models including security best practices to build, deploy AI applications.
 
 === {product_rhdh_name} integration with OpenShift AI
-Red Hat Developer Hub can integrate with OpenShift AI through Software Templates. These can be created to facilitate the model development lifecycle and ensure best practices are in place, such as security and scalability. It can be used by developers to provision Notebooks, create Serving Runtimes, create an inference server, Pipeline configurations, and more. Additionally, from the component's overview, AI Engineers can access many OpenShift AI features.
+Red Hat Developer Hub can integrate with OpenShift AI through Software Templates. These can be created to facilitate the model development lifecycle and ensure best practices are in place, such as security and scalability. It can be used to provision Notebooks, create Serving Runtimes, create an inference server, Pipeline configurations, and more. Additionally, from the component's overview, AI Engineers can access many OpenShift AI features.
 
 
 
