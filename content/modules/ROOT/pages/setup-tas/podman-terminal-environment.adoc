@@ -1,0 +1,45 @@
+
+
+[source,console]
+----
+podman-terminal:/workspace$ help
+=== Trusted Artifact Signer (TAS) Environment Variables ===
+
+TUF Configuration:
+  TUF_URL: https://tuf-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  COSIGN_MIRROR: https://tuf-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  COSIGN_ROOT: https://tuf-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io/root.json
+
+OIDC Configuration:
+  OIDC_ISSUER_URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  COSIGN_OIDC_CLIENT_ID: trusted-artifact-signer
+  COSIGN_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  COSIGN_CERTIFICATE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  SIGSTORE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+
+Fulcio Configuration:
+  COSIGN_FULCIO_URL: https://fulcio-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  SIGSTORE_FULCIO_URL: https://fulcio-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+
+Rekor Configuration:
+  COSIGN_REKOR_URL: https://rekor-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  SIGSTORE_REKOR_URL: https://rekor-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  REKOR_REKOR_SERVER: https://rekor-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+
+Other Settings:
+  COSIGN_YES: true
+
+TIP: 
+You can set these variables to endpoints from a different TAS installation
+by calling "source ~/setup-tas-environment.sh <your namespace>"
+i.e. "source ~/setup-tas-environment.sh student-tas"
+
+You can reset to the default TAS installation by either
+
+-- run "source ~/setup-tas-environment.sh tssc-tas" 
+-- type 'exit' and reconnect to the terminal
+-- nuking the terminal pod using the 'terminal-reset' command
+
+podman-terminal:/workspace$ 
+
+----

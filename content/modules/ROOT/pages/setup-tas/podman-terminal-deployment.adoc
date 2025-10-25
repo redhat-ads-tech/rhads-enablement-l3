@@ -1,0 +1,47 @@
+Terminal deployment output:
+
+[source,console]
+----
+
+
+Setting up "Podman Terminal" with OAuth Configuration 
+========================================================
+Extracting OAuth configuration from OpenShift cluster...
+OIDC Client ID: ocp4_workload_advanced_developer_suite_openshift_keycloak_client_id
+Client Secret Name: openid-client-secret-bb6zw
+OIDC Client Secret: [REDACTED]
+OIDC Issuer URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+Cluster Ingress Domain: apps.cluster-mdt2d.dynamic.redhatworkshops.io
+Generating cookie secret...
+Cookie Secret: [REDACTED]
+
+Creating podman-terminal.yaml from template-podman-terminal.yaml...
+Successfully created podman-terminal.yaml
+
+Summary:
+  - OIDC Client ID: ocp4_workload_advanced_developer_suite_openshift_keycloak_client_id
+  - OIDC Issuer URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  - Cluster Ingress Domain: apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  - Generated cookie secret
+
+Deploying podman-terminal.yaml to OpenShift cluster...
+namespace/ttyd created
+serviceaccount/terminal-admin created
+clusterrolebinding.rbac.authorization.k8s.io/terminal-admin-cluster-binding unchanged
+clusterrole.rbac.authorization.k8s.io/system:openshift:scc:privileged-terminal unchanged
+rolebinding.rbac.authorization.k8s.io/terminal-admin-privileged-scc created
+secret/keycloak-oauth-secret created
+configmap/oauth2-proxy-config created
+deployment.apps/ttyd-admin-terminal created
+service/ttyd-admin-service created
+route.route.openshift.io/admin-terminal created
+
+Waiting for route to be created...
+
+================================
+Deployment successful!
+================================
+Terminal URL: https://admin-terminal-ttyd.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+================================
+
+----

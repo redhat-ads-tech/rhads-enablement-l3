@@ -1,0 +1,83 @@
+[source,console]
+----
+{
+  "success": true,
+  "components": [
+    {
+      "name": "Unnamed",
+      "containerImage": "ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe",
+      "source": {},
+      "successes": [
+        {
+          "msg": "Pass",
+          "metadata": {
+            "code": "builtin.attestation.signature_check"
+          }
+        },
+        {
+          "msg": "Pass",
+          "metadata": {
+            "code": "builtin.attestation.syntax_check"
+          }
+        },
+        {
+          "msg": "Pass",
+          "metadata": {
+            "code": "builtin.image.signature_check"
+          }
+        }
+      ],
+      "success": true,
+      "signatures": [
+        {
+          "keyid": "bf71334a22a35e2eafaf5c75d0d2c4df36a4da5b",
+          "sig": "MEUCIQCVgpo7o1eNexaf/XhGxEpDmq05/wUnAkvG7PNj0zEy1wIgZnrPxTGYY3n5LASfexGVcDvo32gg+LqzUq3taxElqyU=",
+          "certificate": "-----BEGIN CERTIFICATE-----\nMIIDSjCCAtCgAwIBAgIUUGRwv7pYLo2eNmlzrtSt+c/9X1AwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjUxODI1MTJaFw0yNTEwMjUxODM1MTJaMAAwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAARBSXny1QX3oCts3Wq5K/64GXpqvZfZFZin\nvs/Z09MhztcCSR48QGhO7qxSTbt/v148t5JJhXSnCgyVLIuqRqp5o4IB7TCCAekw\nDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMDMB0GA1UdDgQWBBS/\ncTNKIqNeLq+vXHXQ0sTfNqTaWzAfBgNVHSMEGDAWgBTQtJ+85SHJhw7HpZ5m1kun\nXp9DOTAjBgNVHREBAf8EGTAXgRV1c2VyMUBkZW1vLnJlZGhhdC5jb20wZgYKKwYB\nBAGDvzABAQRYaHR0cHM6Ly9zc28uYXBwcy5jbHVzdGVyLW1kdDJkLmR5bmFtaWMu\ncmVkaGF0d29ya3Nob3BzLmlvL3JlYWxtcy90cnVzdGVkLWFydGlmYWN0LXNpZ25l\ncjBoBgorBgEEAYO/MAEIBFoMWGh0dHBzOi8vc3NvLmFwcHMuY2x1c3Rlci1tZHQy\nZC5keW5hbWljLnJlZGhhdHdvcmtzaG9wcy5pby9yZWFsbXMvdHJ1c3RlZC1hcnRp\nZmFjdC1zaWduZXIwgYoGCisGAQQB1nkCBAIEfAR6AHgAdgAntg9v0EXj9byDUYlK\nRjGJ7T6IgDOxI+gSY6kPQGLZPQAAAZocnhCgAAAEAwBHMEUCIBvR62yvz6fuvNoD\nKS2YDaEIVzDR4iPr9avgbMUr+ZQEAiEA8Zwr4vADLh4ToCUT0ciZw5kgbpyg/xcn\nXR48QaOuBkcwCgYIKoZIzj0EAwMDaAAwZQIxAOo/cQ8y6lfLjxpupkFP0Yc3hxg+\nVI3Bi+AQt0PGjfmZP7Sedeuh0vLmuUwwvrd6sQIwG5c9mNdtextX7BU8M1wKR1lZ\n+tNxOCVwpotUnV5QWWvnbifZ2cVuO4ui2rXUU6c5\n-----END CERTIFICATE-----\n",
+          "chain": [
+            "-----BEGIN CERTIFICATE-----\nMIICGzCCAaKgAwIBAgIUeQ9002+2r8EeXuUNYYQaiE0Rl1wwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjMxNjIwMThaFw0zNTEwMjExNjIwMThaMDkxFzAV\nBgNVBAoTDnJoYWRzLWxlYXJuZXJzMR4wHAYDVQQDExVzdHVkZW50LnRhcy5zaWdu\nYXR1cmUwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAASYPgxD66u0p+1gA8v/QYyaTBS2\nFoI5fUfom77eynF2+f/lo61ddiwYcXRzPQpbEPJlj+IqwdVw/1ILpQKMUXK+cmny\nxgRI1ngP5yS8iMbpXLxcIPxAj24rmMMou3eE8+2jazBpMA4GA1UdDwEB/wQEAwIB\nBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTQtJ+85SHJhw7HpZ5m1kunXp9D\nOTAnBgNVHREEIDAegRxzaWduaW5nLWF1dGhvcml0eUByZWRoYXQuY29tMAoGCCqG\nSM49BAMDA2cAMGQCMBfrVuUXCTAFqCeNDPscIXpwhfL9WZCAtPT1mjaxYay7nd9a\nAlPy2FLS6CQo8aPfoQIwcIco4IiFTuazS8uKx0ia7v1MvMulOr/IaK0Ilo085YgO\n+UpgwhK3d2ndd/X6NfcE\n-----END CERTIFICATE-----\n"
+          ],
+          "metadata": {
+            "Fulcio Issuer": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+            "Fulcio Issuer (V2)": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+            "Issuer": "CN=student.tas.signature,O=rhads-learners",
+            "Not After": "2025-10-25T18:35:12Z",
+            "Not Before": "2025-10-25T18:25:12Z",
+            "Serial Number": "506470bfba582e8d9e366973aed4adf9cffd5f50",
+            "Subject Alternative Name": "Email Addresses:user1@demo.redhat.com"
+          }
+        }
+      ],
+      "attestations": [
+        {
+          "type": "https://in-toto.io/Statement/v0.1",
+          "predicateType": "https://slsa.dev/provenance/v0.2",
+          "predicateBuildType": "https://example.com/tekton-pipeline",
+          "signatures": [
+            {
+              "keyid": "5bcac235a061db21436f6863df983b6e53a66800",
+              "sig": "MEUCID7O+Ib2jLHnr67scZS5J5WsukOqZTHgxK62EzAc1ZaFAiEA6TCM8PFXIMy3OXJcrCsg+ubpJVLf4YTTZrcty8CHCso=",
+              "certificate": "-----BEGIN CERTIFICATE-----\nMIIDSjCCAtCgAwIBAgIUNhVKgTJStJgPSJUaRPgkRqJZ8AcwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjUxODI2MzBaFw0yNTEwMjUxODM2MzBaMAAwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR23VODr/GdA4beOCJOWskKzxtchaoF4QS+\nmL5JzhVg4FyTHEDBNJG4bX2agks4tTQpKsr2mT/FowKbyzftm6FIo4IB7TCCAekw\nDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMDMB0GA1UdDgQWBBRb\nysI1oGHbIUNvaGPfmDtuU6ZoADAfBgNVHSMEGDAWgBTQtJ+85SHJhw7HpZ5m1kun\nXp9DOTAjBgNVHREBAf8EGTAXgRV1c2VyMUBkZW1vLnJlZGhhdC5jb20wZgYKKwYB\nBAGDvzABAQRYaHR0cHM6Ly9zc28uYXBwcy5jbHVzdGVyLW1kdDJkLmR5bmFtaWMu\ncmVkaGF0d29ya3Nob3BzLmlvL3JlYWxtcy90cnVzdGVkLWFydGlmYWN0LXNpZ25l\ncjBoBgorBgEEAYO/MAEIBFoMWGh0dHBzOi8vc3NvLmFwcHMuY2x1c3Rlci1tZHQy\nZC5keW5hbWljLnJlZGhhdHdvcmtzaG9wcy5pby9yZWFsbXMvdHJ1c3RlZC1hcnRp\nZmFjdC1zaWduZXIwgYoGCisGAQQB1nkCBAIEfAR6AHgAdgAntg9v0EXj9byDUYlK\nRjGJ7T6IgDOxI+gSY6kPQGLZPQAAAZocn0KDAAAEAwBHMEUCIQCz1ULYXSOjwnTg\n7gWRdqJ4Ilo6vrUACve0RCeCEhwQfgIgeJnKKoGxNH8tunJEZLD7CiDSJACfpMk2\nEdiJdyjaAmYwCgYIKoZIzj0EAwMDaAAwZQIxAIdOztqx8IElBbQeMrCNUg4YQ+2E\nTXGk8lFmS8HSJ8ZAQHZ/kuHKubzJ7QZDmQsGuQIweXsYLOTXUV9LMJZEMKmmzFa1\nmzWyypdnSF1Na+qOqLWCs8ajgRANB32SeIE+I3vK\n-----END CERTIFICATE-----\n",
+              "chain": [
+                "-----BEGIN CERTIFICATE-----\nMIICGzCCAaKgAwIBAgIUeQ9002+2r8EeXuUNYYQaiE0Rl1wwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjMxNjIwMThaFw0zNTEwMjExNjIwMThaMDkxFzAV\nBgNVBAoTDnJoYWRzLWxlYXJuZXJzMR4wHAYDVQQDExVzdHVkZW50LnRhcy5zaWdu\nYXR1cmUwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAASYPgxD66u0p+1gA8v/QYyaTBS2\nFoI5fUfom77eynF2+f/lo61ddiwYcXRzPQpbEPJlj+IqwdVw/1ILpQKMUXK+cmny\nxgRI1ngP5yS8iMbpXLxcIPxAj24rmMMou3eE8+2jazBpMA4GA1UdDwEB/wQEAwIB\nBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTQtJ+85SHJhw7HpZ5m1kunXp9D\nOTAnBgNVHREEIDAegRxzaWduaW5nLWF1dGhvcml0eUByZWRoYXQuY29tMAoGCCqG\nSM49BAMDA2cAMGQCMBfrVuUXCTAFqCeNDPscIXpwhfL9WZCAtPT1mjaxYay7nd9a\nAlPy2FLS6CQo8aPfoQIwcIco4IiFTuazS8uKx0ia7v1MvMulOr/IaK0Ilo085YgO\n+UpgwhK3d2ndd/X6NfcE\n-----END CERTIFICATE-----\n"
+              ],
+              "metadata": {
+                "Fulcio Issuer": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+                "Fulcio Issuer (V2)": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+                "Issuer": "CN=student.tas.signature,O=rhads-learners",
+                "Not After": "2025-10-25T18:36:30Z",
+                "Not Before": "2025-10-25T18:26:30Z",
+                "Serial Number": "36154a813252b4980f48951a44f82446a259f007",
+                "Subject Alternative Name": "Email Addresses:user1@demo.redhat.com"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key": "",
+  "policy": {},
+  "ec-version": "v0.6.223+redhat",
+  "effective-time": "2025-10-25T18:47:21.407618703Z"
+}
+----
