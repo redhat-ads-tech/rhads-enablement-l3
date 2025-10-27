@@ -1,8 +1,13 @@
 = Customize {product_rhdh_name}
 
-Organizations want to modify the {product_rhdh_name} (RHDH) interface to align with their brand guidelines and polish the user experience. You can change {product_rhdh_name} appearance and theme elements to reflect organization, team, or project branding. 
+Organizations can customize {product_rhdh_name} (RHDH) in many different ways to align with their specific needs and deliver a tailored developer experience. Customization options include:
 
-This module explains how to change the title and logo of the {product_rhdh_name} theme and illustrates the method for customizing any of the available configuration options for RHDH deployments on OpenShift clusters.
+* **Visual customizations**: Modify appearance elements like title, logo, fonts, colors, headers, and themes to reflect your organization's branding
+* **Workflow customizations**: Create custom templates for services, components, and other resources to standardize and streamline developer workflows
+* **Content customizations**: Configure TechDocs to provide centralized, searchable technical documentation for your teams
+* **Functional customizations**: Set up access control, configure plugins, and adjust other functional settings to meet your operational requirements
+
+This module demonstrates the fundamental method for customizing your {product_rhdh_name} instance by walking through title and logo changes as a practical example. The same configuration techniques apply to all customization types, whether visual, workflow, content, or functional.
 
 {product_rhdh_name} provides two themes:
 
@@ -34,7 +39,7 @@ Each user can also choose whether to "pin" the left-hand sidebar in its expanded
 
 == Global Appearance Options
 
-{product_rhdh_name} configuration is set in a file conventionally named `app-config.yaml`. To customize global elements of RHDH appearance, you'll modify settings in an app-config for your instance in the same way you would for any instance of RHDH or Backstage. Instead of a disk file, however, an OpenShift _ConfigMap_ will hold the `app-config.yaml` data for your RHDH instance.
+{product_rhdh_name} configuration is set in a file conventionally named `app-config.yaml`. To customize global elements of RHDH appearance, you'll modify settings in an app-config for your instance in the same way you would for any instance of RHDH or Backstage. Instead of a file in the container's filesystem, however, an OpenShift _ConfigMap_ will hold the `app-config.yaml` data for your RHDH instance. This externalizes the RHDH configuration and allows you to manage it more easily (for example, using GitOps to synchronize changes across multiple environments).
 
 === What You Can Change
 
@@ -44,12 +49,7 @@ In the Developer Hub app-config, you can customize theme components including:
 * Font color, size, and style of text in paragraphs, headings, headers, and buttons
 * Header color and gradient
 
-This module shows how to change the display title and logo to illustrate the procedure for customizing {product_rhdh_name} appearance. The setup-rhdh/foundations.html[Setup RHDH^] module uses the same method to configure functional aspects of a {product_rhdh_name} instance, like access control and plugin settings.
-//check: intra-linking - is there a better notation? I'm just ~guessing the file ext .html and using any-ol external link notation
-
-//check: Removed sentence about icon logo (vs fullLogo).
-// I think we don't load the icon logo in later versions.
-// Viz the dev hub deployed in the tssc-dh proj
+This module shows how to change the display title and logo to illustrate the procedure for customizing {product_rhdh_name} appearance. The xref:setup-rhdh/foundations.adoc[Setup {product_rhdh_name}] module uses the same method to configure functional aspects of a {product_rhdh_name} instance, like access control and plugin settings.
 
 == Lab
 
@@ -127,18 +127,18 @@ data:
 
 [NOTE]
 ====
-FYI: Create ConfigMap on the command line
+Alternatively, you can also create new ConfigMap resources (like the `rhdh-config` ConfigMap from above) using the `oc` command line utility.
 
 _Do not perform these steps if you've already created the `rhdh-config` ConfigMap in the OpenShift Web Console._
 
-You can create Resources like the `brand-rhdh` ConfigMap on the command line. This requires:
+This requires:
 
 1. the OpenShift https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/cli_tools/openshift-cli-oc[_oc_(1)] command line tool
 2. the same credentials you used to log in to the OpenShift Web Console
 
 The OpenShift Web Terminal provides these requirements. Click the `>_` icon near the top right of the OpenShift Web Console to open the Web Terminal.
 
-In the shell session below, _cat_(1) creates and opens a new file, `app-config.yaml`, then waits for input. You can paste in your ConfigMap YAML, then type *Control-D* (`^D`) to signal the end of the file. _Cat_ writes the file, closes it, and exits. Then _oc_(1) uses app-config.yaml as the definition of a new ConfigMap. 
+In the shell session below, _cat_(1) creates and opens a new file, `app-config.yaml`, then waits for input. You can paste in your ConfigMap YAML, then type kbd:[CTRL-D] to signal the end of the file. _Cat_ writes the file, closes it, and exits. Then _oc_(1) uses `app-config.yaml` as the definition of a new ConfigMap. 
 
 [source,sh]
 ----
@@ -154,7 +154,7 @@ configmap/rhdh-config created
 
 === Declare a Backstage Instance
 
-You've stored a custom {product_rhdh_name} configuration in your `brand-rhdh` ConfigMap, where your instance will be able to find it. Now it's time to inform the {product_rhdh_name} Operator so it will deploy and maintain the set of RHDH components in your Project on the OpenShift cluster. To do that, you'll create a `Backstage` Custom Resource -- a particular _kind_ of Resource defined in the cluster's API to represent an instance of {product_rhdh_name}. The key part of your Custom Resource is naming the _configMap_ that should be consulted for {product_rhdh_name} configuration. You can see your `rhdh-config` ConfigMap named in the `configMaps` list beneath application.appConfig:
+You've stored a custom {product_rhdh_name} configuration in your `rhdh-config` ConfigMap, where your instance will be able to find it. Now it's time to inform the {product_rhdh_name} Operator so it will deploy and maintain the set of RHDH components in your Project on the OpenShift cluster. To do that, you'll create a `Backstage` Custom Resource -- a particular _kind_ of Resource defined in the cluster's API to represent an instance of {product_rhdh_name}. The key part of your Custom Resource is naming the _ConfigMap_ that should be consulted for {product_rhdh_name} configuration. You can see your `rhdh-config` ConfigMap named in the `configMaps` list beneath application.appConfig:
 
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -170,12 +170,13 @@ spec:
       # This instructs the operator to mount the ConfigMap
       # that you created into the Backstage Pods
       configMaps:
-        - name: rhdh-config
+        - name: rhdh-config # <1>
     route:
       enabled: true
   database:
     enableLocalDb: true
 ----
+<1> The name of the ConfigMap that contains the {product_rhdh_name} configuration
 
 . Copy this Custom Resource YAML to your computer's clipboard.
 
@@ -183,23 +184,9 @@ spec:
 
 . Paste the `Backstage` Custom Resource YAML from your clipboard into the presented text field. Click *Create* to apply the Resource on the cluster.
 
-. The {product_rhdh_name} Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your `brand-rhdh` ConfigMap.
+. The {product_rhdh_name} Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your `rhdh-config` ConfigMap.
 
-[NOTE]
-====
-FYI: Create CustomResource on the command line
-
-_Do not perform these steps if you've already created the `rhdh` CustomResource in the OpenShift Web Console._
-
-[source,sh]
-----
-% cat > brand-rhdh.yaml
-# Paste CR YAML here
-^D
-% oc apply --filename=brand-rhdh.yaml --namespace=brand-rhdh
-backstage.rhdh.redhat.com/rhdh created
-----
-====
+. Navigate to *Workloads > Pods* in the OpenShift Web Console (making sure you've selected the `brand-rhdh` project in the project selector) and watch the database pod (a `PostgreSQL` pod) and the Backstage pod starting. Wait for both to be marked as "Running" and "Ready".
 
 //== Advanced Settings
 //
@@ -210,7 +197,7 @@ backstage.rhdh.redhat.com/rhdh created
 
 === Visit your {product_rhdh_name} Instance
 
-Access your {product_rhdh_name} deployment using the https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] established by the RHDH Operator:
+Now that you've create the `Backstage` custom resource, and the pods and up and running, you can access your {product_rhdh_name} deployment using the https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] established by the RHDH Operator:
 
 . Select *Networking > Routes* from the OpenShift Web Console's left navigation.
 . Confirm that your *brand-rhdh* project is selected in the project selector.
