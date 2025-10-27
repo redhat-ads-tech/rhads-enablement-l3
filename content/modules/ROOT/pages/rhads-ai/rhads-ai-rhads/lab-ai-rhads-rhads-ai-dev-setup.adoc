@@ -1,10 +1,10 @@
-= AI Platform Engineering: Using software templates to provide the tools to build an AI Agent with Red Hat Advanced Developer Suite
+= AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates
 
 == Objectives 
-Using a pre-existing software template, you will create a new resource in Red Hat Developer Hub. This resource will serve as a blank template for AI Engineers to build an AI agent. As part of the Platform Engineering team, you will set up this resource with all necessary Kubernetes manifests, including the trusted software supply chain, deployments, and application promotion. In the next lab, AI Engineers will add their application source code to this new resource, integrating it into the software development lifecycle.
+Using a pre-existing software template, you will create a new resource in Red Hat Developer Hub. This resource will serve as a blank template for your team to build an AI agent. You are leveraging the templates already setup with all necessary Kubernetes manifests, including the trusted software supply chain, deployments, and application promotion. In the next lab, your team will add their application source code to this new resource, integrating it into the software development lifecycle.
 
 == Scenario 
-You are part of the AI Platform Engineering team, responsible for providing the tools and best practices—aligned with your organization's guidelines—for the AI team to build an AI agent in OpenShift.
+You are part of the AI Engineering team and you will leverage the tools setup by the AI Platform Engineering team including best practices—aligned with your organization's guidelines—for the AI team to build an AI agent in OpenShift.
 
 Let's get started.
 
@@ -129,7 +129,9 @@ You have received new requests from the AI Engineering team:
 . Configure the application to use *environment variables* to connect to an AI model and an API. 
 . Create a *GitLab webhook* to trigger the OpenShift Pipelines.
 
-As a Platform Engineer, you must update the software templates or components to manage custom configurations. In this case, you will apply these configurations directly to the newly created component. Let's work on these requests!
+Typically, Platform Engineers manage custom configurations by updating the source software templates. In this case, however, you will apply these configurations directly to your newly created component since we are leveraging a pre-existing template.
+
+Let's work on these requests!
 
 === 1- Update the dev.yaml file
 
@@ -360,6 +362,11 @@ image:rhads-ai/rhads/gitlab-open.png[width=100%]
 
 [source,bash,role=execute,subs=attributes+]
 ----
+        - name: MODEL_NAME
+          valueFrom:
+            secretKeyRef:
+              name: ai-agent-secrets-llm
+              key: MODEL_NAME
         - name: LLM_API_BASE_URL
           valueFrom:
             secretKeyRef:

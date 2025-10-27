@@ -8,15 +8,13 @@ These labs will guide you through building and deploying a secure AI agent using
 
 This lab demonstrates how to use a pre-built software template in RHADS to deploy an AI Agent to OpenShift. This approach helps organizations ensure that developers have the tools and security standards they need right from the beginning. We will use the software templates already integrated into {product_rhdh_name}.
 
-This guide is divided into two labs, each focusing on a different role; AI Platform Engineer and AI Engineer.
-
-== AI Platform Engineer
-
-As a member of the AI Platform Engineering team, you are responsible for providing the tools, templates, and security guidelines for the AI engineering team to build applications on OpenShift.
+This guide is divided into two labs, each focusing on a different stages from the AI Engineer perspective.
 
 == AI Engineer
 
-As a member of the AI engineering team, you are responsible for creating an AI agent that follows the guidelines and best practices established by the AI Platform Engineering team.
+. You will access pre-built templates from the AI Platform Engineering team, which include security guidelines for building AI applications on OpenShift.
+
+. You will implement an AI agent that adheres to the established guidelines and best practices of the AI Platform Engineering team.
 
 == Getting Started
 
@@ -24,12 +22,13 @@ As a member of the AI engineering team, you are responsible for creating an AI a
 . Sign in using OIDC authentication method.
 +
 image:rhads-ai/rhads/rhdh-login.png[width=60%]
-. Log in with your administrator credentials:
+. Log in with the admin credentials:
     * Username: {openshift_admin_user}
     * Password: {openshift_admin_password}
 
 You will be greeted with a welcome screen.
 
+
 image:rhads-ai/rhads/rhdh-welcome.png[Create UI]
 
-Next, you will take on the role of an AI Platform Engineer to set up the necessary tools for the AI Engineering team.
+Note: You are logging in as an administrator because you will need elevated privileges to build a secret as part of the lab steps.
