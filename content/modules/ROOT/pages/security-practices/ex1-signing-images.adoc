@@ -181,7 +181,7 @@ Pushing signature to: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l
 
 ----
 
-== Signing Non-Interactively (OAuth Token)
+== Signing Non-Interactively 
 
 Ok, and now you might be asking - "and how would a CI Task sign in via a browser?!"
 
@@ -220,7 +220,7 @@ cosign sign --key k8s://[NAMESPACE]/[KEY] --tlog-upload=true $IMAGE
 
 The verification could still be without the need for a physical public key (by using the transparency log). 
 
-=== Keyless
+=== Keyless Signing (OAuth Token)
 
 For using keyless signing (without the need for a physical private key accessible) we can use whatever means our OIDC system allows to generate an access token. 
 Remember, `fulcio` (the Certificate Issuer) doesn't care *_how_* you authenticate with your OIDC system, as long as you *_do_*. 
@@ -262,4 +262,108 @@ TOKEN=$(curl -s -X POST "${ISSUER_URL}/protocol/openid-connect/token" \
 
 With `cosign` there are two ways to use that token: 
 
-We can use it explicitly in the commandline via the 
+1) We can use it explicitly via the `--identity-token` flag
+
+[source,console]
+----
+cosign sign --identity-token=<YOUR_OIDC_TOKEN> $IMAGE
+----
+
+2) Or, we can use the SIGSTORE_ID_TOKEN environment variable, which cosign will recognize and is CI-friendlier (since nothing will be logged). 
+
+So, if this is available, the same call that we did earlier and which triggered the UI flow, will now just run and authenticate the signature with the OIDC access token.
+
+[source,console]
+----
+cosign sign $IMAGE
+---- 
+
+
+So, let's do this. If you inspect the `get-access-token.sh` script you will see that the environment variable is set - therefore we need to *source* the script, not just execute.
+
+Also, (depending on what you did in the meantime or if the session timed out) check if the $IMAGE variable is still set. If not - just re-run the `source ./copy-image-to-quay.sh` script that sets it.
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+echo "Image to sign: $IMAGE"
+source ./get-access-token.sh #also sets the SIGSTORE_ID_TOKEN
+echo ""
+echo "============ Cosign below ============="
+cosign sign $IMAGE
+----
+
+As you can see - it now happens as it should in a CI, without user interaction. However, the signature is still associated with an identity (`pipeline-auth@demo.redhat.com`) and didn't require a physical private key.
+
+
+[source,console]
+----
+[...]
+============ Cosign below =============
+Generating ephemeral keys...
+Retrieving signed certificate...
+Successfully verified SCT...
+WARNING: Image reference quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest uses a tag, not a digest, to identify the image to sign.
+    This can lead you to sign a different image than the intended one. Please use a
+    digest (example.com/ubuntu@sha256:abc123...) rather than tag
+    (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
+    images by tag will be removed in a future release.
+
+
+        The sigstore service, hosted by sigstore a Series of LF Projects, LLC, is provided pursuant to the Hosted Project Tools Terms of Use, available at https://lfprojects.org/policies/hosted-project-tools-terms-of-use/.
+        Note that if your submission includes personal data associated with this signed artifact, it will be part of an immutable record.
+        This may include the email address associated with the account with which you authenticate your contractual Agreement.
+        This information will be used for signing this artifact and will be stored in public transparency logs and cannot be removed later, and is subject to the Immutable Record notice at https://lfprojects.org/policies/hosted-project-tools-immutable-records/.
+
+By typing 'y', you attest that (1) you are not submitting the personal data of any other person; and (2) you understand and agree to the statement and the Agreement terms at the URLs listed above.
+tlog entry created with index: 16
+Pushing signature to: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage
+----
+
+=== More CI Integration
+
+Some CIs (such as Gitlab or Github) have a built-in authentication/access token that we can use. 
+
+If you have configured Trusted Artifact Signer with this OIDC system (if you followed the xref:setup-tas/setup-openshift.adoc[Setup Trusted Artifact Signer] exercise, you will remember that you can configure more than one OIDC system), `cosign` can directly use it. 
+
+In the examples below, you might wonder why we're not setting the `SIGSTORE_OIDC_ISSUER` environment variable (compare the output of the `help` statement in our terminal):
+.
+
+
+.*Click & Expand to see a GitHub Actions example*
+[%collapsible]
+====
+include::./ex1-signing-github.adoc[]
+====
+
+
+.*Click & Expand to see a GitLab CI example*
+[%collapsible]
+====
+include::./ex1-signing-gitlab.adoc[]
+====
+
+
+When using the CI's built-in identity token, you should NOT set `SIGSTORE_OIDC_ISSUER` - that would tell Cosign to do its own OIDC flow instead of using the CI token.
+The issuer is already embedded in the CI's OIDC token:
+
+* GitHub Actions: https://token.actions.githubusercontent.com
+* GitLab CI: https://gitlab.com (or your GitLab instance URL)
+
+The CI platform automatically embeds its issuer URL in the token claims, and Fulcio validates this against its trusted issuer list.
+So the workflow is:
+
+. CI creates OIDC token with issuer claim (e.g., https://token.actions.githubusercontent.com)
+. Cosign sends this token to your Fulcio
+. Fulcio validates the token against the issuer it trusts
+. Fulcio issues a code signing certificate
+
+You only use `SIGSTORE_OIDC_ISSUER` when you want Cosign to perform its own OIDC flow (like interactive browser login or own access tokens from a non-CI OIDC system), not when using CI identity tokens.
+
+
+
+
+
+
+
+
