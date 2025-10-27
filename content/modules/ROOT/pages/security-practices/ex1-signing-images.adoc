@@ -360,6 +360,196 @@ So the workflow is:
 
 You only use `SIGSTORE_OIDC_ISSUER` when you want Cosign to perform its own OIDC flow (like interactive browser login or own access tokens from a non-CI OIDC system), not when using CI identity tokens.
 
+== Verification
+
+Before we dive into verification, here's a helpful `cosign` command that tells us what signatures and attestations, SBOMs, other metadata have been attached to the OCI image:
+
+`cosign tree <image digest>`
+
+
+[source,console]
+----
+cosign tree $IMAGE
+📦 Supply Chain Security Related artifacts for an image: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 🔐 Signatures for an image tag: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
+   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
+   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
+   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
+   └── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
+----
+
+In this case, we can see that we have multiple signatures for this image (since we signed interactively and with the OAuth access token) but no other artifacts attached or related.
+
+=== Online
+
+To verify a signature online (meaning, `cosign` has access to the Rekor database), we will use `cosign verify`:
+
+With `cosign verify` we can verify that
+* we have a valid signature
+* that it was signed by the OIDC identity in question
+* that the identity came from the OIDC system in question (here, we don't provide an OIDC system, cosign reads that from the environment if the command line parameter isn't given)
+
+(we add a `| jq` for better readability of the output)
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify --certificate-identity=user1@demo.redhat.com $IMAGE | jq
+---- 
+(if you signed interactively with the admin user, you will get an error - use `admin@demo.redhat.com` instead)
+
+image::security-practices/wait-a-minute.png[width=200]
+
+But we signed with our pipeline user, didn't we? *YES*, but signatures are accumulative - we haven't verified that this was the _only_ signature - we have verified that it has _at least one_ signature from `user1@demo.redhat.com`. If there are more than one, you can see the details in the result.
+
+But we _have_ verified that this image has been signed by `user1@demo.redhat.com`
+
+So, we can do the same for our pipeline user:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify --certificate-identity=pipeline-auth@demo.redhat.com $IMAGE | jq
+----
+
+If we want to explicitly verify that the identity `user1@demo.redhat.com` was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE | jq
+---- 
+
+and 
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE | jq
+---- 
+
+We can also use `regular expressions`, using *`--certificate-identity-regexp`* and *`--certificate-oidc-issuer-regexp`* if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the `redhatworkshops.io` domain:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE | jq
+---- 
+
+This regular expression "search pattern" will give us all signatures that it can validate and match. Since the output is JSON, we can also work with that to give us a table of signatures, their Rekor logIndex and the OIDC Issuer, since we could have multiple signatures from multiple identities from various OIDC systems...
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE | jq -r '["logIndex", "Subject", "Issuer"], (.[] | [.optional.Bundle.Payload.logIndex, .optional.Subject, .optional.Issuer]) | @tsv' | column -t
+---- 
+
+[source,console]
+----
+Verification for quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - Existence of the claims in the transparency log was verified offline
+  - The code-signing certificate was verified using trusted certificate authority certificates
+logIndex  Subject                        Issuer
+13        user1@demo.redhat.com          https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+14        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+15        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+16        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+---- 
+
+
+=== Offline verification (no access to TAS infrastructure)
+
+Some customers have asked how to verify keylessly signed artifacts in an offline scenario. One recent example is a customer using Trusted Artifact Signer throughout his CI and CD chains, up to pre-production.
+
+The production systems however are completely isolated from the internal network and they transfer artifacts securely through what they call a "Diode". In other words, there is a secured way in - but nothing inside that environment can reach the outside.
+
+Your customers may have similar challenges - or it could be as simple as: 
+
+* The signing takes place on-prem but the deployment and final verification is on a hyperscaler that has no access to the Rekor endpoints, which - from the TAS standpoint - can be considered "offline".
+
+In that case, *there is only one major requirement*: The current public trust root (what is stored under `~/.sigstore` when we call `cosign initialize` and `cosign` requests the trust root from TUF) needs to be transported at least once during a root certificate lifecycle to the offline verification location.
+
+As soon as the trust root is updated, this needs to be transported again - depending on the customer requirements for certificate management, between once a quarter and once a year (longer is not a good practice, the default TAS root certificate lifetime is one year).
+
+With that said, we can verify without access to rekor via skipping the "tlog" == "transparency log" == Rekor verification.
+
+*Using a public key:*
+
+[source,bash]
+----
+cosign verify --key cosign.pub \
+  --insecure-ignore-tlog \
+  your-image:tag
+----
+
+*Using a keyless (certificate-based) signature:*
+
+[source,bash]
+----
+cosign verify \
+  --certificate-identity=<identity> \
+  --certificate-oidc-issuer=<issuer> \
+  --insecure-ignore-tlog \
+  your-image:tag
+----
+
+==== *Key Flags for Offline Use*
+
+* `--insecure-ignore-tlog`: Skips Rekor transparency log verification (required for offline)
+* `--insecure-ignore-sct`: Skips certificate transparency log checks if needed
+
+=== Important Considerations
+
+. *Security Trade-offs*: Without Rekor verification, you lose:
+** Proof of signature timestamp
+** Public transparency/auditability
+** Protection against key compromise backdating (_relevant only for key-based signatures, see below)
+
+. *What You Need Offline*:
+** The public key (if using key-based signing)
+** The Fulcio root certificates and certificate chain (if using keyless). This is the "trust root" mentioned above that `cosign initialize` pulls from TUF.
+** The signed container image
+
+
+
+The `--insecure-ignore-tlog` flag is the critical piece for offline verification, but this reduces the security guarantees that TAS/Sigstore normally provides.
+
+Key compromise backdating is *not really a concern* with keyless/certificate-based signing (Sigstore/Fulcio) because of those short-lived certificates.
+
+Let me clarify the difference:
+
+==== *Traditional Key-Based Signing*
+
+With long-lived private keys, Rekor prevents (what we lose *without Rekor*):
+
+* An attacker who compromises your key from creating signatures with old timestamps
+* This is a real concern because the key might be valid for years
+
+==== *Keyless/Certificate-Based Signing (Fulcio)*
+
+With 10-minute ephemeral certificates:
+
+* The private key only exists during the signing session (ephemeral)
+* Even if someone got that private key, the certificate expires in 10 minutes
+* After expiration, they *cannot* create valid signatures with it
+* The certificate validity period itself prevents backdating
+
+==== *What Rekor Actually Provides for Keyless*
+
+In the keyless scenario, Rekor primarily provides:
+
+. *Independent timestamp proof using signed timestamps*: Proves the signature was created while the cert was valid (within that 10-minute window)
+. *Transparency/auditability*: Public record of all signatures
+. *Fulcio accountability*: Detects if Fulcio misbehaves and issues inappropriate certificates
+
+=== Offline Verification Security
+
+For offline keyless verification, your main security checks are:
+
+* Certificate validity period (NotBefore/NotAfter)
+* Certificate identity matches expectations
+* Certificate issuer (OIDC provider) is trusted
+* Signature cryptographically validates
+
+Without Rekor, you lose the independent timestamp proof and transparency, but the short certificate lifetime already prevents the backdating attack vector. Also, the signature contains a signed timestamp that will be checked against the timestamp authority included in the Trust Root.
+
+
 
 
 
