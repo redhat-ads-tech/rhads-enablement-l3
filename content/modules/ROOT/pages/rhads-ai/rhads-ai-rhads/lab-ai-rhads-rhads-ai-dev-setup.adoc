@@ -129,7 +129,9 @@ You have received new requests from the AI Engineering team:
 . Configure the application to use *environment variables* to connect to an AI model and an API. 
 . Create a *GitLab webhook* to trigger the OpenShift Pipelines.
 
-Usually, Platform Engineers, will update the software templates or components to manage custom configurations. In this case, you will apply these configurations directly to the newly created component since we are leveraging pre-existent templates. Let's work on these requests!
+Typically, Platform Engineers manage custom configurations by updating the source software templates. In this case, however, you will apply these configurations directly to your newly created component since we are leveraging a pre-existing template.
+
+Let's work on these requests!
 
 === 1- Update the dev.yaml file
 
