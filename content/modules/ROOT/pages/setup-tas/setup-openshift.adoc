@@ -86,7 +86,7 @@ For our Keycloak example, we'll use a couple of helper scripts again, so (if you
 
 Then, clone the following repository:
 
-NOTE: It's a linux terminal, so use `<ctrl>+<shift>+<v>` for pasting 🐧
+NOTE: It's a linux terminal, so use kbd:[CTRL-SHIFT-V] for pasting 🐧
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -116,10 +116,10 @@ image:m4-tas-openshift/keycloak-client-redirect-uris.png[]
 
 [NOTE]
 ====
-The `urn:ietf:wg:oauth:2.0:oob` URI is used when an OAuth client cannot receive the authorization response through a standard HTTP redirect. Instead of redirecting the user back to your application with the authorization code, the authorization server displays the code directly to the user, who must then manually copy it and paste it into your application.
+The `urn:ietf:wg:oauth:2.0:oob` URI is used when an OAuth client cannot receive the authorization response through a standard HTTP redirect. This is used in
 
-Desktop applications that don't run a local web server 
-Command-line tools where there's no browser redirect capability
+* Desktop applications that don't run a local web server 
+* Command-line tools where there's no browser redirect capability
 
 This basically enables "browser-based" authentication when there is no browser (such as a terminal, we'll come to that later) - and the asterisk is required for the local `cosign` and `gitsign` signing clients to display a confirmation page that originates from the local client, not a webserver. 
 ==== 
@@ -190,7 +190,7 @@ So, using the console, let's go to the {openshift_console_url}/k8s/ns/student-ta
 
 image:m4-tas-openshift/tas-operatorhub-student-tas.png[]
 
-Open the operator and create a "Securesign" here in the `student-tpa` namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:
+Open the operator and create a "Securesign" here in the `student-tas` namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:
 
 1) The OIDC Issuer and OIDC IssuerURL - these are the only *mandatory* changes. Actually, just the URL (which is where Fulcio will request authentication) - the "Issuer" is a string by which the OIDC Provider will be identified throughout the flow, so using the URL as a name is a way of uniquely identifying the provider, in case you have multiple.
 
@@ -268,6 +268,7 @@ In the "Podman Terminal", you have the cli-tools available that are the foundati
 In order to use the clients, we need to tell them where the appropriate endpoints are, such as the Fulcio certificate service, the OIDC Server and the Rekor endpoint for logging signing events. 
 
 There are two ways to do that
+
 * via command-line parameter
 * via environment variables
 
@@ -380,23 +381,27 @@ For testing, we'll create an empty container image and push it to the `ttl.sh` e
 
 [source,bash,role=execute,subs=attributes+]
 ----
+UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
 echo "FROM scratch" > ./tmp.Dockerfile
-podman build . -f ./tmp.Dockerfile -t ttl.sh/rhtas/test-image:1h
-podman push ttl.sh/rhtas/test-image:1h
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME
 ----
 
 [source,console]
 ----
-podman-terminal:/workspace$ echo "FROM scratch" > ./tmp.Dockerfile
-podman build . -f ./tmp.Dockerfile -t ttl.sh/rhtas/test-image:1h
-podman push ttl.sh/rhtas/test-image:1h
+podman-terminal:/workspace$ UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+echo "FROM scratch" > ./tmp.Dockerfile
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME
 STEP 1/1: FROM scratch
-COMMIT ttl.sh/rhtas/test-image:1h
---> fc8cf8b1a7d7
-Successfully tagged ttl.sh/rhtas/test-image:1h
-fc8cf8b1a7d734c6e93ab3818cfad01a351380f3042586daf6428f64f7cdd2e2
+COMMIT ttl.sh/rhtas/test-image-4be1a048:1h
+--> 555cca0b8910
+Successfully tagged ttl.sh/rhtas/test-image-4be1a048:1h
+555cca0b89106c0b78185f2091e7708384ee7694f555d100ee5c7ba50e44dbcd
 Getting image source signatures
-Copying config fc8cf8b1a7 done   | 
+Copying config 555cca0b89 done   | 
 Writing manifest to image destination
 ----
 
@@ -404,14 +409,14 @@ Now we'll sign it:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign sign -y ttl.sh/rhtas/test-image:1h
+cosign sign -y $IMAGE_NAME
 ----
 
 Since we are running in a terminal session with no browser, we are presented with a URL that we need to open, pointing to our SSO (Keycloak) server. If we ran this locally on our desktops, a browser window would open directly.
 
 [source,console]
 ----
-podman-terminal:/workspace$ cosign sign -y ttl.sh/rhtas/test-image:1h
+podman-terminal:/workspace$ cosign sign -y $IMAGE_NAME
 Generating ephemeral keys...
 Retrieving signed certificate...
 
@@ -424,8 +429,8 @@ By typing 'y', you attest that (1) you are not submitting the personal data of a
 error opening browser: exec: "xdg-open": executable file not found in $PATH
 Go to the following link in a browser:
 
-         https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=B6VZJhDr089zfOYICLLaoYy4xNchsCdKlIs1pmFCcgU&code_challenge_method=S256&nonce=34YPEYzx0zY3llKy4LQDbXZnu3y&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34YPEXamVdsNOwbVkcZFnkt2J0C
-Enter verification code:
+         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=DxXBBX3iEO2fNVNRZ-oEftgt5FwLYX_vsDixiRJ1Tnc&code_challenge_method=S256&nonce=34fQJpS9CBW6stygUkIaHgOT6tM&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34fQJoeiPNVwNTDFcTOzfVROYdm
+Enter verification code: 
 ---- 
 
 Open the URL and login with either `{rhdh_user}` and `{rhdh_user_password}` or as `{openshift_admin_user}` with `{openshift_admin_password}` and copy the resulting code:
@@ -438,17 +443,17 @@ After pasting it in, cosign signs the image, pushes the signature to the reposit
 
 [source,console]
 ----
-Enter verification code: e9227e1a-0f27-47b7-a05f-c2b27f462e65.1808684f-e7ac-4c9a-822e-bfdcbdd53927.033e6140-f6cb-4613-b729-40cbfd0e0821
+Enter verification code: 77ca50a9-1427-469a-a496-0d62e54d4b94.2e7ce116-84a4-40a4-bd30-94ef56b5d000.22114fef-296a-47ad-9333-f37452ce1033
 
 Successfully verified SCT...
-WARNING: Image reference ttl.sh/rhtas/test-image:1h uses a tag, not a digest, to identify the image to sign.
+WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:1h uses a tag, not a digest, to identify the image to sign.
     This can lead you to sign a different image than the intended one. Please use a
     digest (example.com/ubuntu@sha256:abc123...) rather than tag
     (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
     images by tag will be removed in a future release.
 
-tlog entry created with index: 0
-Pushing signature to: ttl.sh/rhtas/test-image
+tlog entry created with index: 18
+Pushing signature to: ttl.sh/rhtas/test-image-4be1a048
 ---- 
 
 [NOTE]
@@ -461,15 +466,15 @@ With `cosign tree` we can quickly check what Supply Chain Security Artifacts (Si
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign tree ttl.sh/rhtas/test-image:1h
+cosign tree $IMAGE_NAME
 ----
 
 [source,console]
 ----
-podman-terminal:/workspace$ cosign tree ttl.sh/rhtas/test-image:1h
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image:1h
-└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image:sha256-2db91f12665bc42032882f65565b1a0913f5e2d4a101f4c62556cc8c5cbb5174.sig
-   └── 🍒 sha256:35e65f39048d76a6edce96f036304446e9ba0a250807a67d9aa7282d6efea5c5
+podman-terminal:/workspace$ cosign tree $IMAGE_NAME
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:1h
+└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-4be1a048:sha256-a07d920dbb3de8e69dff08c3e94fb4fe1df7e7f859da67941673ff7e0f3769f7.sig
+   └── 🍒 sha256:9937a84e9e6e5ddb9612521094563b78f398292431b8f137144c2ac142f13e1a
 ---- 
 
 With `cosign verify` we can verify that
@@ -481,7 +486,7 @@ With `cosign verify` we can verify that
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity=user1@demo.redhat.com ttl.sh/rhtas/test-image:1h | jq
+cosign verify --certificate-identity=user1@demo.redhat.com $IMAGE_NAME | jq
 ---- 
 (if you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead)
 
@@ -489,14 +494,14 @@ If we want to explicitly verify that the identity `user1@demo.redhat.com` was ve
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer ttl.sh/rhtas/test-image:1h | jq
+cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq
 ---- 
 
 We can also use `regular expressions`, using *`--certificate-identity-regexp`* and *`--certificate-oidc-issuer-regexp`* if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the `redhatworkshops.io` domain:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' ttl.sh/rhtas/test-image:1h | jq
+cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE_NAME | jq
 ---- 
 
 
