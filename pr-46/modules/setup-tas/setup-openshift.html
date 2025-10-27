@@ -541,7 +541,7 @@ Luckily we don&#8217;t have to deploy, configure and manage all of these compone
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-It&#8217;s a linux terminal, so use <code>&lt;ctrl&gt;&lt;shift&gt;&lt;v&gt;</code> for pasting 🐧
+It&#8217;s a linux terminal, so use <kbd>CTRL-SHIFT-V</kbd> for pasting 🐧
 </td>
 </tr>
 </table>
@@ -598,11 +598,17 @@ There are configuration properties that you need to take care of (that go beyond
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The <code>urn:ietf:wg:oauth:2.0:oob</code> URI is used when an OAuth client cannot receive the authorization response through a standard HTTP redirect. Instead of redirecting the user back to your application with the authorization code, the authorization server displays the code directly to the user, who must then manually copy it and paste it into your application.</p>
+<p>The <code>urn:ietf:wg:oauth:2.0:oob</code> URI is used when an OAuth client cannot receive the authorization response through a standard HTTP redirect. This is used in</p>
 </div>
-<div class="paragraph">
-<p>Desktop applications that don&#8217;t run a local web server
-Command-line tools where there&#8217;s no browser redirect capability</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Desktop applications that don&#8217;t run a local web server</p>
+</li>
+<li>
+<p>Command-line tools where there&#8217;s no browser redirect capability</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>This basically enables "browser-based" authentication when there is no browser (such as a terminal, we&#8217;ll come to that later) - and the asterisk is required for the local <code>cosign</code> and <code>gitsign</code> signing clients to display a confirmation page that originates from the local client, not a webserver.</p>
@@ -730,10 +736,10 @@ Command-line tools where there&#8217;s no browser redirect capability</p>
 <p>So, using the console, let&#8217;s go to the {openshift_console_url}/k8s/ns/student-tas/operators.coreos.com~v1alpha1~ClusterServiceVersion?cluster-service-version=trusted["Installed Operators" view^,window="console"] from within our namespace:</p>
 </div>
 <div class="paragraph">
-<p><span class="image unresolved"><img src="m4-tas-openshift/tas-operatorhub-student-tas.png" alt="tas operatorhub student tas"></span></p>
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operatorhub-student-tas.png" alt="tas operatorhub student tas"></span></p>
 </div>
 <div class="paragraph">
-<p>Open the operator and create a "Securesign" here in the <code>student-tpa</code> namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:</p>
+<p>Open the operator and create a "Securesign" here in the <code>student-tas</code> namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:</p>
 </div>
 <div class="paragraph">
 <p>1) The OIDC Issuer and OIDC IssuerURL - these are the only <strong>mandatory</strong> changes. Actually, just the URL (which is where Fulcio will request authentication) - the "Issuer" is a string by which the OIDC Provider will be identified throughout the flow, so using the URL as a name is a way of uniquely identifying the provider, in case you have multiple.</p>
@@ -990,9 +996,17 @@ Terminal URL: https://admin-terminal-ttyd.apps.cluster-mdt2d.dynamic.redhatworks
 <p>In order to use the clients, we need to tell them where the appropriate endpoints are, such as the Fulcio certificate service, the OIDC Server and the Rekor endpoint for logging signing events.</p>
 </div>
 <div class="paragraph">
-<p>There are two ways to do that
-* via command-line parameter
-* via environment variables</p>
+<p>There are two ways to do that</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>via command-line parameter</p>
+</li>
+<li>
+<p>via environment variables</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Since these tools will often be used in an automated fashion (e.g. in a CI/CD pipeline), using the commandline is discouraged, because that would add those parameters to the log. Furthermore, most CI/CD systems have ways to set environment variables for their tasks to consume. Going forward, we will use the environment variable option. For the commandline options, check the respective <code>--help</code> commands.</p>
@@ -1152,23 +1166,27 @@ Root status:
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo "FROM scratch" &gt; ./tmp.Dockerfile
-podman build . -f ./tmp.Dockerfile -t ttl.sh/rhtas/test-image:1h
-podman push ttl.sh/rhtas/test-image:1h</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+echo "FROM scratch" &gt; ./tmp.Dockerfile
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ echo "FROM scratch" &gt; ./tmp.Dockerfile
-podman build . -f ./tmp.Dockerfile -t ttl.sh/rhtas/test-image:1h
-podman push ttl.sh/rhtas/test-image:1h
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+echo "FROM scratch" &gt; ./tmp.Dockerfile
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME
 STEP 1/1: FROM scratch
-COMMIT ttl.sh/rhtas/test-image:1h
---&gt; fc8cf8b1a7d7
-Successfully tagged ttl.sh/rhtas/test-image:1h
-fc8cf8b1a7d734c6e93ab3818cfad01a351380f3042586daf6428f64f7cdd2e2
+COMMIT ttl.sh/rhtas/test-image-4be1a048:1h
+--&gt; 555cca0b8910
+Successfully tagged ttl.sh/rhtas/test-image-4be1a048:1h
+555cca0b89106c0b78185f2091e7708384ee7694f555d100ee5c7ba50e44dbcd
 Getting image source signatures
-Copying config fc8cf8b1a7 done   |
+Copying config 555cca0b89 done   |
 Writing manifest to image destination</code></pre>
 </div>
 </div>
@@ -1177,7 +1195,7 @@ Writing manifest to image destination</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign sign -y ttl.sh/rhtas/test-image:1h</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign sign -y $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1185,7 +1203,7 @@ Writing manifest to image destination</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign sign -y ttl.sh/rhtas/test-image:1h
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign sign -y $IMAGE_NAME
 Generating ephemeral keys...
 Retrieving signed certificate...
 
@@ -1198,7 +1216,7 @@ By typing 'y', you attest that (1) you are not submitting the personal data of a
 error opening browser: exec: "xdg-open": executable file not found in $PATH
 Go to the following link in a browser:
 
-         https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&amp;client_id=trusted-artifact-signer&amp;code_challenge=B6VZJhDr089zfOYICLLaoYy4xNchsCdKlIs1pmFCcgU&amp;code_challenge_method=S256&amp;nonce=34YPEYzx0zY3llKy4LQDbXZnu3y&amp;redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&amp;response_type=code&amp;scope=openid+email&amp;state=34YPEXamVdsNOwbVkcZFnkt2J0C
+         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&amp;client_id=trusted-artifact-signer&amp;code_challenge=DxXBBX3iEO2fNVNRZ-oEftgt5FwLYX_vsDixiRJ1Tnc&amp;code_challenge_method=S256&amp;nonce=34fQJpS9CBW6stygUkIaHgOT6tM&amp;redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&amp;response_type=code&amp;scope=openid+email&amp;state=34fQJoeiPNVwNTDFcTOzfVROYdm
 Enter verification code:</code></pre>
 </div>
 </div>
@@ -1225,17 +1243,17 @@ Make sure to copy the whole code, which is longer than the text box.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Enter verification code: e9227e1a-0f27-47b7-a05f-c2b27f462e65.1808684f-e7ac-4c9a-822e-bfdcbdd53927.033e6140-f6cb-4613-b729-40cbfd0e0821
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Enter verification code: 77ca50a9-1427-469a-a496-0d62e54d4b94.2e7ce116-84a4-40a4-bd30-94ef56b5d000.22114fef-296a-47ad-9333-f37452ce1033
 
 Successfully verified SCT...
-WARNING: Image reference ttl.sh/rhtas/test-image:1h uses a tag, not a digest, to identify the image to sign.
+WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:1h uses a tag, not a digest, to identify the image to sign.
     This can lead you to sign a different image than the intended one. Please use a
     digest (example.com/ubuntu@sha256:abc123...) rather than tag
     (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
     images by tag will be removed in a future release.
 
-tlog entry created with index: 0
-Pushing signature to: ttl.sh/rhtas/test-image</code></pre>
+tlog entry created with index: 18
+Pushing signature to: ttl.sh/rhtas/test-image-4be1a048</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1257,15 +1275,15 @@ Pushing signature to: ttl.sh/rhtas/test-image</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign tree ttl.sh/rhtas/test-image:1h</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign tree $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign tree ttl.sh/rhtas/test-image:1h
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image:1h
-└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image:sha256-2db91f12665bc42032882f65565b1a0913f5e2d4a101f4c62556cc8c5cbb5174.sig
-   └── 🍒 sha256:35e65f39048d76a6edce96f036304446e9ba0a250807a67d9aa7282d6efea5c5</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign tree $IMAGE_NAME
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:1h
+└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-4be1a048:sha256-a07d920dbb3de8e69dff08c3e94fb4fe1df7e7f859da67941673ff7e0f3769f7.sig
+   └── 🍒 sha256:9937a84e9e6e5ddb9612521094563b78f398292431b8f137144c2ac142f13e1a</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1279,7 +1297,7 @@ Pushing signature to: ttl.sh/rhtas/test-image</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity=user1@demo.redhat.com ttl.sh/rhtas/test-image:1h | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity=user1@demo.redhat.com $IMAGE_NAME | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1290,7 +1308,7 @@ Pushing signature to: ttl.sh/rhtas/test-image</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer ttl.sh/rhtas/test-image:1h | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1298,7 +1316,7 @@ Pushing signature to: ttl.sh/rhtas/test-image</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' ttl.sh/rhtas/test-image:1h | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE_NAME | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
