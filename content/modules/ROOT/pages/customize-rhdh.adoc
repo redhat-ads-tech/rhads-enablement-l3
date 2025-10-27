@@ -3,11 +3,14 @@
 Organizations can customize {product_rhdh_name} (RHDH) in many different ways to align with their specific needs and deliver a tailored developer experience. Customization options include:
 
 * **Visual customizations**: Modify appearance elements like title, logo, fonts, colors, headers, and themes to reflect your organization's branding
-* **Workflow customizations**: Create custom templates for services, components, and other resources to standardize and streamline developer workflows
-* **Content customizations**: Configure TechDocs to provide centralized, searchable technical documentation for your teams
 * **Functional customizations**: Set up access control, configure plugins, and adjust other functional settings to meet your operational requirements
 
-This module demonstrates the fundamental method for customizing your {product_rhdh_name} instance by walking through title and logo changes as a practical example. The same configuration techniques apply to all customization types, whether visual, workflow, content, or functional.
+This module focuses on the first: Visual customizations. It demonstrates the fundamental method for customizing your {product_rhdh_name} instance by walking through title and logo changes as a practical example. 
+
+[NOTE]
+====
+The same configuration techniques apply to all customization types, whether visual or functional. Visit the xref:setup-rhdh/foundations.adoc[Setup {product_rhdh_name}] module to understand how to configure functional aspects of a {product_rhdh_name} instance, like access control and plugin settings.
+====
 
 {product_rhdh_name} provides two themes:
 
@@ -197,7 +200,7 @@ spec:
 
 === Visit your {product_rhdh_name} Instance
 
-Now that you've create the `Backstage` custom resource, and the pods and up and running, you can access your {product_rhdh_name} deployment using the https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] established by the RHDH Operator:
+Now that you've created the `Backstage` custom resource, and the pods are up and running, you can access your {product_rhdh_name} deployment using the https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] established by the RHDH Operator:
 
 . Select *Networking > Routes* from the OpenShift Web Console's left navigation.
 . Confirm that your *brand-rhdh* project is selected in the project selector.
