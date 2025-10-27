@@ -13,7 +13,7 @@ This module explains how to change the title and logo of the {product_rhdh_name}
 While more advanced project requirements might https://backstage.io/docs/conf/user-interface/#theming-architecture-overview[replace the entire theme^] with a custom provider or providers, this module focuses on the more common deployment task of modifying the included theme with visual elements that suit a company, brand, or team style.
 // "this code will create a simple functional home page": 3570 lines of YAML
 //
-//  Some reluctance to include above link to backstage theme doc bc
+// Some reluctance to include above link to backstage theme doc bc
 // our theme engine is JS MUI, labeled LEGACY right up top above the fold
 
 == Per-User Appearance Settings
@@ -51,14 +51,16 @@ This module shows how to change the display title and logo to illustrate the pro
 // I think we don't load the icon logo in later versions.
 // Viz the dev hub deployed in the tssc-dh proj
 
-== Lab: Deploying {product_rhdh_name} with Custom Title and Logo
+== Lab
 
 At the overview level, specifying a title and logo for your {product_rhdh_name} takes 3 primary steps:
 First, you'll create a _Project_ (a namespace) for your custom RHDH instance. In that Project you'll create a _ConfigMap_ to store instance configuration, including an embedded image. Then, you'll create a short _CustomResource_ to define the RHDH instance you'd like the cluster to create and manage.
 
 === Create an OpenShift Project
 
-. Go to the {openshift_console_url}[OpenShift Web Console^].
+. Go to the {openshift_console_url}[OpenShift Web Console^]. Log in with the credentials:
+    * Username: `{openshift_admin_user}`
+    * Password: `{openshift_admin_password}`
 . Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Navigate to *Home > Projects*, then click the *Create project* button.
 . Enter the name `brand-rhdh` in the displayed dialog, then click *Create*.
@@ -83,157 +85,19 @@ image::customize-rhdh/fullLogo-default.png[]
 
 This module provides an encoded image in the sample code for app-config. It also explains how to encode your own image.
 
-==== Keys in the ConfigMap definition 
+=== Create the ConfigMap
 
-You can see `app.title` and `app.branding.fullLogo` in this excerpt from the ConfigMap YAML. The base64-encoded image is a very long text string, severely shortened here. The complete ConfigMap definition is in <<Appendix A>>, below.
+. Copy the ConfigMap declaration from the code block below.
 
-[source,yaml]
-----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: rhdh-config
-  namespace: brand-rhdh
-data:
-  app-config.yaml: |
-    app:
-      baseUrl: https://backstage-rhdh-brand-rhdh.{openshift_cluster_ingress_domain}
-      title: "Project Ideal X - Developer Hub"
-      branding:
-        fullLogo: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSRBAAIAAIdpAAQAAAABAAAAZgAAAAAAAABIAAAAAQAAAEgAAAABAAOg
-        [...] # ABRIDGED. COPY COMPLETE CONFIGMAP AT PAGE BOTTOM.
-        g9J9ogzh5qBGQAAAABJRU5ErkJggg==
-[...]
-----
+. In the OpenShift Web Console, Administrator perspective, select *Workloads* to expand it, then select *ConfigMaps*.
 
-===== Procedure: Create the ConfigMap
+. Click the *Create ConfigMap* button at top right.
 
-In the OpenShift Web Console, Administrator perspective, select *Workloads* to expand it, then select *ConfigMaps*.
+. Change the *Configure via:* selection radio button to "YAML view".
 
-Click the *Create ConfigMap* button at top right.
-In the presented text entry field, delete the provided YAML skeleton entirely.
+. In the presented text entry field, delete the provided YAML skeleton entirely.
 
-Copy the complete ConfigMap declaration from  _<<Appendix A>>_ at the bottom of this page. The explanation of the keys above is abridged for readability.
-
-Paste the copied ConfigMap YAML into the empty text field, then click *Create* to commit your `brand-rhdh` ConfigMap.
-
-===== Alternative: Create ConfigMap on the command line
-
-[source,sh]
-----
-% cat > app-config.yaml
-# Paste the ConfigMap YAML here
-^D
-% ls
-app-config.yaml
-% oc create configmap rhdh-config --from-file=app-config.yaml --namespace=brand-rhdh
-----
-
-===== How to make the encoded image (Optional)
-
-You can produce an encoded image string in the format {product_rhdh_name} expects by doing something like the following on your local *nix system:
-
-[source,sh]
-----
-% ls
-logo.png # Your logo image
-% PNGLOGOB64=$(base64 -i logo.png) # Var holds image in base64
-% B64_FULL_LOGO="data:image/png;base64,$PNGLOGOB64" # Catenate type spec with encoded image
-% echo $B64_FULL_LOGO # Echo result to terminal
-data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI8AAAA7CAYAAABCONnwAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A[...]
-% echo $B64_FULL_LOGO > logo.b64 # Write result to file
-----
-
-Once you've catenated the image specification with the encoded image data, copy the result from your terminal, or _echo_(1) it out to a file and open the file in a program that makes copying easier. Use the string to replace the provided image data in your `rhdh-config` ConfigMap.
-
-{product_rhdh_name} works best with source icon images in the scalable SVG format. It also supports PNG and JPEG icon images. This exercise uses a PNG source image for simplicity while retaining an alpha channel to look acceptable against the gray background.
-
-If your source logo image is in the (more desirable) SVG format, specify `data:image/svg+xml;base64` in your B64_FULL_LOGO variable. For a jpeg, specify `data:image/jpeg;base64`.
-
-
-=== Declare a Backstage Instance
-
-You've stored a custom {product_rhdh_name} configuration in your `brand-rhdh` ConfigMap, where your instance will be able to find it. Now it's time to inform the {product_rhdh_name} Operator so it will deploy and maintain the set of RHDH components in your project on the OpenShift cluster. To do that, you'll create a `Backstage` Custom Resource -- a particular _kind_ of Resource defined in the cluster's API to represent an instance of {product_rhdh_name}. The key part of your Custom Resource is naming the _configMap_ that should be consulted for {product_rhdh_name} configuration. You can see your `rhdh-config` ConfigMap named in the `configMaps` list beneath application.appConfig:
-
-[source,yaml,role=execute,subs=attributes+]
-----
-apiVersion: rhdh.redhat.com/v1alpha3
-kind: Backstage
-metadata:
-  name: rhdh
-  namespace: brand-rhdh
-spec:
-  application:
-    appConfig:
-      mountPath: /opt/app-root/src
-      # This instructs the operator to mount the ConfigMap
-      # that you created into the Backstage Pods
-      configMaps:
-        - name: rhdh-config
-    route:
-      enabled: true
-  database:
-    enableLocalDb: true
-----
-
-Copy this Custom Resource YAML to your computer's clipboard.
-
-In the OpenShift Web Console, Administrator perspective, click the plus icon ("*+*") near the top right to expand its menu, then click *Import YAML*.
-
-Paste the `Backstage` Custom Resource YAML from your clipboard into the presented text field. Click *Create* to apply the Resource on the cluster.
-
-The {product_rhdh_name} Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your `brand-rhdh` ConfigMap.
-
-It can take a few minutes for a new deployment to completely roll out.
-
-=== Alternative: Create Backstage Instance on the Command Line
-
-[source,sh]
-----
-% cat > brand-rhdh.yaml
-# Paste CR YAML here
-^D
-% oc apply --filename=brand-rhdh.yaml --namespace=brand-rhdh
-----
-
-//== Advanced Settings
-//
-// TODO: Add advanced settings? (What's more advanced than base64'd svg?)
-// Custom URLs
-// The same technique can be employed to set a custom baseURL in your app-config ConfigMap,
-// after arranging DNS and/or cluster resolution of the custom name to the Service
-
-=== Visit your {product_rhdh_name} Instance
-
-Access your {product_rhdh_name} deployment using the https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] established by the RHDH Operator:
-
-. Select *Networking > Routes* from the OpenShift Web Console's right-hand navigation.
-. Check that your *brand-rhdh* project is selected in the project selector.
-. Click the URL in the *Location* column on the *Routes* page. You should be presented with the {product_rhdh_name} sign-in dialog.
-+
-NOTE: If an *Application is not available* message is displayed when you click the Location, wait another 1-2 minutes. It can take some time for the pod readiness check to pass after a pod restart.
-+
-. Select *Guest* to log in with just enough privilege to see the results of your title and logo customizations.
-
-image::customize-rhdh/brand-rhdh-logo.png[]
-
-
-
-== Tech Docs
-
-The TechDocs feature is installed by default with Red Hat Developer Hub. TechDocs provides a central and standardized system for creating, finding, and reading technical documentation.
-
-* Docs-as-Code: Documentation source files are stored alongside code in the same repository, conventionally in Markdown format. This promotes a "docs-as-code" process, making it easier and more obvious for developers to update documentation with the codebase.
-
-* Centralized, Yet Distributed: TechDocs centralizes the access point for all documentation within the Red Hat Developer Hub portal, while the documentation source files remain distributed across repositories owned by the teams that develop, use, and maintain them.
-
-* Automated Rendering and Publishing: TechDocs generates static HTML from Markdown or similar source files. This integrates into CI/CD processes to automate publishing. The generated HTML files are collected, accessible, and, most importantly, searchable alongside code, repos, APIs and services in {product_rhdh_name}.
-
-== Appendices
-
-=== Appendix A
-
-This is the complete ConfigMap definition including an embedded logo image. Used in § _<<Procedure: Create the ConfigMap>>_
+. Paste the copied ConfigMap YAML into the empty text field, then click *Create* to commit the `brand-rhdh` ConfigMap.
 
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -260,3 +124,136 @@ data:
       cors:
         origin: https://backstage-rhdh-brand-rhdh.{openshift_cluster_ingress_domain}
 ----
+
+[NOTE]
+====
+FYI: Create ConfigMap on the command line
+
+_Do not perform these steps if you've already created the `rhdh-config` ConfigMap in the OpenShift Web Console._
+
+You can create Resources like the `brand-rhdh` ConfigMap on the command line. This requires:
+
+1. the OpenShift https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/cli_tools/openshift-cli-oc[_oc_(1)] command line tool
+2. the same credentials you used to log in to the OpenShift Web Console
+
+The OpenShift Web Terminal provides these requirements. Click the `>_` icon near the top right of the OpenShift Web Console to open the Web Terminal.
+
+In the shell session below, _cat_(1) creates and opens a new file, `app-config.yaml`, then waits for input. You can paste in your ConfigMap YAML, then type *Control-D* (`^D`) to signal the end of the file. _Cat_ writes the file, closes it, and exits. Then _oc_(1) uses app-config.yaml as the definition of a new ConfigMap. 
+
+[source,sh]
+----
+% cat > app-config.yaml
+# Paste ConfigMap YAML here
+^D
+% ls
+app-config.yaml
+% oc create configmap rhdh-config --from-file=app-config.yaml --namespace=brand-rhdh
+configmap/rhdh-config created
+----
+====
+
+=== Declare a Backstage Instance
+
+You've stored a custom {product_rhdh_name} configuration in your `brand-rhdh` ConfigMap, where your instance will be able to find it. Now it's time to inform the {product_rhdh_name} Operator so it will deploy and maintain the set of RHDH components in your Project on the OpenShift cluster. To do that, you'll create a `Backstage` Custom Resource -- a particular _kind_ of Resource defined in the cluster's API to represent an instance of {product_rhdh_name}. The key part of your Custom Resource is naming the _configMap_ that should be consulted for {product_rhdh_name} configuration. You can see your `rhdh-config` ConfigMap named in the `configMaps` list beneath application.appConfig:
+
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+  name: rhdh
+  namespace: brand-rhdh
+spec:
+  application:
+    appConfig:
+      mountPath: /opt/app-root/src
+      # This instructs the operator to mount the ConfigMap
+      # that you created into the Backstage Pods
+      configMaps:
+        - name: rhdh-config
+    route:
+      enabled: true
+  database:
+    enableLocalDb: true
+----
+
+. Copy this Custom Resource YAML to your computer's clipboard.
+
+. In the OpenShift Web Console, Administrator perspective, click the plus icon ("*+*") near the top right to expand its menu, then click *Import YAML*.
+
+. Paste the `Backstage` Custom Resource YAML from your clipboard into the presented text field. Click *Create* to apply the Resource on the cluster.
+
+. The {product_rhdh_name} Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your `brand-rhdh` ConfigMap.
+
+[NOTE]
+====
+FYI: Create CustomResource on the command line
+
+_Do not perform these steps if you've already created the `rhdh` CustomResource in the OpenShift Web Console._
+
+[source,sh]
+----
+% cat > brand-rhdh.yaml
+# Paste CR YAML here
+^D
+% oc apply --filename=brand-rhdh.yaml --namespace=brand-rhdh
+backstage.rhdh.redhat.com/rhdh created
+----
+====
+
+//== Advanced Settings
+//
+// TODO: Add advanced settings? (What's more advanced than base64'd svg?)
+// Custom URLs
+// The same technique can be employed to set a custom baseURL in your app-config ConfigMap,
+// after arranging DNS and/or cluster resolution of the custom name to the Service
+
+=== Visit your {product_rhdh_name} Instance
+
+Access your {product_rhdh_name} deployment using the https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking[Route^] established by the RHDH Operator:
+
+. Select *Networking > Routes* from the OpenShift Web Console's left navigation.
+. Confirm that your *brand-rhdh* project is selected in the project selector.
+. Click the URL in the *Location* column on the *Routes* view. You should be presented with the {product_rhdh_name} sign-in dialog.
++
+NOTE: If *Application is not available* is displayed when you click the Location, wait another 1-2 minutes. It can take some time for the pod readiness check to pass after a pod restart.
++
+. Select *Guest* to log in with just enough privilege to see the results of your title and logo customizations.
+
+image::customize-rhdh/brand-rhdh-logo.png[]
+
+[NOTE]
+====
+*How to make the encoded image*
+
+_This lab provides an encoded image in the ConfigMap YAML. These steps are informational and not required to complete the module._
+
+You can produce an encoded image string in the format {product_rhdh_name} expects by doing something like the following on your local *nix system:
+
+[source,sh]
+----
+% ls
+logo.png # Your logo image
+% PNGLOGOB64=$(base64 -i logo.png) # Var holds image in base64
+% B64_FULL_LOGO="data:image/png;base64,$PNGLOGOB64" # Catenate type spec with encoded image
+% echo $B64_FULL_LOGO # Echo result to terminal
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI8AAAA7CAYAAABCONnwAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A[...]
+% echo $B64_FULL_LOGO > logo.b64 # Write result to file
+----
+
+Once you've catenated the image specification with the encoded image data, copy the result from your terminal, or _echo_(1) it out to a file and open the file in a program that makes copying easier. Use the string to replace the provided image data in your `rhdh-config` ConfigMap.
+
+{product_rhdh_name} works best with source icon images in the scalable SVG format. It also supports PNG and JPEG icon images. This exercise uses a PNG source image for simplicity while retaining an alpha channel to look acceptable against the gray background.
+
+If your source logo image is in the (more desirable) SVG format, specify `data:image/svg+xml;base64` in your B64_FULL_LOGO variable. For a jpeg, specify `data:image/jpeg;base64`.
+====
+
+== Tech Docs
+
+The TechDocs feature is installed by default with Red Hat Developer Hub. TechDocs provides a central and standardized system for creating, finding, and reading technical documentation.
+
+* Docs-as-Code: Documentation source files are stored alongside code in the same repository, conventionally in Markdown format. This promotes a "docs-as-code" process, making it easier and more obvious for developers to update documentation with the codebase.
+
+* Centralized, Yet Distributed: TechDocs centralizes the access point for all documentation within the Red Hat Developer Hub portal, while the documentation source files remain distributed across repositories owned by the teams that develop, use, and maintain them.
+
+* Automated Rendering and Publishing: TechDocs generates static HTML from Markdown or similar source files. This integrates into CI/CD processes to automate publishing. The generated HTML files are collected, accessible, and, most importantly, searchable alongside code, repos, APIs and services in {product_rhdh_name}.
