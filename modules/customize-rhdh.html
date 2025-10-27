@@ -342,10 +342,34 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Organizations want to modify the Red Hat Developer Hub (RHDH) interface to align with their brand guidelines and polish the user experience. You can change Red Hat Developer Hub appearance and theme elements to reflect organization, team, or project branding.</p>
+<p>Organizations can customize Red Hat Developer Hub (RHDH) in many different ways to align with their specific needs and deliver a tailored developer experience. Customization options include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Visual customizations</strong>: Modify appearance elements like title, logo, fonts, colors, headers, and themes to reflect your organization&#8217;s branding</p>
+</li>
+<li>
+<p><strong>Functional customizations</strong>: Set up access control, configure plugins, and adjust other functional settings to meet your operational requirements</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>This module explains how to change the title and logo of the Red Hat Developer Hub theme and illustrates the method for customizing any of the available configuration options for RHDH deployments on OpenShift clusters.</p>
+<p>This module focuses on the first: Visual customizations. It demonstrates the fundamental method for customizing your Red Hat Developer Hub instance by walking through title and logo changes as a practical example.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The same configuration techniques apply to all customization types, whether visual or functional. Visit the <a href="setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> module to understand how to configure functional aspects of a Red Hat Developer Hub instance, like access control and plugin settings.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Red Hat Developer Hub provides two themes:</p>
@@ -397,7 +421,7 @@
 <h2 id="_global_appearance_options"><a class="anchor" href="#_global_appearance_options"></a>Global Appearance Options</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Red Hat Developer Hub configuration is set in a file conventionally named <code>app-config.yaml</code>. To customize global elements of RHDH appearance, you&#8217;ll modify settings in an app-config for your instance in the same way you would for any instance of RHDH or Backstage. Instead of a disk file, however, an OpenShift <em>ConfigMap</em> will hold the <code>app-config.yaml</code> data for your RHDH instance.</p>
+<p>Red Hat Developer Hub configuration is set in a file conventionally named <code>app-config.yaml</code>. To customize global elements of RHDH appearance, you&#8217;ll modify settings in an app-config for your instance in the same way you would for any instance of RHDH or Backstage. Instead of a file in the container&#8217;s filesystem, however, an OpenShift <em>ConfigMap</em> will hold the <code>app-config.yaml</code> data for your RHDH instance. This externalizes the RHDH configuration and allows you to manage it more easily (for example, using GitOps to synchronize changes across multiple environments).</p>
 </div>
 <div class="sect2">
 <h3 id="_what_you_can_change"><a class="anchor" href="#_what_you_can_change"></a>What You Can Change</h3>
@@ -418,7 +442,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>This module shows how to change the display title and logo to illustrate the procedure for customizing Red Hat Developer Hub appearance. The setup-rhdh/foundations.html[Setup RHDH^] module uses the same method to configure functional aspects of a Red Hat Developer Hub instance, like access control and plugin settings.</p>
+<p>This module shows how to change the display title and logo to illustrate the procedure for customizing Red Hat Developer Hub appearance. The <a href="setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> module uses the same method to configure functional aspects of a Red Hat Developer Hub instance, like access control and plugin settings.</p>
 </div>
 </div>
 </div>
@@ -551,13 +575,13 @@ data:
 </td>
 <td class="content">
 <div class="paragraph">
-<p>FYI: Create ConfigMap on the command line</p>
+<p>Alternatively, you can also create new ConfigMap resources (like the <code>rhdh-config</code> ConfigMap from above) using the <code>oc</code> command line utility.</p>
 </div>
 <div class="paragraph">
 <p><em>Do not perform these steps if you&#8217;ve already created the <code>rhdh-config</code> ConfigMap in the OpenShift Web Console.</em></p>
 </div>
 <div class="paragraph">
-<p>You can create Resources like the <code>brand-rhdh</code> ConfigMap on the command line. This requires:</p>
+<p>This requires:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -573,7 +597,7 @@ data:
 <p>The OpenShift Web Terminal provides these requirements. Click the <code>&gt;_</code> icon near the top right of the OpenShift Web Console to open the Web Terminal.</p>
 </div>
 <div class="paragraph">
-<p>In the shell session below, <em>cat</em>(1) creates and opens a new file, <code>app-config.yaml</code>, then waits for input. You can paste in your ConfigMap YAML, then type <strong>Control-D</strong> (<code>^D</code>) to signal the end of the file. <em>Cat</em> writes the file, closes it, and exits. Then <em>oc</em>(1) uses app-config.yaml as the definition of a new ConfigMap.</p>
+<p>In the shell session below, <em>cat</em>(1) creates and opens a new file, <code>app-config.yaml</code>, then waits for input. You can paste in your ConfigMap YAML, then type <kbd>CTRL-D</kbd> to signal the end of the file. <em>Cat</em> writes the file, closes it, and exits. Then <em>oc</em>(1) uses <code>app-config.yaml</code> as the definition of a new ConfigMap.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -594,7 +618,7 @@ configmap/rhdh-config created</code></pre>
 <div class="sect2">
 <h3 id="_declare_a_backstage_instance"><a class="anchor" href="#_declare_a_backstage_instance"></a>Declare a Backstage Instance</h3>
 <div class="paragraph">
-<p>You&#8217;ve stored a custom Red Hat Developer Hub configuration in your <code>brand-rhdh</code> ConfigMap, where your instance will be able to find it. Now it&#8217;s time to inform the Red Hat Developer Hub Operator so it will deploy and maintain the set of RHDH components in your Project on the OpenShift cluster. To do that, you&#8217;ll create a <code>Backstage</code> Custom Resource&#8201;&#8212;&#8201;a particular <em>kind</em> of Resource defined in the cluster&#8217;s API to represent an instance of Red Hat Developer Hub. The key part of your Custom Resource is naming the <em>configMap</em> that should be consulted for Red Hat Developer Hub configuration. You can see your <code>rhdh-config</code> ConfigMap named in the <code>configMaps</code> list beneath application.appConfig:</p>
+<p>You&#8217;ve stored a custom Red Hat Developer Hub configuration in your <code>rhdh-config</code> ConfigMap, where your instance will be able to find it. Now it&#8217;s time to inform the Red Hat Developer Hub Operator so it will deploy and maintain the set of RHDH components in your Project on the OpenShift cluster. To do that, you&#8217;ll create a <code>Backstage</code> Custom Resource&#8201;&#8212;&#8201;a particular <em>kind</em> of Resource defined in the cluster&#8217;s API to represent an instance of Red Hat Developer Hub. The key part of your Custom Resource is naming the <em>ConfigMap</em> that should be consulted for Red Hat Developer Hub configuration. You can see your <code>rhdh-config</code> ConfigMap named in the <code>configMaps</code> list beneath application.appConfig:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -610,13 +634,18 @@ spec:
       # This instructs the operator to mount the ConfigMap
       # that you created into the Backstage Pods
       configMaps:
-        - name: rhdh-config
+        - name: rhdh-config <i class="conum" data-value="1"></i><b>(1)</b>
     route:
       enabled: true
   database:
     enableLocalDb: true</code></pre>
 </div>
 </div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The name of the ConfigMap that contains the Red Hat Developer Hub configuration
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -629,33 +658,13 @@ spec:
 <p>Paste the <code>Backstage</code> Custom Resource YAML from your clipboard into the presented text field. Click <strong>Create</strong> to apply the Resource on the cluster.</p>
 </li>
 <li>
-<p>The Red Hat Developer Hub Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your <code>brand-rhdh</code> ConfigMap.</p>
+<p>The Red Hat Developer Hub Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your <code>rhdh-config</code> ConfigMap.</p>
+</li>
+<li>
+<p>Navigate to <strong>Workloads &gt; Pods</strong> in the OpenShift Web Console (making sure you&#8217;ve selected the <code>brand-rhdh</code> project in the project selector) and watch the database pod (a <code>PostgreSQL</code> pod) and the Backstage pod starting. Wait for both to be marked as "Running" and "Ready".</p>
 </li>
 </ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>FYI: Create CustomResource on the command line</p>
-</div>
-<div class="paragraph">
-<p><em>Do not perform these steps if you&#8217;ve already created the <code>rhdh</code> CustomResource in the OpenShift Web Console.</em></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% cat &gt; brand-rhdh.yaml
-# Paste CR YAML here
-^D
-% oc apply --filename=brand-rhdh.yaml --namespace=brand-rhdh
-backstage.rhdh.redhat.com/rhdh created</code></pre>
-</div>
-</div>
-</td>
+</div></td>
 </tr>
 </table>
 </div>
@@ -663,7 +672,7 @@ backstage.rhdh.redhat.com/rhdh created</code></pre>
 <div class="sect2">
 <h3 id="_visit_your_red_hat_developer_hub_instance"><a class="anchor" href="#_visit_your_red_hat_developer_hub_instance"></a>Visit your Red Hat Developer Hub Instance</h3>
 <div class="paragraph">
-<p>Access your Red Hat Developer Hub deployment using the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking" target="_blank" rel="noopener">Route</a> established by the RHDH Operator:</p>
+<p>Now that you&#8217;ve created the <code>Backstage</code> custom resource, and the pods are up and running, you can access your Red Hat Developer Hub deployment using the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking" target="_blank" rel="noopener">Route</a> established by the RHDH Operator:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
