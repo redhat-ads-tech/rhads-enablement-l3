@@ -125,7 +125,16 @@
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="customize-rhdh.html">Module 5: Customize Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="customize-rhdh.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_lab">Hands-on Lab</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -415,7 +424,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_lab_deploying_red_hat_developer_hub_with_custom_title_and_logo"><a class="anchor" href="#_lab_deploying_red_hat_developer_hub_with_custom_title_and_logo"></a>Lab: Deploying Red Hat Developer Hub with Custom Title and Logo</h2>
+<h2 id="_lab"><a class="anchor" href="#_lab"></a>Lab</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>At the overview level, specifying a title and logo for your Red Hat Developer Hub takes 3 primary steps:
@@ -426,7 +435,17 @@ First, you&#8217;ll create a <em>Project</em> (a namespace) for your custom RHDH
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Go to the {openshift_console_url}[OpenShift Web Console^].</p>
+<p>Go to the {openshift_console_url}[OpenShift Web Console^]. Log in with the credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Switch to the <strong>Administrator</strong> perspective using the <strong>Perspective Switcher</strong> in the top-left of the UI.</p>
@@ -473,209 +492,30 @@ First, you&#8217;ll create a <em>Project</em> (a namespace) for your custom RHDH
 <p>This module provides an encoded image in the sample code for app-config. It also explains how to encode your own image.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_keys_in_the_configmap_definition"><a class="anchor" href="#_keys_in_the_configmap_definition"></a>Keys in the ConfigMap definition</h4>
-<div class="paragraph">
-<p>You can see <code>app.title</code> and <code>app.branding.fullLogo</code> in this excerpt from the ConfigMap YAML. The base64-encoded image is a very long text string, severely shortened here. The complete ConfigMap definition is in <a href="#_appendix_a">Appendix A</a>, below.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: rhdh-config
-  namespace: brand-rhdh
-data:
-  app-config.yaml: |
-    app:
-      baseUrl: https://backstage-rhdh-brand-rhdh.{openshift_cluster_ingress_domain}
-      title: "Project Ideal X - Developer Hub"
-      branding:
-        fullLogo: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSRBAAIAAIdpAAQAAAABAAAAZgAAAAAAAABIAAAAAQAAAEgAAAABAAOg
-        [...] # ABRIDGED. COPY COMPLETE CONFIGMAP AT PAGE BOTTOM.
-        g9J9ogzh5qBGQAAAABJRU5ErkJggg==
-[...]</code></pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_procedure_create_the_configmap"><a class="anchor" href="#_procedure_create_the_configmap"></a>Procedure: Create the ConfigMap</h5>
-<div class="paragraph">
-<p>In the OpenShift Web Console, Administrator perspective, select <strong>Workloads</strong> to expand it, then select <strong>ConfigMaps</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Click the <strong>Create ConfigMap</strong> button at top right.
-In the presented text entry field, delete the provided YAML skeleton entirely.</p>
-</div>
-<div class="paragraph">
-<p>Copy the complete ConfigMap declaration from  <em><a href="#_appendix_a">Appendix A</a></em> at the bottom of this page. The explanation of the keys above is abridged for readability.</p>
-</div>
-<div class="paragraph">
-<p>Paste the copied ConfigMap YAML into the empty text field, then click <strong>Create</strong> to commit your <code>brand-rhdh</code> ConfigMap.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_alternative_create_configmap_on_the_command_line"><a class="anchor" href="#_alternative_create_configmap_on_the_command_line"></a>Alternative: Create ConfigMap on the command line</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% cat &gt; app-config.yaml
-# Paste the ConfigMap YAML here
-^D
-% ls
-app-config.yaml
-% oc create configmap rhdh-config --from-file=app-config.yaml --namespace=brand-rhdh</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_how_to_make_the_encoded_image_optional"><a class="anchor" href="#_how_to_make_the_encoded_image_optional"></a>How to make the encoded image (Optional)</h5>
-<div class="paragraph">
-<p>You can produce an encoded image string in the format Red Hat Developer Hub expects by doing something like the following on your local *nix system:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% ls
-logo.png # Your logo image
-% PNGLOGOB64=$(base64 -i logo.png) # Var holds image in base64
-% B64_FULL_LOGO="data:image/png;base64,$PNGLOGOB64" # Catenate type spec with encoded image
-% echo $B64_FULL_LOGO # Echo result to terminal
-data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI8AAAA7CAYAAABCONnwAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A[...]
-% echo $B64_FULL_LOGO &gt; logo.b64 # Write result to file</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once you&#8217;ve catenated the image specification with the encoded image data, copy the result from your terminal, or <em>echo</em>(1) it out to a file and open the file in a program that makes copying easier. Use the string to replace the provided image data in your <code>rhdh-config</code> ConfigMap.</p>
-</div>
-<div class="paragraph">
-<p>Red Hat Developer Hub works best with source icon images in the scalable SVG format. It also supports PNG and JPEG icon images. This exercise uses a PNG source image for simplicity while retaining an alpha channel to look acceptable against the gray background.</p>
-</div>
-<div class="paragraph">
-<p>If your source logo image is in the (more desirable) SVG format, specify <code>data:image/svg+xml;base64</code> in your B64_FULL_LOGO variable. For a jpeg, specify <code>data:image/jpeg;base64</code>.</p>
-</div>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_declare_a_backstage_instance"><a class="anchor" href="#_declare_a_backstage_instance"></a>Declare a Backstage Instance</h3>
-<div class="paragraph">
-<p>You&#8217;ve stored a custom Red Hat Developer Hub configuration in your <code>brand-rhdh</code> ConfigMap, where your instance will be able to find it. Now it&#8217;s time to inform the Red Hat Developer Hub Operator so it will deploy and maintain the set of RHDH components in your project on the OpenShift cluster. To do that, you&#8217;ll create a <code>Backstage</code> Custom Resource&#8201;&#8212;&#8201;a particular <em>kind</em> of Resource defined in the cluster&#8217;s API to represent an instance of Red Hat Developer Hub. The key part of your Custom Resource is naming the <em>configMap</em> that should be consulted for Red Hat Developer Hub configuration. You can see your <code>rhdh-config</code> ConfigMap named in the <code>configMaps</code> list beneath application.appConfig:</p>
-</div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: rhdh.redhat.com/v1alpha3
-kind: Backstage
-metadata:
-  name: rhdh
-  namespace: brand-rhdh
-spec:
-  application:
-    appConfig:
-      mountPath: /opt/app-root/src
-      # This instructs the operator to mount the ConfigMap
-      # that you created into the Backstage Pods
-      configMaps:
-        - name: rhdh-config
-    route:
-      enabled: true
-  database:
-    enableLocalDb: true</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Copy this Custom Resource YAML to your computer&#8217;s clipboard.</p>
-</div>
-<div class="paragraph">
-<p>In the OpenShift Web Console, Administrator perspective, click the plus icon ("<strong>+</strong>") near the top right to expand its menu, then click <strong>Import YAML</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Paste the <code>Backstage</code> Custom Resource YAML from your clipboard into the presented text field. Click <strong>Create</strong> to apply the Resource on the cluster.</p>
-</div>
-<div class="paragraph">
-<p>The Red Hat Developer Hub Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your <code>brand-rhdh</code> ConfigMap.</p>
-</div>
-<div class="paragraph">
-<p>It can take a few minutes for a new deployment to completely roll out.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_alternative_create_backstage_instance_on_the_command_line"><a class="anchor" href="#_alternative_create_backstage_instance_on_the_command_line"></a>Alternative: Create Backstage Instance on the Command Line</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% cat &gt; brand-rhdh.yaml
-# Paste CR YAML here
-^D
-% oc apply --filename=brand-rhdh.yaml --namespace=brand-rhdh</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_visit_your_red_hat_developer_hub_instance"><a class="anchor" href="#_visit_your_red_hat_developer_hub_instance"></a>Visit your Red Hat Developer Hub Instance</h3>
-<div class="paragraph">
-<p>Access your Red Hat Developer Hub deployment using the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking" target="_blank" rel="noopener">Route</a> established by the RHDH Operator:</p>
-</div>
+<h3 id="_create_the_configmap"><a class="anchor" href="#_create_the_configmap"></a>Create the ConfigMap</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Select <strong>Networking &gt; Routes</strong> from the OpenShift Web Console&#8217;s right-hand navigation.</p>
+<p>Copy the ConfigMap declaration from the code block below.</p>
 </li>
 <li>
-<p>Check that your <strong>brand-rhdh</strong> project is selected in the project selector.</p>
+<p>In the OpenShift Web Console, Administrator perspective, select <strong>Workloads</strong> to expand it, then select <strong>ConfigMaps</strong>.</p>
 </li>
 <li>
-<p>Click the URL in the <strong>Location</strong> column on the <strong>Routes</strong> page. You should be presented with the Red Hat Developer Hub sign-in dialog.</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If an <strong>Application is not available</strong> message is displayed when you click the Location, wait another 1-2 minutes. It can take some time for the pod readiness check to pass after a pod restart.
-</td>
-</tr>
-</table>
-</div>
+<p>Click the <strong>Create ConfigMap</strong> button at top right.</p>
 </li>
 <li>
-<p>Select <strong>Guest</strong> to log in with just enough privilege to see the results of your title and logo customizations.</p>
+<p>Change the <strong>Configure via:</strong> selection radio button to "YAML view".</p>
+</li>
+<li>
+<p>In the presented text entry field, delete the provided YAML skeleton entirely.</p>
+</li>
+<li>
+<p>Paste the copied ConfigMap YAML into the empty text field, then click <strong>Create</strong> to commit the <code>brand-rhdh</code> ConfigMap.</p>
 </li>
 </ol>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/customize-rhdh/brand-rhdh-logo.png" alt="brand rhdh logo">
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_tech_docs"><a class="anchor" href="#_tech_docs"></a>Tech Docs</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The TechDocs feature is installed by default with Red Hat Developer Hub. TechDocs provides a central and standardized system for creating, finding, and reading technical documentation.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Docs-as-Code: Documentation source files are stored alongside code in the same repository, conventionally in Markdown format. This promotes a "docs-as-code" process, making it easier and more obvious for developers to update documentation with the codebase.</p>
-</li>
-<li>
-<p>Centralized, Yet Distributed: TechDocs centralizes the access point for all documentation within the Red Hat Developer Hub portal, while the documentation source files remain distributed across repositories owned by the teams that develop, use, and maintain them.</p>
-</li>
-<li>
-<p>Automated Rendering and Publishing: TechDocs generates static HTML from Markdown or similar source files. This integrates into CI/CD processes to automate publishing. The generated HTML files are collected, accessible, and, most importantly, searchable alongside code, repos, APIs and services in Red Hat Developer Hub.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_appendices"><a class="anchor" href="#_appendices"></a>Appendices</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_appendix_a"><a class="anchor" href="#_appendix_a"></a>Appendix A</h3>
-<div class="paragraph">
-<p>This is the complete ConfigMap definition including an embedded logo image. Used in § <em><a href="#_procedure_create_the_configmap">Procedure: Create the ConfigMap</a></em></p>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -703,6 +543,222 @@ data:
         origin: https://backstage-rhdh-brand-rhdh.{openshift_cluster_ingress_domain}</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>FYI: Create ConfigMap on the command line</p>
+</div>
+<div class="paragraph">
+<p><em>Do not perform these steps if you&#8217;ve already created the <code>rhdh-config</code> ConfigMap in the OpenShift Web Console.</em></p>
+</div>
+<div class="paragraph">
+<p>You can create Resources like the <code>brand-rhdh</code> ConfigMap on the command line. This requires:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>the OpenShift <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/cli_tools/openshift-cli-oc"><em>oc</em>(1)</a> command line tool</p>
+</li>
+<li>
+<p>the same credentials you used to log in to the OpenShift Web Console</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The OpenShift Web Terminal provides these requirements. Click the <code>&gt;_</code> icon near the top right of the OpenShift Web Console to open the Web Terminal.</p>
+</div>
+<div class="paragraph">
+<p>In the shell session below, <em>cat</em>(1) creates and opens a new file, <code>app-config.yaml</code>, then waits for input. You can paste in your ConfigMap YAML, then type <strong>Control-D</strong> (<code>^D</code>) to signal the end of the file. <em>Cat</em> writes the file, closes it, and exits. Then <em>oc</em>(1) uses app-config.yaml as the definition of a new ConfigMap.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% cat &gt; app-config.yaml
+# Paste ConfigMap YAML here
+^D
+% ls
+app-config.yaml
+% oc create configmap rhdh-config --from-file=app-config.yaml --namespace=brand-rhdh
+configmap/rhdh-config created</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_declare_a_backstage_instance"><a class="anchor" href="#_declare_a_backstage_instance"></a>Declare a Backstage Instance</h3>
+<div class="paragraph">
+<p>You&#8217;ve stored a custom Red Hat Developer Hub configuration in your <code>brand-rhdh</code> ConfigMap, where your instance will be able to find it. Now it&#8217;s time to inform the Red Hat Developer Hub Operator so it will deploy and maintain the set of RHDH components in your Project on the OpenShift cluster. To do that, you&#8217;ll create a <code>Backstage</code> Custom Resource&#8201;&#8212;&#8201;a particular <em>kind</em> of Resource defined in the cluster&#8217;s API to represent an instance of Red Hat Developer Hub. The key part of your Custom Resource is naming the <em>configMap</em> that should be consulted for Red Hat Developer Hub configuration. You can see your <code>rhdh-config</code> ConfigMap named in the <code>configMaps</code> list beneath application.appConfig:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+  name: rhdh
+  namespace: brand-rhdh
+spec:
+  application:
+    appConfig:
+      mountPath: /opt/app-root/src
+      # This instructs the operator to mount the ConfigMap
+      # that you created into the Backstage Pods
+      configMaps:
+        - name: rhdh-config
+    route:
+      enabled: true
+  database:
+    enableLocalDb: true</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy this Custom Resource YAML to your computer&#8217;s clipboard.</p>
+</li>
+<li>
+<p>In the OpenShift Web Console, Administrator perspective, click the plus icon ("<strong>+</strong>") near the top right to expand its menu, then click <strong>Import YAML</strong>.</p>
+</li>
+<li>
+<p>Paste the <code>Backstage</code> Custom Resource YAML from your clipboard into the presented text field. Click <strong>Create</strong> to apply the Resource on the cluster.</p>
+</li>
+<li>
+<p>The Red Hat Developer Hub Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your <code>brand-rhdh</code> ConfigMap.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>FYI: Create CustomResource on the command line</p>
+</div>
+<div class="paragraph">
+<p><em>Do not perform these steps if you&#8217;ve already created the <code>rhdh</code> CustomResource in the OpenShift Web Console.</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% cat &gt; brand-rhdh.yaml
+# Paste CR YAML here
+^D
+% oc apply --filename=brand-rhdh.yaml --namespace=brand-rhdh
+backstage.rhdh.redhat.com/rhdh created</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_visit_your_red_hat_developer_hub_instance"><a class="anchor" href="#_visit_your_red_hat_developer_hub_instance"></a>Visit your Red Hat Developer Hub Instance</h3>
+<div class="paragraph">
+<p>Access your Red Hat Developer Hub deployment using the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking" target="_blank" rel="noopener">Route</a> established by the RHDH Operator:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select <strong>Networking &gt; Routes</strong> from the OpenShift Web Console&#8217;s left navigation.</p>
+</li>
+<li>
+<p>Confirm that your <strong>brand-rhdh</strong> project is selected in the project selector.</p>
+</li>
+<li>
+<p>Click the URL in the <strong>Location</strong> column on the <strong>Routes</strong> view. You should be presented with the Red Hat Developer Hub sign-in dialog.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If <strong>Application is not available</strong> is displayed when you click the Location, wait another 1-2 minutes. It can take some time for the pod readiness check to pass after a pod restart.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Select <strong>Guest</strong> to log in with just enough privilege to see the results of your title and logo customizations.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/customize-rhdh/brand-rhdh-logo.png" alt="brand rhdh logo">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>How to make the encoded image</strong></p>
+</div>
+<div class="paragraph">
+<p><em>This lab provides an encoded image in the ConfigMap YAML. These steps are informational and not required to complete the module.</em></p>
+</div>
+<div class="paragraph">
+<p>You can produce an encoded image string in the format Red Hat Developer Hub expects by doing something like the following on your local *nix system:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% ls
+logo.png # Your logo image
+% PNGLOGOB64=$(base64 -i logo.png) # Var holds image in base64
+% B64_FULL_LOGO="data:image/png;base64,$PNGLOGOB64" # Catenate type spec with encoded image
+% echo $B64_FULL_LOGO # Echo result to terminal
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI8AAAA7CAYAAABCONnwAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A[...]
+% echo $B64_FULL_LOGO &gt; logo.b64 # Write result to file</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you&#8217;ve catenated the image specification with the encoded image data, copy the result from your terminal, or <em>echo</em>(1) it out to a file and open the file in a program that makes copying easier. Use the string to replace the provided image data in your <code>rhdh-config</code> ConfigMap.</p>
+</div>
+<div class="paragraph">
+<p>Red Hat Developer Hub works best with source icon images in the scalable SVG format. It also supports PNG and JPEG icon images. This exercise uses a PNG source image for simplicity while retaining an alpha channel to look acceptable against the gray background.</p>
+</div>
+<div class="paragraph">
+<p>If your source logo image is in the (more desirable) SVG format, specify <code>data:image/svg+xml;base64</code> in your B64_FULL_LOGO variable. For a jpeg, specify <code>data:image/jpeg;base64</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tech_docs"><a class="anchor" href="#_tech_docs"></a>Tech Docs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The TechDocs feature is installed by default with Red Hat Developer Hub. TechDocs provides a central and standardized system for creating, finding, and reading technical documentation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Docs-as-Code: Documentation source files are stored alongside code in the same repository, conventionally in Markdown format. This promotes a "docs-as-code" process, making it easier and more obvious for developers to update documentation with the codebase.</p>
+</li>
+<li>
+<p>Centralized, Yet Distributed: TechDocs centralizes the access point for all documentation within the Red Hat Developer Hub portal, while the documentation source files remain distributed across repositories owned by the teams that develop, use, and maintain them.</p>
+</li>
+<li>
+<p>Automated Rendering and Publishing: TechDocs generates static HTML from Markdown or similar source files. This integrates into CI/CD processes to automate publishing. The generated HTML files are collected, accessible, and, most importantly, searchable alongside code, repos, APIs and services in Red Hat Developer Hub.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
