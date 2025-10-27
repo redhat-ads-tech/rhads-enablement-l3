@@ -302,6 +302,18 @@
     <span class="nav-text">Dev Mode</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="full-ec-report.html">full-ec-report</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="podman-terminal-deployment.html">podman-terminal-deployment</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="podman-terminal-environment.html">podman-terminal-environment</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="securesign-example.html">securesign-example</a>
+  </li>
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../attrs-page.html">Attributes Page</a>
   </li>
 </ul>
@@ -343,8 +355,23 @@
 <h2 id="_overview"><a class="anchor" href="#_overview"></a>Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://developers.redhat.com/products/trusted-artifact-signer/overview">Red Hat Trusted Artifact Signer (RHTAS or TAS)</a> is an essential component for scanning and analyzing applications in secure environments. It provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail. It&#8217;s an enterprise-ready deployment of the <a href="https://www.sigstore.dev">Sigstore project</a>. RHTAS also extends its signing and verification capabilities to AI models, improving security during the AI model development lifecycle.</p>
+<p><a href="https://developers.redhat.com/products/trusted-artifact-signer/overview">Red Hat Trusted Artifact Signer (RHTAS or TAS)</a> is an essential component for artifact signing &amp; verification, provenance attestation &amp; verification and transparency in secure supply chains. It provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail.</p>
 </div>
+<table class="tableblock frame-none grid-none stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" rowspan="2"><p class="tableblock"><span class="image"><img src="../_images/m4-tas-openshift/sigstore-logo.svg" alt="sigstore logo"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">It&#8217;s an enterprise-ready deployment of the <a href="https://www.sigstore.dev">Sigstore project</a>. RHTAS also extends its signing and verification capabilities to AI models, improving security during the AI model development lifecycle.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>"Sign. Verify. Protect. Making sure your software is what it claims to be."</em></p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>This module provides comprehensive guidance for installing and configuring TAS in different environments to meet your organization&#8217;s security and compliance requirements. Later modules will cover how to use TAS to build a trusted software supply chain in the context of RHADS.</p>
 </div>
