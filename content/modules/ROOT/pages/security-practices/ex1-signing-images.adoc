@@ -1,0 +1,265 @@
+:imagesdir: ../../assets/images
+
+= Signing an image
+
+If you have gone through the xref:setup-tas/setup-openshift.adoc[TAS Installation Exercise] you will have used `cosign` to sign and verify an image, but here we will not use an empty image but one we have prepared for you.
+
+Before we can use that, we quickly need to copy it over to our Quay instance and the `l3-students` organisation in Quay that we just created in the "Preparation" section:
+
+In the `l3-enablement-helpers/security-concepts` directory, *source* the `copy-image-to-quay.sh` script. It will set the `$IMAGE` variable going forward, so we don't have to type this in all the time.
+
+[source,bash,role=execute,subs=attributes+]
+----
+source ./copy-image-to-quay.sh
+echo $IMAGE
+echo $QUAY
+----
+
+[source,console]
+----
+podman-terminal:/workspace/l3-enablement-helpers/security-concepts (main)$ source ./copy-image-to-quay.sh 
+Copying Image to Local Quay Registry
+=====================================
+
+Retrieving Quay route URL...
+Quay Host: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io
+Quay URL: https://quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io
+Retrieving Quay admin token from secret...
+Quay Admin Token: [REDACTED]
+
+Source Image: quay.io/tssc_demos/l3-rhads-demoimage:latest
+Destination Image: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+
+Copying image from quay.io/tssc_demos/l3-rhads-demoimage:latest to quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest...
+This may take a few moments...
+
+Getting image source signatures
+Copying blob 2fe2b9e85b7c done   | 
+Copying blob 8e2f63be1497 done   | 
+Copying blob 18b10354aea3 done   | 
+Copying blob 208837735122 done   | 
+Copying config 771d0be00e done   | 
+Writing manifest to image destination
+
+================================
+Success!
+================================
+Image copied successfully
+Source: quay.io/tssc_demos/l3-rhads-demoimage:latest
+Destination: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+Image URL: https://quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/repository/l3-students/l3-rhads-demoimage
+================================
+podman-terminal:/workspace/l3-enablement-helpers/security-concepts (main)$ echo $IMAGE
+quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+podman-terminal:/workspace/l3-enablement-helpers/security-concepts (main)$ echo $QUAY
+quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io
+----
+
+As the next step, we need to initialize `cosign`, letting it pull down the "trust root" from the TUF endpoint.
+
+NOTE: To check your current endpoints are configured correctly (pointing to the TAS deployment in the `tssc-tas` namespace, just type `help` )
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign initialize
+----
+
+[source,console]
+----
+podman-terminal:/workspace$ cosign initialize
+WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
+Root status: 
+ {
+        "local": "/home/student/.sigstore/root",
+        "remote": "https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io",
+        "metadata": {
+                "root.json": {
+                        "version": 1,
+                        "len": 4128,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                },
+                "snapshot.json": {
+                        "version": 1,
+                        "len": 994,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                },
+                "targets.json": {
+                        "version": 1,
+                        "len": 2416,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                },
+                "timestamp.json": {
+                        "version": 1,
+                        "len": 995,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                }
+        },
+        "targets": [
+                "fulcio_v1.crt.pem",
+                "trusted_root.json",
+                "ctfe.pub",
+                "rekor.pub"
+        ]
+}
+----
+
+Since we're now looking at a "real" image registry, `cosign` needs to authenticate with the registry, using `cosign login` - as any other tool (`podman`, `docker`, `skopeo`,...) would have, too:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign login $QUAY -u {quay_admin_user} -p {quay_admin_password}
+----
+
+[source,console]
+----
+podman-terminal:/workspace/l3-enablement-helpers/security-concepts (main)$ cosign login $QUAY -u quayadmin -p MjgwNTc5
+
+WARNING! Your credentials are stored unencrypted in '/home/student/.docker/config.json'.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+logged in via /home/student/.docker/config.json
+----
+
+== Signing Interactively (OAuth User Flow)
+
+Now we can sign the image (since `cosign` will automatically push the image signature to the image registry, we have to be logged in with write access to the image repository):
+
+[source,bash,role=execute,subs=attributes+]
+----
+echo $IMAGE
+cosign sign $IMAGE
+----
+
+Since we are running in a terminal session with no browser, we are presented with a URL that we need to open, pointing to our SSO (Keycloak) server. If we ran this locally on our desktops, a browser window would open directly.
+
+[source,console]
+----
+podman-terminal:/workspace/l3-enablement-helpers/security-concepts (main)$ cosign sign $IMAGE
+Generating ephemeral keys...
+Retrieving signed certificate...
+
+        The sigstore service, hosted by sigstore a Series of LF Projects, LLC, is provided pursuant to the Hosted Project Tools Terms of Use, available at https://lfprojects.org/policies/hosted-project-tools-terms-of-use/.
+        Note that if your submission includes personal data associated with this signed artifact, it will be part of an immutable record.
+        This may include the email address associated with the account with which you authenticate your contractual Agreement.
+        This information will be used for signing this artifact and will be stored in public transparency logs and cannot be removed later, and is subject to the Immutable Record notice at https://lfprojects.org/policies/hosted-project-tools-immutable-records/.
+
+By typing 'y', you attest that (1) you are not submitting the personal data of any other person; and (2) you understand and agree to the statement and the Agreement terms at the URLs listed above.
+error opening browser: exec: "xdg-open": executable file not found in $PATH
+Go to the following link in a browser:
+
+         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=Sr5AAQRbSo1E_1LvSFKMAl_CUkHwEGmMZ8GLmAsrFcA&code_challenge_method=S256&nonce=34eBTcbIeGurtNmu4dIfeFsyirk&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34eBTeWy36XLoRyD9czZI5xQyyZ
+Enter verification code:
+---- 
+
+Open the URL and login with either `{rhdh_user}` and `{rhdh_user_password}` or as `{openshift_admin_user}` with `{openshift_admin_password}` and copy the resulting code:
+
+IMPORTANT: Make sure to copy the whole code, which is longer than the text box.
+
+image:m4-tas-openshift/cosign-successcode.png[]
+
+After pasting it in, cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (`tlog` = "Transparency Log" = Rekor):
+
+[source,console]
+----
+Enter verification code: f4ef6a57-a339-4c11-b192-dce7feb608aa.a35192e4-36d3-4b28-a583-50b7816e72e2.22114fef-296a-47ad-9333-f37452ce1033
+
+Successfully verified SCT...
+WARNING: Image reference quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest uses a tag, not a digest, to identify the image to sign.
+    This can lead you to sign a different image than the intended one. Please use a
+    digest (example.com/ubuntu@sha256:abc123...) rather than tag
+    (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
+    images by tag will be removed in a future release.
+
+tlog entry created with index: 13
+Pushing signature to: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage
+
+----
+
+== Signing Non-Interactively (OAuth Token)
+
+Ok, and now you might be asking - "and how would a CI Task sign in via a browser?!"
+
+image::security-practices/keyless-signing-meme.png[]
+
+Good question! 
+
+=== Traditional (Keyful) Signing
+
+For sake of completeness, we can generate a public/private key pair with cosign - that would be part of the "trust root" certificate chain. 
+Additionally, when signing, we can record the signing event in the Rekor Transparency database - but we would lose the association with an identity, as we can just prove that the image was signed by a key, not *who* signed it.
+
+For generating a key pair (and all the automation options) see: 
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign generate-key-pair --help
+---- 
+
+and for signing with a private key (and recording the signing event to rekor) see
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign sign --help
+---- 
+
+We would sign using this parameter `--key='': path to the private key file, KMS URI or Kubernetes Secret` (with the key on file or in a secret or vault) like so
+
+[source,console]
+----
+cosign sign --key cosign.key --tlog-upload=true $IMAGE 
+cosign sign --key k8s://[NAMESPACE]/[KEY] --tlog-upload=true $IMAGE 
+----
+(the `--tlog-upload=true` is the default, but just to make it explicit).
+
+The verification could still be without the need for a physical public key (by using the transparency log). 
+
+=== Keyless
+
+For using keyless signing (without the need for a physical private key accessible) we can use whatever means our OIDC system allows to generate an access token. 
+Remember, `fulcio` (the Certificate Issuer) doesn't care *_how_* you authenticate with your OIDC system, as long as you *_do_*. 
+
+So, we can pass an access token we have obtained from our OIDC system. This can be done with a "Confidential OIDC Client" - in other words, a client that works with a "Client Secret" and gives anyone access that has this client secret. Basically, a centrally managed "technical user".
+
+Alternatively, (and much more flexible) we can use regular front-end authentication OIDC clients with any user from our OIDC system. So we could define different users for different CI chains or environments. 
+
+The crucial security consideration is - to obtain an access token, we need user credentials to pass to the OIDC system. These should be considered *_critical_* from a security perspective (same as the client secret above would be - or a physical private key, for that matter).
+
+So, as a good practice, these should be stored in a vault or some other secure password management system. 
+
+==== *Keycloak Example* 
+
+To get an access token from Keycloak, we need to request one with the username and password for a given user of a given realm. 
+
+In our example, we will use a user called `pipeline` with the email `pipeline-auth@demo.redhat.com`. 
+
+Here's a script that creates that user in Keycloak (if it isn't already there)
+[source,bash,role=execute,subs=attributes+]
+----
+/workspace/l3-enablement-helpers/security-concepts/setup-keycloak-users.sh
+----
+
+To get the token, we need to use the Keycloak API and call the following endpoint (also see the script `get-access-token.sh`) 
+
+[source,console]
+----
+# Get the access token
+TOKEN=$(curl -s -X POST "${ISSUER_URL}/protocol/openid-connect/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=password" \
+  -d "client_id=${CLIENT_ID}" \
+  -d "username=${USERNAME}" \
+  -d "password=${PASSWORD}" \
+  | jq -r '.access_token')
+
+---- 
+
+With `cosign` there are two ways to use that token: 
+
+We can use it explicitly in the commandline via the 

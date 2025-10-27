@@ -1,0 +1,881 @@
+:imagesdir: ../../assets/images
+
+= Software Supply Chain Security: Foundations and Frameworks
+
+== Introduction
+
+Software supply chains are the backbone of modern application development. Every application you build relies on an ecosystem of dependencies, build tools, repositories, CI/CD pipelines, and distribution mechanisms. While this ecosystem enables rapid development and deployment, it also creates numerous opportunities for attackers to compromise your software before it ever reaches production.
+
+This reading material establishes the foundational concepts of software supply chain security, introduces the SLSA framework, and explains how signatures, attestations, and SBOMs work together to create a secure and verifiable software supply chain.
+
+== Part 1: Understanding Software Supply Chain Security
+
+=== What is a Software Supply Chain?
+
+A *software supply chain* encompasses all the components, processes, systems, and people involved in producing, distributing, and deploying software. This includes:
+
+* *Source code* and version control systems
+* *Dependencies*: third-party libraries, open-source packages, and proprietary components
+* *Build systems* and CI/CD pipelines
+* *Build environments* and infrastructure
+* *Package registries* and artifact repositories
+* *Distribution mechanisms*
+* *Deployment platforms*
+
+In a typical modern application, the supply chain is complex and interconnected. A single container image might depend on dozens of open-source libraries, each with their own dependencies, all built using various tools and platforms. This complexity creates a large attack surface.
+
+=== Why Software Supply Chain Security Matters
+
+Software supply chain attacks have become increasingly prevalent and devastating. Unlike traditional attacks that target deployed applications directly, supply chain attacks compromise the software development and delivery process itself. These attacks are particularly dangerous because:
+
+. *High Impact*: A single compromise can affect thousands or millions of downstream users
+. *Trust Exploitation*: Attackers exploit the trust relationships between software producers and consumers
+. *Difficult Detection*: Malicious code inserted during the build process can bypass traditional security controls
+. *Persistent Threats*: Once embedded in widely-used software, compromises can persist for extended periods
+
+=== Notable Supply Chain Attacks
+
+Understanding real-world attacks helps illustrate why supply chain security is critical:
+
+*SolarWinds (2020)*: Attackers compromised SolarWinds' build environment and inserted malicious code into the Orion platform update mechanism. This backdoor was distributed to over 18,000 organizations, including major corporations and U.S. government agencies. The attack demonstrated how compromising a trusted software vendor can provide access to vast numbers of downstream targets.
+
+*Codecov (2021)*: Attackers modified the Bash Uploader script used in CI/CD pipelines, turning it into a mechanism for stealing credentials and secrets from development environments. This affected numerous software companies that used Codecov for code coverage reporting.
+
+*Log4j (2021)*: While not a traditional supply chain attack, the Log4j vulnerability (Log4Shell) highlighted the widespread risk of vulnerabilities in ubiquitous dependencies. The vulnerability affected countless applications worldwide because Log4j is embedded in thousands of software products.
+
+*npm dependency confusion*: Attackers exploited how package managers resolve dependencies by uploading malicious packages to public repositories with names matching internal private packages. Organizations that didn't properly configure their package managers inadvertently installed malicious code.
+
+*3CX (2023)*: The desktop applications of this communications software provider were compromised in a supply chain attack. The malicious code was signed with valid 3CX certificates, suggesting the build environment itself had been compromised.
+
+=== The Attack Surface: Key Threat Vectors
+
+Software supply chain attacks can target multiple points in the development and delivery lifecycle:
+
+==== Source Code Threats
+
+* *Malicious code introduction*: Attackers with access to repositories can insert vulnerabilities or backdoors
+* *Compromised developer accounts*: Stolen credentials can be used to commit malicious changes
+* *Insecure developer workstations*: Compromised development environments can introduce malicious code
+* *Lack of code review*: Insufficient review processes allow malicious or vulnerable code to be merged
+
+==== Build System Threats
+
+* *Compromised build infrastructure*: Attackers who gain access to build systems can modify artifacts during compilation
+* *Malicious build dependencies*: Build tools and plugins can be compromised to inject malicious code
+* *Unauthorized build modifications*: Without proper controls, builds can be altered without detection
+* *Dependency confusion*: Attackers can trick build systems into using malicious dependencies
+* *Compromised build credentials*: Stolen credentials can be used to modify or replace legitimate artifacts
+
+==== Distribution and Deployment Threats
+
+* *Package registry compromise*: Attackers with access to registries can replace legitimate packages with malicious ones
+* *Man-in-the-middle attacks*: Artifacts can be intercepted and modified during distribution
+* *Compromised signing keys*: If signing keys are stolen, attackers can sign malicious artifacts as legitimate
+* *Lack of artifact verification*: Without verification mechanisms, consumers cannot detect tampered artifacts
+
+==== Dependency Threats
+
+* *Vulnerable dependencies*: Known vulnerabilities in third-party components
+* *Unmaintained dependencies*: Abandoned projects that no longer receive security updates
+* *Typosquatting*: Packages with similar names to legitimate ones designed to trick developers
+* *Transitive dependencies*: Vulnerabilities or malicious code in dependencies of dependencies
+
+=== Core Principles of Supply Chain Security
+
+Protecting software supply chains requires a multi-layered approach focusing on several key principles:
+
+*1. Integrity*: Ensure that software and artifacts are not tampered with during development, build, and distribution. This includes protecting source code, build processes, and deployed artifacts.
+
+*2. Transparency*: Maintain visibility into all components and processes in the supply chain. Organizations should know what components they're using, where they came from, and how they were built.
+
+*3. Verification*: Implement mechanisms to verify the authenticity and integrity of software at each stage. This includes signing artifacts and validating signatures before use.
+
+*4. Provenance*: Track the origin and build history of software artifacts. Knowing how software was built and where it came from is essential for trust.
+
+*5. Accountability*: Establish clear ownership and responsibility for each component and process. This enables incident response and continuous improvement.
+
+*6. Least Privilege*: Limit access to source code, build systems, and signing keys to only those who need it. Minimize the blast radius of a potential compromise.
+
+*7. Automation*: Automate security controls to reduce human error and ensure consistent application of security policies.
+
+== Part 2: SLSA - Supply Chain Levels for Software Artifacts
+
+=== What is SLSA?
+
+[cols="1,3"]
+|===
+a|image::security-practices/slsa-dancing-goose-logo.svg[]
+a|https://slsa.dev/[*SLSA* (Supply Chain Levels for Software Artifacts, pronounced "salsa")] is a security framework designed to protect software supply chains from tampering and improve software artifact integrity. SLSA provides a common language and set of incrementally adoptable guidelines for securing software supply chains.
+
+SLSA is:
+
+* A *security framework* that defines standards and controls to prevent tampering and improve integrity
+* A *checklist* of increasing security requirements organized into levels
+* A *common language* for discussing supply chain security maturity
+* An *actionable guide* for organizations to improve their security posture progressively
+|===
+=== Origins and History of SLSA
+
+SLSA was originally proposed by *Google* in 2021 as a response to the escalating threats against software supply chains. Google drew from its internal "Binary Authorization for Borg" (BAB) system, which had been protecting Google's production services for years.
+
+In April 2023, SLSA version 1.0 was released by the *Open Source Security Foundation (OpenSSF)*, marking SLSA's transition from a Google project to a vendor-neutral, community-driven initiative. SLSA is now maintained by a steering committee that includes representatives from major technology companies including Google, *Red Hat*, Microsoft, IBM, GitHub, VMware, Intel, and security-focused organizations.
+
+The project is hosted under the *OpenSSF*, part of the Linux Foundation, ensuring broad industry input and adoption.
+
+=== SLSA's Purpose and Goals
+
+SLSA was created to address several key challenges in software supply chain security:
+
+. *Lack of Standards*: Before SLSA, there was no common framework for evaluating supply chain security
+. *Fragmented Approaches*: Organizations used different methods, making it difficult to assess security posture
+. *Progressive Hardening*: SLSA provides a path from basic security to advanced protections
+. *Measurable Security*: SLSA levels provide concrete, measurable security improvements
+. *Industry Alignment*: A common framework enables collaboration and mutual recognition
+
+SLSA aims to help:
+
+* *Producers*: Protect their software from tampering and insider threats
+* *Consumers*: Verify that software hasn't been compromised
+* *Infrastructure Providers*: Harden build platforms and processes according to defined standards
+
+=== Understanding SLSA Levels
+
+SLSA defines four levels of increasing security assurance. Each level builds upon the previous one, making adoption incremental and practical. The levels were designed to start with easy, basic requirements and progress to more rigorous controls that protect against sophisticated attacks.
+
+As of SLSA v1.0, the framework is organized into *tracks*, each focusing on a specific area of the supply chain:
+
+* *Build Track*: Focuses on securing the build process (the primary focus of SLSA v1.0)
+* *Source Track*: Addresses source code integrity (in development)
+* *Dependencies Track*: Covers dependency management (in development)
+
+For the Build Track, here are the four levels:
+
+==== *SLSA Build Level 0: No Requirements*
+
+This represents the absence of SLSA - no provenance, no guarantees. This is typical for local development builds or test builds that don't require formal security controls.
+
+==== *SLSA Build Level 1: Provenance Exists*
+
+*Goal*: Document how artifacts were built
+
+*Key Requirements*:
+
+* The build process must be *fully scripted/automated* (not manual)
+* *Provenance is generated* that describes how the artifact was built
+* Provenance includes information about the build process, including:
+** What was built (the artifact)
+** How it was built (build process/commands)
+** What inputs were used (dependencies, source code)
+
+*Protection Level*: Minimal. Level 1 provides basic transparency but can be easily forged since provenance is not signed or verified.
+
+*Use Case*: Initial adoption, internal development, establishing visibility into build processes.
+
+==== *SLSA Build Level 2: Provenance is Signed*
+
+*Goal*: Verify that artifacts come from a trusted build service
+
+*Key Requirements*:
+
+* All requirements from Level 1
+* *Provenance is signed* by the build service using a private key
+* The build service must be *hosted* (not running on developer workstations)
+* The build service must be *service-generated* (provenance is created by the build platform itself, not build steps)
+
+*Protection Level*: Moderate. Level 2 provides cryptographic guarantees about provenance authenticity. Attackers cannot forge provenance without access to the build service's signing keys. However, compromising the build service itself is still possible.
+
+*Threats Mitigated*:
+
+* Prevents tampering with provenance
+* Protects against builds run on compromised developer machines
+* Enables verification that artifacts came from the intended build service
+
+*Use Case*: Production software that requires verifiable provenance and protection against basic tampering.
+
+==== *SLSA Build Level 3: Provenance is Non-Falsifiable*
+
+*Goal*: Ensure provenance cannot be forged even with access to build configuration
+
+*Key Requirements*:
+
+* All requirements from Level 2
+* *Source and build platform are tamper-proof*: The build system must prevent user-defined build steps from accessing the provenance generation and signing mechanisms
+* *Build definition is derived from source*: The build instructions must come from version-controlled source, not passed at build time
+* *All external parameters are recorded* in provenance
+* Provenance is *generated before* build steps run (preventing manipulation)
+
+*Protection Level*: Strong. Level 3 ensures that even a malicious actor who controls the build configuration cannot forge provenance or hide their actions.
+
+*Threats Mitigated*:
+
+* Insider threats (malicious developers)
+* Compromised build configurations
+* Unauthorized modifications during build
+* Build environment tampering
+
+*Use Case*: Critical software where integrity is paramount, regulated environments, software serving large user bases.
+
+==== *SLSA Build Level 4: Hermetic and Reproducible Builds*
+
+*Goal*: Achieve the highest level of confidence in build integrity
+
+*Key Requirements*:
+
+* All requirements from Level 3
+* *Hermetic builds*: Build processes run in completely isolated environments with no network access and explicitly declared dependencies only
+* *Reproducible builds*: Two independent builds from the same source produce bit-for-bit identical outputs
+* *Two-party review* of source changes
+* Complete *audit trail* of all changes
+
+*Protection Level*: Maximum. Level 4 provides the highest assurance that builds are correct and untampered.
+
+*Threats Mitigated*:
+
+* All threats from previous levels
+* Network-based attacks during build
+* Undeclared dependencies
+* Non-deterministic build processes
+* Supply chain injection attacks
+
+*Use Case*: Extremely sensitive software, national security applications, software where regulatory compliance demands the highest level of assurance.
+
+=== SLSA Tracks and Future Development
+
+While SLSA v1.0 focuses on the Build Track, the framework is designed to expand to cover the entire software supply chain:
+
+*Source Track* (in development): Will address protecting source code repositories, ensuring code review processes, and preventing unauthorized modifications to source.
+
+*Dependencies Track* (in development): Will focus on managing third-party dependencies, verifying their integrity, and assessing their security posture.
+
+The track-based approach makes SLSA more modular and practical to adopt. Organizations can achieve higher levels in one track while progressing in others, rather than needing to meet all requirements simultaneously.
+
+=== Why SLSA Matters
+
+SLSA provides concrete, measurable benefits:
+
+. *Risk Reduction*: Systematically addresses supply chain vulnerabilities
+. *Incident Response*: When attacks occur, provenance helps determine what was affected
+. *Compliance*: Many regulations now require supply chain security controls
+. *Trust*: Demonstrates commitment to security to customers and partners
+. *Vendor Management*: Provides criteria for evaluating third-party software security
+. *Progressive Improvement*: Organizations can start small and improve incrementally
+
+== Part 3: Core Concepts - Signatures, Attestations, and SBOMs
+
+Now that we understand the supply chain threat landscape and the SLSA framework, let's explore three critical technical mechanisms that work together to secure software supply chains: *signatures*, *attestations*, and *SBOMs* (Software Bills of Materials).
+
+=== Digital Signatures in Software Supply Chain Security
+
+*Digital signatures* provide cryptographic proof that a piece of software or metadata came from a specific entity and has not been altered.
+
+
+==== *Signatures in Supply Chain Security*
+
+In software supply chains, signatures are used to:
+
+*Verify Authenticity*: Confirm that software came from the expected producer
+
+* Container images signed by their publishers
+* Packages signed by their maintainers
+* Commits signed by authorized developers
+
+*Detect Tampering*: Ensure software hasn't been modified after signing
+
+* If content changes, the signature becomes invalid
+* This protects against man-in-the-middle attacks and compromised registries
+
+*Establish Trust Chains*: Build hierarchies of trust
+
+* Organizations sign artifacts with their keys
+* Certificate authorities validate organizational identities
+* Trust roots anchor the entire chain
+
+==== *Traditional vs. Keyless Signing*
+
+*Traditional Signing* requires managing long-lived signing keys:
+
+* *Advantages*: Full control over keys, works offline
+* *Challenges*: Key rotation, secure storage, revocation and management complexity
+
+*Keyless Signing* (exemplified by Trusted Artifact Signer/Sigstore) uses short-lived certificates:
+
+* Identity is verified via OIDC (OpenID Connect)
+* Short-lived certificates are issued for signing
+* Signatures are recorded in transparency logs for verification
+* *Advantages*: No long-term key management, strong identity binding
+* *Challenges*: Requires signing and verification infrastructure (offline verification is possible, though)
+
+==== *Signatures in SLSA*
+
+Signatures are fundamental to SLSA Level 2 and above:
+
+* *SLSA Level 2* requires signed provenance
+* The build service signs provenance with its private key
+* Consumers verify the signature before trusting the provenance
+* This prevents provenance forgery and enables trust in the build process
+
+*Example Workflow*:
+
+. Build service creates provenance document
+. Build service signs provenance with its private key
+. Signature and provenance are published alongside the artifact
+. Consumer downloads artifact, provenance, and signature
+. Consumer verifies signature using build service's public key
+. If verification succeeds, consumer trusts the provenance claims
+
+=== Attestations: Authenticated Statements About Software
+
+*Attestations* are authenticated (signed) statements about software artifacts. They provide a standardized way to associate metadata with software and verify that metadata's authenticity.
+
+==== *What is an Attestation?*
+
+An attestation is a structured, signed document that contains:
+
+*Subject*: The software artifact(s) being described
+
+* Usually identified by cryptographic hash (digest)
+* Can be container images, binaries, source code, or other artifacts
+
+*Predicate*: The claim or statement about the subject
+
+* Different predicate types for different kinds of information
+* Examples: provenance, SBOM, vulnerability scan results, test results
+
+*Signature*: Cryptographic signature over the entire statement
+
+* Proves who made the attestation
+* Ensures the attestation hasn't been tampered with
+
+==== *The in-toto Attestation Framework*
+
+https://in-toto.io/[*in-toto*] is the standard framework for software attestations. It defines a common structure that works across different tools and ecosystems.
+
+An in-toto attestation has this structure:
+
+[source,json]
+----
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "example-app",
+      "digest": {
+        "sha256": "abc123..."
+      }
+    }
+  ],
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "predicate": {
+    // Predicate-specific content here
+  }
+}
+----
+
+This envelope is then signed using DSSE (Dead Simple Signing Envelope), creating a complete, verifiable attestation.
+
+==== *Types of Attestations (Predicate Types)*
+
+The in-toto framework supports multiple predicate types for different use cases:
+
+*SLSA Provenance*: Describes how an artifact was built
+
+* Builder identity
+* Build process and parameters
+* Source code location
+* Dependencies used
+* Build timestamps
+
+*SPDX*: Software Package Data Exchange format for SBOMs
+
+* Lists all components in the software
+* License information
+* Dependency relationships
+
+*CycloneDX*: Another SBOM format
+
+* Component inventory
+* Vulnerability information
+* License compliance data
+
+*Vulnerability Scan Results*: Output from security scanners
+
+* Known vulnerabilities in the artifact
+* Severity levels
+* Remediation recommendations
+
+*Test Results*: Records of tests run on the artifact
+
+* Test suites executed
+* Pass/fail status
+* Coverage information
+
+*Custom Predicates*: Organizations can define their own predicate types for specific needs
+
+==== *Attestations in the SLSA Framework*
+
+Attestations, particularly provenance attestations, are central to SLSA:
+
+*SLSA Provenance Attestations* contain:
+
+* *Builder*: The build service that produced the artifact (e.g., "GitHub Actions")
+* *Build Type*: The kind of build process used
+* *Invocation*: What triggered the build (commit, tag, pull request)
+* *Build Config*: The build instructions that were executed
+* *Materials*: Input artifacts like source code and dependencies
+* *Metadata*: Build start/finish times, completeness information
+
+*Example SLSA Provenance Predicate*:
+
+[source,json]
+----
+{
+  "builder": {
+    "id": "https://github.com/Attestations/GitHubHostedActions@v1"
+  },
+  "buildType": "https://github.com/Attestations/GitHubHostedActions@v1",
+  "invocation": {
+    "configSource": {
+      "uri": "git+https://github.com/org/repo.git",
+      "digest": {"sha1": "abc123..."},
+      "entryPoint": ".github/workflows/build.yml"
+    }
+  },
+  "materials": [
+    {
+      "uri": "git+https://github.com/org/repo.git",
+      "digest": {"sha1": "abc123..."}
+    },
+    {
+      "uri": "pkg:npm/express@4.18.2",
+      "digest": {"sha256": "def456..."}
+    }
+  ],
+  "metadata": {
+    "buildStartedOn": "2024-01-15T10:30:00Z",
+    "buildFinishedOn": "2024-01-15T10:35:00Z"
+  }
+}
+----
+
+This provenance, when signed by the build service, becomes a verifiable attestation that can be checked by consumers.
+
+==== *Verification of Attestations*
+
+To verify an attestation:
+
+. *Verify the signature*: Use the public key to verify the attestation was signed by the claimed signer
+. *Check the subject*: Ensure the artifact hash matches what you're verifying
+. *Validate the predicate*: Check that the provenance claims meet your policies
+* Was it built from an approved repository?
+* Was the right build service used?
+* Were only trusted dependencies included?
+
+Policy enforcement tools (like Enterprise Contract / Conforma [Part of Trusted Artifact Signer]) can automate this verification against organizational policies. As a matter of fact, Red Hat provides a large number of policies and https://conforma.dev/docs/policy/release_policy.html#_available_rule_collections[rule collections] for re-use and tailoring to customer's needs.
+
+=== Software Bill of Materials (SBOM)
+
+A *Software Bill of Materials (SBOM)* is a complete, structured inventory of all the components that make up a piece of software. Think of it as an ingredients label for software.
+
+==== *What is an SBOM?*
+
+An SBOM lists:
+
+*Components*: Every library, module, and package included
+
+* Name and version of each component
+* Where it came from (publisher, repository)
+* Component type (library, application, framework, etc.)
+
+*Dependencies*: Relationships between components
+
+* Which components depend on which others
+* Transitive dependencies (dependencies of dependencies)
+
+*Licensing*: Legal information about each component
+
+* License type (MIT, Apache, GPL, etc.)
+* License obligations and restrictions
+
+*Vulnerability Data*: Known security issues
+
+* CVE identifiers for known vulnerabilities
+* Severity ratings
+* Patch availability
+
+*Metadata*: Additional descriptive information
+
+* Component suppliers
+* Build timestamps
+* Cryptographic hashes
+
+==== *Why SBOMs Are Critical*
+
+SBOMs address several critical challenges in modern software development:
+
+*Rapid Vulnerability Response*: When a vulnerability is disclosed (like Log4j), organizations need to quickly identify affected systems
+
+* With SBOMs, you can search for the vulnerable component across all your software
+* Without SBOMs, you must manually investigate each application
+
+*Visibility into Dependencies*: Modern applications have complex dependency trees
+
+* A single application might include hundreds of components
+* Many dependencies are transitive (you didn't explicitly include them)
+* SBOMs provide complete visibility into this complexity
+
+*License Compliance*: Open source licenses have various requirements
+
+* Some licenses require source code disclosure
+* Others prohibit commercial use
+* SBOMs help track and manage these obligations
+
+*Supply Chain Risk Management*: Understanding what's in your software is fundamental to securing it
+
+* Identify outdated or unmaintained components
+* Detect components from untrusted sources
+* Monitor for newly disclosed vulnerabilities
+
+*Regulatory Compliance*: Governments and industries increasingly mandate SBOMs
+
+* US Executive Order 14028 requires SBOMs for government software purchases
+* Critical infrastructure sectors have SBOM requirements
+* European regulations like the Cyber Resilience Act reference SBOMs
+
+==== *SBOM Formats*
+
+Two primary formats dominate the SBOM landscape:
+
+*SPDX (Software Package Data Exchange)*:
+
+* Originally developed by the Linux Foundation
+* ISO/IEC standard (ISO/IEC 5962:2021)
+* Comprehensive format covering licensing, security, and supply chain data
+* Supports multiple serialization formats (JSON, XML, YAML, tag-value)
+
+*CycloneDX*:
+
+* Created by OWASP (Open Web Application Security Project)
+* Focused on supply chain security use cases
+* Lightweight and extensible
+* Strong vulnerability tracking integration
+* Supports JSON and XML
+
+Both formats are widely supported by tooling and recognized by regulatory bodies. The choice often depends on specific use cases and organizational preferences.
+
+==== *Creating SBOMs*
+
+SBOMs can be generated through various tools and approaches:
+
+*Build-Time Generation*: Tools integrated into CI/CD pipelines
+
+* Syft: Generates SBOMs from container images, filesystems, and more
+* Tern: Inspects container images layer by layer
+* CycloneDX plugins for build tools (Maven, Gradle, npm, etc.)
+
+*Source Code Analysis*: Tools that parse dependency manifests
+
+* Parsing package-lock.json, requirements.txt, go.mod, etc.
+* Build tool integrations (Maven dependencies plugin, etc.)
+* IDE Plugins (Red Hat Dependency Analytics)
+
+*Image Scanning*: Analyzing container images
+
+* Red Hat Advanced Cluster Security (roxctl)
+* Extracting package manager data
+* Analyzing filesystem contents
+* Identifying OS packages and application dependencies
+
+==== *SBOMs in the Context of SLSA*
+
+SBOMs complement SLSA provenance:
+
+*Provenance* tells you *how* software was built:
+
+* Which build system was used
+* What source code was compiled
+* What build process was followed
+
+*SBOMs* tell you *what's in* the software:
+
+* Which components are included
+* What versions are present
+* What vulnerabilities exist
+
+Together, they provide comprehensive visibility:
+
+* Provenance verifies the build process integrity
+* SBOMs reveal the actual composition
+* Both can be provided as signed attestations
+
+For example:
+
+. Build service generates SLSA provenance attestation
+. Build service also generates SBOM attestation
+. Both attestations are signed and published
+. Consumers verify both attestations to ensure:
+* The build process was trustworthy (provenance)
+* The components are acceptable (SBOM)
+
+==== *Using SBOMs for Security*
+
+Organizations use SBOMs for several security workflows:
+
+*Vulnerability Management*:
+
+. Generate SBOM for each application
+. Continuously monitor vulnerability databases (NVD, GitHub Advisory Database, etc.)
+. When new vulnerabilities are disclosed, check SBOMs to identify affected applications
+. Prioritize remediation based on criticality and exploitability
+
+*Policy Enforcement*:
+
+. Define policies about acceptable components
+* Block known vulnerable versions
+* Require maintained dependencies
+* Prohibit components from untrusted sources
+. Check SBOMs against policies before deployment
+. Prevent non-compliant software from reaching production
+
+*Supply Chain Risk Assessment*:
+
+. Analyze SBOMs to identify supply chain risks
+* Outdated components
+* Unmaintained dependencies
+* Components with known vulnerabilities
+. Score applications based on risk
+. Prioritize security improvements
+
+*Incident Response*:
+
+. When a breach occurs, use SBOMs to understand scope
+. Identify all systems using compromised components
+. Accelerate containment and remediation
+
+== Part 4: How It All Works Together
+
+Understanding each component individually is important, but the real power comes from seeing how signatures, attestations, and SBOMs work together within the SLSA framework to create a secure software supply chain.
+
+=== The Complete Picture
+
+Let's walk through a comprehensive example of how these elements interact in a SLSA-conformant supply chain:
+
+==== *Step 1: Secure Build Process (SLSA Build Track)*
+
+. *Developer commits code* to a version-controlled repository
+* Code is reviewed and approved (SLSA Level 4 requirement)
+* Commits are signed by developers
+
+. *CI/CD pipeline triggers* a build
+* Build runs on a hosted build service (SLSA Level 2+ requirement)
+* Build configuration comes from version control (SLSA Level 3 requirement)
+
+. *Build service executes the build*
+* Build runs in an isolated environment (SLSA Level 3+)
+* Build service records all build parameters and dependencies
+
+==== *Step 2: Generate Provenance (SLSA Requirement)*
+
+The build service generates SLSA provenance containing:
+
+* What was built (artifact digest)
+* How it was built (build type, configuration)
+* Where source code came from (repository URI and commit hash)
+* What dependencies were used (material digests)
+* When the build occurred (timestamps)
+* Who/what triggered the build (invocation details)
+
+This provenance is structured as an in-toto attestation with predicate type `https://slsa.dev/provenance/v1`.
+
+==== *Step 3: Generate SBOM (Best Practice)*
+
+During or after the build, an SBOM is generated:
+
+* Scan the built artifact for all components
+* Extract version information for each dependency
+* Identify licenses for each component
+* Create structured SBOM (SPDX or CycloneDX format)
+
+The SBOM is structured as an in-toto attestation with predicate type indicating SBOM format (e.g., `https://spdx.dev/Document` or CycloneDX schema).
+
+==== *Step 4: Sign Attestations (SLSA Level 2+ Requirement)*
+
+The build service signs both attestations:
+
+* Uses its private signing key (or keyless signing via Sigstore)
+* Creates cryptographic signatures over both the provenance and SBOM attestations
+* These signatures prove the attestations came from the build service and haven't been tampered with
+
+At SLSA Level 3+, the signing mechanism is isolated from user-defined build steps, preventing forgery.
+
+==== *Step 5: Publish Artifacts and Attestations*
+
+The build service publishes:
+
+* The software artifact (e.g., container image) to a registry
+* The signed provenance attestation
+* The signed SBOM attestation
+
+For container images with OCI-compliant registries:
+
+* Attestations can be attached directly to the image
+* Tools like `cosign` store attestations as image tags with special naming conventions
+* Both artifact and attestations are accessible through the same registry
+
+==== Step 6: Distribution with Transparency
+
+Optionally, signatures and attestations are recorded in transparency logs:
+
+* Trusted Artifact Signer's/Sigstore's Rekor provides a tamper-evident log
+* Each entry is cryptographically verifiable
+* Provides non-repudiation and audit trail
+* Enables detection of backdated or revoked signatures
+
+=== Consumer Verification Workflow
+
+Now let's look at how a consumer (someone deploying or using the software - internally or externally) verifies all of this:
+
+==== *Step 1: Download Artifact and Attestations*
+
+Consumer downloads:
+
+* The software artifact (container image, binary, package)
+* The provenance attestation
+* The SBOM attestation
+* Associated signatures
+
+Tools like `cosign` can automate this for container images.
+
+==== *Step 2: Verify Signatures*
+
+Consumer verifies cryptographic signatures:
+
+* Use the build service's public key (or verify via transparency log for keyless signing)
+* Confirm the attestations were actually signed by the trusted build service
+* Ensure attestations haven't been tampered with
+
+If signatures don't verify, reject the artifact—it may have been tampered with.
+
+==== *Step 3: Verify Provenance Against Policies*
+
+Consumer checks the provenance attestation against their policies:
+
+*Source Verification*:
+
+* Did this come from an approved source repository?
+* Was it built from the expected branch or tag?
+* Was the source code commit signed by an authorized developer?
+
+*Build Verification*:
+
+* Was it built by an approved build service?
+* Was the right build process used?
+* Did the build run with acceptable parameters?
+
+*Dependency Verification*:
+
+* Were only approved dependencies used?
+* Are all dependencies from trusted sources?
+* Do dependency versions match expectations?
+
+Tools like Enterprise Contract / Conforma (part of Trusted Artifact Signer) can automate policy enforcement.
+
+==== *Step 4: Analyze SBOM*
+
+Consumer analyzes the SBOM:
+
+*Vulnerability Scanning*:
+
+* Check all components against vulnerability databases
+* Identify any components with known CVEs
+* Assess risk based on severity and exploitability
+
+*License Compliance*:
+
+* Verify all component licenses are acceptable
+* Check for license conflicts or obligations
+
+*Component Approval*:
+
+* Ensure all components come from approved sources
+* Check that no prohibited or outdated components are present
+
+Tools like Red Hat Trusted Profile Analyzer (Trustify) can automate SBOM analysis.
+
+==== *Step 5: Make Deployment Decision*
+
+Based on verification results, the consumer decides:
+
+* *Deploy*: If all checks pass, the artifact meets security and policy requirements
+* *Reject*: If verification fails or policies are violated, prevent deployment
+* *Flag for Review*: If concerns exist but aren't blocking, alert security teams
+
+=== Integration with Tools
+
+In your hands-on exercises, you'll work with tools that implement these concepts:
+
+*Red Hat Trusted Artifact Signer* (based on Sigstore):
+
+* Provides signing infrastructure
+* Issues short-lived certificates
+* Records signatures in transparency logs
+* Enables keyless signing for builds
+
+*Cosign*:
+
+* Signs container images and attestations using the Trusted Artifact SIgner Infrastructure
+* Attaches attestations to OCI images
+* Verifies signatures and attestations
+* Supports both key-based and keyless signing
+
+*Enterprise Contract / Conforma*:
+
+* Enforces policies on provenance attestations
+* Verifies SLSA levels are met
+* Checks build sources, parameters, and processes
+* Provides automated policy-as-code enforcement
+
+*Syft and roxctl*:
+
+* Generate SBOMs from various sources
+* Support multiple SBOM formats
+* Integrate into CI/CD pipelines
+* Provide comprehensive component inventories
+
+*Red Hat Trusted Profile Analyzer* (based on Trustify):
+
+* Analyzes SBOMs for vulnerabilities
+* Provides risk scoring and prioritization
+* Tracks component security over time
+* Helps manage vulnerability remediation
+
+=== Real-World Benefits
+
+When all these pieces work together, you achieve:
+
+*Automated Trust*: Software can be automatically verified without manual inspection
+
+*Rapid Incident Response*: When vulnerabilities are disclosed, quickly identify affected systems using SBOMs
+
+*Policy Enforcement*: Prevent deployment of software that doesn't meet security standards
+
+*Audit Trail*: Complete, verifiable record of how software was built and what it contains
+
+*Supply Chain Transparency*: Clear visibility into the entire software supply chain
+
+*Risk Reduction*: Systematically address supply chain security risks
+
+*Compliance*: Meet regulatory requirements for software security and transparency
+
+== Conclusion
+
+Software supply chain security is no longer optional—it's a critical requirement for modern software development. The threat landscape is complex, with attackers targeting every stage of the software lifecycle from source code to deployment.
+
+The SLSA framework provides a practical, incremental path toward securing software supply chains. By defining clear levels and requirements, SLSA gives organizations a roadmap for improvement. Whether starting at Level 1 with basic provenance or striving for Level 4 with hermetic builds, every step increases security.
+
+Signatures, attestations, and SBOMs are the technical mechanisms that make SLSA work in practice. Signatures provide cryptographic proof of authenticity. Attestations offer a standardized way to make verifiable claims about software. SBOMs deliver the transparency needed to understand and manage software composition.
+
+Together, these elements create a comprehensive defense against supply chain attacks. When a container image comes with signed SLSA provenance showing it was built from approved source in a trusted build system, and an SBOM shows it contains only approved, non-vulnerable components, you can deploy with confidence.
+
+As you move into the hands-on exercises, you'll gain practical experience with the tools that implement these concepts. You'll sign images and commits, generate and verify attestations, create and analyze SBOMs, and enforce policies that protect your supply chain. These skills are increasingly essential for anyone involved in software development, deployment, or sales in today's threat environment.
+
+The journey to a secure software supply chain is incremental, but every step matters. By understanding these foundational concepts and implementing them with industry-standard tools, you'll help your customers build more secure, trustworthy software systems.

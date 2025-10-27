@@ -1,0 +1,157 @@
+= Exercises
+
+After all the theory, here are some exercises that look at key tooling for a secure software supply chain:
+
+[cols="1,3"]
+|===
+|Tool |Description
+
+|`cosign`
+|A tool for container signing, verification, and storage in an OCI registry. It allows you to sign and verify container images and other artifacts, storing signatures and signed attestations alongside the artifacts themselves. Cosign integrates with Trusted Artifact Signer's/Sigstore's keyless signing infrastructure.
+
+|`gitsign`
+|A tool that enables keyless signing of Git commits using Trusted Artifact Signer/Sigstore. It replaces the traditional GPG-based commit signing workflow with a more automated approach using ephemeral keys and OIDC authentication, with signatures stored in Rekor's transparency log.
+
+|`ec`
+|A command-line tool for Conforma (formerly Enterprise Contract) that securely verifies supply chain artifacts and enforces policies about how they were built and tested. It provides a manageable, scalable, and declarative way to ensure container images and other artifacts meet security and compliance requirements.
+
+|`syft`
+|A tool for generating Software Bill of Materials (SBOM) from container images, filesystems, and archives. It catalogs all packages, libraries, and dependencies found in various formats, supporting output in SPDX, CycloneDX, and Syft's native format. Syft integrates with vulnerability scanning workflows and supply chain security tooling.
+
+|`roxctl`
+|A command-line interface for Red Hat Advanced Cluster Security (RHACS) / StackRox that manages Kubernetes security operations. It allows you to check deployments against security policies, scan images for vulnerabilities, manage security policies, and interact with the RHACS platform for runtime security monitoring and compliance enforcement. Furthermore, since ACS version 4.7, it can also generate SBOMs of container images.
+|===
+
+== Preparation 
+
+In these exercises, we will interact with {quay_url}[Quay] (as the Container Registry) and {gitlab_url}[GitLab] (to host our signed code artifacts). We will also have to deploy a Terminal Pod that can run podman (and has all necessary tools installed, similar to what we're using in the chapter xref:setup-tas/setup-openshift.adoc[Setup Trusted Artifact Signer on OpenShift] )
+
+=== "Podman Terminal"
+
+Let's quickly deploy the Podman-capable terminal, so we can use that going forward. 
+
+Open the {openshift_console_url}/terminal[OpenShift terminal^,window="terminal"] and login as `{openshift_admin_user}` with `{openshift_admin_password}`
+
+Then, clone the following repository and execute the terminal deployment:
+
+[source,bash,role=execute,subs=attributes+]
+----
+git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers/security-concepts
+./deploy-podman-terminal.sh 
+----
+
+You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] that we will be using going forward, since it has all the tools and configuration already installed.
+
+=== Quay Registry
+
+To avoid interfering with other exercises, let's quickly create a new organisation in Quay, that we'll be using for our exercises:
+
+Since we're now in a new terminal session, we need to clone our helper scripts again:
+
+[source,bash,role=execute,subs=attributes+]
+----
+git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers/security-concepts
+./create-quay-org.sh
+----
+
+[source,console]
+----
+Creating Quay Organization 'l3-students'
+=========================================
+
+Retrieving Quay admin token from secret...
+Quay Admin Token: [REDACTED]
+Retrieving Quay route URL...
+Quay Host: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io
+Quay URL: https://quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io
+
+Creating organization 'l3-students'...
+
+================================
+Success!
+================================
+Organization 'l3-students' created successfully
+Quay URL: https://quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io
+Organization URL: https://quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/organization/l3-students
+================================
+----
+
+=== GitLab Repository
+
+Since we'll be pushing code commits to GitLab in this lab, let's also quickly create a new organisation and repository. We also have a script for that:
+
+In the same `l3-enablement-helpers/security-concepts` directory, we have a script `create-gitlab-project.sh` that does this, so we don't have to do it manually via the GitLab UI.
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+./create-gitlab-project.sh
+----
+
+
+[source,console]
+----
+Creating GitLab Group 'l3-students' and Project 'signing-and-verification'
+==========================================================================
+
+Retrieving GitLab route URL...
+GitLab Host: gitlab-gitlab.apps.cluster-qkw52.dynamic.redhatworkshops.io
+GitLab URL: https://gitlab-gitlab.apps.cluster-qkw52.dynamic.redhatworkshops.io
+Retrieving GitLab root personal access token from secret...
+GitLab Token: [REDACTED]
+
+Creating group 'l3-students'...
+Group 'l3-students' created successfully
+Group ID: 11
+
+Retrieving user IDs...
+User 'user1' ID: 2
+User 'root' ID: 1
+
+Adding user1 to group 'l3-students'...
+User 'user1' added to group successfully
+Adding root to group 'l3-students'...
+User 'root' is already a member of the group
+
+Creating project 'signing-and-verification' in group 'l3-students'...
+Project 'signing-and-verification' created successfully
+
+================================
+Success!
+================================
+Group 'l3-students' configured
+Project 'signing-and-verification' created
+Project URL: https://gitlab-gitlab.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/signing-and-verification
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+Signing an application container image
+
+Verifying image signature 
+
+Signing a Git Commit
+
+Verifying a Git Commit
+
+Generating a simple provenance file and attesting it 
+
+Verifying the attestation
+
+Generating an SBOM (syft)
+
+Generating an SBOM (roxctl)
+
+Comparing the two, knowing the difference"

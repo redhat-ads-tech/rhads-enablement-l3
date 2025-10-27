@@ -1,0 +1,65 @@
+:imagesdir: ../../assets/images
+
+== Keyless Signing
+
+Signing and verification (thus proving integrity and authenticity of an artifact) is not a new concept and has been around for quite some time. So, let's take a moment to compare "traditional" signing (and verification) with the "keyless" approach:
+
+NOTE: Before we dive into hands-on exercises, we talk about the general principles - because it doesn't matter if I want to sign a code commit, a container image or any other artifact (e.g. a `.jar` file) *- from a signing perspective*.
+
+Without going too deep into details, one can see that the "traditional" public/private key pair-based signing comes with a lot of challenges: 
+
+[cols="1,1"]
+|===
+|"Traditional" Signing & Verification |Challenges
+
+a|
+* Has been around "for ages"
+* Public/private key pairs are generated, then distributed
+* Signer uses private key (and needs to remember the PK password 😔) to sign an artifact
+* Verifier needs the public key to verify the artifact's signature
+
+a|
+* *Identity:* How do you know the person signing the artifact is who they say they are? What if a key has been shared?
+* *Key management:* How do you keep the private key secure so it can't be lost or stolen? How do you make the public key easily accessible for users, but also protect it from tampering by a malicious attacker? How do you deal with lost private key passwords?
+* *Key revocation:* If the key pair is compromised, how do you distribute new keys in a way that convinces users of your legitimacy and that you're not an attacker? How do you maintain a key revocation list? How do you rotate keys on a regular basis?
+
+2+|*Result:* Well known but rarely used at scale in an enterprise environment.
+|===
+
+
+With *Keyless Signing*, using https://developers.redhat.com/products/trusted-artifact-signer/overview[*Red Hat Trusted Artifact Signer*]  - based on the https://www.sigstore.dev/[sigstore project] - this has been massively simplified:
+
+* Instead of a static private key for signing, we use _ephemeral_ keys, valid only for a few minutes
+* The keys are issued by a Certificate Authority ("fulcio") - after a configured OIDC provider has authenticated the signing identity (user, process,...)
+* The signing event is stored in a write-only database ("rekor"), with the certificate tied to the OIDC identity
+* Verification can be done online by querying the rekor database, which also contains the public key issued by fulcio
+
+image::security-practices/sigstore_landscapelayout_overview.svg[]
+
+
+[cols="1,1"]
+|===
+|"Keyless" Signing & Verification |Your artifact is:
+
+a|
+The https://www.sigstore.dev/[Sigstore project]
+
+* Backed by the Open Source Security Foundation (OpenSSF) under the Linux Foundation
+* Contributions from Google, *Red Hat*, Chainguard, GitHub and Purdue University
+* Goal: Simplify signing and verification
+* Also operates a public-good, non-profit service to improve the open source software supply chain (transparency log is publicly accessible).
+
+a|
+
+* *Signed:* By using a Sigstore client (`cosign`/`gitsign`).
+* *Associated:* With an identity through our certificate authority (Fulcio).
+* *Witnessed:* By recording the signing information in a permanent transparency log (Rekor).
+
+*Benefits*
+
+* *Convenience:* Convenient tooling, easy artifact signing & verification, eliminating the difficult problem of key management and rotation.
+* *Security:* With _Trusted Artifact Signer_, the artifact is not just signed; it’s signed with an ephemeral key, associated with a known identity, and auditable.
+
+|===
+
+
