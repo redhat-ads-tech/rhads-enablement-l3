@@ -273,18 +273,21 @@ image:rhads-ai/rhads/ai-agent-catalog-info.png[width=100%]
 
 image:rhads-ai/rhads/gitlab-commit.png[width=60%]
 
-* Verify the link was added to the component:
+=== Verify the link was added to the component:
 
-** Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]
+* Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]
 
-* *Note:*  it might take some minutes to show the new link. To speed it up access the template can refresh the entity using the refresh icon in the entity's About box, then refresh the full RHDH UI
+*Note:* It might take some minutes to show the new link. To speed it up access the template can refresh the entity using the refresh icon in the entity's About box, then refresh the full RHDH UI webpage.
 
 
-** You should see a new link in the component's overview:
+image:rhads-ai/rhads/rhdh-refresh-component.png[width=60%]
+
+* You should see a new link in the component's overview:
 
 image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
 
-* *Note:*  Do not click the link. You will use Red Hat OpenShift Dev Spaces in the next lab as an AI Engineer.
+
+*Note:*  Do not click the link. You will use Red Hat OpenShift Dev Spaces in the next lab as an AI Engineer.
 
 === Create the webhook 
 
