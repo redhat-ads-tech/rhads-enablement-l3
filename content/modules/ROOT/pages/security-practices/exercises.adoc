@@ -1,26 +1,61 @@
+:imagesdir: ../../assets/images
+
 = Exercises
 
 After all the theory, here are some exercises that look at key tooling for a secure software supply chain:
+
+.Click image to view full size
+image::security-practices/supplychain-generic.png[Practical Software Supply Chain Example, link=self, window=_blank]
+
+Above is an example of what a CI/CD chain could look like if we added security guardrails and tools in the various stages of the process.
+
+In the table below you find where we are using the `cli` tools and what product they belong to / work with:
 
 [cols="1,3"]
 |===
 |Tool |Description
 
-|`cosign`
-|A tool for container signing, verification, and storage in an OCI registry. It allows you to sign and verify container images and other artifacts, storing signatures and signed attestations alongside the artifacts themselves. Cosign integrates with Trusted Artifact Signer's/Sigstore's keyless signing infrastructure.
+a|`cosign`
 
-|`gitsign`
-|A tool that enables keyless signing of Git commits using Trusted Artifact Signer/Sigstore. It replaces the traditional GPG-based commit signing workflow with a more automated approach using ephemeral keys and OIDC authentication, with signatures stored in Rekor's transparency log.
+image::security-practices/supplychain-cosign.png[Where is cosign?, link=self,  window="image"]
 
-|`ec`
-|A command-line tool for Conforma (formerly Enterprise Contract) that securely verifies supply chain artifacts and enforces policies about how they were built and tested. It provides a manageable, scalable, and declarative way to ensure container images and other artifacts meet security and compliance requirements.
+|*[Trusted Artifact Signer]* A tool for container signing, verification, and storage in an OCI registry. It allows you to sign and verify container images and other artifacts, storing signatures and signed attestations alongside the artifacts themselves. Cosign integrates with Trusted Artifact Signer's/Sigstore's keyless signing infrastructure.
 
-|`syft`
-|A tool for generating Software Bill of Materials (SBOM) from container images, filesystems, and archives. It catalogs all packages, libraries, and dependencies found in various formats, supporting output in SPDX, CycloneDX, and Syft's native format. Syft integrates with vulnerability scanning workflows and supply chain security tooling.
+ +
 
-|`roxctl`
-|A command-line interface for Red Hat Advanced Cluster Security (RHACS) / StackRox that manages Kubernetes security operations. It allows you to check deployments against security policies, scan images for vulnerabilities, manage security policies, and interact with the RHACS platform for runtime security monitoring and compliance enforcement. Furthermore, since ACS version 4.7, it can also generate SBOMs of container images.
+👈 _Where is it?_
+a|`gitsign`
+
+image::security-practices/supplychain-gitsign.png[Where is gitsign?, link=self,  window="image"]
+
+|*[Trusted Artifact Signer]* A tool that enables keyless signing of Git commits using Trusted Artifact Signer/Sigstore. It replaces the traditional GPG-based commit signing workflow with a more automated approach using ephemeral keys and OIDC authentication, with signatures stored in Rekor's transparency log.
+
+ +
+ 
+👈 _Where is it?_
+a|`ec`
+
+image::security-practices/supplychain-ec.png[Where is ec?, link=self,  window="image"]
+
+|*[Trusted Artifact Signer]* A command-line tool for Conforma (formerly Enterprise Contract) that securely verifies supply chain artifacts and enforces policies about how they were built and tested. It provides a manageable, scalable, and declarative way to ensure container images and other artifacts meet security and compliance requirements.
+ 
+👈 _Where is it?_
+a|`syft`
+
+image::security-practices/supplychain-syft.png[Where is syft?, link=self,  window="image"]
+
+|*[Trusted Profile Analyzer]* A tool for generating Software Bill of Materials (SBOM) from container images, filesystems, and archives. It catalogs all packages, libraries, and dependencies found in various formats, supporting output in SPDX, CycloneDX, and Syft's native format. Syft integrates with vulnerability scanning workflows and supply chain security tooling.
+ 
+👈 _Where is it?_
+a|`roxctl`
+
+image::security-practices/supplychain-roxctl.png[Where is roxctl?, link=self,  window="image"]
+
+|*[Advanced Cluster Security]* A command-line interface for Red Hat Advanced Cluster Security (RHACS) / StackRox that manages Kubernetes security operations. It allows you to check deployments against security policies, scan images for vulnerabilities, manage security policies, and interact with the RHACS platform for runtime security monitoring and compliance enforcement. Furthermore, since ACS version 4.7, it can also generate SBOMs of container images.
+
+👈 _Where is it?_
 |===
+
 
 == Preparation 
 
@@ -137,14 +172,6 @@ Project URL: https://gitlab-gitlab.apps.cluster-qkw52.dynamic.redhatworkshops.io
 
 
 
-
-Signing an application container image
-
-Verifying image signature 
-
-Signing a Git Commit
-
-Verifying a Git Commit
 
 Generating a simple provenance file and attesting it 
 

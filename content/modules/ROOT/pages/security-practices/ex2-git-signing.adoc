@@ -73,7 +73,7 @@ Access logs show who _could_ have pushed, not cryptographic proof of who _did_. 
 *Bottom line*: Access controls are perimeter defense. Signatures are cryptographic proof that survives compromised accounts, insider threats, and platform breaches—protecting the entire supply chain, not just the repository boundary.
 ====
 
-== Signing and verifying `git` commits
+== Signing `git` commits
 
 For interacting with `git` we're using the `gitsign` cli tool. However, to use it, we also need the "trust root" from the TUF endpoint (which is downloaded to the user home under `~/.sigstore` - also see the output from the `cosign initialize` command, which outputs the location of the local and remote trust root )
 
@@ -180,4 +180,182 @@ tlog entry created with index: 17
 
 Now that we have signed the commit - we should also push it to our repo:
 
+Use `{gitlab_user}` and `{gitlab_user_password}` for login to GitLab when pushing.
 
+[source,bash,role=execute,subs=attributes+]
+----
+git push
+----
+
+[source,console]
+----
+podman-terminal:/workspace/signing-and-verification (main)$ git push
+Username for 'https://gitlab-gitlab.apps.cluster-v9q9c.dynamic.redhatworkshops.io': user1
+Password for 'https://user1@gitlab-gitlab.apps.cluster-v9q9c.dynamic.redhatworkshops.io': 
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 1.38 KiB | 1.38 MiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://gitlab-gitlab.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/signing-and-verification.git
+ * [new branch]      main -> main
+----
+
+On GitLab, the repository will now look like this:
+
+image::security-practices/gitlab-project-signature.png[]
+
+GitLab recognises the signature, and we can check the details (we see the trust root / certificate issuer configuration that was added during TAS installation).
+
+However, GitLab cannot _verify_ the signature as it doesn't support _sigstore_ signatures, only "traditional" key-pair based signatures. For it to verify, we would have to add the trust root public certificates.
+
+We have those (they're actually downloaded from TAS each time you issue a `cosign initialize`) - *BUT* since we're signing with ephemeral signing certificates and GitLab doesn't know anything about Rekor / Transparency Logs - it would only verify the signature for 10mins - after that, the keys expire and it would again list the commit as "_unverified_".  
+
+
+== Verifying git commits
+
+At some point in our downstream tool chain, we'd want to verify that a commit we want to build is from a trustworthy source. 
+
+In other words, we want to verify that 
+
+. the commit has been signed and the signature is valid (*Integrity* - it hasn't been tampered with since its commit)
+. who it came from (*Non-repudiation*, not just blind trust "_we'll trust everything from that repo, because the access controls will be good enough_")
+
+Since our commit was signed with Trusted Artifact Signer and the OIDC identity of the signer is part of the certificate, we can do that.
+
+To verify the commit signature, we'll use `gitsign verify` - however, the traditional git signature verification means also work (`git log --show-signature`, `git verify-commit`), but they don't verify the inclusion of the OIDC Identity and OIDC Issuer for that identity (called "certificate claims"), therefore are less secure and can't be used for verification of our second objective.
+
+[source,console]
+----
+podman-terminal:/workspace/signing-and-verification (main)$ git log --show-signature -1
+commit 9925059cd82fc302cbc1e2340ec756ed336fb925 (HEAD -> main, origin/main)
+tlog index: 0
+gitsign: Signature made using certificate ID 0xb551af696f7e5460fb8c7a4201e9f83b42b79ec2 | CN=fulcio.hostname,O=TSSC
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-v9q9c.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+Validated Git signature: true
+Validated Rekor entry: true
+Validated Certificate claims: false
+WARNING: git verify-commit does not verify cert claims. Prefer using `gitsign verify` instead.
+Author: Wile E. Coyote <boom@acme.com>
+Date:   Tue Oct 28 14:39:58 2025 +0000
+
+    added an empty README.MD
+---- 
+
+[source,console]
+----
+podman-terminal:/workspace/signing-and-verification (main)$ git verify-commit HEAD
+tlog index: 0
+gitsign: Signature made using certificate ID 0xb551af696f7e5460fb8c7a4201e9f83b42b79ec2 | CN=fulcio.hostname,O=TSSC
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-v9q9c.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+Validated Git signature: true
+Validated Rekor entry: true
+Validated Certificate claims: false
+WARNING: git verify-commit does not verify cert claims. Prefer using `gitsign verify` instead.
+----
+
+[NOTE]
+====
+As you can tell from the `git log` (and from our `git config --global --list` above) we have authored this as our favourite rocket-riding, anvil-dropping canine 😆 
+
+[cols="1,3",frame=none,grid=none]
+|===
+a|
+image::security-practices/coyote.png[width=80]
+a|
+[source,console]
+----
+Author: Wile E. Coyote <boom@acme.com>
+Date:   Tue Oct 28 14:39:58 2025 +0000
+
+    added an empty README.MD
+---- 
+|===
+
+And we pushed as GitLab user `user1`
+
+So, actually, *we can't trust the git author* - and the `user1` is just the access control to the repository, it doesn't follow the commit (the git author does, but is worthless in terms of security).
+====
+
+
+With `gitsign verify` we have the means to verify not only the signature (and this the commit's integrity) but also the certificate claims - who signed it and which system proved the identity.
+
+So, depending on who you authored the signature with (when you followed the URL and copied the access code) - use this to verify both:
+
+[source,bash,role=execute,subs=attributes+]
+----
+gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+---- 
+
+[source, console]
+----
+podman-terminal:/workspace/signing-and-verification (main)$ gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+tlog index: 0
+gitsign: Signature made using certificate ID 0xb551af696f7e5460fb8c7a4201e9f83b42b79ec2 | CN=fulcio.hostname,O=TSSC
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-v9q9c.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+Validated Git signature: true
+Validated Rekor entry: true
+Validated Certificate claims: true
+----
+
+Or, if we want to be lenient - we can just verify the signature and its autenticity, as well as that it was signed by someone (could be anyone) who authenticated against any OIDC system in the `redhatworkshops.io` domain:
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+gitsign verify --certificate-identity-regexp=.* --certificate-oidc-issuer-regexp='.*\.redhatworkshops\.io(/.*)?$' HEAD
+----
+
+[source,console]
+----
+podman-terminal:/workspace/signing-and-verification (main)$ gitsign verify --certificate-identity-regexp=.* --certificate-oidc-issuer-regexp='.*\.redhatworkshops\.io(/.*)?$' HEAD
+tlog index: 0
+gitsign: Signature made using certificate ID 0xb551af696f7e5460fb8c7a4201e9f83b42b79ec2 | CN=fulcio.hostname,O=TSSC
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-v9q9c.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+Validated Git signature: true
+Validated Rekor entry: true
+Validated Certificate claims: true
+----
+
+[TIP]
+====
+You might have noticed that we are just verifying the HEAD signature (the last commit).
+
+[source, console]
+----
+ gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+----
+
+Depending on your requirements, you can iterate through the git log and verify each commit down to a desired depth, ensuring nothing unsigned was added after a secure baseline. Instead of `*HEAD*` we can use any git commit `sha`, like this:
+
+[source, bash]
+----
+#!/bin/bash
+
+# Get all commit SHAs in reverse chronological order
+commits=$(git rev-list --all)
+
+# Counter for tracking progress
+total=$(echo "$commits" | wc -l)
+current=0
+
+echo "Verifying $total commits..."
+echo "---"
+
+# Iterate through each commit
+for commit in $commits; do
+    current=$((current + 1))
+    echo "[$current/$total] Verifying commit: $commit"
+    
+    # Run gitsign verify for this commit
+    if gitsign verify --certificate-identity-regexp=.* --certificate-oidc-issuer-regexp='.*\.redhatworkshops\.io(/.*)?$' "$commit"; then
+        echo "✓ Commit $commit verified successfully"
+    else
+        echo "✗ Commit $commit verification FAILED"
+    fi
+    echo "---"
+done
+
+echo "Verification complete!"
+----
+
+====
