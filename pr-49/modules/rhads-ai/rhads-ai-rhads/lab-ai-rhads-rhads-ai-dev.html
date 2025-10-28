@@ -419,7 +419,7 @@
 <h2 id="_ai_research_agent"><a class="anchor" href="#_ai_research_agent"></a>AI Research Agent</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Our AI Agent is a Search Agent. It will search the internet and specific websites based on the user&#8217;s prompt. The agent will decide which tool to use to return the required information.</p>
+<p>Our AI Agent is a Research Agent. It will search the internet and specific websites based on the user&#8217;s prompt. The agent will decide which tool to use to return the required information.</p>
 </div>
 <div class="sect2">
 <h3 id="_ai_research_agent_characteristics"><a class="anchor" href="#_ai_research_agent_characteristics"></a>AI Research Agent Characteristics</h3>
@@ -429,7 +429,7 @@
 <p><strong>Planning and Reasoning:</strong> We are using a Red Hat self-hosted model for this module.</p>
 </li>
 <li>
-<p><strong>Tools and Actions:</strong> This agent uses tools from <strong><a href="https://www.tavily.com" target="_blank" rel="noopener">Tavily</a></strong>. Tavily provides tools for web search, extracting specific information from web pages (<strong>TavilyExtract</strong>), and discovering/indexing new content (<strong>TavilyCrawl</strong>).</p>
+<p><strong>Tools and Actions:</strong> This agent uses tools from <strong><a href="https://www.tavily.com" target="_blank" rel="noopener">Tavily</a></strong>. Tavily provides tools for web search (<strong>TavilySearch</strong>), extracting specific information from web pages (<strong>TavilyExtract</strong>), and discovering/indexing new content (<strong>TavilyCrawl</strong>).</p>
 </li>
 <li>
 <p><strong>Memory:</strong> This AI agent uses short-term memory.</p>
@@ -488,7 +488,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Click the <strong>OpenShift Dev Spaces</strong> link from the <strong>component overview</strong> screen.</p>
+<p>Click the <strong>RH OpenShift Dev Spaces</strong> link from the <strong>component overview</strong> screen.</p>
 </li>
 </ul>
 </div>
@@ -498,14 +498,14 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Log in with your user credentials:</p>
+<p>Log in using your current admin credentials. You might not be prompted for a username if you are already authenticated in OpenShift.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Username</strong>: {devspaces_user}</p>
+<p>Username: {openshift_admin_user}</p>
 </li>
 <li>
-<p><strong>Password</strong>: {devspaces_user_password}</p>
+<p>Password: {openshift_admin_password}</p>
 </li>
 </ul>
 </div>
@@ -516,7 +516,7 @@
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-login.png" alt="rhdh devspaces login" width="60%"></span></p>
 </div>
 <div class="paragraph">
-<p><strong>Red Hat OpenShift Dev Spaces</strong> will automatically analyze the repository. After reviewing it, Dev Spaces will select a suitable development environment. It will read the <strong>dev.yaml</strong> file and automatically configure the workspace with the specified container image, tools, and commands.</p>
+<p><strong>Red Hat OpenShift Dev Spaces</strong> will automatically analyze the repository. After reviewing it, Dev Spaces will select a suitable development environment. It will read the <strong>devfile.yaml</strong> and automatically configure the workspace with the specified container image, tools, and commands.</p>
 </div>
 <div class="paragraph">
 <p>Once it finishes creating the workspace, you will see an environment similar to this:</p>
@@ -547,7 +547,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bring_the_ai_agent"><a class="anchor" href="#_bring_the_ai_agent"></a>Bring the AI agent</h3>
+<h3 id="_implement_the_ai_agent"><a class="anchor" href="#_implement_the_ai_agent"></a>Implement the AI agent</h3>
 <div class="paragraph">
 <p>The blank project does not yet have the AI Agent implementation. We have provided the solution for you. As a developer, you will implement your changes using the integrated Red Hat OpenShift Dev Spaces.</p>
 </div>
@@ -566,7 +566,7 @@
 <div class="sect2">
 <h3 id="_set_up_your_account_on_the_tavily_website"><a class="anchor" href="#_set_up_your_account_on_the_tavily_website"></a>Set up your account on the Tavily website</h3>
 <div class="paragraph">
-<p>The AI Search Agent will use <strong>Tavily</strong> for <strong>tools</strong>, such as Web Search. We want to include the <strong>Tavily</strong> in our development environment as part of the AI agent implementation.</p>
+<p>The AI Research Agent will use <strong>Tavily</strong> for <strong>tools</strong>, such as Web Search. We want to include the <strong>Tavily</strong> in our development environment as part of the AI agent implementation.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -597,6 +597,19 @@
 <div class="ulist">
 <ul>
 <li>
+<p>Select the provided API key, copy the <strong>API KEY VALUE</strong></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_an_api_key_if_tavily_doesnt_provide_one"><a class="anchor" href="#_create_an_api_key_if_tavily_doesnt_provide_one"></a>Create an API Key if Tavily doesn&#8217;t provide one</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
 <p>Close the <strong>Get started</strong> pop-up.</p>
 </li>
 <li>
@@ -623,20 +636,19 @@
 <div class="ulist">
 <ul>
 <li>
-<p>After creating the API key, copy the <strong>API KEY VALUE</strong>:</p>
+<p>After creating the API key, copy the <strong>API KEY VALUE</strong></p>
 </li>
 </ul>
 </div>
-</div>
 <div class="sect2">
-<h3 id="_create_the_secret_in_kubernetes"><a class="anchor" href="#_create_the_secret_in_kubernetes"></a>Create the secret in Kubernetes</h3>
+<h3 id="_create_the_secret_in_kubernetes_using_rh_openshift_dev_spaces_terminal"><a class="anchor" href="#_create_the_secret_in_kubernetes_using_rh_openshift_dev_spaces_terminal"></a>Create the secret in Kubernetes using RH OpenShift Dev Spaces terminal</h3>
 <div class="paragraph">
 <p>You will create a Kubernetes secret with the Tavily API key.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Open a <strong>Terminal</strong> by clicking <strong>New Terminal</strong>.</p>
+<p>From RH OpenShift Dev Spaces, open a <strong>Terminal</strong> by clicking <strong>New Terminal</strong>.</p>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-terminal.png" alt="devspaces terminal" width="70%"></span></p>
 </div>
