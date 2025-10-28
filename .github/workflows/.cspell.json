@@ -177,7 +177,21 @@
     "PYTHONDONTWRITEBYTECODE",
     "PYTHONUNBUFFERED",
     "langgraph",
-    "Jenkinsfiles"
+    "Jenkinsfiles",
+    "Keyful",
+    "keyful",
+    "Fulcio",
+    "Trillian",
+    "Merkle",
+    "Sigstore",
+    "sigstore",
+    "Entra",
+    "gitsign",
+    "Securesign",
+    "tlog",
+    "redhatworkshops",
+    "TPFKAEC",
+    "operatorhub"
   ],
   "ignorePaths": [
     "node_modules/**",
