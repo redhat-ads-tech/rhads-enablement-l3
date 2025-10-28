@@ -4,13 +4,13 @@
 Using a pre-existing software template, you will create a new resource in Red Hat Developer Hub. This resource will serve as a blank template for your team to build an AI agent. You are leveraging the templates already setup with all necessary Kubernetes manifests, including the trusted software supply chain, deployments, and application promotion. In the next lab, your team will add their application source code to this new resource, integrating it into the software development lifecycle.
 
 == Scenario 
-You are part of the AI Engineering team and you will leverage the tools setup by the AI Platform Engineering team including best practices—aligned with your organization's guidelines—for the AI team to build an AI agent in OpenShift.
+You are part of the AI Engineering team, and you will leverage the tools set up by the AI Platform Engineering team. These tools are setup with best practices aligned with your organization’s guidelines.
 
 Let's get started.
 
 == Understanding software templates
 
-Software templates provide the manifests to build, deploy, and promote any application that runs in a container or as a Kubernetes component. They ensure development teams start with established best practices and organizational guidelines, putting guardrails and compliance in place before the application ever runs on the cluster.
+Software templates provide the manifests to build, deploy, and promote any application that runs on Kubernetes. They ensure development teams start with established best practices and organizational guidelines, putting guardrails and compliance in place before the application ever runs on the cluster.
 
 == About pre-defined software templates
 
@@ -132,14 +132,13 @@ Typically, Platform Engineers manage custom configurations by updating the sourc
 
 Let's work on these requests!
 
-=== 1- Update the dev.yaml file
+=== 1- Update the devfile.yaml
 
-In this section, you will replace the *whole content* of the dev.yaml file.
+In this section, you will replace the *whole content* of the devfile.yaml file.
 
 * Go to the *GitLab source code* repository:
 
-** On the same screen or go to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]. 
-** Click on *Source Repository* 
+** On the same screen, click on *Source Repository* 
 
 ** Or  use the following URL, link:{gitlab_url}/rhdh/ai-agent[GitLab AI Agent,window='_blank'].
 
@@ -153,7 +152,7 @@ image:rhads-ai/rhads/gitlab-sign-in.png[width=100%]
 ** *Username*: {gitlab_user}
 ** *Password*: {gitlab_user_password}
 
-* Click the *dev.yaml file* in the project's root directory.
+* Click the *devfile.yaml* file in the project's root directory.
 
 * Click on *Edit*, then *Edit Single File*
 
