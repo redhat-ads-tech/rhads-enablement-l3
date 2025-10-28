@@ -29,12 +29,12 @@ An AI Agent can fulfill many use cases, including:
 * Customer Support
 
 == AI Research Agent
-Our AI Agent is a Search Agent. It will search the internet and specific websites based on the user's prompt. The agent will decide which tool to use to return the required information.
+Our AI Agent is a Research Agent. It will search the internet and specific websites based on the user's prompt. The agent will decide which tool to use to return the required information.
 
 === AI Research Agent Characteristics
 
 * *Planning and Reasoning:* We are using a Red Hat self-hosted model for this module.
-* *Tools and Actions:* This agent uses tools from *https://www.tavily.com[Tavily^]*. Tavily provides tools for web search, extracting specific information from web pages (*TavilyExtract*), and discovering/indexing new content (*TavilyCrawl*).
+* *Tools and Actions:* This agent uses tools from *https://www.tavily.com[Tavily^]*. Tavily provides tools for web search (*TavilySearch*), extracting specific information from web pages (*TavilyExtract*), and discovering/indexing new content (*TavilyCrawl*).
 * *Memory:* This AI agent uses short-term memory.
 * *Input:* This solution includes a website to interact with the agent.
 * *Guardrails/Security:* Security starts with the prompt provided to the agent and is enforced by Red Hat Advanced Developer Suite, which provides integrated security, image scanning, and policies.
@@ -58,18 +58,18 @@ image:rhads-ai/rhads/rhdh-ai-agent.png[width=100%]
 
 === Getting started with Red Hat OpenShift Dev Spaces
 
-* Click the *OpenShift Dev Spaces* link from the *component overview* screen.
+* Click the *RH OpenShift Dev Spaces* link from the *component overview* screen.
 
 image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
 
-** Log in with your user credentials:
+* Log in using your current admin credentials. You might not be prompted for a username if you are already authenticated in OpenShift.
 
-*** *Username*: {devspaces_user}
-*** *Password*: {devspaces_user_password}
+** Username: {openshift_admin_user}
+** Password: {openshift_admin_password}
 
 image:rhads-ai/rhads/rhdh-devspaces-login.png[width=60%]
 
-*Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing it, Dev Spaces will select a suitable development environment. It will read the *dev.yaml* file and automatically configure the workspace with the specified container image, tools, and commands.
+*Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing it, Dev Spaces will select a suitable development environment. It will read the *devfile.yaml* and automatically configure the workspace with the specified container image, tools, and commands.
 
 Once it finishes creating the workspace, you will see an environment similar to this:
 
@@ -87,7 +87,7 @@ You should see a screen similar to this:
 
 image:rhads-ai/rhads/rhdh-devspaces-welcome.png[width=100%]
 
-=== Bring the AI agent
+=== Implement the AI agent
 The blank project does not yet have the AI Agent implementation. We have provided the solution for you. As a developer, you will implement your changes using the integrated Red Hat OpenShift Dev Spaces.
 
 == Connecting your AI Agent to APIs
@@ -97,7 +97,7 @@ First, you must connect your Agent with the LLM and API tools required for it to
 **NOTE: KEEP THE APIs KEY SECRET. Keep it safe. DO NOT PUBLISH IT, SHARE IT, OR COMMIT IT TO ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY.**
 
 === Set up your account on the Tavily website
-The AI Search Agent will use *Tavily* for *tools*, such as Web Search. We want to include the *Tavily* in our development environment as part of the AI agent implementation.
+The AI Research Agent will use *Tavily* for *tools*, such as Web Search. We want to include the *Tavily* in our development environment as part of the AI agent implementation.
 
 * Access https://app.tavily.com[https://app.tavily.com^]
 * Click *Sign up* to create a new account.
@@ -109,6 +109,10 @@ image:rhads-ai/rhads/tavily-web.png[width=100%]
 
 image:rhads-ai/rhads/tavily-main.png[width=100%]
 
+
+** Select the provided API key, copy the *API KEY VALUE*
+
+== Create an API Key if Tavily doesn't provide one
 * Close the *Get started* pop-up.
 * Click *Add API Key*.
 
@@ -120,13 +124,13 @@ image:rhads-ai/rhads/tavily-appkey-add.png[width=30%]
 
 image:rhads-ai/rhads/tavily-appkey-create.png[width=70%]
 
-** After creating the API key, copy the *API KEY VALUE*:
+** After creating the API key, copy the *API KEY VALUE*
 
-=== Create the secret in Kubernetes
+=== Create the secret in Kubernetes using RH OpenShift Dev Spaces terminal
 
 You will create a Kubernetes secret with the Tavily API key.
 
-* Open a *Terminal* by clicking *New Terminal*.
+* From RH OpenShift Dev Spaces, open a *Terminal* by clicking *New Terminal*.
 
 +
 image:rhads-ai/rhads/devspaces-terminal.png[width=70%]
