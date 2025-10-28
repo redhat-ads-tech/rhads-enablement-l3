@@ -20,8 +20,7 @@ Learn more about link:https://www.redhat.com/en/products/ai[Red Hat AI,window='_
 Next, we'll explore key integrations for building AI applications and models including security best practices to build, deploy AI applications.
 
 === {product_rhdh_name} integration with OpenShift AI
-Red Hat Developer Hub can integrate with OpenShift AI through Software Templates. These can be created to facilitate the model development lifecycle and ensure best practices are in place, such as security and scalability. It can be used to provision Notebooks, create Serving Runtimes, create an inference server, Pipeline configurations, and more. Additionally, from the component's overview, AI Engineers can access many OpenShift AI features.
-
+Red Hat Developer Hub can integrate with OpenShift AI through Software Templates. These can be created to facilitate the model development lifecycle and ensure best practices are in place from the project inception, such as security and scalability. It can be used to provision Notebooks, create Serving Runtimes, create an inference server, Pipeline configurations, and more. Additionally, from the component's overview, AI Engineers can access many OpenShift AI features.
 
 
 [#other-devtools]
@@ -41,7 +40,7 @@ image:rhads-ai/podman-ai-lab.png[Podman AI Lab]
 
 
 === RH OpenShift Dev Spaces with AI assistant 
-Red Hat OpenShift Dev Spaces integrates with different extensions that allow Software and AI Engineers to connect with diverse AI assistance to facilitate software development, such as reducing the code for repetitive patterns, and troubleshoot issues.  Additionally, it can be used to integrate with MCP Servers to learn how to interact with other systems, such as APIs and third-party tools.
+Red Hat OpenShift Dev Spaces leverages extensions to connect Software and AI Engineers with diverse AI assistants. These assistants streamline software development by reducing repetitive code and accelerating troubleshooting. Furthermore, these AI assistants can integrate with MCP (Model Context Protocol) Servers, enabling them to interact intelligently with external systems, APIs, and third-party tools
 
 
 

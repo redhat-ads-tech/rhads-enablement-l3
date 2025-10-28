@@ -1,7 +1,7 @@
 = AI Engineering: Using Software Templates to Build an AI Agent with Red Hat Advanced Developer Suite
 
 == Objectives
-In this lab, you will build an AI Agent using the component pre-created by the Platform Engineering team in Red Hat Developer Hub. You will add the new application source code to this component, making it part of the software development lifecycle.
+In this lab, you will build an AI Agent using the component pre-created in Red Hat Developer Hub. You will add the new application source code to this component, making it part of the software development lifecycle.
 
 == Scenario
 You are now a member of the Python AI Development team. Your responsibility is to build an AI agent using the tools provided by the AI Platform Engineering team.
