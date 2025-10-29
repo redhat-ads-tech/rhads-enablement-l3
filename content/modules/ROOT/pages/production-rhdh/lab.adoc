@@ -1,5 +1,7 @@
 = RHADS End-to-End: Production-Ready Development Lifecycle
 
+include::partial$logout-links.adoc[]
+
 == Hands-on Lab
 This hands-on lab will walk you through the use of RHADS from the perspective of a developer. We will examine and explain each step in terms of what is technically happening with the product, and then we will walk through altering an example TSSC pipeline (as stated before some customers may/will want to add additional security steps as part of their processes).
 

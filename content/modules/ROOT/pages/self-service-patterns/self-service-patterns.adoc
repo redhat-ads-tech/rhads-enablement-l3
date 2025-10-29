@@ -1,5 +1,7 @@
 = Software Template Patterns for Self-service
 
+include::partial$logout-links.adoc[]
+
 [#introduction]
 == Introduction
 

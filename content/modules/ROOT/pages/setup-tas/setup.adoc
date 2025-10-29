@@ -1,5 +1,7 @@
 = Setup TAS
 
+include::partial$logout-links.adoc[]
+
 == Overview
 
 https://developers.redhat.com/products/trusted-artifact-signer/overview[Red Hat Trusted Artifact Signer (RHTAS or TAS)] is an essential component for artifact signing & verification, provenance attestation & verification and transparency in secure supply chains. It provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail. 

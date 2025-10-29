@@ -1,5 +1,6 @@
 = RHADS for AI Engineers
 
+include::partial$logout-links.adoc[]
 
 [#rhai]
 == Red Hat AI

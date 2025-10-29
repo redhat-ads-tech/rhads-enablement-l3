@@ -1,5 +1,7 @@
 = Introduction to AI for AI Engineers
 
+include::partial$logout-links.adoc[]
+
 == Introduction
 
 In this module, you will review AI concepts for Engineers, including frameworks, protocols, and tools to build AI applications.
