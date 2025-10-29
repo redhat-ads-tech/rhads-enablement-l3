@@ -2,7 +2,7 @@
 ====
 *Quick Logout Links*
 
-Prior to starting this module, logout of previous sessions to prevent errors related to performing actions as the wrong user.
+Prior to starting this module, click the following two links to log out of previous sessions to prevent errors related to performing actions as the wrong user.
 
 * link:https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer/protocol/openid-connect/logout?client_id=ocp4_workload_advanced_developer_suite_openshift_keycloak_client_id&post_logout_redirect_uri=https://console-openshift-console.{openshift_cluster_ingress_domain}[Logout from OpenShift^,window="_blank"]
 * link:https://gitlab-gitlab.{openshift_cluster_ingress_domain}/users/sign_out[Logout from GitLab^,window="_blank"]
