@@ -320,6 +320,19 @@ tlog entry created with index: 16
 Pushing signature to: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage
 ----
 
+[NOTE]
+====
+If you go to the `l3-rhads-demoimage` repository on {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay,window="quay"], you can see that Quay recognises the `cosign` signature:
+
+image::security-practices/quay-signed-image.png[]
+
+That is a Quay feature - if or if not a customer's container registry will recognise signatures, depends.
+====
+
+
+
+
+
 === More CI Integration
 
 Some CIs (such as Gitlab or Github) have a built-in authentication/access token that we can use. 

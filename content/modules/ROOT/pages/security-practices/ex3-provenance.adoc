@@ -2,3 +2,50 @@
 
 = Provenance and attestations
 
+In our introduction, we explained that recording provenance information, capturing details of the build process is a requirement for SLSA compliance, but in general an important component of any supply chain.
+
+With `cosign` and `ec` (Enterprise Contract / Conforma) we can *attest* (= sign & attach) and verify _many_ types of metadata, even our own custom types.
+
+So, while often used to attest provenance information (especially in the SLSA context), an *attestation* and *provenance* cannot be used interchangeably. 
+
+We *attest* (meta-)data relating to the artifact, *provenance* being just one type of attestation.
+
+The "_metadata_" (regardless of what it is) is called a "*predicate*".
+
+With that said, `cosign attest` supports the following predicate/attestation types via the `--type` flag:
+
+== Built-in Predicate Types
+
+The pre-defined predicate types are:
+
+* *slsaprovenance* - SLSA Provenance v0.1
+* *slsaprovenance02* - SLSA Provenance v0.2  
+* *slsaprovenance1* - SLSA Provenance v1.0
+* *link* - in-toto link attestation
+* *spdx* - SPDX SBOM format
+* *spdxjson* - SPDX SBOM in JSON format
+* *cyclonedx* - CycloneDX SBOM format
+* *vuln* - Vulnerability scan attestation
+* *openvex* - OpenVEX attestation
+* *custom* - Custom attestation (default)
+
+== Custom URIs
+
+In addition to these pre-defined types, you can also specify a custom URI as the predicate type, such as `https://example.com/MyCustomAttestation/v1`.
+
+=== Usage Example
+
+[source,bash]
+----
+# Using a built-in type
+cosign attest --predicate sbom.json --type spdx <image>
+
+# Using a custom URI
+cosign attest --predicate custom.json --type https://example.com/CodeReview/v1 <image>
+----
+
+The attestations follow the in-toto specification and are signed using the DSSE (Dead Simple Signing Envelope) format.
+
+So, let's take a look at a simple, minimum predicate:
+
+
