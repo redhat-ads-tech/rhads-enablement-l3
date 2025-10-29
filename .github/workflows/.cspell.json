@@ -192,7 +192,8 @@
     "tlog",
     "redhatworkshops",
     "TPFKAEC",
-    "operatorhub"
+    "operatorhub",
+    "productisation"
   ],
   "ignorePaths": [
     "node_modules/**",
@@ -210,9 +211,9 @@
         "/^\\s*\\+\\+\\+\\+[\\s\\S]*?^\\s*\\+\\+\\+\\+\\s*$/gm",
         "\\[source,.*\\]",
         "\\[.*,role=.*\\]",
-        "\\{.*\\}",
         "\\+\\+\\+.*\\+\\+\\+",
         "^\\[.*\\]$",
+        "`[^`]*`",
         "^\\|.*\\|$",
         "^====+$",
         "^----+$",

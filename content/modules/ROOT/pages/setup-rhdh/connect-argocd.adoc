@@ -73,7 +73,7 @@ accounts.{m2_argocd_user}.password
 image::setup-rhdh/argocd-secret.png[]
 . Click *Save*.
 
-The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above were generated using htpasswd like so: `htpasswd -bnBC 10 "" '{m2_argocd_pass}'`.
+The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above were generated using `htpasswd` like so: `htpasswd -bnBC 10 "" '{m2_argocd_pass}'`.
 
 === Verify the Argo CD User Account is Active
 
@@ -224,7 +224,7 @@ metadata:
     argocd.argoproj.io/managed-by: tssc-gitops
 ----
 . Click *Create*.
-. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD^], then selecting the *in-cluster* item. Login as:
+. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD^], then selecting the *in-cluster* item. IF needed, login as:
   * Username: `{m2_argocd_user}`
   * Password: `{m2_argocd_pass}`
 . Your new *httpsink* namespace should be listed in the *Namespaces* field.
@@ -278,7 +278,7 @@ The Application you created is a simple example, but notably it has a `app.kuber
 First, perform a sanity check by viewing your new application in the Argo CD dashboard.
 
 . Visit the https://{ns_tssc_gitops}-server-{ns_tssc_gitops}.{openshift_cluster_ingress_domain}/[*{ns_tssc_gitops}* Argo CD dashboard^].
-. Login as:
+. If needed, login as:
     * Username: `{m2_argocd_user}`
     * Password: `{m2_argocd_pass}`
 . Confirm that the application named *httpsink* is listed and marked as *Healthy* and *Synced* (it may take a minute or two for the initial sync to complete).
@@ -293,6 +293,11 @@ image::setup-rhdh/argocd-application.png[]
 +
 image::setup-rhdh/argocd-httpsink-search.png[]
 . Select the *HTTP Sink Application* from the list, then view the *CD* tab for the Component.
++
+[NOTE]
+====
+It may take a minute or two for the *CD* tab to appear. Wait a few moments, and reload the page.
+====
 +
 image::setup-rhdh/argocd-httpsink-cd.png[]
 . Click on the listed application to view more information on the managed Kubernetes resources.

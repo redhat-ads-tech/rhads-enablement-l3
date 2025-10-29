@@ -276,11 +276,8 @@ permission:
 
 Next, update the Backstage CR to load the new ConfigMap:
 
-. Select *Home > Search* in the OpenShift Web Console.
-. Ensure the *{m2_rhdh_project}* is selected in the project selector.
-. Type `back` in the _Resources_ box to find the `Backstage` CR, and click it to select, and close the drop-down using the `x` button in the top-right.
-. Select the *rhdh* entry in the *Backstages* list.
-. Switch to the YAML view and add the *rbac-policies* ConfigMap to the `spec.application.extraFiles` section.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage Custom Resource in the OpenShift Web Console^] and click the *YAML* tab.
+. Add the *rbac-policies* ConfigMap by creating a new `extraFiles` section (at the same level as `extraEnvs`) and adding a new `configMaps` section with the name of the ConfigMap you created.
 +
 [source,yaml,subs=attributes+,role=execute]
 ----
@@ -296,8 +293,8 @@ image::setup-rhdh/security-casbin-cr.png[]
 . Navigate to *Workloads > Pods* in the OpenShift Web Console and wait for the new {product_rhdh_name} pod to report readiness.
 
 === Verify the Casbin-based Policies 
-
-. Login to {product_rhdh_name} as the `{openshift_admin_user}` user using the passowrd `{openshift_admin_password}`.
+ 
+. Login to {product_rhdh_name} as the `{openshift_admin_user}` user using the password `{openshift_admin_password}`.
 . Visit the *Administration > RBAC* screen.
 . Your new roles should be listed, and reflect the values in the ConfigMap.
 +
@@ -306,7 +303,25 @@ image::setup-rhdh/security-casbin-roles-list.png[]
 +
 image::setup-rhdh/security-casbin-role.png[]
 
+You're now equipped to apply RBAC policies to {product_rhdh_name} instances. This is a critical capability for organizations to ensure 
+only designated individuals can make changes to their internal developer portal, and developers only see what's relevant to their team and 
+role.
 
-== Conclusion
+== Congratulations!
 
-You're now equipped to apply RBAC policies to {product_rhdh_name} instances. This is a critical capability for organizations to ensure only designated individuals can make changes to their internal developer portal, and developers only see what's relevant to their team and role.
+You've successfully installed and configured a {product_rhdh_name} instance with comprehensive integrations! Across this entire module, you accomplished:
+
+* **Installed and deployed {product_rhdh_name}** using the Operator-based method, creating the Backstage Custom Resource and ConfigMap with the initial app-config.yaml configuration
+* **Configured authentication with Keycloak** by enabling the OIDC provider, setting up the Keycloak catalog backend plugin, and synchronizing User and Group entities from Keycloak into the Software Catalog
+* **Enabled dynamic plugin caching** using PersistentVolumeClaims to significantly improve deployment speed and reliability by caching plugin packages across pod restarts
+* **Integrated GitLab for catalog discovery** by configuring the GitLab catalog provider and integrations, enabling automatic discovery and import of catalog-info.yaml files from GitLab repositories
+* **Integrated Argo CD for continuous delivery visibility** by creating a dedicated readonly user, enabling Argo CD plugins, and configuring entity annotations to display deployment status directly in the Software Catalog
+* **Enabled Role-Based Access Control (RBAC)** by configuring the permission plugin, creating group-based access policies through both UI and Casbin policy files, and implementing fine-grained access controls with deny-by-default security
+
+This knowledge is valuable for customer engagements because it demonstrates:
+
+* **Complete platform setup**: You can guide customers through the full installation and configuration process, from initial Operator deployment through comprehensive integrations with their existing tooling
+* **Best practices for production deployments**: The combination of plugin caching, proper secret management, and RBAC shows customers how to build robust, secure, and performant {product_rhdh_name} instances. Other modules go deeper into production-ready best practices for other components in the RHADS stack.
+* **Integration patterns**: Experience with Keycloak, GitLab, and Argo CD integrations enables you to help customers connect {product_rhdh_name} to their authentication providers, source control systems, and CI/CD platforms
+* **Security and governance**: The RBAC implementation demonstrates how to enforce access controls and ensure developers only see resources appropriate for their roles, critical for enterprise environments
+* **Scalable configuration management**: Using ConfigMaps, Secrets, and policy-as-code approaches shows customers how to manage {product_rhdh_name} configurations at scale while maintaining audit trails and version control
