@@ -1589,9 +1589,11 @@ With <code>gitsign verify</code>, you can also use the <code>--certificate-ident
 source ~/setup-tas-environment.sh student-tas
 cosign initialize
 echo "FROM scratch" &gt; ./tmp.Dockerfile
-podman build . -f ./tmp.Dockerfile -t ttl.sh/rhtas/test-image:1h
-podman push ttl.sh/rhtas/test-image:1h
-cosign sign -y ttl.sh/rhtas/test-image:1h</code></pre>
+UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME
+cosign sign -y $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1625,7 +1627,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign attest -y --predicate ./predicate.json --type slsaprovenance ttl.sh/rhtas/test-image:1h</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1636,17 +1638,17 @@ EOF</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign tree ttl.sh/rhtas/test-image:1h</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign tree $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign tree ttl.sh/rhtas/test-image:1h
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image:1h
-└── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image:sha256-2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe.att
-   └── 🍒 sha256:aaa843f2168bf1142e495e70c083dc02f4c044a657520234bf1323476d18dce4
-└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image:sha256-2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe.sig
-   └── 🍒 sha256:e25719b2ac6cdee3c2fc21d655f3db90b3be4223b8bc2b3ef406a990e680bfd2</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign tree $IMAGE_NAME
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:1h
+└── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.att
+   └── 🍒 sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
+└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.sig
+   └── 🍒 sha256:f9266c99008d19ca8f82ef47ce654f9b1eb1ed840dfc2bf2286a89100a294abf</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1678,27 +1680,27 @@ Kubernetes Client  v0.31.0</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image ttl.sh/rhtas/test-image:1h --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ ec validate image --image ttl.sh/rhtas/test-image:1h --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
 Success: true
 Result: SUCCESS
 Violations: 0, Warnings: 0, Successes: 3
 Component: Unnamed
-ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe
+ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
 
 Results:
 ✓ [Success] builtin.attestation.signature_check
-  ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
 
 ✓ [Success] builtin.attestation.syntax_check
-  ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
 
 ✓ [Success] builtin.image.signature_check
-  ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe</code></pre>
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1722,7 +1724,7 @@ Results:
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image ttl.sh/rhtas/test-image:1h --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER  --output json --show-successes | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER  --output json --show-successes | jq</code></pre>
 </div>
 </div>
 <details>
