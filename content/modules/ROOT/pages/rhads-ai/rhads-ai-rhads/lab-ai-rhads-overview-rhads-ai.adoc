@@ -31,4 +31,4 @@ You will be greeted with a welcome screen.
 
 image:rhads-ai/rhads/rhdh-welcome.png[Create UI]
 
-Note: You are logging in as an administrator because you will need elevated privileges to build a secret as part of the lab steps.
+*Note:* You are logging in as an administrator because you will need elevated privileges to build a secret as part of the lab steps.
