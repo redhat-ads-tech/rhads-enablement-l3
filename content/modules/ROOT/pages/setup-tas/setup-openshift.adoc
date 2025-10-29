@@ -696,9 +696,11 @@ cd /workspace
 source ~/setup-tas-environment.sh student-tas
 cosign initialize
 echo "FROM scratch" > ./tmp.Dockerfile
-podman build . -f ./tmp.Dockerfile -t ttl.sh/rhtas/test-image:1h
-podman push ttl.sh/rhtas/test-image:1h
-cosign sign -y ttl.sh/rhtas/test-image:1h
+UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME
+cosign sign -y $IMAGE_NAME
 ----
 
 Once you have successfully signed the image, let's create a simple "Predicate File" that doesn't contain much information about the build process but is at least syntactically correct (according to the https://slsa.dev/spec/v1.0/provenance[SLSA predicate specification^,window="slsa"]) 
@@ -730,7 +732,7 @@ Now that we have a predicate file, we can attest that (sign and attach it to the
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign attest -y --predicate ./predicate.json --type slsaprovenance ttl.sh/rhtas/test-image:1h
+cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME
 ----
 
 Again, we will have to verify our identity (by logging into Keycloak and copying the success code - or, if run from a local workstation, just by logging into Keycloak).
@@ -741,7 +743,7 @@ With `cosign tree`, this time we'll not only see the image signature but also th
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign tree ttl.sh/rhtas/test-image:1h
+cosign tree $IMAGE_NAME
 ----
 
 [source,console]
@@ -782,7 +784,7 @@ For a short report, showing the rules applied and successes or violations:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-ec validate image --image ttl.sh/rhtas/test-image:1h --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
 ----
 
 [source,console]
@@ -816,7 +818,7 @@ For a more verbose report, use
 
 [source,bash,role=execute,subs=attributes+]
 ----
-ec validate image --image ttl.sh/rhtas/test-image:1h --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER  --output json --show-successes | jq
+ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER  --output json --show-successes | jq
 ----
 
 .*Click & Expand to see a full JSON report*
