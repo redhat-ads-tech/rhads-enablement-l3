@@ -348,7 +348,7 @@ image:rhads-ai/rhads/rhads-tssc.png[width=100%]
 
 The AI agent will be built using the Trusted Software Supply Chain (TSSC) provided by Red Hat Advanced Developer Suite. This ensures all security best practices and organizational guardrails are in place *before* development begins. As a best practice, this applies a shift-left security approach to all development.
 
-The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) *roxctl* CLI: *acs-image-check* verifies the image signature against security policies, and *acs-image-scan* identifies vulnerabilities. Red Hat Quay acts as the secure image registry, storing the signed images, SBOMs, and metadata. The deployment object will be updated with the new image tag, this make take ~5 minutes to get synchronize by ArgoCD.
+The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) *roxctl* CLI: *acs-image-check* verifies the image signature against security policies, and *acs-image-scan* identifies vulnerabilities. Red Hat Quay acts as the secure image registry, storing the signed images, SBOMs, and metadata. The deployment object will be updated with the new image tag, this make take ~5 minutes to get synchronize by Argo CD.
 
 To learn more, review the xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle] module.
 
