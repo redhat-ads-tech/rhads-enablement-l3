@@ -585,7 +585,7 @@ podman-terminal:/workspace/l3-enablement-helpers (main) [+]$
 [IMPORTANT]
 ====
 Please make sure your TAS endpoints are still configured to point to your `student-tas` namespace deployment by typing `'help'` and looking for the `student-tas`-based endpoints. Otherwise you'll verify that the pre-configured lab environment is working (which we sure hope it is... 😉 ). To reset the environment variables (in case you closed the terminal and re-opened it), run the same command as before:
-+
+
 [source,bash,role=execute,subs=attributes+]
 ----
 source ~/setup-tas-environment.sh student-tas
