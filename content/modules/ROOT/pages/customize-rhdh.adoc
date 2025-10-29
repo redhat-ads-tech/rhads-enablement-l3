@@ -1,5 +1,7 @@
 = Customize {product_rhdh_name}
 
+include::partial$logout-links.adoc[]
+
 Organizations can customize {product_rhdh_name} (RHDH) in many different ways to align with their specific needs and deliver a tailored developer experience. Customization options include:
 
 * **Visual customizations**: Modify appearance elements like title, logo, fonts, colors, headers, and themes to reflect your organization's branding

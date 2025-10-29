@@ -1,5 +1,7 @@
 = Setup Trusted Profile Analyzer
 
+include::partial$logout-links.adoc[]
+
 == Overview
 
 The Trusted Profile Analyzer (TPA) is a critical component for analyzing and evaluating software profiles in secure environments. This module provides comprehensive guidance for installing and configuring TPA in different environments to meet your organization's security and compliance requirements.

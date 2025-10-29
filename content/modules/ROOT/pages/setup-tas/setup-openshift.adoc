@@ -86,18 +86,18 @@ For our Keycloak example, we'll use a couple of helper scripts again, so (if you
 
 Then, clone the following repository:
 
-NOTE: It's a linux terminal, so use kbd:[CTRL-SHIFT-V] for pasting 🐧
+NOTE: It's a linux terminal, so use kbd:[CTRL+SHIFT+V] for pasting 🐧
 
 [source,bash,role=execute,subs=attributes+]
 ----
 git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
 cd l3-enablement-helpers
-prerequisites/get-keycloak-info.sh 
+prerequisites/get-keycloak-info.sh
 ----
 
 So, you can go to the https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients[Keycloak Admin console^,window="keycloak"] and login with the username and password provided by the `get-keycloak-info.sh` script that you just executed.
 
-In the "Clients" view, there is a "trusted-artifact-signer" client. This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when fulcio (Trusted Artifact Signer) requests an authenticated identity.
+In the _Clients_ view, there is a `trusted-artifact-signer` client (you may need to advance to the next page if there are more than 10 clients to see it). This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when Fulcio requests an authenticated identity.
 
 image:m4-tas-openshift/keycloak-clients-view.png[]
 
@@ -106,11 +106,14 @@ If you open that client, you will see that this is a regular OIDC public authent
 image:m4-tas-openshift/keycloak-client-standard-flow.png[]
 image:m4-tas-openshift/keycloak-client-direct-access-grants.png[]
 
-IMPORTANT: There are configuration properties that you need to take care of (that go beyond the default client definition), should you build or configure a TAS OIDC Client: The *Redirect URLs* and three *Client Scopes*:
+IMPORTANT: There are configuration properties that you need to take care of (that go beyond the default client definition), should you build or configure a TAS OIDC Client: The *Redirect URLs* and three *Client Scopes*. These have already been configured for you, but it's good to know what they are and why they are configured this way. We'll take a look at them in more detail below.
 
 *Redirect URLs* 
 
-In the "Access Settings", under "Valid redirect URIs", need an asterisk (*) to allow any URL to be redirected to after authentication, and a special OAuth 2.0 redirect URI that stands for "out-of-band" authorization: `urn:ietf:wg:oauth:2.0:oob`
+In the _Access Settings_, under _Valid redirect URIs_ you will see two URIs:
+
+* An asterisk (*) to allow any URL to be redirected to after authentication
+* A special OAuth 2.0 redirect URI that stands for "out-of-band" authorization: `urn:ietf:wg:oauth:2.0:oob`
 
 image:m4-tas-openshift/keycloak-client-redirect-uris.png[]
 
@@ -127,16 +130,15 @@ This basically enables "browser-based" authentication when there is no browser (
 
 *Client Scopes*
 
-In the client definition, go "Client Scopes", then the "dedicated" Client scope, where we can define scope mappers for all users authenticating via this client:
+In the client definition, visit the _Client Scopes_ tab, then select the `trusted-artifact-signer-dedicated` Client scope, where we can define scope mappers for all users authenticating via this client:
 
 image:m4-tas-openshift/keycloak-client-scope-mappers.png[]
 
-Here, we have to map three client scopes that fulcio expects to be part of an OAuth Token provided by the OAuth server:
+Here, we have three client scopes that Fulcio expects to be part of an OAuth Token provided by the OAuth server:
 
-* `email-verified` which needs to be mapped to the user profile `emailVerified` property
-* `email` which needs to be mapped to the user profile `email` property
-
-* `aud` (Audience) which needs to be hard-coded (yes!) to `trusted-artifact-signer`. *This needs to be part of the access token*
+* `email-verified` which is mapped to the user profile `emailVerified` property
+* `email` which is mapped to the user profile `email` property
+* `aud` (Audience) which is hard-coded (yes!) to `trusted-artifact-signer`. *This needs to be part of the access token*
 
 So, all users authenticating via this client, will have their email and email status part of their ID token, as well as the Audience (`aud`) defined as `trusted-artifact-signer`. 
 
@@ -173,7 +175,7 @@ So, either create a new namespace `student-tas` via the {openshift_console_url}[
 oc new-project student-tas
 ----
 
-Either way, all the following instructions will use this namespace (and URLs generated from this namespace).
+Either way, all the following instructions will use this namespace (and URLs generated from this namespace). Make sure the namespace is selected in the namespace dropdown or otherwise designated as the target namespace when performing the following steps.
 
 Being an operator, you can install it manually via the console or by deploying the Custom Resource to your namespace.
 
@@ -190,25 +192,26 @@ So, using the console, let's go to the {openshift_console_url}/k8s/ns/student-ta
 
 image:m4-tas-openshift/tas-operatorhub-student-tas.png[]
 
-Open the operator and create a "Securesign" here in the `student-tas` namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:
+Click on the Operator name and click on `+ Create instance` in the Securesign tile to create a new _Securesign_ here in the `student-tas` namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:
 
-1) The OIDC Issuer and OIDC IssuerURL - these are the only *mandatory* changes. Actually, just the URL (which is where Fulcio will request authentication) - the "Issuer" is a string by which the OIDC Provider will be identified throughout the flow, so using the URL as a name is a way of uniquely identifying the provider, in case you have multiple.
+. The `spec.fulcio.config.OIDCIssuers.Issuer` and `spec.fulcio.config.OIDCIssuers.IssuerURL` - these are the only *mandatory* changes. Actually, just the URL (which is where Fulcio will request authentication) - the _Issuer_ is a string by which the OIDC Provider will be identified throughout the flow, so using the URL as a name is a way of uniquely identifying the provider, in case you have multiple.
++
+NOTE: You *can have multiple* OIDC providers configured - when signing, you tell Fulcio which one to use. Fulcio will then have you challenged by the appropriate provider.
 
-NOTE: You *can have multiple* OIDC providers configured - when signing, you tell fulcio which one to use. Fulcio will then have you challenged by the appropriate provider.
+. The certificate configuration - certificates issued by Fulcio will have this configuration, therefore, when inspecting signatures, you will see this information. Not a technical requirement to change it from the default values, but you will want to :-) 
 
-2) The certificate configuration - certificates issued by Fulcio will have this configuration, therefore, when inspecting signatures, you will see this information. Not a technical requirement to change it from the default values, but you will want to :-) 
-
-3) The k8s `Securesign` name - you should change to a meaningful name for your deployment and change every occurrence of `securesign-sample` to a better name. 
-
+. The k8s `Securesign` name - you should change to a meaningful name for your deployment and change every occurrence of `securesign-sample` to a better name. 
++
 image:m4-tas-openshift/tas-operator-securesign.png[]
 
-.*Click & Expand: Here's a full `Securesign` for you*
+. *Click & Expand: Here's a full `Securesign` for you*
++
 [%collapsible]
 ====
 include::./securesign-example.adoc[]
 ====
 
-Create your instance, then open it and wait a moment until all Conditions (especially the top "Ready") are `true`
+Create your instance, then click on it to open and wait a moment until all Conditions (especially the top "Ready") are `true`
 
 image:m4-tas-openshift/tas-operator-securesign-created.png[]
 
@@ -234,7 +237,8 @@ cd l3-enablement-helpers/tas-verification
 ./deploy-podman-terminal.sh 
 ----
 
-.*Click & Expand to see the terminal output*
+*Click & Expand to see the terminal output*
+
 [%collapsible]
 =====
 include::./podman-terminal-deployment.adoc[]
@@ -242,7 +246,7 @@ include::./podman-terminal-deployment.adoc[]
 
 The last command copies the Cluster's OAuth Configuration and deploys the new terminal (our "Podman Terminal") - if you should see a login request, login with the same admin credentials (`{openshift_admin_user} / {openshift_admin_password}`)
 
-You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] that we will be using for the verification steps. 
+You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] that we will be using for the verification steps. It make take a minute or so for the terminal to be ready, so if you get an "Application not available" or other message, wait a moment and refresh the page.
 
 ====
 
@@ -278,7 +282,8 @@ Since these tools will often be used in an automated fashion (e.g. in a CI/CD pi
 
 The "Podman Terminal" has the endpoint variables set to the pre-deployed TAS in the `tssc-tas` namespace. You can check the configuration by typing `help`.
 
-.*Click & Expand to see the terminal output*
+*Click & Expand to see the terminal output*
+
 [%collapsible]
 =====
 include::./podman-terminal-environment.adoc[]
@@ -381,12 +386,13 @@ For testing, we'll create an empty container image and push it to the `ttl.sh` e
 
 [source,bash,role=execute,subs=attributes+]
 ----
-UUID=$(uuidgen | cut -d'-' -f1)
-IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
 echo "FROM scratch" > ./tmp.Dockerfile
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
 ----
+
+You should see:
 
 [source,console]
 ----
@@ -409,6 +415,7 @@ Now we'll sign it:
 
 [source,bash,role=execute,subs=attributes+]
 ----
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
 cosign sign -y $IMAGE_NAME
 ----
 
@@ -466,6 +473,7 @@ With `cosign tree` we can quickly check what Supply Chain Security Artifacts (Si
 
 [source,bash,role=execute,subs=attributes+]
 ----
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
 cosign tree $IMAGE_NAME
 ----
 
@@ -478,6 +486,7 @@ podman-terminal:/workspace$ cosign tree $IMAGE_NAME
 ---- 
 
 With `cosign verify` we can verify that
+
 * we have a valid signature
 * that it was signed by the OIDC identity in question
 * that the identity came from the OIDC system in question (here, we don't provide an OIDC system, cosign reads that from the environment if the command line parameter isn't given)
@@ -486,22 +495,31 @@ With `cosign verify` we can verify that
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity=user1@demo.redhat.com $IMAGE_NAME | jq
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+cosign verify --certificate-identity=user1@demo.redhat.com \# <1>
+       $IMAGE_NAME | jq
 ---- 
-(if you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead)
+<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead by pressing the kbd:[⬆️] key and editing the username in the command. You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
 
-If we want to explicitly verify that the identity `user1@demo.redhat.com` was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
+If we want to explicitly verify that the identity `user1@demo.redhat.com` (or `admin@demo.redhat.com` if you logged in as `admin` while generating the signature) was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+cosign verify --certificate-identity user1@demo.redhat.com \# <1>
+              --certificate-oidc-issuer \
+              https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq
 ---- 
+<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
 
 We can also use `regular expressions`, using *`--certificate-identity-regexp`* and *`--certificate-oidc-issuer-regexp`* if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the `redhatworkshops.io` domain:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE_NAME | jq
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
+              --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' \
+              $IMAGE_NAME | jq
 ---- 
 
 
@@ -564,7 +582,15 @@ Changes to be committed:
 podman-terminal:/workspace/l3-enablement-helpers (main) [+]$ 
 ----
 
-IMPORTANT: Please make sure your TAS endpoints are still configured to point to your `student-tas` namespace deployment by typing `'help'`. Otherwise you'll verify that the pre-configured lab environment is working (which we sure hope it is... 😉 )
+[IMPORTANT]
+====
+Please make sure your TAS endpoints are still configured to point to your `student-tas` namespace deployment by typing `'help'` and looking for the `student-tas`-based endpoints. Otherwise you'll verify that the pre-configured lab environment is working (which we sure hope it is... 😉 ). To reset the environment variables (in case you closed the terminal and re-opened it), run the same command as before:
+
+[source,bash,role=execute,subs=attributes+]
+----
+source ~/setup-tas-environment.sh student-tas
+----
+====
 
 Before we commit our change, let's take a look at our `git` configuration:
 
@@ -663,8 +689,11 @@ So, let's do it securely
 
 [source,bash,role=execute,subs=attributes+]
 ----
-gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+gitsign verify --certificate-identity=user1@demo.redhat.com \# <1>
+               --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+               HEAD
 ---- 
+<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
 
 [source,console]
 ----
@@ -692,6 +721,7 @@ For convenience, we'll include the commands for setting the environment to our T
 
 [source,bash,role=execute,subs=attributes+]
 ----
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
 cd /workspace
 source ~/setup-tas-environment.sh student-tas
 cosign initialize
@@ -732,6 +762,7 @@ Now that we have a predicate file, we can attest that (sign and attach it to the
 
 [source,bash,role=execute,subs=attributes+]
 ----
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
 cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME
 ----
 
@@ -743,6 +774,7 @@ With `cosign tree`, this time we'll not only see the image signature but also th
 
 [source,bash,role=execute,subs=attributes+]
 ----
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
 cosign tree $IMAGE_NAME
 ----
 
@@ -784,8 +816,13 @@ For a short report, showing the rules applied and successes or violations:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+ec validate image --image $IMAGE_NAME \
+                  --certificate-identity=user1@demo.redhat.com \# <1>
+                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \ 
+                  --show-successes
 ----
+<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
 
 [source,console]
 ----
@@ -817,11 +854,35 @@ For a more verbose report, use
 
 [source,bash,role=execute,subs=attributes+]
 ----
-ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER  --output json --show-successes | jq
+ec validate image --image $IMAGE_NAME \
+                  --certificate-identity=user1@demo.redhat.com \# <1>
+                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+                  --output json --show-successes | jq
 ----
+<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
 
-.*Click & Expand to see a full JSON report*
+*Click & Expand to see a full JSON report*
+
 [%collapsible]
 ====
 include::./full-ec-report.adoc[]
 ====
+
+== Congratulations!
+
+You've successfully installed and configured Trusted Artifact Signer (TAS) on OpenShift! In this module, you accomplished:
+
+* **Installed TAS using the Operator** which deployed all the core infrastructure components (Fulcio, Rekor, CTLog, Trillian, and TUF)
+* **Configured the signing and verification infrastructure** running on your OpenShift cluster with all endpoints accessible
+* **Successfully signed container images** using keyless signing with OIDC authentication through Cosign
+* **Verified signatures and attestations** using both online verification against the TAS transparency database and Enterprise Contract (EC) policy validation
+* **Demonstrated the full signing workflow** from image creation through signing to verification with policy enforcement
+
+This knowledge is valuable for customer engagements because it demonstrates:
+
+* **Enterprise signing infrastructure**: You can show customers how to deploy a self-managed, enterprise-grade signing and verification infrastructure on OpenShift that gives them full control over their trust roots
+* **Keyless signing workflows**: The OIDC-based keyless signing approach eliminates key management complexity while providing strong cryptographic guarantees
+* **Flexible deployment model**: TAS infrastructure runs on OpenShift, but can be used from anywhere - workstations, CI/CD pipelines, other clusters, or cloud services - demonstrating true infrastructure-as-a-service capability
+* **Policy enforcement capabilities**: Enterprise Contract integration shows how customers can enforce security and compliance policies during verification, not just validate signatures
+* **Production-ready patterns**: The verification workflows demonstrate both online (against transparency logs) and offline verification scenarios that customers will need in various deployment contexts
+* **Real-world application**: Customers can immediately apply these installation and verification patterns to build secure software supply chains with artifact signing integrated into their development and deployment pipelines
