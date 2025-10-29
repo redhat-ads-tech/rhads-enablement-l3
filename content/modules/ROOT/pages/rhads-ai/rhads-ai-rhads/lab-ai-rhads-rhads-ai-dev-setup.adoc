@@ -134,7 +134,7 @@ Let's work on these requests!
 
 === 1- Update the devfile.yaml
 
-In this section, you will replace the *whole content* of the devfile.yaml file.
+In this section, you will replace the *whole content* of the devfile.yaml file. The new application requires new libraries that will be used during runtime, given that this is a web python AI application the devfile.yaml it needs to be replaced.
 
 * Go to the *GitLab source code* repository:
 
@@ -303,7 +303,7 @@ image:rhads-ai/rhads/gitlab-webhook.png[width=80%]
 
 image:rhads-ai/rhads/gitlab-webhook-new.png[width=100%]
 
-* Copy the URL and paste it in the URL field.
+* Copy the OpenShift Pipelines controller URL and paste it in the URL field.
 
 +
 [source,bash,role=execute,subs=attributes+]
@@ -343,7 +343,8 @@ image:rhads-ai/rhads/gitlab-webhook-test.png[width=100%]
 +
 image:rhads-ai/rhads/rhads-tssc.png[width=100%]
 
-*Note:* The pipeline will take a few minutes to complete all steps.
+*Note:* The pipeline will take a few minutes to complete all steps. Wait for the pipeline to finish before continuing with step 3.
+
 
 The AI agent will be built using the Trusted Software Supply Chain (TSSC) provided by Red Hat Advanced Developer Suite. This ensures all security best practices and organizational guardrails are in place *before* development begins. As a best practice, this applies a shift-left security approach to all development.
 
@@ -352,7 +353,6 @@ The TSSC pipeline uses OpenShift Pipelines to build a container image, generate 
 To learn more, review the xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle] module.
 
 *Note:* If you face a 500 error during the build container image step, restart the *quay-quay-app.* pods (2 pods) in the *quay-enterprise* namespace.
-
 
 === 3-  Add environment variables
 
@@ -363,7 +363,7 @@ To learn more, review the xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS E
 +
 image:rhads-ai/rhads/gitlab-open.png[width=100%]
 
-* At line 52, paste the new code. This adds integrations for LLM models (name, URL, API key) and the Tavily API, which will be used as an AI Agent tool. *Ensure you are not replacing the current content.*
+* At line 52, paste the new code. Ensure you are adding your source *before the imagePullSecrets*. This adds integrations for LLM models (name, URL, API key) and the Tavily API, which will be used as an AI Agent tool. *Ensure you are not replacing the current content.*
 
 [source,bash,role=execute,subs=attributes+]
 ----

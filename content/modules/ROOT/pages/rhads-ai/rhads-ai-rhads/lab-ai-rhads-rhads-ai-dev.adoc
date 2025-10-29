@@ -171,6 +171,11 @@ image:rhads-ai/rhads/maas-authrh.png[width=80%]
 
 image:rhads-ai/rhads/maas-rhoai.png[width=60%]
 
+** Click *Create an Application*
+
+image:rhads-ai/rhads/mass-click-create.png[width=100%]
+
+
 ** Click the llama-3-2-3b model.
 
 image:rhads-ai/rhads/maas-model-select.png[width=100%]
@@ -192,11 +197,11 @@ kubectl create secret generic ai-agent-secrets-llm \
   -n tssc-app-development
 ----
 
-* Paste the secret in the terminal.
+* Paste the secret in the RH OpenShift Dev Spaces terminal.
 
-** Copy the *Endpoint URL* from the Maas website and paste it after *LLM_API_BASE_URL=* in the kubernetes secret
+* Copy the *API Key* and paste it after *LLM_API_KEY=* in the kubernetes secret.
 
-** Copy the *API Key* and paste it after *LLM_API_KEY=* in the kubernetes secret
+* Copy the *Endpoint URL* from the Maas website and paste it after *LLM_API_BASE_URL=* in the kubernetes secret.
 
 * Press Enter. You should see the message: *"secret/ai-agent-secrets-llm created"*
 
@@ -715,7 +720,7 @@ image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 </html>
 ----
 
-* Paste the content in the *index.html* file, replacing the whole content.
+* Paste the content in the *index.html* file, *replacing the whole content*.
 
 * Save the file.
 
@@ -725,7 +730,7 @@ image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 === 2. Add the search_agent.py file
 
 
-* Click the project, then click *New file* 
+* Click the project, then click *New file*. Ensure you create the new file at the project root.
 
 +
 image:rhads-ai/rhads/devspaces-newfile.png[width=100%]
@@ -1018,7 +1023,7 @@ def health_check():
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
 ----
-* Paste the content in the app.py file, replacing the whole content.
+* Paste the content in the app.py file, *replacing the whole content*.
 
 * Save the file.
 
@@ -1176,13 +1181,17 @@ Red Hat Advanced Developer Suite safeguards software artifacts (including AI app
 
 ** Click the *Topology* tab and review the deployed component.
 
-*Note:* For this lab, we have only deployed to the Development environment. The other deployments use a "dummy" image.
-
 * Click the *arrow* on *ai-agent-development* to access the AI Agent.
+
+image:rhads-ai/rhads/ai-agent-topology.png[width=100%]
 
 * You should see a screen similar to this:
 
 image:rhads-ai/rhads/ai-agent-live.png[width=100%]
+
+
+* *Note:* For this lab, we have only deployed to the Development environment. The other deployments use a "dummy" image.
+
 
 === Say Hi to the agent:
 
@@ -1216,6 +1225,6 @@ Extract information from  https://commons.openshift.org/gatherings/ and tell me 
 image:rhads-ai/rhads/ai-agent-extract.png[width=100%]
 
 
-== Congratulations on Building an AI Agent 
+== Congratulations on building a Research AI Agent 
 
 You have completed this lab! You learned how to build and deploy an AI agent in OpenShift using Red Hat Advanced Developer Suite, incorporating best practices for Developer Productivity, Security, and Scalability.
