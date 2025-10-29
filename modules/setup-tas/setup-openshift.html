@@ -529,7 +529,7 @@ Luckily we don&#8217;t have to deploy, configure and manage all of these compone
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-It&#8217;s a linux terminal, so use <kbd>CTRL-SHIFT-V</kbd> for pasting 🐧
+It&#8217;s a linux terminal, so use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>V</kbd></span> for pasting 🐧
 </td>
 </tr>
 </table>
@@ -545,7 +545,7 @@ prerequisites/get-keycloak-info.sh</code></pre>
 <p>So, you can go to the <a href="https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients" target="keycloak">Keycloak Admin console</a> and login with the username and password provided by the <code>get-keycloak-info.sh</code> script that you just executed.</p>
 </div>
 <div class="paragraph">
-<p>In the "Clients" view, there is a "trusted-artifact-signer" client. This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when fulcio (Trusted Artifact Signer) requests an authenticated identity.</p>
+<p>In the <em>Clients</em> view, there is a <code>trusted-artifact-signer</code> client (you may need to advance to the next page if there are more than 10 clients to see it). This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when Fulcio requests an authenticated identity.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-clients-view.png" alt="keycloak clients view"></span></p>
@@ -564,7 +564,7 @@ prerequisites/get-keycloak-info.sh</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-There are configuration properties that you need to take care of (that go beyond the default client definition), should you build or configure a TAS OIDC Client: The <strong>Redirect URLs</strong> and three <strong>Client Scopes</strong>:
+There are configuration properties that you need to take care of (that go beyond the default client definition), should you build or configure a TAS OIDC Client: The <strong>Redirect URLs</strong> and three <strong>Client Scopes</strong>. These have already been configured for you, but it&#8217;s good to know what they are and why they are configured this way. We&#8217;ll take a look at them in more detail below.
 </td>
 </tr>
 </table>
@@ -573,7 +573,17 @@ There are configuration properties that you need to take care of (that go beyond
 <p><strong>Redirect URLs</strong></p>
 </div>
 <div class="paragraph">
-<p>In the "Access Settings", under "Valid redirect URIs", need an asterisk (*) to allow any URL to be redirected to after authentication, and a special OAuth 2.0 redirect URI that stands for "out-of-band" authorization: <code>urn:ietf:wg:oauth:2.0:oob</code></p>
+<p>In the <em>Access Settings</em>, under <em>Valid redirect URIs</em> you will see two URIs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An asterisk (*) to allow any URL to be redirected to after authentication</p>
+</li>
+<li>
+<p>A special OAuth 2.0 redirect URI that stands for "out-of-band" authorization: <code>urn:ietf:wg:oauth:2.0:oob</code></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-redirect-uris.png" alt="keycloak client redirect uris"></span></p>
@@ -609,24 +619,24 @@ There are configuration properties that you need to take care of (that go beyond
 <p><strong>Client Scopes</strong></p>
 </div>
 <div class="paragraph">
-<p>In the client definition, go "Client Scopes", then the "dedicated" Client scope, where we can define scope mappers for all users authenticating via this client:</p>
+<p>In the client definition, visit the <em>Client Scopes</em> tab, then select the <code>trusted-artifact-signer-dedicated</code> Client scope, where we can define scope mappers for all users authenticating via this client:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-scope-mappers.png" alt="keycloak client scope mappers"></span></p>
 </div>
 <div class="paragraph">
-<p>Here, we have to map three client scopes that fulcio expects to be part of an OAuth Token provided by the OAuth server:</p>
+<p>Here, we have three client scopes that Fulcio expects to be part of an OAuth Token provided by the OAuth server:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>email-verified</code> which needs to be mapped to the user profile <code>emailVerified</code> property</p>
+<p><code>email-verified</code> which is mapped to the user profile <code>emailVerified</code> property</p>
 </li>
 <li>
-<p><code>email</code> which needs to be mapped to the user profile <code>email</code> property</p>
+<p><code>email</code> which is mapped to the user profile <code>email</code> property</p>
 </li>
 <li>
-<p><code>aud</code> (Audience) which needs to be hard-coded (yes!) to <code>trusted-artifact-signer</code>. <strong>This needs to be part of the access token</strong></p>
+<p><code>aud</code> (Audience) which is hard-coded (yes!) to <code>trusted-artifact-signer</code>. <strong>This needs to be part of the access token</strong></p>
 </li>
 </ul>
 </div>
@@ -695,7 +705,7 @@ There are configuration properties that you need to take care of (that go beyond
 </div>
 </div>
 <div class="paragraph">
-<p>Either way, all the following instructions will use this namespace (and URLs generated from this namespace).</p>
+<p>Either way, all the following instructions will use this namespace (and URLs generated from this namespace). Make sure the namespace is selected in the namespace dropdown or otherwise designated as the target namespace when performing the following steps.</p>
 </div>
 <div class="paragraph">
 <p>Being an operator, you can install it manually via the console or by deploying the Custom Resource to your namespace.</p>
@@ -727,11 +737,12 @@ There are configuration properties that you need to take care of (that go beyond
 <p><span class="image"><img src="../_images/m4-tas-openshift/tas-operatorhub-student-tas.png" alt="tas operatorhub student tas"></span></p>
 </div>
 <div class="paragraph">
-<p>Open the operator and create a "Securesign" here in the <code>student-tas</code> namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:</p>
+<p>Click on the Operator name and click on <code>+ Create instance</code> in the Securesign tile to create a new <em>Securesign</em> here in the <code>student-tas</code> namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:</p>
 </div>
-<div class="paragraph">
-<p>1) The OIDC Issuer and OIDC IssuerURL - these are the only <strong>mandatory</strong> changes. Actually, just the URL (which is where Fulcio will request authentication) - the "Issuer" is a string by which the OIDC Provider will be identified throughout the flow, so using the URL as a name is a way of uniquely identifying the provider, in case you have multiple.</p>
-</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>spec.fulcio.config.OIDCIssuers.Issuer</code> and <code>spec.fulcio.config.OIDCIssuers.IssuerURL</code> - these are the only <strong>mandatory</strong> changes. Actually, just the URL (which is where Fulcio will request authentication) - the <em>Issuer</em> is a string by which the OIDC Provider will be identified throughout the flow, so using the URL as a name is a way of uniquely identifying the provider, in case you have multiple.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -739,22 +750,25 @@ There are configuration properties that you need to take care of (that go beyond
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You <strong>can have multiple</strong> OIDC providers configured - when signing, you tell fulcio which one to use. Fulcio will then have you challenged by the appropriate provider.
+You <strong>can have multiple</strong> OIDC providers configured - when signing, you tell Fulcio which one to use. Fulcio will then have you challenged by the appropriate provider.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>2) The certificate configuration - certificates issued by Fulcio will have this configuration, therefore, when inspecting signatures, you will see this information. Not a technical requirement to change it from the default values, but you will want to :-)</p>
-</div>
-<div class="paragraph">
-<p>3) The k8s <code>Securesign</code> name - you should change to a meaningful name for your deployment and change every occurrence of <code>securesign-sample</code> to a better name.</p>
-</div>
+</li>
+<li>
+<p>The certificate configuration - certificates issued by Fulcio will have this configuration, therefore, when inspecting signatures, you will see this information. Not a technical requirement to change it from the default values, but you will want to :-)</p>
+</li>
+<li>
+<p>The k8s <code>Securesign</code> name - you should change to a meaningful name for your deployment and change every occurrence of <code>securesign-sample</code> to a better name.</p>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign.png" alt="tas operator securesign"></span></p>
 </div>
+</li>
+<li>
+<p><strong>Click &amp; Expand: Here&#8217;s a full <code>Securesign</code> for you</strong></p>
 <details>
-<summary class="title"><strong>Click &amp; Expand: Here&#8217;s a full <code>Securesign</code> for you</strong></summary>
+<summary class="title">Details</summary>
 <div class="content">
 <div class="paragraph">
 <p>Here we have a full example tailored to our environment - feel free to either change the default from the operator or copy &amp; paste this one.</p>
@@ -837,8 +851,11 @@ spec:
 </div>
 </div>
 </details>
+</li>
+</ol>
+</div>
 <div class="paragraph">
-<p>Create your instance, then open it and wait a moment until all Conditions (especially the top "Ready") are <code>true</code></p>
+<p>Create your instance, then click on it to open and wait a moment until all Conditions (especially the top "Ready") are <code>true</code></p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign-created.png" alt="tas operator securesign created"></span></p>
@@ -886,8 +903,11 @@ cd l3-enablement-helpers/tas-verification
 ./deploy-podman-terminal.sh</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><strong>Click &amp; Expand to see the terminal output</strong></p>
+</div>
 <details>
-<summary class="title"><strong>Click &amp; Expand to see the terminal output</strong></summary>
+<summary class="title">Details</summary>
 <div class="content">
 <div class="paragraph">
 <p>Terminal deployment output:</p>
@@ -941,7 +961,7 @@ Terminal URL: https://admin-terminal-ttyd.apps.cluster-mdt2d.dynamic.redhatworks
 <p>The last command copies the Cluster&#8217;s OAuth Configuration and deploys the new terminal (our "Podman Terminal") - if you should see a login request, login with the same admin credentials (<code>{openshift_admin_user} / {openshift_admin_password}</code>)</p>
 </div>
 <div class="paragraph">
-<p>You should now have a new terminal <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">here</a> that we will be using for the verification steps.</p>
+<p>You should now have a new terminal <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">here</a> that we will be using for the verification steps. It make take a minute or so for the terminal to be ready, so if you get an "Application not available" or other message, wait a moment and refresh the page.</p>
 </div>
 </td>
 </tr>
@@ -1004,8 +1024,11 @@ Terminal URL: https://admin-terminal-ttyd.apps.cluster-mdt2d.dynamic.redhatworks
 <div class="paragraph">
 <p>The "Podman Terminal" has the endpoint variables set to the pre-deployed TAS in the <code>tssc-tas</code> namespace. You can check the configuration by typing <code>help</code>.</p>
 </div>
+<div class="paragraph">
+<p><strong>Click &amp; Expand to see the terminal output</strong></p>
+</div>
 <details>
-<summary class="title"><strong>Click &amp; Expand to see the terminal output</strong></summary>
+<summary class="title">Details</summary>
 <div class="content">
 <div class="listingblock">
 <div class="content">
@@ -1154,12 +1177,14 @@ Root status:
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">UUID=$(uuidgen | cut -d'-' -f1)
-IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
 echo "FROM scratch" &gt; ./tmp.Dockerfile
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>You should see:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1183,7 +1208,8 @@ Writing manifest to image destination</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign sign -y $IMAGE_NAME</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign sign -y $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1263,7 +1289,8 @@ Pushing signature to: ttl.sh/rhtas/test-image-4be1a048</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign tree $IMAGE_NAME</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign tree $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1275,36 +1302,67 @@ Pushing signature to: ttl.sh/rhtas/test-image-4be1a048</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>With <code>cosign verify</code> we can verify that
-* we have a valid signature
-* that it was signed by the OIDC identity in question
-* that the identity came from the OIDC system in question (here, we don&#8217;t provide an OIDC system, cosign reads that from the environment if the command line parameter isn&#8217;t given)</p>
+<p>With <code>cosign verify</code> we can verify that</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>we have a valid signature</p>
+</li>
+<li>
+<p>that it was signed by the OIDC identity in question</p>
+</li>
+<li>
+<p>that the identity came from the OIDC system in question (here, we don&#8217;t provide an OIDC system, cosign reads that from the environment if the command line parameter isn&#8217;t given)</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>(we add a <code>| jq</code> for better readability of the output)</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity=user1@demo.redhat.com $IMAGE_NAME | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+       $IMAGE_NAME | jq</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> instead by pressing the <kbd>⬆️</kbd> key and editing the username in the command. You will need to do this for all subsequent commands that use the <code>user1@demo.redhat.com</code> identity.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>(if you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> instead)</p>
-</div>
-<div class="paragraph">
-<p>If we want to explicitly verify that the identity <code>user1@demo.redhat.com</code> was verified against our OIDC server and realm <code><a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a></code>, we can add the <code>--certificate-oidc-issuer</code> parameter:</p>
+<p>If we want to explicitly verify that the identity <code>user1@demo.redhat.com</code> (or <code>admin@demo.redhat.com</code> if you logged in as <code>admin</code> while generating the signature) was verified against our OIDC server and realm <code><a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a></code>, we can add the <code>--certificate-oidc-issuer</code> parameter:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+              --certificate-oidc-issuer \
+              https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>We can also use <code>regular expressions</code>, using <strong><code>--certificate-identity-regexp</code></strong> and <strong><code>--certificate-oidc-issuer-regexp</code></strong> if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the <code>redhatworkshops.io</code> domain:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE_NAME | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
+              --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' \
+              $IMAGE_NAME | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1391,7 +1449,14 @@ podman-terminal:/workspace/l3-enablement-helpers (main) [+]$</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Please make sure your TAS endpoints are still configured to point to your <code>student-tas</code> namespace deployment by typing <code>'help'</code>. Otherwise you&#8217;ll verify that the pre-configured lab environment is working (which we sure hope it is&#8230;&#8203; 😉 )
+<div class="paragraph">
+<p>Please make sure your TAS endpoints are still configured to point to your <code>student-tas</code> namespace deployment by typing <code>'help'</code> and looking for the <code>student-tas</code>-based endpoints. Otherwise you&#8217;ll verify that the pre-configured lab environment is working (which we sure hope it is&#8230;&#8203; 😉 ). To reset the environment variables (in case you closed the terminal and re-opened it), run the same command as before:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">source ~/setup-tas-environment.sh student-tas</code></pre>
+</div>
+</div>
 </td>
 </tr>
 </table>
@@ -1520,8 +1585,18 @@ WARNING: git verify-commit does not verify cert claims. Prefer using `gitsign ve
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitsign verify --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+               --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+               HEAD</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1564,7 +1639,8 @@ With <code>gitsign verify</code>, you can also use the <code>--certificate-ident
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /workspace
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cd /workspace
 source ~/setup-tas-environment.sh student-tas
 cosign initialize
 echo "FROM scratch" &gt; ./tmp.Dockerfile
@@ -1606,7 +1682,8 @@ EOF</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1617,7 +1694,8 @@ EOF</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign tree $IMAGE_NAME</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign tree $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1659,8 +1737,20 @@ Kubernetes Client  v0.31.0</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+ec validate image --image $IMAGE_NAME \
+                  --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+                  --show-successes</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1703,11 +1793,25 @@ Results:
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER  --output json --show-successes | jq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image $IMAGE_NAME \
+                  --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+                  --output json --show-successes | jq</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Click &amp; Expand to see a full JSON report</strong></p>
 </div>
 <details>
-<summary class="title"><strong>Click &amp; Expand to see a full JSON report</strong></summary>
+<summary class="title">Details</summary>
 <div class="content">
 <div class="listingblock">
 <div class="content">
@@ -1795,6 +1899,58 @@ Results:
 </div>
 </div>
 </details>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_congratulations"><a class="anchor" href="#_congratulations"></a>Congratulations!</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You&#8217;ve successfully installed and configured Trusted Artifact Signer (TAS) on OpenShift! In this module, you accomplished:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Installed TAS using the Operator</strong> which deployed all the core infrastructure components (Fulcio, Rekor, CTLog, Trillian, and TUF)</p>
+</li>
+<li>
+<p><strong>Configured the signing and verification infrastructure</strong> running on your OpenShift cluster with all endpoints accessible</p>
+</li>
+<li>
+<p><strong>Successfully signed container images</strong> using keyless signing with OIDC authentication through Cosign</p>
+</li>
+<li>
+<p><strong>Verified signatures and attestations</strong> using both online verification against the TAS transparency database and Enterprise Contract (EC) policy validation</p>
+</li>
+<li>
+<p><strong>Demonstrated the full signing workflow</strong> from image creation through signing to verification with policy enforcement</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This knowledge is valuable for customer engagements because it demonstrates:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Enterprise signing infrastructure</strong>: You can show customers how to deploy a self-managed, enterprise-grade signing and verification infrastructure on OpenShift that gives them full control over their trust roots</p>
+</li>
+<li>
+<p><strong>Keyless signing workflows</strong>: The OIDC-based keyless signing approach eliminates key management complexity while providing strong cryptographic guarantees</p>
+</li>
+<li>
+<p><strong>Flexible deployment model</strong>: TAS infrastructure runs on OpenShift, but can be used from anywhere - workstations, CI/CD pipelines, other clusters, or cloud services - demonstrating true infrastructure-as-a-service capability</p>
+</li>
+<li>
+<p><strong>Policy enforcement capabilities</strong>: Enterprise Contract integration shows how customers can enforce security and compliance policies during verification, not just validate signatures</p>
+</li>
+<li>
+<p><strong>Production-ready patterns</strong>: The verification workflows demonstrate both online (against transparency logs) and offline verification scenarios that customers will need in various deployment contexts</p>
+</li>
+<li>
+<p><strong>Real-world application</strong>: Customers can immediately apply these installation and verification patterns to build secure software supply chains with artifact signing integrated into their development and deployment pipelines</p>
+</li>
+</ul>
 </div>
 </div>
 </div>

@@ -757,7 +757,7 @@
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl create secret generic ai-agent-secrets-llm \
   --from-literal=LLM_API_BASE_URL=\
   --from-literal=LLM_API_KEY= \
-  --from-literal=MODEL_NAME=Llama-3.2-3B \
+  --from-literal=MODEL_NAME=llama-3-2-3b \
   -n tssc-app-development</code></pre>
 </div>
 </div>
@@ -770,7 +770,7 @@
 <p>Copy the <strong>API Key</strong> and paste it after <strong>LLM_API_KEY=</strong> in the kubernetes secret.</p>
 </li>
 <li>
-<p>Copy the <strong>Endpoint URL</strong> from the Maas website and paste it after <strong>LLM_API_BASE_URL=</strong> in the kubernetes secret.</p>
+<p>Copy the <strong>Endpoint URL</strong> from the Maas website and paste it after <strong>LLM_API_BASE_URL=</strong> in the kubernetes secret. Include <strong>/v1</strong> at the end of the URL.</p>
 </li>
 <li>
 <p>Press Enter. You should see the message: <strong>"secret/ai-agent-secrets-llm created"</strong></p>

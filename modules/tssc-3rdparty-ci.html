@@ -332,6 +332,33 @@
 <h1 class="page">Trusted Software Supply Chain with Other CIs</h1>
 <div id="preamble">
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Quick Logout Links</strong></p>
+</div>
+<div class="paragraph">
+<p>Prior to starting this module, click the following two links to log out of previous sessions to prevent errors related to performing actions as the wrong user.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer/protocol/openid-connect/logout?client_id=ocp4_workload_advanced_developer_suite_openshift_keycloak_client_id&amp;post_logout_redirect_uri=https://console-openshift-console.{openshift_cluster_ingress_domain}" target="_blank" rel="noopener">Logout from OpenShift</a></p>
+</li>
+<li>
+<p><a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/users/sign_out" target="_blank" rel="noopener">Logout from GitLab</a></p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Red Hat&#8217;s customers have varied requirements, including the need to integrate third party continuous integration (CI) systems with OpenShift, Red Hat Developer Hub, and Trusted Software Supply Chain (TSSC). Not all customers are ready to replace their existing CI with cloud-native CI based on OpenShift Pipelines (Tekton).</p>
 </div>
@@ -559,7 +586,7 @@ The Jenkins plugins are in <a href="https://docs.redhat.com/en/documentation/red
 </ol>
 </div>
 <div class="paragraph">
-<p>In summary, this <code>template.yaml</code> defines a Software Template that collects parameters to scaffold a new Quarkus-based Java application that stores source code in GitLab and built container images in Quay. Additionally it has a toggle to enable commit signing, an element of a secure software pipeline.</p>
+<p>In summary, this <code>template.yaml</code> defines a Software Template that collects parameters to scaffold a new Quarkus-based Java application that stores source code in GitLab and stores built container images in Quay. Additionally it has a toggle to enable commit signing, an element of a secure software pipeline.</p>
 </div>
 </div>
 <div class="sect2">
@@ -572,7 +599,7 @@ The Jenkins plugins are in <a href="https://docs.redhat.com/en/documentation/red
 <p>This file defines the actions taken by the secure software pipeline when a developer pushes commits to applications created using this template. Notably, this Jenkinsfile defines an execution environment using a container that&#8217;s run on OpenShift (<code>agent &gt; kubernetes</code>).</p>
 </div>
 <div class="paragraph">
-<p>The specified image, <code>quay.io/jkopriva/rhtap-jenkins-agent</code>, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script] creates a builds container image and generates the SBOM.</p>
+<p>The specified image, <code>quay.io/jkopriva/rhtap-jenkins-agent</code>, includes binaries and other dependencies required to for the secure software supply chain. Additionally, the Jenkinsfile loads a reusable wrapper library from {gitlab_url}/rhdh/tssc-sample-jenkins[rhdh/tssc-sample-jenkins on GitLab^] that uses those dependencies to implement specific elements of the pipeline. For example, the {gitlab_url}/rhdh/tssc-sample-jenkins/-/blob/main/resources/buildah-rhtap.sh[buildah-rhtap.sh script^] creates a builds container image and generates the SBOM.</p>
 </div>
 </li>
 <li>
