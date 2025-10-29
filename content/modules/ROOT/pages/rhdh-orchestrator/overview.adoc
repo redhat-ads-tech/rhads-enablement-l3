@@ -1,5 +1,7 @@
 = Orchestrator for {product_rhdh_name}
 
+include::partial$logout-links.adoc[]
+
 Other modules demonstrate how to use Software Templates as a means for developers to scaffold new codebases that follow organisational standards, and self-service certain aspects of their daily activities. 
 
 However, developer self-service requests might require more than what a Software Template can provide natively. For example, certain requests might require an approval, while others might involve *long-running, stateful processes* - this is where the Orchestrator for {product_rhdh_name} can help. It addresses the fact that regular Software Templates are stateless "run and done" processes. 
