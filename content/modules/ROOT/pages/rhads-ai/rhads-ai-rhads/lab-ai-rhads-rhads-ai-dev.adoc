@@ -193,7 +193,7 @@ Create a secret with your API keys:
 kubectl create secret generic ai-agent-secrets-llm \
   --from-literal=LLM_API_BASE_URL=\
   --from-literal=LLM_API_KEY= \
-  --from-literal=MODEL_NAME=Llama-3.2-3B \
+  --from-literal=MODEL_NAME=llama-3-2-3b \
   -n tssc-app-development
 ----
 
@@ -201,7 +201,7 @@ kubectl create secret generic ai-agent-secrets-llm \
 
 * Copy the *API Key* and paste it after *LLM_API_KEY=* in the kubernetes secret.
 
-* Copy the *Endpoint URL* from the Maas website and paste it after *LLM_API_BASE_URL=* in the kubernetes secret.
+* Copy the *Endpoint URL* from the Maas website and paste it after *LLM_API_BASE_URL=* in the kubernetes secret. Include */v1* at the end of the URL.
 
 * Press Enter. You should see the message: *"secret/ai-agent-secrets-llm created"*
 
