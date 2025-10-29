@@ -748,12 +748,12 @@ cosign tree $IMAGE_NAME
 
 [source,console]
 ----
-podman-terminal:/workspace$ cosign tree ttl.sh/rhtas/test-image:1h
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image:1h
-└── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image:sha256-2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe.att
-   └── 🍒 sha256:aaa843f2168bf1142e495e70c083dc02f4c044a657520234bf1323476d18dce4
-└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image:sha256-2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe.sig
-   └── 🍒 sha256:e25719b2ac6cdee3c2fc21d655f3db90b3be4223b8bc2b3ef406a990e680bfd2
+podman-terminal:/workspace$ cosign tree $IMAGE_NAME
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:1h
+└── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.att
+   └── 🍒 sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
+└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.sig
+   └── 🍒 sha256:f9266c99008d19ca8f82ef47ce654f9b1eb1ed840dfc2bf2286a89100a294abf
 ----
 
 We will now verify the attestation as well as the image using `ec` - enterprise contract, which has an embedded `cosign` version for the image signature verification part:
@@ -789,23 +789,22 @@ ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.c
 
 [source,console]
 ----
-podman-terminal:/workspace$ ec validate image --image ttl.sh/rhtas/test-image:1h --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+podman-terminal:/workspace$ ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
 Success: true
 Result: SUCCESS
 Violations: 0, Warnings: 0, Successes: 3
 Component: Unnamed
-ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe
+ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
 
 Results:
 ✓ [Success] builtin.attestation.signature_check
-  ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
 
 ✓ [Success] builtin.attestation.syntax_check
-  ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
 
 ✓ [Success] builtin.image.signature_check
-  ImageRef: ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe
-
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
 ----
 
 So, we can see that the built-in minimal policies have been applied and succeeded:
