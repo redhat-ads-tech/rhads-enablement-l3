@@ -729,6 +729,16 @@
 <div class="ulist">
 <ul>
 <li>
+<p>Click <strong>Create an Application</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/mass-click-create.png" alt="mass click create" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
 <p>Click the llama-3-2-3b model.</p>
 </li>
 </ul>
@@ -763,17 +773,13 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Paste the secret in the terminal.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Copy the <strong>Endpoint URL</strong> from the Maas website and paste it after <strong>LLM_API_BASE_URL=</strong> in the kubernetes secret</p>
+<p>Paste the secret in the RH OpenShift Dev Spaces terminal.</p>
 </li>
 <li>
-<p>Copy the <strong>API Key</strong> and paste it after <strong>LLM_API_KEY=</strong> in the kubernetes secret</p>
+<p>Copy the <strong>API Key</strong> and paste it after <strong>LLM_API_KEY=</strong> in the kubernetes secret.</p>
 </li>
-</ul>
-</div>
+<li>
+<p>Copy the <strong>Endpoint URL</strong> from the Maas website and paste it after <strong>LLM_API_BASE_URL=</strong> in the kubernetes secret.</p>
 </li>
 <li>
 <p>Press Enter. You should see the message: <strong>"secret/ai-agent-secrets-llm created"</strong></p>
@@ -1326,7 +1332,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Paste the content in the <strong>index.html</strong> file, replacing the whole content.</p>
+<p>Paste the content in the <strong>index.html</strong> file, <strong>replacing the whole content</strong>.</p>
 </li>
 <li>
 <p>Save the file.</p>
@@ -1342,7 +1348,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Click the project, then click <strong>New file</strong></p>
+<p>Click the project, then click <strong>New file</strong>. Ensure you create the new file at the project root.</p>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/devspaces-newfile.png" alt="devspaces newfile" width="100%"></span></p>
 </div>
@@ -1659,7 +1665,7 @@ if __name__ == '__main__':
 <div class="ulist">
 <ul>
 <li>
-<p>Paste the content in the app.py file, replacing the whole content.</p>
+<p>Paste the content in the app.py file, <strong>replacing the whole content</strong>.</p>
 </li>
 <li>
 <p>Save the file.</p>
@@ -1899,17 +1905,21 @@ Red Hat Advanced Developer Suite safeguards software artifacts (including AI app
 <ul>
 <li>
 <p>Click the <strong>Topology</strong> tab and review the deployed component.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Note:</strong> For this lab, we have only deployed to the Development environment. The other deployments use a "dummy" image.</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
 <p>Click the <strong>arrow</strong> on <strong>ai-agent-development</strong> to access the AI Agent.</p>
 </li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-topology.png" alt="ai agent topology" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>You should see a screen similar to this:</p>
 </li>
@@ -1917,6 +1927,13 @@ Red Hat Advanced Developer Suite safeguards software artifacts (including AI app
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/ai-agent-live.png" alt="ai agent live" width="100%"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Note:</strong> For this lab, we have only deployed to the Development environment. The other deployments use a "dummy" image.</p>
+</li>
+</ul>
 </div>
 <div class="sect2">
 <h3 id="_say_hi_to_the_agent"><a class="anchor" href="#_say_hi_to_the_agent"></a>Say Hi to the agent:</h3>
@@ -1961,7 +1978,7 @@ Red Hat Advanced Developer Suite safeguards software artifacts (including AI app
 </div>
 </div>
 <div class="sect1">
-<h2 id="_congratulations_on_building_an_ai_agent"><a class="anchor" href="#_congratulations_on_building_an_ai_agent"></a>Congratulations on Building an AI Agent</h2>
+<h2 id="_congratulations_on_building_a_research_ai_agent"><a class="anchor" href="#_congratulations_on_building_a_research_ai_agent"></a>Congratulations on building a Research AI Agent</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You have completed this lab! You learned how to build and deploy an AI agent in OpenShift using Red Hat Advanced Developer Suite, incorporating best practices for Developer Productivity, Security, and Scalability.</p>
