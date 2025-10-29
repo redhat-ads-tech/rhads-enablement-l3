@@ -100,7 +100,7 @@ This module provides an encoded image in the sample code for app-config. It also
 
 . In the presented text entry field, delete the provided YAML skeleton entirely.
 
-. Paste the copied ConfigMap YAML into the empty text field, then click *Create* to commit the `brand-rhdh` ConfigMap.
+. Paste the copied ConfigMap YAML into the empty text field, then click *Create* to commit the `rhdh-config` ConfigMap.
 
 [source,yaml,role=execute,subs=attributes+]
 ----
