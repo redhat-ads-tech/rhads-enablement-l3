@@ -297,7 +297,7 @@ Validated Rekor entry: true
 Validated Certificate claims: true
 ----
 
-Or, if we want to be lenient - we can just verify the signature and its autenticity, as well as that it was signed by someone (could be anyone) who authenticated against any OIDC system in the `redhatworkshops.io` domain:
+Or, if we want to be lenient - we can just verify the signature and its authenticity, as well as that it was signed by someone (could be anyone) who authenticated against any OIDC system in the `redhatworkshops.io` domain:
 
 
 [source,bash,role=execute,subs=attributes+]

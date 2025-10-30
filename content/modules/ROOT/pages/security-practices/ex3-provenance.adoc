@@ -165,7 +165,7 @@ Without any additional policies applied, `ec` will verify the attestation agains
 ====
 If you attested interactively, replace the user email in `--certificate-identity=pipeline-auth@demo.redhat.com` with the user you have logged in with.
 
-Or, alternatively, use `--certificate-identity-regexp='.*@.*redhat\.com$'` with aregular expression matching all email addresses ending with `redhat.com`
+Or, alternatively, use `--certificate-identity-regexp='.*@.*redhat\.com$'` with a regular expression matching all email addresses ending with `redhat.com`
 ====
 
 [source,bash,role=execute,subs=attributes+]
