@@ -128,6 +128,8 @@ backend:
 ----
 . Scroll down and click *Save*.
 
+. Return to the https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/{ns_tssc_rhdh}?view=graph[Topology View^] for the *{ns_tssc_rhdh}* namespace and wait for the re-deployed Backstage pod to become ready (and for the old pod to be terminated).
+
 The `BACKEND_SECRET` environment variable being referenced is already used as a session signing secret. In a production scenario you should add a new environment variable by mounting a Secret with a securely generated token, e.g using the `openssl` CLI:
 
 ```bash
