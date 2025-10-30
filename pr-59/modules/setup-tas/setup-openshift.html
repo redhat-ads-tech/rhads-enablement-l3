@@ -1334,8 +1334,7 @@ cosign tree $IMAGE_NAME</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h" \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h" \
 cosign verify --certificate-identity=user1@demo.redhat.com
        $IMAGE_NAME | jq</code></pre>
 </div>
@@ -1352,94 +1351,97 @@ If you signed with the admin user, you will get an error - use <code>admin@demo.
 </tr>
 </table>
 </div>
-<div class="exampleblock">
-<div class="content">
 <div class="paragraph">
-<p>IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
-cosign verify --certificate-identity=<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a>
-       $IMAGE_NAME | jq</p>
+<p>If we want to explicitly verify that the identity <code>user1@demo.redhat.com</code> (or <code>admin@demo.redhat.com</code> if you logged in as <code>admin</code> while generating the signature) was verified against our OIDC server and realm <code><a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a></code>, we can add the <code>--certificate-oidc-issuer</code> parameter:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
-<pre>WARNING:4 If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead by pressing the kbd:[⬆️] key and editing the username in the command. You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin
-
-If we want to explicitly verify that the identity `user1@demo.redhat.com` (or `admin@demo.redhat.com` if you logged in as `admin` while generating the signature) was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
-
-[source,bash,role=execute,subs=attributes+]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
-cosign verify --certificate-identity <a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a> \# &lt;1&gt;
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
               --certificate-oidc-issuer \
-              <a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a> $IMAGE_NAME | jq</p>
+              https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq</code></pre>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>&lt;1&gt; If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
-
-We can also use `regular expressions`, using *`--certificate-identity-regexp`* and *`--certificate-oidc-issuer-regexp`* if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the `redhatworkshops.io` domain:
-
-[source,bash,role=execute,subs=attributes+]</pre>
 </div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+<p>We can also use <code>regular expressions</code>, using <strong><code>--certificate-identity-regexp</code></strong> and <strong><code>--certificate-oidc-issuer-regexp</code></strong> if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the <code>redhatworkshops.io</code> domain:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
 cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
               --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' \
-              $IMAGE_NAME | jq</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>We can also verify that our signing event and associated metadata has been recorded in the write-only transparency database (Rekor).
-
-In our TAS deployment in the `student-tas` namespace, we have the https://rekor-search-ui-student-tas.{openshift_cluster_ingress_domain}[Rekor Search UI^,window="rekor"] that we can use to search for emails, log indexes (note the `tlog index` when signing), hashes or UUIDs:
-
-image:m4-tas-openshift/rekor-ui.png[]
-
-_(If you look closely, you can also see that this signature was issued by the organisation `O=rhads-learners` with the common name (CN) `CN=student.tas.signature` )_
-
-
-=== Signing and verifying `git` commits
-
-For interacting with `git` we're using the `gitsign` cli tool. However, to use it, we also need the "trust root" from the TUF endpoint (which is downloaded to the user home under `~/.sigstore` - also see the output from the `cosign initialize` command, which outputs the location of the local and remote trust root )
-
-If you have already done it in the previous step, you can skip it, but we need to issue *`cosign initialize`* at least once for the local environment to be initialized.
-
-[TIP]
-====
-Going forward - if you work with multiple TAS/sigstore instances, especially if these are different versions - sometimes you get errors when signing or verifying artifacts that can't be explained, since you've done everything by the book.
-
-In these cases, it's a good idea to *delete the `~/.sigstore` directory and its contents* and re-initialize (`cosign initialize` creates a fresh, new one). Sometimes, the trust root gets corrupted when updating it from multiple TAS/sigstore instances.
-====
-
-To test `git` commit signing, we need a git repo first - we can use the `l3-enablement-helpers` we have already used - committing is fine, we're not pushing 😇
-
-So, let's open our  https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"] again and clone it, then add a new file:
-
-[source,bash,role=execute,subs=attributes+]</pre>
+              $IMAGE_NAME | jq</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>git clone <a href="https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git" class="bare">https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git</a>
+<p>We can also verify that our signing event and associated metadata has been recorded in the write-only transparency database (Rekor).</p>
+</div>
+<div class="paragraph">
+<p>In our TAS deployment in the <code>student-tas</code> namespace, we have the <a href="https://rekor-search-ui-student-tas.{openshift_cluster_ingress_domain}" target="rekor">Rekor Search UI</a> that we can use to search for emails, log indexes (note the <code>tlog index</code> when signing), hashes or UUIDs:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/rekor-ui.png" alt="rekor ui"></span></p>
+</div>
+<div class="paragraph">
+<p><em>(If you look closely, you can also see that this signature was issued by the organisation <code>O=rhads-learners</code> with the common name (CN) <code>CN=student.tas.signature</code> )</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_signing_and_verifying_git_commits"><a class="anchor" href="#_signing_and_verifying_git_commits"></a>Signing and verifying <code>git</code> commits</h3>
+<div class="paragraph">
+<p>For interacting with <code>git</code> we&#8217;re using the <code>gitsign</code> cli tool. However, to use it, we also need the "trust root" from the TUF endpoint (which is downloaded to the user home under <code>~/.sigstore</code> - also see the output from the <code>cosign initialize</code> command, which outputs the location of the local and remote trust root )</p>
+</div>
+<div class="paragraph">
+<p>If you have already done it in the previous step, you can skip it, but we need to issue <strong><code>cosign initialize</code></strong> at least once for the local environment to be initialized.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Going forward - if you work with multiple TAS/sigstore instances, especially if these are different versions - sometimes you get errors when signing or verifying artifacts that can&#8217;t be explained, since you&#8217;ve done everything by the book.</p>
+</div>
+<div class="paragraph">
+<p>In these cases, it&#8217;s a good idea to <strong>delete the <code>~/.sigstore</code> directory and its contents</strong> and re-initialize (<code>cosign initialize</code> creates a fresh, new one). Sometimes, the trust root gets corrupted when updating it from multiple TAS/sigstore instances.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To test <code>git</code> commit signing, we need a git repo first - we can use the <code>l3-enablement-helpers</code> we have already used - committing is fine, we&#8217;re not pushing 😇</p>
+</div>
+<div class="paragraph">
+<p>So, let&#8217;s open our  <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">Podman Terminal</a> again and clone it, then add a new file:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
 cd l3-enablement-helpers
 touch this-is-an-empty-file.txt
 git add .
-git status</p>
+git status</code></pre>
+</div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>podman-terminal:/workspace$ git clone <a href="https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git" class="bare">https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git</a>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
 cd l3-enablement-helpers
 touch this-is-an-empty-file.txt
 git add .
 git status
-Cloning into 'l3-enablement-helpers'&#8230;&#8203;
+Cloning into 'l3-enablement-helpers'...
 remote: Enumerating objects: 109, done.
 remote: Counting objects: 100% (109/109), done.
 remote: Compressing objects: 100% (81/81), done.
@@ -1447,198 +1449,213 @@ remote: Total 109 (delta 54), reused 77 (delta 28), pack-reused 0 (from 0)
 Receiving objects: 100% (109/109), 28.61 KiB | 14.30 MiB/s, done.
 Resolving deltas: 100% (54/54), done.
 On branch main
-Your branch is up to date with 'origin/main'.</p>
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged &lt;file&gt;..." to unstage)
+        new file:   this-is-an-empty-file.txt
+
+podman-terminal:/workspace/l3-enablement-helpers (main) [+]$</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Please make sure your TAS endpoints are still configured to point to your <code>student-tas</code> namespace deployment by typing <code>'help'</code> and looking for the <code>student-tas</code>-based endpoints. Otherwise you&#8217;ll verify that the pre-configured lab environment is working (which we sure hope it is&#8230;&#8203; 😉 ). To reset the environment variables (in case you closed the terminal and re-opened it), run the same command as before:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">source ~/setup-tas-environment.sh student-tas</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Changes to be committed:
-  (use "git restore --staged &lt;file&gt;&#8230;&#8203;" to unstage)
-        new file:   this-is-an-empty-file.txt</p>
+<p>Before we commit our change, let&#8217;s take a look at our <code>git</code> configuration:</p>
 </div>
-<div class="paragraph">
-<p>podman-terminal:/workspace/l3-enablement-helpers (main) [+]$</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git config --global --list</code></pre>
+</div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[IMPORTANT]
-====
-Please make sure your TAS endpoints are still configured to point to your `student-tas` namespace deployment by typing `'help'` and looking for the `student-tas`-based endpoints. Otherwise you'll verify that the pre-configured lab environment is working (which we sure hope it is... 😉 ). To reset the environment variables (in case you closed the terminal and re-opened it), run the same command as before:
-
-[source,bash,role=execute,subs=attributes+]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>source ~/setup-tas-environment.sh student-tas</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>====
-
-Before we commit our change, let's take a look at our `git` configuration:
-
-[source,bash,role=execute,subs=attributes+]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>git config --global --list</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[source,bash,subs=attributes+]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>&#8230;&#8203;
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
 commit.gpgsign=true
 tag.gpgsign=true
 gpg.x509.program=gitsign
 gpg.format=x509
-&#8230;&#8203;</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>This section tells `git` to use `gpg`-style signing (similar to the "traditional" private key based signing), the format (`x509`) and which program should provide the key/certificate. In our case, this is `gitsign` (that we pre-installed for your convenience).
-
-[source,bash,subs=attributes+]</pre>
+...</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>&#8230;&#8203;
+<p>This section tells <code>git</code> to use <code>gpg</code>-style signing (similar to the "traditional" private key based signing), the format (<code>x509</code>) and which program should provide the key/certificate. In our case, this is <code>gitsign</code> (that we pre-installed for your convenience).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
 gitsign.fulcio=https://fulcio-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
 gitsign.issuer=https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
 gitsign.rekor=https://rekor-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
 gitsign.clientid=trusted-artifact-signer
-&#8230;&#8203;</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>This section tells `gitsign` where the various endpoints are, so it can request a signing certificate and where it can store the signing event metadata.
-
-NOTE: We have chosen this path for convenience - with this configuration, git will automatically sign every commit (and tag) we create. *For sake of completeness* - we could also just commit without signing and then sign the commit later, using the `gitsign` binary directly, using the commit hash.
-
-Now, let's commit this change:
-
-[source,bash,role=execute,subs=attributes+]</pre>
+...</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>git commit -m "added an empty file to test commit signing"</p>
+<p>This section tells <code>gitsign</code> where the various endpoints are, so it can request a signing certificate and where it can store the signing event metadata.</p>
 </div>
-<div class="listingblock">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We have chosen this path for convenience - with this configuration, git will automatically sign every commit (and tag) we create. <strong>For sake of completeness</strong> - we could also just commit without signing and then sign the commit later, using the <code>gitsign</code> binary directly, using the commit hash.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now, let&#8217;s commit this change:</p>
+</div>
+<div class="listingblock execute">
 <div class="content">
-<pre>Again, you'll be asked to copy the URL to a browser, login and then copy the result to the terminal again (if you're not asked to login, but directly see the code, that's because your Keycloak login session is still active. )
-
-*If you'd run this from your workstation (as a regular developer would do), the browser window would open directly* - and if your session was still valid, you would just see a success message.
-
-
-IMPORTANT: Don't worry if "nothing happens" when you paste the code to your terminal session - gitsign doesn't echo the code. Just hit *return* after pasting. If it doesn't work, the commit won't happen and you can try again.
-
-[source,console]</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git commit -m "added an empty file to test commit signing"</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>podman-terminal:/workspace/l3-enablement-helpers (main) [+]$ git commit -m "added an empty file to test commit signing"
+<p>Again, you&#8217;ll be asked to copy the URL to a browser, login and then copy the result to the terminal again (if you&#8217;re not asked to login, but directly see the code, that&#8217;s because your Keycloak login session is still active. )</p>
+</div>
+<div class="paragraph">
+<p><strong>If you&#8217;d run this from your workstation (as a regular developer would do), the browser window would open directly</strong> - and if your session was still valid, you would just see a success message.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Don&#8217;t worry if "nothing happens" when you paste the code to your terminal session - gitsign doesn&#8217;t echo the code. Just hit <strong>return</strong> after pasting. If it doesn&#8217;t work, the commit won&#8217;t happen and you can try again.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main) [+]$ git commit -m "added an empty file to test commit signing"
 error opening browser: exec: "xdg-open": executable file not found in $PATH
-Go to the following link in a browser:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>         https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&amp;client_id=trusted-artifact-signer&amp;code_challenge=4OvrJrKnGjzzU-ENJck2tzNLTEhdJ1JnLmP04YjR52M&amp;code_challenge_method=S256&amp;nonce=34ZBbWJBdMmpAa3RQwHuVxSZmNk&amp;redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&amp;response_type=code&amp;scope=openid+email&amp;state=34ZBbcXNytmleT7V3DxndgnbIdV
+Go to the following link in a browser:
+
+         https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&amp;client_id=trusted-artifact-signer&amp;code_challenge=4OvrJrKnGjzzU-ENJck2tzNLTEhdJ1JnLmP04YjR52M&amp;code_challenge_method=S256&amp;nonce=34ZBbWJBdMmpAa3RQwHuVxSZmNk&amp;redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&amp;response_type=code&amp;scope=openid+email&amp;state=34ZBbcXNytmleT7V3DxndgnbIdV
 Enter verification code:
 tlog entry created with index: 1
 [main d22de69] added an empty file to test commit signing
  1 file changed, 0 insertions(+), 0 deletions(-)
  create mode 100644 this-is-an-empty-file.txt
-podman-terminal:/workspace/l3-enablement-helpers (main)$</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>To verify your commit signature, you'd use `gitsign verify` - however, the traditional git signature verification means also work (`git log --show-signature`, `git verify-commit`), but they don't verify the inclusion of the OIDC Identity and OIDC Issuer for that identity (called "certificate claims"), therefore are less secure:
-
-[source,console]</pre>
+podman-terminal:/workspace/l3-enablement-helpers (main)$</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>podman-terminal:/workspace/l3-enablement-helpers (main)$ git log --show-signature -1
-commit d22de699250b5112928298d844a93eab34452ef1 (HEAD &#8594; main)
+<p>To verify your commit signature, you&#8217;d use <code>gitsign verify</code> - however, the traditional git signature verification means also work (<code>git log --show-signature</code>, <code>git verify-commit</code>), but they don&#8217;t verify the inclusion of the OIDC Identity and OIDC Issuer for that identity (called "certificate claims"), therefore are less secure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main)$ git log --show-signature -1
+commit d22de699250b5112928298d844a93eab34452ef1 (HEAD -&gt; main)
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
-gitsign: Good signature from [<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a>](<a href="https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer" class="bare">https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer</a>)
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
 Validated Git signature: true
 Validated Rekor entry: true
 Validated Certificate claims: false
-WARNING: git verify-commit does not verify cert claims. Prefer using <code>gitsign verify</code> instead.
-Author: Wile E. Coyote &lt;<a href="mailto:boom@acme.com">boom@acme.com</a>&gt;
-Date:   Sat Oct 25 16:54:44 2025 +0000</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>added an empty file to test commit signing</pre>
+WARNING: git verify-commit does not verify cert claims. Prefer using `gitsign verify` instead.
+Author: Wile E. Coyote &lt;boom@acme.com&gt;
+Date:   Sat Oct 25 16:54:44 2025 +0000
+
+    added an empty file to test commit signing</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>podman-terminal:/workspace/l3-enablement-helpers (main)$ git verify-commit HEAD
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main)$ git verify-commit HEAD
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
-gitsign: Good signature from [<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a>](<a href="https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer" class="bare">https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer</a>)
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
 Validated Git signature: true
 Validated Rekor entry: true
 Validated Certificate claims: false
-WARNING: git verify-commit does not verify cert claims. Prefer using <code>gitsign verify</code> instead.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>So, let's do it securely
-
-[source,bash,role=execute,subs=attributes+]</pre>
+WARNING: git verify-commit does not verify cert claims. Prefer using `gitsign verify` instead.</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>gitsign verify --certificate-identity=<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a> \# &lt;1&gt;
+<p>So, let&#8217;s do it securely</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitsign verify --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
                --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
-               HEAD</p>
+               HEAD</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>&lt;1&gt; If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
-
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>podman-terminal:/workspace/l3-enablement-helpers (main)$ gitsign verify --certificate-identity=<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a> --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main)$ gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
-gitsign: Good signature from [<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a>](<a href="https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer" class="bare">https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer</a>)
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
 Validated Git signature: true
 Validated Rekor entry: true
 Validated Certificate claims: true
-podman-terminal:/workspace/l3-enablement-helpers (main)$</p>
+podman-terminal:/workspace/l3-enablement-helpers (main)$</code></pre>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>NOTE: With `gitsign verify`, you can also use the `--certificate-identity-regexp` and `--certificate-oidc-issuer-regexp` for use with regular expressions, but we'll skip this step here.
-
-=== Verifying signatures and attestations
-
-Using https://conforma.dev/[Conforma^,window="conforma"] (TPFKAEC - The Project Formerly Known As Enterprise Contract 😆), we can not only validate the image signature, but also apply policies to the image and its associated attestations (metadata about the image, its provenance, etc.)
-
-Here, we'll use a simple example without external policies - the `ec` client has a minimal set of built-in policies that check the image signature, if any attached attestations have been signed and are syntactically correct.
-
-Since we don't know if our ephemeral image is still there, let's quickly create a new one in our https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"].
-
-For convenience, we'll include the commands for setting the environment to our TAS deployment in `student-tas` and the `cosign initialize` so we're all set for the "real" exercise:
-
-[source,bash,role=execute,subs=attributes+]</pre>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+With <code>gitsign verify</code>, you can also use the <code>--certificate-identity-regexp</code> and <code>--certificate-oidc-issuer-regexp</code> for use with regular expressions, but we&#8217;ll skip this step here.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_verifying_signatures_and_attestations"><a class="anchor" href="#_verifying_signatures_and_attestations"></a>Verifying signatures and attestations</h3>
+<div class="paragraph">
+<p>Using <a href="https://conforma.dev/" target="conforma">Conforma</a> (TPFKAEC - The Project Formerly Known As Enterprise Contract 😆), we can not only validate the image signature, but also apply policies to the image and its associated attestations (metadata about the image, its provenance, etc.)</p>
 </div>
 <div class="paragraph">
-<p>IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+<p>Here, we&#8217;ll use a simple example without external policies - the <code>ec</code> client has a minimal set of built-in policies that check the image signature, if any attached attestations have been signed and are syntactically correct.</p>
+</div>
+<div class="paragraph">
+<p>Since we don&#8217;t know if our ephemeral image is still there, let&#8217;s quickly create a new one in our <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">Podman Terminal</a>.</p>
+</div>
+<div class="paragraph">
+<p>For convenience, we&#8217;ll include the commands for setting the environment to our TAS deployment in <code>student-tas</code> and the <code>cosign initialize</code> so we&#8217;re all set for the "real" exercise:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
 cd /workspace
 source ~/setup-tas-environment.sh student-tas
 cosign initialize
@@ -1647,17 +1664,15 @@ UUID=$(uuidgen | cut -d'-' -f1)
 IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
-cosign sign -y $IMAGE_NAME</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Once you have successfully signed the image, let's create a simple "Predicate File" that doesn't contain much information about the build process but is at least syntactically correct (according to the https://slsa.dev/spec/v1.0/provenance[SLSA predicate specification^,window="slsa"])
-
-[source,bash,role=execute,subs=attributes+]</pre>
+cosign sign -y $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>cat &gt; predicate.json &lt;&lt; 'EOF'
+<p>Once you have successfully signed the image, let&#8217;s create a simple "Predicate File" that doesn&#8217;t contain much information about the build process but is at least syntactically correct (according to the <a href="https://slsa.dev/spec/v1.0/provenance" target="slsa">SLSA predicate specification</a>)</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; predicate.json &lt;&lt; 'EOF'
 {
   "builder": {
     "id": "https://localhost/dummy-id"
@@ -1675,64 +1690,51 @@ cosign sign -y $IMAGE_NAME</p>
   },
   "materials": []
 }
-EOF</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Now that we have a predicate file, we can attest that (sign and attach it to the image)
-
-[source,bash,role=execute,subs=attributes+]</pre>
+EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
-cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME</p>
+<p>Now that we have a predicate file, we can attest that (sign and attach it to the image)</p>
 </div>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
-<pre>Again, we will have to verify our identity (by logging into Keycloak and copying the success code - or, if run from a local workstation, just by logging into Keycloak).
-
-
-
-With `cosign tree`, this time we'll not only see the image signature but also the attestation:
-
-[source,bash,role=execute,subs=attributes+]</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
-cosign tree $IMAGE_NAME</p>
+<p>Again, we will have to verify our identity (by logging into Keycloak and copying the success code - or, if run from a local workstation, just by logging into Keycloak).</p>
+</div>
+<div class="paragraph">
+<p>With <code>cosign tree</code>, this time we&#8217;ll not only see the image signature but also the attestation:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign tree $IMAGE_NAME</code></pre>
+</div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>podman-terminal:/workspace$ cosign tree $IMAGE_NAME
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign tree $IMAGE_NAME
 📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:1h
 └── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.att
    └── 🍒 sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
 └── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.sig
-   └── 🍒 sha256:f9266c99008d19ca8f82ef47ce654f9b1eb1ed840dfc2bf2286a89100a294abf</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>We will now verify the attestation as well as the image using `ec` - enterprise contract, which has an embedded `cosign` version for the image signature verification part:
-
-[source,bash,role=execute,subs=attributes+]</pre>
+   └── 🍒 sha256:f9266c99008d19ca8f82ef47ce654f9b1eb1ed840dfc2bf2286a89100a294abf</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>ec version</p>
+<p>We will now verify the attestation as well as the image using <code>ec</code> - enterprise contract, which has an embedded <code>cosign</code> version for the image signature verification part:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec version</code></pre>
+</div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>podman-terminal:/workspace$ ec version
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ ec version
 Version            v0.6.223+redhat
 Source ID          acaa315ecfaffa3a8cae5818d666067c5b74c595
 Change date        2025-08-12 15:03:16 +0000 UTC (10 weeks ago)
@@ -1743,83 +1745,93 @@ Cosign             v2.4.1
 Sigstore           v1.8.9
 Rekor              v1.3.6
 Tekton Pipeline    v0.66.0
-Kubernetes Client  v0.31.0</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>For a short report, showing the rules applied and successes or violations:
-
-
-[source,bash,role=execute,subs=attributes+]</pre>
+Kubernetes Client  v0.31.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+<p>For a short report, showing the rules applied and successes or violations:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
 ec validate image --image $IMAGE_NAME \
-                  --certificate-identity=<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a> \# &lt;1&gt;
+                  --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
                   --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
-                  --show-successes</p>
+                  --show-successes</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>&lt;1&gt; If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
-
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>podman-terminal:/workspace$ ec validate image --image $IMAGE_NAME --certificate-identity=<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a> --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
 Success: true
 Result: SUCCESS
 Violations: 0, Warnings: 0, Successes: 3
 Component: Unnamed
-ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9</p>
-</div>
-<div class="paragraph">
-<p>Results:
+ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+
+Results:
 ✓ [Success] builtin.attestation.signature_check
-  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9</p>
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+
+✓ [Success] builtin.attestation.syntax_check
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+
+✓ [Success] builtin.image.signature_check
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>✓ [Success] builtin.attestation.syntax_check
-  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9</p>
+<p>So, we can see that the built-in minimal policies have been applied and succeeded:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>builtin.attestation.signature_check</code> (Checking the attestation signature, not the attestation itself)</p>
+</li>
+<li>
+<p><code>builtin.attestation.syntax_check</code> (Checking the attestation syntax)</p>
+</li>
+<li>
+<p><code>builtin.image.signature_check</code> (Checking the image signature)</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>✓ [Success] builtin.image.signature_check
-  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9</p>
+<p>For a more verbose report, use</p>
 </div>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
-<pre>So, we can see that the built-in minimal policies have been applied and succeeded:
-
-* `builtin.attestation.signature_check` (Checking the attestation signature, not the attestation itself)
-* `builtin.attestation.syntax_check` (Checking the attestation syntax)
-* `builtin.image.signature_check` (Checking the image signature)
-
-For a more verbose report, use
-
-[source,bash,role=execute,subs=attributes+]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>ec validate image --image $IMAGE_NAME \
-                  --certificate-identity=<a href="mailto:user1@demo.redhat.com">user1@demo.redhat.com</a> \# &lt;1&gt;
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image $IMAGE_NAME \
+                  --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
                   --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
-                  --output json --show-successes | jq</p>
+                  --output json --show-successes | jq</code></pre>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>&lt;1&gt; If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
-
-*Click &amp; Expand to see a full JSON report*
-
-[%collapsible]
-====
-[source,console]</pre>
 </div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>{
+<p><strong>Click &amp; Expand to see a full JSON report</strong></p>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">{
   "success": true,
   "components": [
     {
@@ -1898,34 +1910,63 @@ For a more verbose report, use
   "policy": {},
   "ec-version": "v0.6.223+redhat",
   "effective-time": "2025-10-25T18:47:21.407618703Z"
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>====
-
-== Congratulations!
-
-You've successfully installed and configured Trusted Artifact Signer (TAS) on OpenShift! In this module, you accomplished:
-
-* **Installed TAS using the Operator** which deployed all the core infrastructure components (Fulcio, Rekor, CTLog, Trillian, and TUF)
-* **Configured the signing and verification infrastructure** running on your OpenShift cluster with all endpoints accessible
-* **Successfully signed container images** using keyless signing with OIDC authentication through Cosign
-* **Verified signatures and attestations** using both online verification against the TAS transparency database and Enterprise Contract (EC) policy validation
-* **Demonstrated the full signing workflow** from image creation through signing to verification with policy enforcement
-
-This knowledge is valuable for customer engagements because it demonstrates:
-
-* **Enterprise signing infrastructure**: You can show customers how to deploy a self-managed, enterprise-grade signing and verification infrastructure on OpenShift that gives them full control over their trust roots
-* **Keyless signing workflows**: The OIDC-based keyless signing approach eliminates key management complexity while providing strong cryptographic guarantees
-* **Flexible deployment model**: TAS infrastructure runs on OpenShift, but can be used from anywhere - workstations, CI/CD pipelines, other clusters, or cloud services - demonstrating true infrastructure-as-a-service capability
-* **Policy enforcement capabilities**: Enterprise Contract integration shows how customers can enforce security and compliance policies during verification, not just validate signatures
-* **Production-ready patterns**: The verification workflows demonstrate both online (against transparency logs) and offline verification scenarios that customers will need in various deployment contexts
-* **Real-world application**: Customers can immediately apply these installation and verification patterns to build secure software supply chains with artifact signing integrated into their development and deployment pipelines</pre>
+}</code></pre>
 </div>
 </div>
 </div>
+</details>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_congratulations"><a class="anchor" href="#_congratulations"></a>Congratulations!</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You&#8217;ve successfully installed and configured Trusted Artifact Signer (TAS) on OpenShift! In this module, you accomplished:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Installed TAS using the Operator</strong> which deployed all the core infrastructure components (Fulcio, Rekor, CTLog, Trillian, and TUF)</p>
+</li>
+<li>
+<p><strong>Configured the signing and verification infrastructure</strong> running on your OpenShift cluster with all endpoints accessible</p>
+</li>
+<li>
+<p><strong>Successfully signed container images</strong> using keyless signing with OIDC authentication through Cosign</p>
+</li>
+<li>
+<p><strong>Verified signatures and attestations</strong> using both online verification against the TAS transparency database and Enterprise Contract (EC) policy validation</p>
+</li>
+<li>
+<p><strong>Demonstrated the full signing workflow</strong> from image creation through signing to verification with policy enforcement</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This knowledge is valuable for customer engagements because it demonstrates:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Enterprise signing infrastructure</strong>: You can show customers how to deploy a self-managed, enterprise-grade signing and verification infrastructure on OpenShift that gives them full control over their trust roots</p>
+</li>
+<li>
+<p><strong>Keyless signing workflows</strong>: The OIDC-based keyless signing approach eliminates key management complexity while providing strong cryptographic guarantees</p>
+</li>
+<li>
+<p><strong>Flexible deployment model</strong>: TAS infrastructure runs on OpenShift, but can be used from anywhere - workstations, CI/CD pipelines, other clusters, or cloud services - demonstrating true infrastructure-as-a-service capability</p>
+</li>
+<li>
+<p><strong>Policy enforcement capabilities</strong>: Enterprise Contract integration shows how customers can enforce security and compliance policies during verification, not just validate signatures</p>
+</li>
+<li>
+<p><strong>Production-ready patterns</strong>: The verification workflows demonstrate both online (against transparency logs) and offline verification scenarios that customers will need in various deployment contexts</p>
+</li>
+<li>
+<p><strong>Real-world application</strong>: Customers can immediately apply these installation and verification patterns to build secure software supply chains with artifact signing integrated into their development and deployment pipelines</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
