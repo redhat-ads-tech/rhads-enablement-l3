@@ -251,6 +251,7 @@ Using the credentials from the output of the `get-keycloak-info.sh` script, (1) 
 image:m3-tpa-openshift/keycloak-roles.png[]
 
 Create the roles:
+
 * `tpa-user`
 * `tpa-manager`
 * `tpa-admin`
