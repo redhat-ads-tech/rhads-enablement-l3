@@ -37,7 +37,7 @@
 *** xref:security-practices/ex1-signing-images.adoc[Image Signing & Verification]
 *** xref:security-practices/ex2-git-signing.adoc[Commit Signing & Verification]
 *** xref:security-practices/ex3-provenance.adoc[Provenance & Attestations]
-*** xref:security-practices/ex4-sboms.adoc[SBOM Creation & Use]
+*** xref:security-practices/ex4-sboms.adoc[SBOM Creation]
 * xref:tssc-tpa.adoc[Module 8: Trusted Software Supply Chain with TPA]
 * xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
 * xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle]

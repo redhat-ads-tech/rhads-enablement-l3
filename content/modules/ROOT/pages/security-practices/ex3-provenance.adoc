@@ -276,7 +276,7 @@ This is the predicate only (of type `slsaprovenance`, so we don't have to provid
 }
 ----
 
-Attesting this follows the exact same approach, but we'll use the `cosign` built-in predicate type. 
+Attesting this follows the exact same approach, but we'll use the `cosign` built-in predicate type (note the `--type slsaprovenance`)
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -303,7 +303,7 @@ cosign tree $IMAGE
    └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5
 ----
 
-Using `cosign download attestation` will give us both (all), but we can filter by type:
+Using `cosign download attestation` will give us both (all), but we can filter by type using `--predicate-type`:
 
 [source,bash,role=execute,subs=attributes+]
 ----

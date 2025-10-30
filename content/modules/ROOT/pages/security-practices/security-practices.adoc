@@ -496,12 +496,6 @@ An SBOM lists:
 * License type (MIT, Apache, GPL, etc.)
 * License obligations and restrictions
 
-*Vulnerability Data*: Known security issues
-
-* CVE identifiers for known vulnerabilities
-* Severity ratings
-* Patch availability
-
 *Metadata*: Additional descriptive information
 
 * Component suppliers
@@ -599,7 +593,7 @@ SBOMs complement SLSA provenance:
 
 * Which components are included
 * What versions are present
-* What vulnerabilities exist
+* What vulnerabilities exist (if _used_ in e.g. Trusted Profile Analyzer - the SBOM itself doesn't contain vulnerability information)
 
 Together, they provide comprehensive visibility:
 
@@ -647,7 +641,7 @@ Organizations use SBOMs for several security workflows:
 
 *Incident Response*:
 
-. When a breach occurs, use SBOMs to understand scope
+. When a vulnerability/exploit/breach occurs, use SBOMs to understand scope
 . Identify all systems using compromised components
 . Accelerate containment and remediation
 
@@ -695,8 +689,6 @@ During or after the build, an SBOM is generated:
 * Identify licenses for each component
 * Create structured SBOM (SPDX or CycloneDX format)
 
-The SBOM is structured as an in-toto attestation with predicate type indicating SBOM format (e.g., `https://spdx.dev/Document` or CycloneDX schema).
-
 ==== *Step 4: Sign Attestations (SLSA Level 2+ Requirement)*
 
 The build service signs both attestations:
@@ -732,7 +724,7 @@ Optionally, signatures and attestations are recorded in transparency logs:
 
 === Consumer Verification Workflow
 
-Now let's look at how a consumer (someone deploying or using the software - internally or externally) verifies all of this:
+How would a consumer (someone deploying or using the software - internally or externally) verify all of this:
 
 ==== *Step 1: Download Artifact and Attestations*
 
@@ -777,7 +769,7 @@ Consumer checks the provenance attestation against their policies:
 * Are all dependencies from trusted sources?
 * Do dependency versions match expectations?
 
-Tools like Enterprise Contract / Conforma (part of Trusted Artifact Signer) can automate policy enforcement.
+IMPORTANT: Tools like Enterprise Contract / Conforma (part of Trusted Artifact Signer) can automate the validation of attestation and artifact signatures and subsequent policy enforcement (applying policies to attestation data). This drastically minimises the complexity of these verification steps.
 
 ==== *Step 4: Analyze SBOM*
 
@@ -799,7 +791,7 @@ Consumer analyzes the SBOM:
 * Ensure all components come from approved sources
 * Check that no prohibited or outdated components are present
 
-Tools like Red Hat Trusted Profile Analyzer (Trustify) can automate SBOM analysis.
+Tools like Red Hat Trusted Profile Analyzer (Trustify) can automate SBOM analysis. 
 
 ==== *Step 5: Make Deployment Decision*
 
@@ -829,10 +821,10 @@ In your hands-on exercises, you'll work with tools that implement these concepts
 
 *Enterprise Contract / Conforma*:
 
-* Enforces policies on provenance attestations
-* Verifies SLSA levels are met
+* Enforces policies on attestations (provenance or other)
+* Verifies SLSA levels are met (for provenance attestations)
 * Checks build sources, parameters, and processes
-* Provides automated policy-as-code enforcement
+* Provides automated policy-as-code enforcement, regardless of attestation type
 
 *Syft and roxctl*:
 
