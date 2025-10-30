@@ -151,7 +151,8 @@
     "buildah",
     "devfile",
     "keylessly",
-    "hyperscaler"
+    "hyperscaler",
+    "productisation"
   ],
   "ignoreWords": [
     "sysout",
