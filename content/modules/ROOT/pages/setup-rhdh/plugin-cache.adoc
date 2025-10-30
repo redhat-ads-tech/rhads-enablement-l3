@@ -38,10 +38,7 @@ The 5GiB storage allocation provides sufficient space for caching multiple plugi
 
 Next, update your Backstage Custom Resource to mount a volume. This configuration uses the {product_rhdh_name} Operator's patch functionality to modify the underlying Deployment.
 
-. Navigate to *Operators > Installed Operators* in the OpenShift Web Console.
-. Click on the *{product_rhdh_name}* operator.
-. Select the *{product_rhdh_name}* tab, then click on your `{m2_rhdh_instance}` instance.
-. Click the *YAML* tab to edit the resource.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage Custom Resource in the OpenShift Web Console^] and click the *YAML* tab.
 . Add the following `deployment.patch` configuration to your Backstage CR's `spec` field:
 +
 [source,yaml,role=execute,subs=attributes+]

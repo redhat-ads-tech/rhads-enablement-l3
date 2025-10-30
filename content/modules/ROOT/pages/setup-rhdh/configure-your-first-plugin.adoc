@@ -289,7 +289,7 @@ As a reminder, the Software Catalog in Backstage (and thus {product_rhdh_name}) 
 
 Update your Backstage CR to reference the Keycloak secrets:
 
-. Navigate to your Backstage CR and click the *YAML* tab.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage Custom Resource in the OpenShift Web Console^] and click the *YAML* tab.
 . Update the `spec.application` section to inject the keys and values from the secret into the pod's environment using the `extraEnvs.secrets` array:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -336,6 +336,12 @@ image::setup-rhdh/rhdh-oidc-signin.png[]
 . Click *Sign In* and use the following credentials in the popup that appears:
   * Username: `{rhdh_user}`
   * Password: `{rhdh_user_password}`
++
+[WARNING]
+====
+Since OpenShift and {product_rhdh_name} share the same authentication realm, you may get automatically logged into {product_rhdh_name} as the `admin` user. If this happens, Click on the username (`admin TSSC`) at the upper right, and click *Sign Out*, and then login as the `{rhdh_user}` user.
+====
+
 . Once logged in, go to the *Catalog* set the *Kind* dropdown to *User* or *Group*. Imported User or Group entities will be displayed.
 + 
 image::setup-rhdh/users-in-catalog.png[]

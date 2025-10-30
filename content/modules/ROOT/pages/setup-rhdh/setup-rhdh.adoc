@@ -93,6 +93,7 @@ As mentioned earlier, {product_rhdh_name} is based on the Backstage CNCF project
 In this section you'll create a basic Backstage configuration and store it as a ConfigMap on OpenShift in the `{m2_rhdh_project}` namespace.
 
 . Select *Workloads > ConfigMaps* using the side navigation.
+. Ensure that the *{m2_rhdh_project}* project is selected in the project selector.
 . Click the *Create ConfigMap* button on the *ConfigMaps* screen.
 +
 image::setup-rhdh/create-rhdh-configmap.png[]
