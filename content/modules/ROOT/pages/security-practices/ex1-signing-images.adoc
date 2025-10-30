@@ -322,7 +322,7 @@ Pushing signature to: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l
 
 [NOTE]
 ====
-If you go to the `l3-rhads-demoimage` repository on {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay,window="quay"], you can see that Quay recognises the `cosign` signature:
+If you go to the `l3-rhads-demoimage` repository on {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay,window="quay"], you can see that Quay recognises the `cosign` signature (login with `{quay_admin_user} / {quay_admin_password}`)
 
 image::security-practices/quay-signed-image.png[]
 
@@ -360,13 +360,13 @@ include::./ex1-signing-gitlab.adoc[]
 When using the CI's built-in identity token, you should NOT set `SIGSTORE_OIDC_ISSUER` - that would tell Cosign to do its own OIDC flow instead of using the CI token.
 The issuer is already embedded in the CI's OIDC token:
 
-* GitHub Actions: https://token.actions.githubusercontent.com
-* GitLab CI: https://gitlab.com (or your GitLab instance URL)
+* GitHub Actions Issuer: \https://token.actions.githubusercontent.com
+* GitLab CI Issuer: \https://gitlab.com (or your GitLab instance URL)
 
 The CI platform automatically embeds its issuer URL in the token claims, and Fulcio validates this against its trusted issuer list.
 So the workflow is:
 
-. CI creates OIDC token with issuer claim (e.g., https://token.actions.githubusercontent.com)
+. CI creates OIDC token with issuer claim (e.g., \https://token.actions.githubusercontent.com)
 . Cosign sends this token to your Fulcio
 . Fulcio validates the token against the issuer it trusts
 . Fulcio issues a code signing certificate
@@ -398,6 +398,7 @@ In this case, we can see that we have multiple signatures for this image (since 
 To verify a signature online (meaning, `cosign` has access to the Rekor database), we will use `cosign verify`:
 
 With `cosign verify` we can verify that
+
 * we have a valid signature
 * that it was signed by the OIDC identity in question
 * that the identity came from the OIDC system in question (here, we don't provide an OIDC system, cosign reads that from the environment if the command line parameter isn't given)
@@ -408,11 +409,11 @@ With `cosign verify` we can verify that
 ----
 cosign verify --certificate-identity=user1@demo.redhat.com $IMAGE | jq
 ---- 
-(if you signed interactively with the admin user, you will get an error - use `admin@demo.redhat.com` instead)
+(if you signed interactively with the `admin` user, you will get an error - use `admin@demo.redhat.com` instead)
 
 image::security-practices/wait-a-minute.png[width=200]
 
-But we signed with our pipeline user, didn't we? *YES*, but signatures are accumulative - we haven't verified that this was the _only_ signature - we have verified that it has _at least one_ signature from `user1@demo.redhat.com`. If there are more than one, you can see the details in the result.
+But we just signed with our pipeline user, didn't we? *YES*, but signatures are accumulative - we haven't verified that this was the _only_ signature - we have verified that it has _at least one_ signature from `user1@demo.redhat.com`. If there are more than one, you can see the details in the `cosign verify` result.
 
 But we _have_ verified that this image has been signed by `user1@demo.redhat.com`
 
@@ -423,7 +424,7 @@ So, we can do the same for our pipeline user:
 cosign verify --certificate-identity=pipeline-auth@demo.redhat.com $IMAGE | jq
 ----
 
-If we want to explicitly verify that the identity `user1@demo.redhat.com` was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
+If we want to explicitly verify that the identity `user1@demo.redhat.com` was verified against our OIDC server and realm `\https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -560,7 +561,7 @@ For offline keyless verification, your main security checks are:
 * Certificate issuer (OIDC provider) is trusted
 * Signature cryptographically validates
 
-Without Rekor, you lose the independent timestamp proof and transparency, but the short certificate lifetime already prevents the backdating attack vector. Also, the signature contains a signed timestamp that will be checked against the timestamp authority included in the Trust Root.
+Without Rekor, you lose the independent timestamp proof and transparency, but the short certificate lifetime already prevents the backdating attack vector. Also, the signature contains a signed timestamp that will be verified against the timestamp authority's public key included in the Trust Root.
 
 
 
