@@ -6,7 +6,7 @@ This guide covers the installation and configuration of Trusted Application Scan
 
 In essence, it deploys the full infrastructure required for Signing and Verification, both keyful and keyless on Openshift. The important point here is - the "Signing and Verification Infrastructure" (in other words: TAS) is running on OpenShift. 
 
-BUT: You can _*use*_ it anywhere you have access to the provided endpoints:
+You can _*use*_ TAS anywhere you have access to the provided endpoints:
 
 * Developers signing their code commits on their workstations
 * CI/CD tasks running somewhere else (e.g. a Jenkins server on a VM)
@@ -218,13 +218,13 @@ image:m4-tas-openshift/tas-operator-securesign-created.png[]
 image:m4-tas-openshift/tas-operator-securesign-created-ready.png[]
 
 
-NOTE: As you might have guessed, instead of installing via the Console, you also could've copied the `Securesign` from the collapsible section above, created a file via `vim` or `nano` and simply applied it `apply -f mySecureSign.yaml`.
+NOTE: As you might have guessed, instead of installing via the Console, you also could've copied the `Securesign` from the collapsible section above, created a file via `vim` or `nano` and simply applied it via `oc apply -f mySecureSign.yaml`.
 
 == Verification
 
 [NOTE]
 ====
-To verify that signing and verification capabilities are working as expected, especially with container images, we need to run `podman` in a container, which is a bit cumbersome with the standard OpenShift Terminal, which is managed by the DevWorkSpaces Operator.
+To verify that signing and verification capabilities are working as expected, especially with container images, we need to run `podman` in a container. This is a bit cumbersome with the standard OpenShift Terminal, which is managed by the DevWorkSpaces Operator.
 
 Therefore, we have created a terminal ("Podman Terminal") that can do that and also has the required tools preinstalled. 
 
@@ -382,7 +382,7 @@ Root status:
 }
 ----
 
-For testing, we'll create an empty container image and push it to the `ttl.sh` ephemeral container registry.
+For testing, we'll create an empty container image and push it to the https://ttl.sh/[ttl.sh^] ephemeral container registry.
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -442,11 +442,13 @@ Enter verification code:
 
 Open the URL and login with either `{rhdh_user}` and `{rhdh_user_password}` or as `{openshift_admin_user}` with `{openshift_admin_password}` and copy the resulting code:
 
+NOTE: You might automatically be signed in and presented with a token immediately.
+
 IMPORTANT: Make sure to copy the whole code, which is longer than the text box.
 
 image:m4-tas-openshift/cosign-successcode.png[]
 
-After pasting it in, cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (`tlog` = "Transparency Log" = Rekor):
+Paste the code into your Podman Terminal. Cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (`tlog` = "Transparency Log" = Rekor):
 
 [source,console]
 ----
@@ -465,7 +467,7 @@ Pushing signature to: ttl.sh/rhtas/test-image-4be1a048
 
 [NOTE]
 ====
-To test our deployment, signing an image via an image tag (`test-image:1h`) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their digest
+To test our deployment, signing an image via an image tag (`test-image:1h`) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their unique digest.
 ====
 
 
@@ -496,10 +498,10 @@ With `cosign verify` we can verify that
 [source,bash,role=execute,subs=attributes+]
 ----
 IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
-cosign verify --certificate-identity=user1@demo.redhat.com \# <1>
+cosign verify --certificate-identity=user1@demo.redhat.com
        $IMAGE_NAME | jq
 ---- 
-<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead by pressing the kbd:[⬆️] key and editing the username in the command. You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
+WARNING:4 If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead by pressing the kbd:[⬆️] key and editing the username in the command. You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
 
 If we want to explicitly verify that the identity `user1@demo.redhat.com` (or `admin@demo.redhat.com` if you logged in as `admin` while generating the signature) was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
 
@@ -547,7 +549,7 @@ In these cases, it's a good idea to *delete the `~/.sigstore` directory and its 
 
 To test `git` commit signing, we need a git repo first - we can use the `l3-enablement-helpers` we have already used - committing is fine, we're not pushing 😇 
 
-So, let's open our  https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"] again and clone it:
+So, let's open our  https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"] again and clone it, then add a new file:
 
 [source,bash,role=execute,subs=attributes+]
 ----

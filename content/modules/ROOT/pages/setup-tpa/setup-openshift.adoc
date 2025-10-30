@@ -24,7 +24,7 @@ For ease of use, we have prepared some k8s artifacts and helper scripts that you
 
 Then, clone the following repository:
 
-NOTE: It's a linux terminal, so use kbd:[CTRL+SHIFT+V] for pasting 🐧
+NOTE: It's a linux terminal, so use kbd:[CTRL+SHIFT+V] (or kbd:[CMD+V] on macOS) for pasting 🐧
 
 [source,bash,role=execute,subs=attributes+]
 ----
