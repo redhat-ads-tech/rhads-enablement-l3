@@ -162,23 +162,3 @@ Project URL: https://gitlab-gitlab.apps.cluster-qkw52.dynamic.redhatworkshops.io
 ----
 
 
-
-
-
-
-
-
-
-
-
-
-
-Generating a simple provenance file and attesting it 
-
-Verifying the attestation
-
-Generating an SBOM (syft)
-
-Generating an SBOM (roxctl)
-
-Comparing the two, knowing the difference"
