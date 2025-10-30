@@ -497,11 +497,19 @@ With `cosign verify` we can verify that
 
 [source,bash,role=execute,subs=attributes+]
 ----
+<<<<<<< HEAD
 IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h" \
 cosign verify --certificate-identity=user1@demo.redhat.com
        $IMAGE_NAME | jq
 ---- 
 WARNING: If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead by pressing the kbd:[⬆️] key and editing the username in the command. You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
+=======
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+cosign verify --certificate-identity=user1@demo.redhat.com
+       $IMAGE_NAME | jq
+---- 
+WARNING:4 If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead by pressing the kbd:[⬆️] key and editing the username in the command. You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
+>>>>>>> origin
 
 If we want to explicitly verify that the identity `user1@demo.redhat.com` (or `admin@demo.redhat.com` if you logged in as `admin` while generating the signature) was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
 
