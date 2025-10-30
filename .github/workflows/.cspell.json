@@ -149,7 +149,10 @@
     "GUAC",
     "workflowdata",
     "buildah",
-    "devfile"
+    "devfile",
+    "keylessly",
+    "hyperscaler",
+    "productisation"
   ],
   "ignoreWords": [
     "sysout",
@@ -194,7 +197,22 @@
     "redhatworkshops",
     "TPFKAEC",
     "operatorhub",
-    "productisation"
+    "skopeo",
+    "demoimage",
+    "slsaprovenance",
+    "spdxjson",
+    "cyclonedx",
+    "openvex",
+    "DSSE",
+    "syft",
+    "Anchore",
+    "Syft",
+    "dockerconfig",
+    "Rego",
+    "Chainguard",
+    "smallrye",
+    "RHACS",
+    "SSDF"
   ],
   "ignorePaths": [
     "node_modules/**",

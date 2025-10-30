@@ -1,0 +1,34 @@
+
+[source,console]
+----
+
+variables:
+  COSIGN_FULCIO_URL: "https://fulcio.yourdomain.com"
+  COSIGN_REKOR_URL: "https://rekor.yourdomain.com"
+  COSIGN_MIRROR: "https://tuf.yourdomain.com"
+  COSIGN_ROOT: "https://tuf.yourdomain.com/root.json"
+  COSIGN_YES: "true"
+
+sign-image:
+  stage: sign
+  image: gcr.io/projectsigstore/cosign:latest #better use a Red Hat image
+  id_tokens:
+    SIGSTORE_ID_TOKEN:
+      aud: trusted-artifact-signer
+  before_script:
+    - cosign initialize
+  script:
+    - cosign sign $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+----
+
+When you define:
+
+[source,console]
+----
+id_tokens:
+    SIGSTORE_ID_TOKEN:
+      aud: trusted-artifact-signer
+----
+
+GitLab generates the token and sets it as the `SIGSTORE_ID_TOKEN` environment variable, which Cosign reads directly.

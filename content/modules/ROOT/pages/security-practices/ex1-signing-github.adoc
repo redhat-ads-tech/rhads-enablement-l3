@@ -1,0 +1,70 @@
+
+[source,console]
+----
+name: Build and Sign 
+on: [push]
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+jobs:
+  build-sign:
+    runs-on: ubuntu-latest #or use a Red Hat base image and pre-install cosign 
+    env:
+      COSIGN_FULCIO_URL: "https://fulcio.yourdomain.com"
+      COSIGN_REKOR_URL: "https://rekor.yourdomain.com"
+      COSIGN_MIRROR: "https://tuf.yourdomain.com"
+      COSIGN_ROOT: "https://tuf.yourdomain.com/root.json"
+      COSIGN_YES: "true"
+      
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+        # this installs the upstream cosign client - better build an image or pull 
+        # dynamically from the TAS cli-server endpoints 
+
+      - name: Initialize Cosign
+        run: cosign initialize
+      
+      - name: Login to registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build and push image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+      
+      - name: Sign image
+        run: cosign sign ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+---- 
+
+When you set the `id-token: write` permission, GitHub automatically provides these environment variables:
+
+* `ACTIONS_ID_TOKEN_REQUEST_URL`
+* `ACTIONS_ID_TOKEN_REQUEST_TOKEN`
+
+Cosign automatically detects these running in GitHub Actions and uses these variables to fetch the OIDC token from GitHub's OIDC provider. You don't need to do anything - it's completely transparent.
+
+If needed, it can also be set explicitly using these two variables
+
+
+[source,console]
+----
+- name: Get OIDC token (optional - for debugging)
+  run: |
+    IDTOKEN=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+      "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=trusted-artifact-signer" | jq -r '.value')
+    echo "SIGSTORE_ID_TOKEN=$IDTOKEN" >> $GITHUB_ENV
+
+- name: Sign with explicit token
+  run: cosign sign --yes ghcr.io/${{ github.repository }}:${{ github.sha }}
+----
