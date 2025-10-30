@@ -224,7 +224,7 @@ metadata:
     argocd.argoproj.io/managed-by: tssc-gitops
 ----
 . Click *Create*.
-. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD^], then selecting the *in-cluster* item. IF needed, login as:
+. Confirm the namespace is managed by https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters[viewing the clusters screen in Argo CD^], then selecting the *in-cluster* item. If needed, login as:
   * Username: `{m2_argocd_user}`
   * Password: `{m2_argocd_pass}`
 . Your new *httpsink* namespace should be listed in the *Namespaces* field.
