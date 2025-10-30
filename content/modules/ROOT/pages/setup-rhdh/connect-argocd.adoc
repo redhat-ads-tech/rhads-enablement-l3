@@ -296,7 +296,7 @@ image::setup-rhdh/argocd-httpsink-search.png[]
 +
 [NOTE]
 ====
-It may take a minute or two for the *CD* tab to appear. Wait a few moments, and reload the page.
+It may take a minute or two for the *CD* tab to appear. Wait a few moments, and reload the page. If the *CD* tab doesn't appear after two minutes, verify the dynamic plugins configuration you updated in the prior section.
 ====
 +
 image::setup-rhdh/argocd-httpsink-cd.png[]
