@@ -76,6 +76,7 @@ Creating a new Software Template and related skeleton code from scratch is beyon
 
 The template is already loaded into your environment. Find it and view the backing source code:
 
+// cSpell:disable-next-line
 . View the Template in the {rhdh_url}/create?filters%5Bkind%5D=template&filters%5Btext%5D=jenkins&filters%5Buser%5D=all&limit=20[{product_rhdh_name} Self-Service screen^]. If needed, login as `{rhdh_user}` using the password `{rhdh_user_password}`.
 
 . Click on the _Show template entity details_ icon.

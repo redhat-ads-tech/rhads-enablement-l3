@@ -142,7 +142,7 @@ In the previous section you learned that the workflow that will launch a softwar
 
 Before deploying the workflow itself, you need to import the software template that it will use to create namespaces.
 
-. Login to {product_rhdh_name} as the *{openshift_admin_user}* user using the passowrd `{openshift_admin_password}`.
+. Login to {product_rhdh_name} as the *{openshift_admin_user}* user using the password `{openshift_admin_password}`.
 . Click the self-service icon (the *+* plus) in the top-right corner of the UI.
 . Click the *Import an existing Git repository* button.
 . Enter the following URL in the *Select URL* field and click *Analyze*:
