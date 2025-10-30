@@ -136,6 +136,8 @@ openssl rand 24 | base64 | cut -c1-32
 
 For now, the `BACKEND_SECRET` is fine.
 
+Wait for the Backstage pods to restart before continuing (navigate to *Workloads > Pods* to see their status).
+
 == Import Software Templates for Developer Self Service
 
 In the previous section you learned that the workflow that will launch a software template to create the namespace for the developer. 
