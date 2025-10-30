@@ -1334,8 +1334,8 @@ cosign tree $IMAGE_NAME</code></pre>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h" \
-cosign verify --certificate-identity=user1@demo.redhat.com
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity=user1@demo.redhat.com \
        $IMAGE_NAME | jq</code></pre>
 </div>
 </div>
