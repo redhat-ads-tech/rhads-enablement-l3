@@ -395,7 +395,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-It&#8217;s a linux terminal, so use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>V</kbd></span> for pasting 🐧
+It&#8217;s a linux terminal, so use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>V</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>V</kbd></span> on macOS) for pasting 🐧
 </td>
 </tr>
 </table>
@@ -410,7 +410,10 @@ cd l3-enablement-helpers</code></pre>
 <p>While we&#8217;re here let&#8217;s quickly create two projects to install TPA, one for the operator-based install, one for the <code>helm</code>-based install.</p>
 </div>
 <div class="paragraph">
-<p>The instructions will use that namespace, but you&#8217;re free to choose any name / namespace you want. Just make sure to change it appropriately in the instructions that follow.</p>
+<p>The instructions will use these namespaces, but you&#8217;re free to choose any name / namespace you want. Just make sure to change it appropriately in the instructions that follow.</p>
+</div>
+<div class="paragraph">
+<p>Paste this into the terminal and press <kbd>Enter</kbd></p>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -421,10 +424,10 @@ oc new-project student-tpa-operator</code></pre>
 <div class="sect2">
 <h3 id="_storage"><a class="anchor" href="#_storage"></a>Storage</h3>
 <div class="paragraph">
-<p>For (object-)storage, the recommended and supported option is to use S3, provided either by ODF (OpenShift Data Foundations) or Amazon S3.</p>
+<p>For (object-)storage, the recommended and supported option is to use S3, provided either by ODF (OpenShift Data Foundation) or Amazon S3.</p>
 </div>
 <div class="paragraph">
-<p>However, for PoC purposes and tests without S3 available, <code>filesystem</code> is also a configuration option that is recognized by the <code>helm</code> Chart and the <code>helm</code>-based Operator. This effectively triggers the helm chart to spin up a PVC.</p>
+<p>However, for proof-of-concept purposes and tests without S3 available, <code>filesystem</code> is also a configuration option that is recognized by the <code>helm</code> Chart and the <code>helm</code>-based Operator. This effectively triggers the helm chart to spin up a PVC.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -463,10 +466,10 @@ Mount: /data/storage</code></pre>
 <div class="sect3">
 <h4 id="_s3_storage_using_odf"><a class="anchor" href="#_s3_storage_using_odf"></a><strong>S3 Storage using ODF</strong></h4>
 <div class="paragraph">
-<p>On the cluster, we have installed ODF, which is part of OPP (OpenShift Platform Plus), so we expect customers to use it for production-grade S3.</p>
+<p>ODF is pre-installed in your environment. ODF is part of OPP (OpenShift Platform Plus), so we expect customers to use it for production-grade S3.</p>
 </div>
 <div class="paragraph">
-<p>With ODF installed, all you need to do is create an <code>ObjectBucketClaim</code>. We have prepared that for you in the <code>/prerequisites</code> folder, so:</p>
+<p>With ODF installed, all you need to do is create an <code>ObjectBucketClaim</code> CR. We have prepared that for you in the <code>/prerequisites</code> folder, so:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -485,6 +488,9 @@ oc project student-tpa-operator
 oc apply -f tpa_objectbucketclaim.yaml
 ./s3.sh</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The resulting output should resemble the following sample:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -536,7 +542,7 @@ As you can see above, we have created a little script (<code>s3.sh</code>) that 
 <div class="sect2">
 <h3 id="_database_postgresql"><a class="anchor" href="#_database_postgresql"></a>Database (<code>postgresql</code>)</h3>
 <div class="paragraph">
-<p>TPA requires a postgresql database for the graph database. We have prepared a <code>yaml</code> file with the required k8s artifacts, that you can simply apply.
+<p>TPA requires a postgresql database for the graph database. We have prepared a <code>yaml</code> file with the required manifests that you can simply apply.
 Please take note of the <code>secret</code> (first object in the <code>yaml</code> file) as it contains all the data that we need for the values file (both operator and helm install).</p>
 </div>
 <div class="paragraph">
@@ -590,7 +596,7 @@ bash-5.1 ~/l3-enablement-helpers/prerequisites $</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-We are using RHBOK (Red Hat build of Keycloak) here, but you can also use Amazon Cognito. Refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_trusted_profile_analyzer/2.1/html/deployment_guide/select-your-installation-platform#installing-trusted-profile-analyzer-by-using-helm-with-aws_deploy" target="_blank" rel="noopener">product documentation</a> for that setup if you&#8217;re using Cognito. However, we need to configure OIDC <code>scopes</code> and redirect URLs and we&#8217;ll show you using Keycloak.
+We are using RHBK (Red Hat Build of Keycloak) here, but you can also use Amazon Cognito. Refer to the <a href="https://docs.redhat.com/en/documentation/red_hat_trusted_profile_analyzer/2.1/html/deployment_guide/select-your-installation-platform#installing-trusted-profile-analyzer-by-using-helm-with-aws_deploy" target="_blank" rel="noopener">product documentation</a> for that setup if you&#8217;re using Cognito. However, we need to configure OIDC <code>scopes</code> and redirect URLs and we&#8217;ll show you using Keycloak.
 </td>
 </tr>
 </table>
@@ -603,7 +609,7 @@ We are using RHBOK (Red Hat build of Keycloak) here, but you can also use Amazon
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top" rowspan="2"><p class="tableblock"><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-realms.png" alt="keycloak realms" width="150"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">We already have a working install of TPA that we&#8217;ll use in later exercises - this uses the <code>chicken</code> realm in Keycloak. RHDH, OpenShift and Trusted Artifact Signer use the <code>trusted-artifact-signer</code> realm.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">We already have a working install of TPA that we&#8217;ll use in later exercises - this uses the <code>chicken</code> realm in Keycloak. Red Hat Developer Hub, OpenShift and Trusted Artifact Signer use the <code>trusted-artifact-signer</code> realm.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">With that said - let&#8217;s use the <code>trusted-artifact-signer</code> realm for our install, so we can use the same user across all applications.</p></td>
@@ -622,7 +628,7 @@ We are using RHBOK (Red Hat build of Keycloak) here, but you can also use Amazon
 <p>Applications might have different requirements for authentication, though. Therefore, it is a good practice to define one or more clients for each application that allows the users of a given realm to authenticate.</p>
 </div>
 <div class="paragraph">
-<p>For the realm we&#8217;re about to use, we have a set of default clients (for typical OIDC and Keycloak use cases) as well as a client for Trusted Artifact Signer, one for Developer Hub and one for OpenShift.</p>
+<p>For the realm we&#8217;re about to use, we have a set of default clients (for typical OIDC and Keycloak use cases) as well as a client for Trusted Artifact Signer, one for Red Hat Developer Hub and one for OpenShift.</p>
 </div>
 <div class="paragraph">
 <p>We will add new clients for TPA later on (we&#8217;ll name them <code>tpa-frontend</code> and <code>tpa-cli</code>). We need to do some setup first. Once the clients are added, it will look like this:</p>
@@ -653,10 +659,10 @@ We are using RHBOK (Red Hat build of Keycloak) here, but you can also use Amazon
 </ul>
 </div>
 <div class="paragraph">
-<p>that we need to create and assign to users or groups of users. We do this by creating roles with a mapping of client scopes and then assign those roles to users or groups.</p>
+<p>We need to create and assign these scopes to individual users or groups of users. We do this by creating roles with a mapping of client scopes and then assign those roles to users or groups.</p>
 </div>
 <div class="paragraph">
-<p>A typical mapping could be</p>
+<p>A typical mapping could be:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -688,7 +694,7 @@ We are using RHBOK (Red Hat build of Keycloak) here, but you can also use Amazon
 <p><strong>Adding Client Scopes &amp; Roles</strong></p>
 </div>
 <div class="paragraph">
-<p>We should first add the roles, then the client scopes. After adding the client scopes, we also need to make them available to the clients, and we have client files prepared for you. However, if you import the client files first (which has the client scopes assigned already), these assignments will be ignored, since the scopes are not yet available on the system (they&#8217;re not added automatically), so we need to add the client scopes first.</p>
+<p>We should first add the roles, then the client scopes. After adding the client scopes, we also need to make them available to the clients. We have client files prepared for you. However, if you import the client files first (which has the client scopes assigned already), these assignments will be ignored, since the scopes are not yet available on the system (they&#8217;re not added automatically), so we need to add the client scopes first.</p>
 </div>
 <div class="paragraph">
 <p>In your {openshift_console_url}/terminal[terminal^,window="terminal"], go to the <code>prerequisites</code> folder and run the <code>get-keycloak-info.sh</code> script, which will give you the admin login details for the Keycloak Management Console:</p>
@@ -717,7 +723,10 @@ Password: 8bf84c6d862a4205aab02253c0f1b0a1 (Yours will be different)</code></pre
 <p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-roles.png" alt="keycloak roles"></span></p>
 </div>
 <div class="paragraph">
-<p>Create the roles <code>tpa-user</code> <code>tpa-manager</code> <code>tpa-admin</code></p>
+<p>Create the roles:
+* <code>tpa-user</code>
+* <code>tpa-manager</code>
+* <code>tpa-admin</code></p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-create-roles.png" alt="keycloak create roles"></span></p>
@@ -761,9 +770,6 @@ Password: 8bf84c6d862a4205aab02253c0f1b0a1 (Yours will be different)</code></pre
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-client-scopes.png" alt="keycloak client scopes"></span></p>
 </div>
-<div class="paragraph">
-<p>Create the scopes <code>read:document</code> <code>create:document</code> <code>update:document</code> <code>delete:document</code> and give them a description, if you want.</p>
-</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -771,22 +777,25 @@ Password: 8bf84c6d862a4205aab02253c0f1b0a1 (Yours will be different)</code></pre
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Make sure you toggle the <strong>Include in token scope</strong> switch (default is "off", it needs to be "on") - if not, the scope will not be in the login token and you&#8217;ll get a lot of "403" errors when opening TPA.
+In the next step, make sure you toggle the <strong>Include in token scope</strong> switch (default is "off", it needs to be "on") - if not, the scope will not be in the login token and you&#8217;ll get a lot of "403" errors when opening TPA.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
+<p>Create the scopes <code>read:document</code> <code>create:document</code> <code>update:document</code> <code>delete:document</code> and give them a description, if you want.</p>
+</div>
+<div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-create-client-scopes.png" alt="keycloak create client scopes"></span></p>
 </div>
 <div class="paragraph">
-<p>After saving (or later, opening a Scope from the Client Scopes list), you can assign a role under the <em>Scope</em> tab:</p>
+<p>Now, open each scope you created, and assign a role under the <em>Scope</em> tab:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-assign-roles.png" alt="keycloak assign roles"></span></p>
 </div>
 <div class="paragraph">
-<p>Assign all roles to the <code>read:document</code> scope</p>
+<p>Assign your <code>tpa-*</code> roles to the <code>read:document</code> scope</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-assign-roles-reader.png" alt="keycloak assign roles reader"></span></p>
@@ -888,20 +897,17 @@ Make sure you toggle the <strong>Include in token scope</strong> switch (default
 </table>
 </div>
 <div class="paragraph">
-<p>Please download the</p>
+<p>Please download the following files to your machine and inspect them:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-frontend.json" target="_blank" rel="noopener"><code>client_tpa-frontend.json</code></a> (Right-click and "Save link as&#8230;&#8203;" or "save as")</p>
+<p><a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-frontend.json" target="_blank" rel="noopener">client_tpa-frontend.json</a> (Right-click and "Save link as&#8230;&#8203;" or "save as")</p>
 </li>
 <li>
-<p><a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-cli.json" target="_blank" rel="noopener"><code>client_tpa-cli.json</code></a> (Right-click and "Save link as&#8230;&#8203;" or "save as")</p>
+<p><a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-cli.json" target="_blank" rel="noopener">client_tpa-cli.json</a> (Right-click and "Save link as&#8230;&#8203;" or "save as")</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>files to your machine and inspect them, if you like.</p>
 </div>
 <div class="paragraph">
 <p><strong>Frontend</strong></p>
@@ -1122,15 +1128,15 @@ The operator is currently in tech preview and has some issues handling multiple 
 </table>
 </div>
 <div class="paragraph">
-<p>Now that we have configured</p>
+<p>So far we have configured:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>storage</p>
+<p>Storage</p>
 </li>
 <li>
-<p>database and</p>
+<p>Postgres Database</p>
 </li>
 <li>
 <p>OIDC</p>
@@ -1138,7 +1144,7 @@ The operator is currently in tech preview and has some issues handling multiple 
 </ul>
 </div>
 <div class="paragraph">
-<p>let&#8217;s go to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/ns/student-tpa-operator?keyword=trusted+profile&amp;details-item=rhtpa-operator-redhat-operators-openshift-marketplace&amp;channel=stable" target="console">Operator Hub</a> (just follow the link) and install the TPA Operator in our namespace (the Operator is namespace-scoped):</p>
+<p>Go to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/ns/student-tpa-operator?keyword=trusted+profile&amp;details-item=rhtpa-operator-redhat-operators-openshift-marketplace&amp;channel=stable" target="console">Operator Hub</a> (just follow the link) and install the TPA Operator in our namespace (the Operator is namespace-scoped):</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/operator-ohub.png" alt="operator ohub"></span></p>
@@ -1172,6 +1178,9 @@ The operator is currently in tech preview and has some issues handling multiple 
 </td>
 <td class="content">
 <div class="paragraph">
+<p>Don&#8217;t paste &amp; save just yet, there are some fields that you need to change - either locally before pasting into the <code>YAML</code> view, or in the <code>YAML</code> view itself!</p>
+</div>
+<div class="paragraph">
 <p>Before you replace everything with the provided <code>yaml</code> file make sure to compare the <code>spec.image.fullName</code> with the default that the "empty" operator provides you with.</p>
 </div>
 <div class="paragraph">
@@ -1183,9 +1192,6 @@ The operator is currently in tech preview and has some issues handling multiple 
 <div class="paragraph">
 <p>This will change over time, so please compare (or copy &amp; paste to your local file before you paste it back to the operator <code>yaml</code> view)</p>
 </div>
-<div class="paragraph">
-<p>Also, don&#8217;t paste &amp; save just yet, there are some fields that you need to change - either locally before pasting into the <code>YAML</code> view, or in the <code>YAML</code> view itself!</p>
-</div>
 </td>
 </tr>
 </table>
@@ -1193,22 +1199,22 @@ The operator is currently in tech preview and has some issues handling multiple 
 <div class="sect2">
 <h3 id="_whats_inside_and_what_needs_to_be_changed"><a class="anchor" href="#_whats_inside_and_what_needs_to_be_changed"></a><strong>What&#8217;s inside and what needs to be changed</strong></h3>
 <div class="paragraph">
-<p>In the <code>spec.appDomain</code>, replace <code>&lt;your-cluster-ingressdomain-here&gt;</code> with <code>{openshift_cluster_ingress_domain}</code>:</p>
+<p>Replace the <code>spec.appDomain</code> value with:</p>
 </div>
 <div class="paragraph">
-<p><code>appDomain: -student-tpa-operator.&lt;your-cluster-ingressdomain-here&gt;</code></p>
+<p><code>appDomain: -student-tpa-operator.{openshift_cluster_ingress_domain}</code></p>
 </div>
 <div class="paragraph">
 <p>Do the same in the <code>spec.oidc.IssuerUrl</code> (this is Keycloak realm where we defined our clients and client scopes):</p>
 </div>
 <div class="paragraph">
-<p><code>issuerUrl: 'https://sso.&lt;your-cluster-ingressdomain-here&gt;/realms/trusted-artifact-signer'</code></p>
+<p><code>issuerUrl: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'</code></p>
 </div>
 <div class="paragraph">
 <p>And, while you still have it in your clipboard, also for the <code>spec.storage.region</code>:</p>
 </div>
 <div class="paragraph">
-<p><code>region: <a href="https://s3-openshift-storage.&lt;your-cluster-ingressdomain-here&gt;:443" class="bare">https://s3-openshift-storage.&lt;your-cluster-ingressdomain-here&gt;:443</a></code></p>
+<p><code>region: <a href="https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443" class="bare">https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443</a></code></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1314,7 +1320,7 @@ Bucket Name:         trustify-c443fd04-cc20-4455-ac54-f02921669428 (Yours will b
 <p>If configured correctly, the importer will start with cloning the cve repository and importing them into the graph database.</p>
 </div>
 <div class="paragraph">
-<p>2) The <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/server/pods" target="console">server pod</a> (click on the name of the importer pod, then click <strong>Logs</strong>):</p>
+<p>2) The <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/server/pods" target="console">server pod</a> (click on the name of the server pod, then click <strong>Logs</strong>):</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-server-logs.png" alt="operator tpa server logs"></span></p>
@@ -1555,10 +1561,8 @@ ls -al</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In the <code>storage.region</code> field, replace <code>&lt;your-cluster-ingressdomain-here&gt;</code> with <code>{openshift_cluster_ingress_domain}</code> to look like this:</p>
-<div class="paragraph">
-<p><code>region: <a href="https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443" class="bare">https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443</a></code></p>
-</div>
+<p>Set <code>storage.region</code> to <code><a href="https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443" class="bare">https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443</a></code>
+`</p>
 </li>
 <li>
 <p>In <code>storage.bucket</code>, paste the value for the <code>trustify</code> bucket that we just got as output from the <code>s3.sh</code> script.</p>
@@ -1567,10 +1571,7 @@ ls -al</code></pre>
 </div>
 </li>
 <li>
-<p>In the <code>oidc.issuerUrl</code> field, also replace the cluster ingress domain with <code>{openshift_cluster_ingress_domain}</code> to look like this:</p>
-<div class="paragraph">
-<p><code>issuerUrl: <a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a></code></p>
-</div>
+<p>Set <code>oidc.issuerUrl</code> to <a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`</a></p>
 <div class="admonitionblock note">
 <table>
 <tr>

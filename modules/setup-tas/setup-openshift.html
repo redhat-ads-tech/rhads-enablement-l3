@@ -341,7 +341,7 @@
 <p>In essence, it deploys the full infrastructure required for Signing and Verification, both keyful and keyless on Openshift. The important point here is - the "Signing and Verification Infrastructure" (in other words: TAS) is running on OpenShift.</p>
 </div>
 <div class="paragraph">
-<p>BUT: You can <em>*use*</em> it anywhere you have access to the provided endpoints:</p>
+<p>You can <em>*use*</em> TAS anywhere you have access to the provided endpoints:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -529,7 +529,7 @@ Luckily we don&#8217;t have to deploy, configure and manage all of these compone
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-It&#8217;s a linux terminal, so use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>V</kbd></span> for pasting 🐧
+It&#8217;s a linux terminal, so use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>V</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>V</kbd></span> on macOS) for pasting 🐧
 </td>
 </tr>
 </table>
@@ -870,7 +870,7 @@ spec:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As you might have guessed, instead of installing via the Console, you also could&#8217;ve copied the <code>Securesign</code> from the collapsible section above, created a file via <code>vim</code> or <code>nano</code> and simply applied it <code>apply -f mySecureSign.yaml</code>.
+As you might have guessed, instead of installing via the Console, you also could&#8217;ve copied the <code>Securesign</code> from the collapsible section above, created a file via <code>vim</code> or <code>nano</code> and simply applied it via <code>oc apply -f mySecureSign.yaml</code>.
 </td>
 </tr>
 </table>
@@ -888,7 +888,7 @@ As you might have guessed, instead of installing via the Console, you also could
 </td>
 <td class="content">
 <div class="paragraph">
-<p>To verify that signing and verification capabilities are working as expected, especially with container images, we need to run <code>podman</code> in a container, which is a bit cumbersome with the standard OpenShift Terminal, which is managed by the DevWorkSpaces Operator.</p>
+<p>To verify that signing and verification capabilities are working as expected, especially with container images, we need to run <code>podman</code> in a container. This is a bit cumbersome with the standard OpenShift Terminal, which is managed by the DevWorkSpaces Operator.</p>
 </div>
 <div class="paragraph">
 <p>Therefore, we have created a terminal ("Podman Terminal") that can do that and also has the required tools preinstalled.</p>
@@ -1173,7 +1173,7 @@ Root status:
 </div>
 </div>
 <div class="paragraph">
-<p>For testing, we&#8217;ll create an empty container image and push it to the <code>ttl.sh</code> ephemeral container registry.</p>
+<p>For testing, we&#8217;ll create an empty container image and push it to the <a href="https://ttl.sh/" target="_blank" rel="noopener">ttl.sh</a> ephemeral container registry.</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -1237,6 +1237,18 @@ Enter verification code:</code></pre>
 <div class="paragraph">
 <p>Open the URL and login with either <code>{rhdh_user}</code> and <code>{rhdh_user_password}</code> or as <code>{openshift_admin_user}</code> with <code>{openshift_admin_password}</code> and copy the resulting code:</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You might automatically be signed in and presented with a token immediately.
+</td>
+</tr>
+</table>
+</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1253,7 +1265,7 @@ Make sure to copy the whole code, which is longer than the text box.
 <p><span class="image"><img src="../_images/m4-tas-openshift/cosign-successcode.png" alt="cosign successcode"></span></p>
 </div>
 <div class="paragraph">
-<p>After pasting it in, cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (<code>tlog</code> = "Transparency Log" = Rekor):</p>
+<p>Paste the code into your Podman Terminal. Cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (<code>tlog</code> = "Transparency Log" = Rekor):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1278,7 +1290,7 @@ Pushing signature to: ttl.sh/rhtas/test-image-4be1a048</code></pre>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>To test our deployment, signing an image via an image tag (<code>test-image:1h</code>) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their digest</p>
+<p>To test our deployment, signing an image via an image tag (<code>test-image:1h</code>) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their unique digest.</p>
 </div>
 </td>
 </tr>
@@ -1323,17 +1335,12 @@ cosign tree $IMAGE_NAME</code></pre>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
-cosign verify --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+cosign verify --certificate-identity=user1@demo.redhat.com
        $IMAGE_NAME | jq</code></pre>
 </div>
 </div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> instead by pressing the <kbd>⬆️</kbd> key and editing the username in the command. You will need to do this for all subsequent commands that use the <code>user1@demo.redhat.com</code> identity.</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>WARNING:4 If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> instead by pressing the <kbd>⬆️</kbd> key and editing the username in the command. You will need to do this for all subsequent commands that use the <code>user1@demo.redhat.com</code> identity.</p>
 </div>
 <div class="paragraph">
 <p>If we want to explicitly verify that the identity <code>user1@demo.redhat.com</code> (or <code>admin@demo.redhat.com</code> if you logged in as <code>admin</code> while generating the signature) was verified against our OIDC server and realm <code><a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a></code>, we can add the <code>--certificate-oidc-issuer</code> parameter:</p>
@@ -1407,7 +1414,7 @@ cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
 <p>To test <code>git</code> commit signing, we need a git repo first - we can use the <code>l3-enablement-helpers</code> we have already used - committing is fine, we&#8217;re not pushing 😇</p>
 </div>
 <div class="paragraph">
-<p>So, let&#8217;s open our  <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">Podman Terminal</a> again and clone it:</p>
+<p>So, let&#8217;s open our  <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">Podman Terminal</a> again and clone it, then add a new file:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
