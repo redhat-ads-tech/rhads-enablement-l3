@@ -87,7 +87,7 @@ This is a very powerful part of the {product_rhdh_name} offering; the sub-tabs o
 + 
 [NOTE]
 ====
-Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the {quay_url}[Quay Console] and login again using the `{quay_admin_user}` username and the password: `{quay_admin_password}`. This will re-set the expiration of the access token, and your next commit and pipeline run will be successful later on in this exercise, so just ignore the error for now.
+Occasionally you may see an issue where the Quay repository has expired the logon, especially if you leave the lab open for a long while; if the pipeline fails at this point, simply go to the {quay_url}[Quay Console^] and login again using the `{quay_admin_user}` username and the password: `{quay_admin_password}`. This will re-set the expiration of the access token, and your next commit and pipeline run will be successful later on in this exercise, so just ignore the error for now.
 ====
 
 . Expand the information panel for the Pipeline Run (the small arrow at the left) and you will see the output of the pipeline that was automatically executed as part of the creation of the git repo. Notice the icon indication of the potential vulnerabilities shown as part of the run as well.
