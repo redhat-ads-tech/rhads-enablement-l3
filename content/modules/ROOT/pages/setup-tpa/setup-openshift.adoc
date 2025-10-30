@@ -34,7 +34,9 @@ cd l3-enablement-helpers
 
 While we're here let's quickly create two projects to install TPA, one for the operator-based install, one for the `helm`-based install. 
 
-The instructions will use that namespace, but you're free to choose any name / namespace you want. Just make sure to change it appropriately in the instructions that follow.
+The instructions will use these namespaces, but you're free to choose any name / namespace you want. Just make sure to change it appropriately in the instructions that follow.
+
+Paste this into the terminal and press kbd:[Enter]
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -44,9 +46,9 @@ oc new-project student-tpa-operator
 
 === Storage
 
-For (object-)storage, the recommended and supported option is to use S3, provided either by ODF (OpenShift Data Foundations) or Amazon S3. 
+For (object-)storage, the recommended and supported option is to use S3, provided either by ODF (OpenShift Data Foundation) or Amazon S3. 
 
-However, for PoC purposes and tests without S3 available, `filesystem` is also a configuration option that is recognized by the `helm` Chart and the `helm`-based Operator. This effectively triggers the helm chart to spin up a PVC.
+However, for proof-of-concept purposes and tests without S3 available, `filesystem` is also a configuration option that is recognized by the `helm` Chart and the `helm`-based Operator. This effectively triggers the helm chart to spin up a PVC.
 
 [WARNING] 
 ====
@@ -74,9 +76,9 @@ Mount: /data/storage
 
 ==== *S3 Storage using ODF*
 
-On the cluster, we have installed ODF, which is part of OPP (OpenShift Platform Plus), so we expect customers to use it for production-grade S3.
+ODF is pre-installed in your environment. ODF is part of OPP (OpenShift Platform Plus), so we expect customers to use it for production-grade S3.
 
-With ODF installed, all you need to do is create an `ObjectBucketClaim`. We have prepared that for you in the `/prerequisites` folder, so:
+With ODF installed, all you need to do is create an `ObjectBucketClaim` CR. We have prepared that for you in the `/prerequisites` folder, so:
 
 . Make sure you are in your desired namespace (the generated bucket is namespace-scoped)
 . Go into the directory and create it
@@ -88,6 +90,8 @@ oc project student-tpa-operator
 oc apply -f tpa_objectbucketclaim.yaml
 ./s3.sh
 ----
+
+The resulting output should resemble the following sample:
 
 [source,console]
 ----
@@ -126,7 +130,7 @@ TIP: As you can see above, we have created a little script (`s3.sh`) that lists 
 
 === Database (`postgresql`)
 
-TPA requires a postgresql database for the graph database. We have prepared a `yaml` file with the required k8s artifacts, that you can simply apply. 
+TPA requires a postgresql database for the graph database. We have prepared a `yaml` file with the required manifests that you can simply apply. 
 Please take note of the `secret` (first object in the `yaml` file) as it contains all the data that we need for the values file (both operator and helm install). 
 
 Specifically, we need a "regular" database user (`tpauser`) and an admin user that can create the database (`postgres`).
@@ -170,12 +174,12 @@ bash-5.1 ~/l3-enablement-helpers/prerequisites $
 
 === OIDC setup
 
-NOTE: We are using RHBOK (Red Hat build of Keycloak) here, but you can also use Amazon Cognito. Refer to the https://docs.redhat.com/en/documentation/red_hat_trusted_profile_analyzer/2.1/html/deployment_guide/select-your-installation-platform#installing-trusted-profile-analyzer-by-using-helm-with-aws_deploy[product documentation^] for that setup if you're using Cognito. However, we need to configure OIDC `scopes` and redirect URLs and we'll show you using Keycloak.  
+NOTE: We are using RHBK (Red Hat Build of Keycloak) here, but you can also use Amazon Cognito. Refer to the https://docs.redhat.com/en/documentation/red_hat_trusted_profile_analyzer/2.1/html/deployment_guide/select-your-installation-platform#installing-trusted-profile-analyzer-by-using-helm-with-aws_deploy[product documentation^] for that setup if you're using Cognito. However, we need to configure OIDC `scopes` and redirect URLs and we'll show you using Keycloak.  
 
 [cols="1,3", frame=none, grid=none, stripes=none]
 |===
 .2+| image:m3-tpa-openshift/keycloak-realms.png[width=150]
-| We already have a working install of TPA that we'll use in later exercises - this uses the `chicken` realm in Keycloak. RHDH, OpenShift and Trusted Artifact Signer use the `trusted-artifact-signer` realm. 
+| We already have a working install of TPA that we'll use in later exercises - this uses the `chicken` realm in Keycloak. {product_rhdh_name}, OpenShift and Trusted Artifact Signer use the `trusted-artifact-signer` realm. 
 | With that said - let's use the `trusted-artifact-signer` realm for our install, so we can use the same user across all applications.
 |===
 
@@ -187,7 +191,7 @@ image:m3-tpa-openshift/keycloak-users.png[]
 
 Applications might have different requirements for authentication, though. Therefore, it is a good practice to define one or more clients for each application that allows the users of a given realm to authenticate. 
 
-For the realm we're about to use, we have a set of default clients (for typical OIDC and Keycloak use cases) as well as a client for Trusted Artifact Signer, one for Developer Hub and one for OpenShift.
+For the realm we're about to use, we have a set of default clients (for typical OIDC and Keycloak use cases) as well as a client for Trusted Artifact Signer, one for {product_rhdh_name} and one for OpenShift.
 
 We will add new clients for TPA later on (we'll name them `tpa-frontend` and `tpa-cli`). We need to do some setup first. Once the clients are added, it will look like this:
 
@@ -202,9 +206,9 @@ TPA uses the following custom OIDC client scopes:
 * `update:document`
 * `delete:document`
 
-that we need to create and assign to users or groups of users. We do this by creating roles with a mapping of client scopes and then assign those roles to users or groups.
+We need to create and assign these scopes to individual users or groups of users. We do this by creating roles with a mapping of client scopes and then assign those roles to users or groups.
 
-A typical mapping could be 
+A typical mapping could be:
 
 [cols="1,3", options="header"]
 |===
@@ -222,7 +226,7 @@ A typical mapping could be
 
 *Adding Client Scopes & Roles*
 
-We should first add the roles, then the client scopes. After adding the client scopes, we also need to make them available to the clients, and we have client files prepared for you. However, if you import the client files first (which has the client scopes assigned already), these assignments will be ignored, since the scopes are not yet available on the system (they're not added automatically), so we need to add the client scopes first.
+We should first add the roles, then the client scopes. After adding the client scopes, we also need to make them available to the clients. We have client files prepared for you. However, if you import the client files first (which has the client scopes assigned already), these assignments will be ignored, since the scopes are not yet available on the system (they're not added automatically), so we need to add the client scopes first.
 
 In your {openshift_console_url}/terminal[terminal^,window="terminal"], go to the `prerequisites` folder and run the `get-keycloak-info.sh` script, which will give you the admin login details for the Keycloak Management Console:
 
@@ -246,7 +250,10 @@ Using the credentials from the output of the `get-keycloak-info.sh` script, (1) 
 
 image:m3-tpa-openshift/keycloak-roles.png[]
 
-Create the roles `tpa-user` `tpa-manager` `tpa-admin`
+Create the roles:
+* `tpa-user`
+* `tpa-manager`
+* `tpa-admin`
 
 image:m3-tpa-openshift/keycloak-create-roles.png[]
 
@@ -267,17 +274,18 @@ In the same (1) _Trusted Artifact Signer_ realm, (2) click on _Client Scopes_, t
 
 image:m3-tpa-openshift/keycloak-client-scopes.png[]
 
+IMPORTANT: In the next step, make sure you toggle the *Include in token scope* switch (default is "off", it needs to be "on") - if not, the scope will not be in the login token and you'll get a lot of "403" errors when opening TPA. 
+
 Create the scopes `read:document` `create:document` `update:document` `delete:document` and give them a description, if you want.
 
-IMPORTANT: Make sure you toggle the *Include in token scope* switch (default is "off", it needs to be "on") - if not, the scope will not be in the login token and you'll get a lot of "403" errors when opening TPA. 
 
 image:m3-tpa-openshift/keycloak-create-client-scopes.png[]
 
-After saving (or later, opening a Scope from the Client Scopes list), you can assign a role under the _Scope_ tab:
+Now, open each scope you created, and assign a role under the _Scope_ tab:
 
 image:m3-tpa-openshift/keycloak-assign-roles.png[]
 
-Assign all roles to the `read:document` scope
+Assign your `tpa-*` roles to the `read:document` scope
 
 image:m3-tpa-openshift/keycloak-assign-roles-reader.png[]
 
@@ -338,12 +346,12 @@ TPA doesn't care if we use a "regular" user or a Keycloak _Service Account_ for 
 From a Keycloak / OIDC perspective, separating _Service Accounts_ for machine communication from users is a good practice, even though you could have a regular user (e.g. "\tpa@acme.com") for that use-case.
 ====
 
-Please download the 
+Please download the following files to your machine and inspect them:
 
-* https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-frontend.json[`client_tpa-frontend.json`^] (Right-click and "Save link as..." or "save as")
-* https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-cli.json[`client_tpa-cli.json`^] (Right-click and "Save link as..." or "save as")
+* https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-frontend.json[client_tpa-frontend.json^] (Right-click and "Save link as..." or "save as")
+* https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/prerequisites/client_tpa-cli.json[client_tpa-cli.json^] (Right-click and "Save link as..." or "save as")
 
-files to your machine and inspect them, if you like.
+
 
 *Frontend* 
 
@@ -455,13 +463,13 @@ In your Keycloak admin console, for each Identity Provider you can configure Map
 
 IMPORTANT: The operator is currently in tech preview and has some issues handling multiple installations on the same cluster (it is also using `helm`). Since we already have installed a TPA instance for reference using this method, you might see some misleading errors, but the installation itself (and the resulting TPA) works.
 
-Now that we have configured
+So far we have configured:
 
-* storage
-* database and
+* Storage
+* Postgres Database
 * OIDC
 
-let's go to the https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/ns/student-tpa-operator?keyword=trusted+profile&details-item=rhtpa-operator-redhat-operators-openshift-marketplace&channel=stable[Operator Hub^,window="console"] (just follow the link) and install the TPA Operator in our namespace (the Operator is namespace-scoped):
+Go to the https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/ns/student-tpa-operator?keyword=trusted+profile&details-item=rhtpa-operator-redhat-operators-openshift-marketplace&channel=stable[Operator Hub^,window="console"] (just follow the link) and install the TPA Operator in our namespace (the Operator is namespace-scoped):
 
 image:m3-tpa-openshift/operator-ohub.png[]
 
@@ -481,6 +489,8 @@ We have prepared a https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enableme
 
 [IMPORTANT]
 ====
+Don't paste & save just yet, there are some fields that you need to change - either locally before pasting into the `YAML` view, or in the `YAML` view itself! 
+
 Before you replace everything with the provided `yaml` file make sure to compare the `spec.image.fullName` with the default that the "empty" operator provides you with. 
 
 At the time of this writing, the Operator Version `1.0.2` with this image was current:
@@ -488,24 +498,22 @@ At the time of this writing, the Operator Version `1.0.2` with this image was cu
 `fullName: 'registry.redhat.io/rhtpa/rhtpa-trustification-service-rhel9@sha256:d5cf4a5bff94b59197f668a63d29591e3bc92ee89402edc70039e592d75cb84e'`
 
 This will change over time, so please compare (or copy & paste to your local file before you paste it back to the operator `yaml` view)
-
-Also, don't paste & save just yet, there are some fields that you need to change - either locally before pasting into the `YAML` view, or in the `YAML` view itself! 
 ====
 
 
 === *What's inside and what needs to be changed*
 
-In the `spec.appDomain`, replace `<your-cluster-ingressdomain-here>` with `{openshift_cluster_ingress_domain}`:
+Replace the `spec.appDomain` value with:
 
-`appDomain: -student-tpa-operator.<your-cluster-ingressdomain-here>`
+`appDomain: -student-tpa-operator.{openshift_cluster_ingress_domain}`
 
 Do the same in the `spec.oidc.IssuerUrl` (this is Keycloak realm where we defined our clients and client scopes):
 
-`issuerUrl: 'https://sso.<your-cluster-ingressdomain-here>/realms/trusted-artifact-signer'`
+`issuerUrl: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'`
 
 And, while you still have it in your clipboard, also for the `spec.storage.region`:
 
-`region: https://s3-openshift-storage.<your-cluster-ingressdomain-here>:443`
+`region: https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443`
 
 NOTE: Even though it is called `region` here, for ODF we need to use the OpenShift Storage `s3` endpoint, including the port `:443`. For AWS S3, you'd need the actual region (refer to the https://docs.redhat.com/en/documentation/red_hat_trusted_profile_analyzer/2.1/html/deployment_guide/select-your-installation-platform#installing-trusted-profile-analyzer-by-using-helm-with-aws_deploy[product documentation^] for setup with AWS services). 
 
@@ -582,7 +590,7 @@ image:m3-tpa-openshift/operator-tpa-importer-logs.png[]
 If configured correctly, the importer will start with cloning the cve repository and importing them into the graph database.
 
 
-2) The https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/server/pods[server pod^,window="console"] (click on the name of the importer pod, then click *Logs*):
+2) The https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/server/pods[server pod^,window="console"] (click on the name of the server pod, then click *Logs*):
 
 image:m3-tpa-openshift/operator-tpa-server-logs.png[]
 
@@ -726,17 +734,13 @@ Since we're running `helm` to install, you don't have to download them - but you
 
 Use your editor of choice (`nano` or `vim`) and change the following values (for `values.yaml` or `values-fs.yaml` depending on which storage option you want to use):
 
-. In the `storage.region` field, replace `<your-cluster-ingressdomain-here>` with `{openshift_cluster_ingress_domain}` to look like this:
-+
-`region: https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443`
-
+. Set `storage.region` to `https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443`
+`
 . In `storage.bucket`, paste the value for the `trustify` bucket that we just got as output from the `s3.sh` script. 
 +
 `bucket: <run_s3.sh_from_your_namespace_to_get_the_bucket_name>`
 
-. In the `oidc.issuerUrl` field, also replace the cluster ingress domain with `{openshift_cluster_ingress_domain}` to look like this:
-+
-`issuerUrl: https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`
+. Set `oidc.issuerUrl` to https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`
 +
 NOTE: If you decide to try out the `filesystem` storage, obviously you don't have to change any value there - these are left in the `values-fs.yaml` file for reference, but commented out. You still need to change the `oidc.issuerUrl` field, but that's all.
 
