@@ -867,7 +867,7 @@ catalog:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to your Backstage CR and click the <strong>YAML</strong> tab.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh" target="_blank" rel="noopener">Backstage Custom Resource in the OpenShift Web Console</a> and click the <strong>YAML</strong> tab.</p>
 </li>
 <li>
 <p>Update the <code>spec.application</code> section to inject the keys and values from the secret into the pod&#8217;s environment using the <code>extraEnvs.secrets</code> array:</p>
@@ -956,6 +956,20 @@ catalog:
 </li>
 <li>
 <p>Password: <code>{rhdh_user_password}</code></p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Since OpenShift and Red Hat Developer Hub share the same authentication realm, you may get automatically logged into Red Hat Developer Hub as the <code>admin</code> user. If this happens, Click on the username (<code>admin TSSC</code>) at the upper right, and click <strong>Sign Out</strong>, and then login as the <code>{rhdh_user}</code> user.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </li>
 </ul>
 </div>

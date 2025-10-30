@@ -490,7 +490,7 @@
 </ol>
 </div>
 <div class="paragraph">
-<p>The new password is <code>d3v3l0p3rs</code>, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above were generated using htpasswd like so: <code>htpasswd -bnBC 10 "" 'd3v3l0p3rs'</code>.</p>
+<p>The new password is <code>d3v3l0p3rs</code>, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above were generated using <code>htpasswd</code> like so: <code>htpasswd -bnBC 10 "" 'd3v3l0p3rs'</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -772,7 +772,7 @@ metadata:
 <p>Click <strong>Create</strong>.</p>
 </li>
 <li>
-<p>Confirm the namespace is managed by <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters" target="_blank" rel="noopener">viewing the clusters screen in Argo CD</a>, then selecting the <strong>in-cluster</strong> item. Login as:</p>
+<p>Confirm the namespace is managed by <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/settings/clusters" target="_blank" rel="noopener">viewing the clusters screen in Argo CD</a>, then selecting the <strong>in-cluster</strong> item. If needed, login as:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -858,7 +858,7 @@ spec:
 <p>Visit the <a href="https://tssc-gitops-server-tssc-gitops.{openshift_cluster_ingress_domain}/" target="_blank" rel="noopener"><strong>tssc-gitops</strong> Argo CD dashboard</a>.</p>
 </li>
 <li>
-<p>Login as:</p>
+<p>If needed, login as:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -904,6 +904,20 @@ spec:
 </li>
 <li>
 <p>Select the <strong>HTTP Sink Application</strong> from the list, then view the <strong>CD</strong> tab for the Component.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>It may take a minute or two for the <strong>CD</strong> tab to appear. Wait a few moments, and reload the page. If the <strong>CD</strong> tab doesn&#8217;t appear after two minutes, verify the dynamic plugins configuration you updated in the prior section.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="../_images/setup-rhdh/argocd-httpsink-cd.png" alt="argocd httpsink cd">

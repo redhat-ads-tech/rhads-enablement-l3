@@ -426,16 +426,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to <strong>Operators &gt; Installed Operators</strong> in the OpenShift Web Console.</p>
-</li>
-<li>
-<p>Click on the <strong>Red Hat Developer Hub</strong> operator.</p>
-</li>
-<li>
-<p>Select the <strong>Red Hat Developer Hub</strong> tab, then click on your <code>rhdh</code> instance.</p>
-</li>
-<li>
-<p>Click the <strong>YAML</strong> tab to edit the resource.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh" target="_blank" rel="noopener">Backstage Custom Resource in the OpenShift Web Console</a> and click the <strong>YAML</strong> tab.</p>
 </li>
 <li>
 <p>Add the following <code>deployment.patch</code> configuration to your Backstage CR&#8217;s <code>spec</code> field:</p>

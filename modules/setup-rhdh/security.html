@@ -938,19 +938,10 @@ g, group:default/tssc, role:default/location_read</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Select <strong>Home &gt; Search</strong> in the OpenShift Web Console.</p>
+<p>Navigate to your <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com~v1alpha3~Backstage/rhdh" target="_blank" rel="noopener">Backstage Custom Resource in the OpenShift Web Console</a> and click the <strong>YAML</strong> tab.</p>
 </li>
 <li>
-<p>Ensure the <strong>setup-rhdh</strong> is selected in the project selector.</p>
-</li>
-<li>
-<p>Type <code>back</code> in the <em>Resources</em> box to find the <code>Backstage</code> CR, and click it to select, and close the drop-down using the <code>x</code> button in the top-right.</p>
-</li>
-<li>
-<p>Select the <strong>rhdh</strong> entry in the <strong>Backstages</strong> list.</p>
-</li>
-<li>
-<p>Switch to the YAML view and add the <strong>rbac-policies</strong> ConfigMap to the <code>spec.application.extraFiles</code> section.</p>
+<p>Add the <strong>rbac-policies</strong> ConfigMap by creating a new <code>extraFiles</code> section (at the same level as <code>extraEnvs</code>) and adding a new <code>configMaps</code> section with the name of the ConfigMap you created.</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">application:
@@ -980,7 +971,7 @@ g, group:default/tssc, role:default/location_read</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Login to Red Hat Developer Hub as the <code>{openshift_admin_user}</code> user using the passowrd <code>{openshift_admin_password}</code>.</p>
+<p>Login to Red Hat Developer Hub as the <code>{openshift_admin_user}</code> user using the password <code>{openshift_admin_password}</code>.</p>
 </li>
 <li>
 <p>Visit the <strong>Administration &gt; RBAC</strong> screen.</p>
@@ -1003,14 +994,63 @@ g, group:default/tssc, role:default/location_read</code></pre>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<p>You&#8217;re now equipped to apply RBAC policies to Red Hat Developer Hub instances. This is a critical capability for organizations to ensure
+only designated individuals can make changes to their internal developer portal, and developers only see what&#8217;s relevant to their team and
+role.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<h2 id="_congratulations"><a class="anchor" href="#_congratulations"></a>Congratulations!</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You&#8217;re now equipped to apply RBAC policies to Red Hat Developer Hub instances. This is a critical capability for organizations to ensure only designated individuals can make changes to their internal developer portal, and developers only see what&#8217;s relevant to their team and role.</p>
+<p>You&#8217;ve successfully installed and configured a Red Hat Developer Hub instance with comprehensive integrations! Across this entire module, you accomplished:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Installed and deployed Red Hat Developer Hub</strong> using the Operator-based method, creating the Backstage Custom Resource and ConfigMap with the initial app-config.yaml configuration</p>
+</li>
+<li>
+<p><strong>Configured authentication with Keycloak</strong> by enabling the OIDC provider, setting up the Keycloak catalog backend plugin, and synchronizing User and Group entities from Keycloak into the Software Catalog</p>
+</li>
+<li>
+<p><strong>Enabled dynamic plugin caching</strong> using PersistentVolumeClaims to significantly improve deployment speed and reliability by caching plugin packages across pod restarts</p>
+</li>
+<li>
+<p><strong>Integrated GitLab for catalog discovery</strong> by configuring the GitLab catalog provider and integrations, enabling automatic discovery and import of catalog-info.yaml files from GitLab repositories</p>
+</li>
+<li>
+<p><strong>Integrated Argo CD for continuous delivery visibility</strong> by creating a dedicated readonly user, enabling Argo CD plugins, and configuring entity annotations to display deployment status directly in the Software Catalog</p>
+</li>
+<li>
+<p><strong>Enabled Role-Based Access Control (RBAC)</strong> by configuring the permission plugin, creating group-based access policies through both UI and Casbin policy files, and implementing fine-grained access controls with deny-by-default security</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This knowledge is valuable for customer engagements because it demonstrates:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Complete platform setup</strong>: You can guide customers through the full installation and configuration process, from initial Operator deployment through comprehensive integrations with their existing tooling</p>
+</li>
+<li>
+<p><strong>Best practices for production deployments</strong>: The combination of plugin caching, proper secret management, and RBAC shows customers how to build robust, secure, and performant Red Hat Developer Hub instances. Other modules go deeper into production-ready best practices for other components in the RHADS stack.</p>
+</li>
+<li>
+<p><strong>Integration patterns</strong>: Experience with Keycloak, GitLab, and Argo CD integrations enables you to help customers connect Red Hat Developer Hub to their authentication providers, source control systems, and CI/CD platforms</p>
+</li>
+<li>
+<p><strong>Security and governance</strong>: The RBAC implementation demonstrates how to enforce access controls and ensure developers only see resources appropriate for their roles, critical for enterprise environments</p>
+</li>
+<li>
+<p><strong>Scalable configuration management</strong>: Using ConfigMaps, Secrets, and policy-as-code approaches shows customers how to manage Red Hat Developer Hub configurations at scale while maintaining audit trails and version control</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
