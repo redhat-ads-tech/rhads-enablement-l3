@@ -750,7 +750,7 @@ Pushing signature to: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l
 </td>
 <td class="content">
 <div class="paragraph">
-<p>If you go to the <code>l3-rhads-demoimage</code> repository on {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay,window="quay"], you can see that Quay recognises the <code>cosign</code> signature:</p>
+<p>If you go to the <code>l3-rhads-demoimage</code> repository on {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay,window="quay"], you can see that Quay recognises the <code>cosign</code> signature (login with <code>{quay_admin_user} / {quay_admin_password}</code>)</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -907,10 +907,10 @@ The issuer is already embedded in the CI&#8217;s OIDC token:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>GitHub Actions: <a href="https://token.actions.githubusercontent.com" class="bare">https://token.actions.githubusercontent.com</a></p>
+<p>GitHub Actions Issuer: https://token.actions.githubusercontent.com</p>
 </li>
 <li>
-<p>GitLab CI: <a href="https://gitlab.com" class="bare">https://gitlab.com</a> (or your GitLab instance URL)</p>
+<p>GitLab CI Issuer: https://gitlab.com (or your GitLab instance URL)</p>
 </li>
 </ul>
 </div>
@@ -921,7 +921,7 @@ So the workflow is:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>CI creates OIDC token with issuer claim (e.g., <a href="https://token.actions.githubusercontent.com" class="bare">https://token.actions.githubusercontent.com</a>)</p>
+<p>CI creates OIDC token with issuer claim (e.g., https://token.actions.githubusercontent.com)</p>
 </li>
 <li>
 <p>Cosign sends this token to your Fulcio</p>
@@ -969,10 +969,20 @@ So the workflow is:</p>
 <p>To verify a signature online (meaning, <code>cosign</code> has access to the Rekor database), we will use <code>cosign verify</code>:</p>
 </div>
 <div class="paragraph">
-<p>With <code>cosign verify</code> we can verify that
-* we have a valid signature
-* that it was signed by the OIDC identity in question
-* that the identity came from the OIDC system in question (here, we don&#8217;t provide an OIDC system, cosign reads that from the environment if the command line parameter isn&#8217;t given)</p>
+<p>With <code>cosign verify</code> we can verify that</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>we have a valid signature</p>
+</li>
+<li>
+<p>that it was signed by the OIDC identity in question</p>
+</li>
+<li>
+<p>that the identity came from the OIDC system in question (here, we don&#8217;t provide an OIDC system, cosign reads that from the environment if the command line parameter isn&#8217;t given)</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>(we add a <code>| jq</code> for better readability of the output)</p>
@@ -983,7 +993,7 @@ So the workflow is:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>(if you signed interactively with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> instead)</p>
+<p>(if you signed interactively with the <code>admin</code> user, you will get an error - use <code>admin@demo.redhat.com</code> instead)</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -991,7 +1001,7 @@ So the workflow is:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>But we signed with our pipeline user, didn&#8217;t we? <strong>YES</strong>, but signatures are accumulative - we haven&#8217;t verified that this was the <em>only</em> signature - we have verified that it has <em>at least one</em> signature from <code>user1@demo.redhat.com</code>. If there are more than one, you can see the details in the result.</p>
+<p>But we just signed with our pipeline user, didn&#8217;t we? <strong>YES</strong>, but signatures are accumulative - we haven&#8217;t verified that this was the <em>only</em> signature - we have verified that it has <em>at least one</em> signature from <code>user1@demo.redhat.com</code>. If there are more than one, you can see the details in the <code>cosign verify</code> result.</p>
 </div>
 <div class="paragraph">
 <p>But we <em>have</em> verified that this image has been signed by <code>user1@demo.redhat.com</code></p>
@@ -1005,7 +1015,7 @@ So the workflow is:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If we want to explicitly verify that the identity <code>user1@demo.redhat.com</code> was verified against our OIDC server and realm <code><a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a></code>, we can add the <code>--certificate-oidc-issuer</code> parameter:</p>
+<p>If we want to explicitly verify that the identity <code>user1@demo.redhat.com</code> was verified against our OIDC server and realm <code>https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</code>, we can add the <code>--certificate-oidc-issuer</code> parameter:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -1241,7 +1251,7 @@ logIndex  Subject                        Issuer
 </ul>
 </div>
 <div class="paragraph">
-<p>Without Rekor, you lose the independent timestamp proof and transparency, but the short certificate lifetime already prevents the backdating attack vector. Also, the signature contains a signed timestamp that will be checked against the timestamp authority included in the Trust Root.</p>
+<p>Without Rekor, you lose the independent timestamp proof and transparency, but the short certificate lifetime already prevents the backdating attack vector. Also, the signature contains a signed timestamp that will be verified against the timestamp authority&#8217;s public key included in the Trust Root.</p>
 </div>
 </div>
 </div>
