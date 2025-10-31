@@ -72,3 +72,7 @@
 *** xref:rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.adoc[Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces]
 *** xref:rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.adoc[Hands-on Lab: Experiment with an AI application locally using Podman AI Lab]
 * xref:end-to-end.adoc[Module 15: RHADS Complete: Summary and Next Steps]
+
+---
+
+* xref:env.adoc[My lab environment details]

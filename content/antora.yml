@@ -45,3 +45,5 @@ asciidoc:
     page-links:
     - url: https://redhat.com
       text: Red Hat
+    - url: env.html
+      text: Lab 
