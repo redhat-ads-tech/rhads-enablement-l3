@@ -95,7 +95,7 @@ To get a full report in CycloneDX or SPDX format, we have to specify the format 
 
 [source,bash,role=execute,subs=attributes+]
 ----
-syft $IMAGE --enrich all --output cyclonedx-json=demo-image-sbom.json
+syft $IMAGE --enrich all --output cyclonedx-json=demo-image-sbom-syft.json
 ----
 
 [NOTE]
@@ -104,11 +104,11 @@ We have added `--enrich all` here. Syft can query e.g. maven central for additio
 
 We will upload and manage SBOMs in xref:tssc-tpa.adoc[Module 8: Trusted Software Supply Chain with TPA] but if you'd like to take a quick look, we'll have to format it (`jq`) and make it accessible (`less`). 
 
-*HINT* Exit `less` with kbd:[q] or kbd:[Q]
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q]
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cat demo-image-sbom.json | jq | less
+cat demo-image-sbom-syft.json | jq | less
 ----
 
 ====
@@ -123,6 +123,94 @@ From Red Hat Advanced Cluster Security 4.7, users can generate SBOMs from the co
 *Context*
 
 The https://www.redhat.com/en/blog/red-hat-advanced-cluster-security-47-simplifies-management-enhances-workflows-and-generates-sboms[SBOM generation feature^] was introduced in response to the growing importance of SBOMs for supply chain security, especially in light of the NIST Executive Order from 2021. The `roxctl` tool integrates into CI/CD pipelines for automated security scanning, policy enforcement, and now SBOM generation alongside RHACS's broader security capabilities including vulnerability management, runtime threat detection, and compliance checking.
+
+*Architecture*
+
+The major difference between standalone SBOM generators and `roxctl` is that the scan / cataloging of components does not happen in the task execution environment (in our case, the terminal pod, in a real CI the task pod) - but on the ACS Cluster. No image is pulled locally for inspection. 
+
+The `roxctl` CLI is just an interface that tells the cluster what to do.
+
+[NOTE]
+====
+As a consequence, everything that `roxctl` does could also be done via the REST API. If you're interested how that works, you can checkout the `setup-acs-integration.sh` in the terminal home directory:
+
+[source,bash,role=execute,subs=attributes+]
+----
+less ~/setup-acs-integration.sh
+----
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q]
+
+This script creates a "Registry Integration" in ACS. It basically tells ACS which authentication method and credentials to use when accessing a specific registry. During the terminal pod startup, we're checking that the integration exists and if not, create it - all via the REST API. 
+
+image::security-practices/acs-integrations.png[]
+
+But we're digressing from the topic at hand... 🤷
+====
+
+==== *Using `roxctl`*
+
+Creating an SBOM using `roxctl` is as simple as `roxctl image sbom`. The `image` subcommand allows us to 
+
+* Scan an image for vulnerabilities (`roxctl image scan`)
+* Scan and verify policy violations in the ACS list of policies (`roxctl image check`)
+* Generate an SBOM (`roxctl image sbom`)
+
+Try them all out, play with the results in different formats and check `roxctl image --help` as well as the help for the sub-sub-commands such as `roxctl image scan --help`
+
+To generate an SBOM, just pass in the image you're interested in.
+
+(_First, we're checking that the `$IMAGE` variable for our example image still exists_)
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+if [ -z "${IMAGE}" ]; then
+    source ./copy-image-to-quay.sh
+fi
+echo "\$IMAGE is: $IMAGE"
+# using jq for readability and less since it's large
+roxctl image sbom --image=$IMAGE | jq | less
+----
+
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q]
+
+So, as you can see at the beginning of the file, `roxctl` generates an SPDX (not CycloneDX) SBOM - which is fine, since both formats are very well established
+
+[console,json]
+----
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "sha256:5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee",
+  "documentNamespace": "https://quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage-2fe8c138-572d-44e6-90fa-43b5d0353ca8",
+  "comment": "Tech Preview - generated for 'quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest'",
+  "creationInfo": {
+    "creators": [
+      "Tool: Claircore-v1.5.38",
+      "Tool: scanner-v4-matcher-4.8.5"
+    ],
+    "created": "2025-10-31T13:04:06Z"
+  },
+  "packages": [
+    {
+      "name": "ubi8-minimal-container",
+      "SPDXID": "SPDXRef-Package-374",
+      "versionInfo": "8.5-240.1648458092",
+      "packageFileName": "root/buildinfo/Dockerfile-ubi8-minimal-8.5-240.1648458092",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": true,
+      "primaryPackagePurpose": "SOURCE"
+    },
+----
+
+
+To save it, we just use standard Linux mechanisms: 
+
+[source,bash,role=execute,subs=attributes+]
+----
+roxctl image sbom --image=$IMAGE > demo-image-sbom-roxctl.json
+----
 
 
 === OWASP CycloneDX `maven` plugin
@@ -230,7 +318,7 @@ The pre-defined predicate types are:
 * openvex - OpenVEX attestation
 * custom - Custom attestation (default)
 
-We have created SBOMs of our image above, so naturally we will attest (= sign & attach) them to this image:
+We have created SBOMs of our image above, so naturally we will attest (= sign & attach) them to _this_ image:
 
 (_First, making sure that we still have the `$IMAGE` variable set and the `$SIGSTORE_ID_TOKEN` hasn't expired_)
 
@@ -248,7 +336,8 @@ With these set again, attesting the SBOMs we have created earlier is as simple a
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign attest --predicate demo-image-sbom.json --type cyclonedx $IMAGE
+cosign attest --predicate demo-image-sbom-syft.json --type cyclonedx $IMAGE
+cosign attest --predicate demo-image-sbom-roxctl.json --type spdxjson $IMAGE
 ----
 
 A `cosign tree` will now show us the SBOM attestation associated with this image:
@@ -265,7 +354,8 @@ cosign tree $IMAGE
 └── 💾 Attestations for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.att
    ├── 🍒 sha256:6e1bd0b49e31237c28d14b0e90f69c532defd47685a7ea1e5920e63924adf378
    ├── 🍒 sha256:2c9aaacbdcad589845dfd37f830e878673e41aaa79a5623d23ff152c69fdb5b9
-   └── 🍒 sha256:b37ce919cda4683964533680c5eec92bedc9df10a4e5f4236d68f084a70fa872
+   ├── 🍒 sha256:b37ce919cda4683964533680c5eec92bedc9df10a4e5f4236d68f084a70fa872
+   └── 🍒 sha256:72af2fa19513e226e73e70c567bf3d8b763524f0607e09357301dadb1ddb432c
 └── 🔐 Signatures for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
    └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5
 ----
@@ -283,9 +373,9 @@ Given the size of the attestation, you can guess that it contains considerable p
 
 So, with the knowledge from the previous chapter, we know that a simple `cosign download attestation` will just give us the `in-toto` "envelope" with the "Statement" as base64 encoded `payload`.
 
-If we want to browse what we have, we need to go one level deeper:
+If we want to browse what we have, we need to go one level deeper, using `jq` and `base64 --decode`:
 
-*HINT* Exit `less` with kbd:[q] or kbd:[Q]
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q]
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -305,6 +395,7 @@ cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq -r '.pred
 https://cyclonedx.org/bom
 https://example.com/predicate/v1
 https://slsa.dev/provenance/v0.2
+https://spdx.dev/Document
 ----
 
 [source,bash,role=execute,subs=attributes+]
@@ -312,3 +403,27 @@ https://slsa.dev/provenance/v0.2
 cosign download attestation $IMAGE --predicate-type "https://cyclonedx.org/bom" | jq -r '.payload' | base64 -d | jq | less
 ----
 
+=== Simple Signature and Integrity Verification
+
+In the previous chapter (and to more extent in xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]) we used Enterprise Contract / Conforma for the basic verification.
+
+If we simply want to check the integrity and certificate claims (OIDC Identity and OIDC Issuer) without applying policies, we can use `cosign verify-attestation:`
+
+So, for our image, to verify an attestation (or more than one if we have more of the same type) we would issue
+
+* using the `cosign` built-in predicate type
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify-attestation --type spdxjson --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less
+----
+or
+
+* using the explicit predicate type
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify-attestation --type https://spdx.dev/Document --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less
+----
+
+NOTE: We again added `jq` to get to the base64 encoded payload (our attestation / SBOM in question and piped it to `less` since the SBOMs are large). Exit `less` with kbd:[q] or kbd:[Q]

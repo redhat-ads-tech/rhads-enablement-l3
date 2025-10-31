@@ -1,6 +1,16 @@
+:imagesdir: ../assets/images
+
 = Attestations, Tekton Chains & Enterprise Contract with TAS
 
 == Attestations with TAS
+
+
+Due to some overlap with other chapters, this module is currently being reorganized.
+
+ETA: Week of Nov 3rd
+
+image::security-practices/construction.jpeg[]
+
 
 // TODO: Add content for attestations, Tekton Chains & Enterprise Contract (Conforma) with TAS
 
