@@ -47,7 +47,7 @@ image:rhads-ai/rhads/architecture.png[width=100%]
 == Create the AI Research Agent
 === Let's build the AI Agent
 
-* Access the {rhdh_url}/catalog-import[Red Hat Developer Hub UI - Components^] with your credentials:
+* Access the {rhdh_url}/catalog/default/component[Red Hat Developer Hub UI - Components^] with your credentials:
 
 ** Username: {openshift_admin_user}
 ** Password: {openshift_admin_password}
@@ -153,7 +153,7 @@ kubectl create secret generic ai-agent-secrets-tavily \
 * Press enter to create the secret. You should see the message: *"secret/ai-agent-secrets-tavily created"*
 
 
-=== Get your API key for the self-hosted Model
+=== Get your API key for the self-hosted Model (for Red Hat internal only)
 Now, set up your account on the link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Internal MaaS Demo from the AI BU,window='_blank']. This account provides the *API KEY* needed to access the self-hosted model for this lab. Knowing how to access a self-hosted model is useful for building applications or connecting to third-party tools, like an AI assistant.
 
 * Access the URL and sign in with your *Red Hat account*:link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
@@ -184,7 +184,11 @@ image:rhads-ai/rhads/maas-model-select.png[width=100%]
 
 image:rhads-ai/rhads/maas-app-assistant.png[width=80%]
 
-==== Environment Variables (Kubernetes) Create a secret with your API keys:
+=== Get your API key for the self-hosted Model (for partners only)
+To finalize the AI Agent implementation, access to an LLM capable of agent retrieval. Since MaaS is exclusively for internal Red Hat use, please ensure we have access to the already deployed `llama-3-2-3b` LLM to connect with the agent.
+
+
+=== Environment Variables (Kubernetes) Create a secret with your API keys:
 
 Create a secret with your API keys:
 
@@ -202,6 +206,8 @@ kubectl create secret generic ai-agent-secrets-llm \
 * Copy the *API Key* and paste it after *LLM_API_KEY=* in the kubernetes secret.
 
 * Copy the *Endpoint URL* from the Maas website and paste it after *LLM_API_BASE_URL=* in the kubernetes secret. Include */v1* at the end of the URL.
+
+** *Note: Ensure you have include '/v1' at the end of the URL.*
 
 * Press Enter. You should see the message: *"secret/ai-agent-secrets-llm created"*
 
