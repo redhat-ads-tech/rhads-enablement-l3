@@ -1,4 +1,13 @@
+:imagesdir: ../assets/images
+
 = Trusted Software Supply Chain with TPA
+
+Due to some overlap with other chapters, this module is currently being reorganized.
+
+ETA: Week of Nov 3rd
+
+image::security-practices/construction.jpeg[]
+
 
 == Implementing TSC with TPA
 
