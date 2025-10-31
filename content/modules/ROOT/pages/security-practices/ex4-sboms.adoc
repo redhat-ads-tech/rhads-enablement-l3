@@ -172,6 +172,8 @@ echo "\$IMAGE is: $IMAGE"
 roxctl image sbom --image=$IMAGE | jq | less
 ----
 
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q]
+
 So, as you can see at the beginning of the file, `roxctl` generates an SPDX (not CycloneDX) SBOM - which is fine, since both formats are very well established
 
 [console,json]
@@ -411,13 +413,17 @@ So, for our image, to verify an attestation (or more than one if we have more of
 
 * using the `cosign` built-in predicate type
 
-
+[source,bash,role=execute,subs=attributes+]
+----
 cosign verify-attestation --type spdxjson --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less
-
+----
 or
 
 * using the explicit predicate type
 
+[source,bash,role=execute,subs=attributes+]
+----
 cosign verify-attestation --type https://spdx.dev/Document --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less
+----
 
 NOTE: We again added `jq` to get to the base64 encoded payload (our attestation / SBOM in question and piped it to `less` since the SBOMs are large). Exit `less` with kbd:[q] or kbd:[Q]
