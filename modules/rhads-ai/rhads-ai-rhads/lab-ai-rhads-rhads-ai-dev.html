@@ -483,7 +483,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Access the {rhdh_url}/catalog-import[Red Hat Developer Hub UI - Components^] with your credentials:</p>
+<p>Access the {rhdh_url}/catalog/default/component[Red Hat Developer Hub UI - Components^] with your credentials:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -709,7 +709,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_get_your_api_key_for_the_self_hosted_model"><a class="anchor" href="#_get_your_api_key_for_the_self_hosted_model"></a>Get your API key for the self-hosted Model</h3>
+<h3 id="_get_your_api_key_for_the_self_hosted_model_for_red_hat_internal_only"><a class="anchor" href="#_get_your_api_key_for_the_self_hosted_model_for_red_hat_internal_only"></a>Get your API key for the self-hosted Model (for Red Hat internal only)</h3>
 <div class="paragraph">
 <p>Now, set up your account on the <a href="https://maas.apps.prod.rhoai.rh-aiservices-bu.com/" target="_blank" rel="noopener">Internal MaaS Demo from the AI BU</a>. This account provides the <strong>API KEY</strong> needed to access the self-hosted model for this lab. Knowing how to access a self-hosted model is useful for building applications or connecting to third-party tools, like an AI assistant.</p>
 </div>
@@ -777,8 +777,15 @@
 <div class="paragraph">
 <p><span class="image"><img src="../../_images/rhads-ai/rhads/maas-app-assistant.png" alt="maas app assistant" width="80%"></span></p>
 </div>
-<div class="sect3">
-<h4 id="_environment_variables_kubernetes_create_a_secret_with_your_api_keys"><a class="anchor" href="#_environment_variables_kubernetes_create_a_secret_with_your_api_keys"></a>Environment Variables (Kubernetes) Create a secret with your API keys:</h4>
+</div>
+<div class="sect2">
+<h3 id="_get_your_api_key_for_the_self_hosted_model_for_partners_only"><a class="anchor" href="#_get_your_api_key_for_the_self_hosted_model_for_partners_only"></a>Get your API key for the self-hosted Model (for partners only)</h3>
+<div class="paragraph">
+<p>To finalize the AI Agent implementation, access to an LLM capable of agent retrieval. Since MaaS is exclusively for internal Red Hat use, please ensure we have access to the already deployed <code>llama-3-2-3b</code> LLM to connect with the agent.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_environment_variables_kubernetes_create_a_secret_with_your_api_keys"><a class="anchor" href="#_environment_variables_kubernetes_create_a_secret_with_your_api_keys"></a>Environment Variables (Kubernetes) Create a secret with your API keys:</h3>
 <div class="paragraph">
 <p>Create a secret with your API keys:</p>
 </div>
@@ -801,12 +808,18 @@
 </li>
 <li>
 <p>Copy the <strong>Endpoint URL</strong> from the Maas website and paste it after <strong>LLM_API_BASE_URL=</strong> in the kubernetes secret. Include <strong>/v1</strong> at the end of the URL.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Note: Ensure you have include '/v1' at the end of the URL.</strong></p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Press Enter. You should see the message: <strong>"secret/ai-agent-secrets-llm created"</strong></p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>
