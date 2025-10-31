@@ -629,6 +629,9 @@ roxctl image sbom --image=$IMAGE | jq | less</code></pre>
 </div>
 </div>
 <div class="paragraph">
+<p><strong>HINT:</strong> Exit <code>less</code> with <kbd>q</kbd> or <kbd>Q</kbd></p>
+</div>
+<div class="paragraph">
 <p>So, as you can see at the beginning of the file, <code>roxctl</code> generates an SPDX (not CycloneDX) SBOM - which is fine, since both formats are very well established</p>
 </div>
 <div class="listingblock">
@@ -957,8 +960,10 @@ https://spdx.dev/Document</code></pre>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>cosign verify-attestation --type spdxjson --certificate-identity <a href="mailto:pipeline-auth@demo.redhat.com">pipeline-auth@demo.redhat.com</a> --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify-attestation --type spdxjson --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>or</p>
@@ -970,8 +975,10 @@ https://spdx.dev/Document</code></pre>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>cosign verify-attestation --type <a href="https://spdx.dev/Document" class="bare">https://spdx.dev/Document</a> --certificate-identity <a href="mailto:pipeline-auth@demo.redhat.com">pipeline-auth@demo.redhat.com</a> --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify-attestation --type https://spdx.dev/Document --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE | jq -r '.payload' | base64 -d | jq | less</code></pre>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
