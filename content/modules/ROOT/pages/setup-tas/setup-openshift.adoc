@@ -1,3 +1,5 @@
+:imagesdir: ../../assets/images
+
 = Setup Trusted Artifact Signer on OpenShift
 
 == Overview
@@ -244,11 +246,33 @@ cd l3-enablement-helpers/tas-verification
 include::./podman-terminal-deployment.adoc[]
 =====
 
-The last command copies the Cluster's OAuth Configuration and deploys the new terminal (our "Podman Terminal") - if you should see a login request, login with the same admin credentials (`{openshift_admin_user} / {openshift_admin_password}`)
+The last command copies the Cluster's OAuth Configuration and deploys the new terminal (our "Podman Terminal") 
 
 You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] that we will be using for the verification steps. It make take a minute or so for the terminal to be ready, so if you get an "Application not available" or other message, wait a moment and refresh the page.
 
 ====
+
+
+
+[IMPORTANT]
+====
+[cols="1,3"]
+|===
+a|image::security-practices/attention-please.png[] 
+a|In this Lab environment, *Trusted Artifact Signer* and *OpenShift* use the same Keycloak Realm (in case you were wondering why it says "TRUSTED-ARTIFACT-SIGNER" when you login to OpenShift).
+
+2+|*PLEASE LOG OUT OF THE {openshift_console_url}[OPENSHIFT CONSOLE^,window="console"] NOW* 
+
+2+|If you're still logged in as `admin`, the image signing and code commit signing steps below will *_automatically use the `admin` user_* since you already have an open session (with the console). 
+
+You won't be able to sign with `user1` / `{rhdh_user_password}`.
+
+It's ok to sign with `admin` but we want to avoid the impression that signing is an admin task - as long as you have an OIDC Identity, you can sign. 
+
+Also, all the ready-made examples that you can copy & paste use `user1`.
+|===
+====
+
 
 In the "Podman Terminal", you have the cli-tools available that are the foundation of signing and verification with Trusted Artifact Signer (sigstore), namely
 
