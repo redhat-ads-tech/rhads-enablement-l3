@@ -79,25 +79,4 @@ RHTPA provides that visibility across the entire software portfolio.
 
 
 
-Lecture
 
-
-SBOMs & Vulnerability Exploitability eXchange (VEX) Files
-
-Typical Use Cases
-
-
-Lab
-Push an SBOM to TPA (UI and CLI)
-
-Analyze the SBOM
-
-Find a CVE
-
-Find affected products
-
-Find related Vendor Advisories, such as JBoss information
-
-CVEs and advisories sources
-
-Third-party software
