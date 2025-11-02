@@ -1,0 +1,8 @@
+:imagesdir: ../../assets/images
+
+= Uploading SBOMs
+
+== Frontend
+
+
+== Backend (API, from a CI Task)

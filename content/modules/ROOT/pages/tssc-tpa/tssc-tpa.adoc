@@ -1,0 +1,103 @@
+:imagesdir: ../../assets/images
+
+= Trusted Software Supply Chain with TPA
+
+== The role of TPA in Secure Supply Chains
+
+[cols="1,3"]
+|===
+
+
+a|image::tssc-tpa/where_is_tpa.png[The role of TPA, link=self,  window="image"]
+
+_click to enlarge_
+
+a|In a Secure (or, as we call it: *_Trusted_*) *Software Supply Chain*, we will generate SBOMs (Software Bills of Materials) that provide the "Ingredients List" for our software components and artifacts.
+
+Talking to customers, we know that due to regulatory requirements, many are creating SBOMs today - but only a few are leveraging the information that is contained in them.
+
+This is the gap that TPA fills:
+
+TPA manages an organization's SBOMs, vendor VEX documents, and CVE data, providing developers, DevSecOps teams and CISO departments with analysis of the organization's risk profile across custom, third-party, and open source software.
+
+|===
+
+
+=== Core Use Cases
+
+1. *Vulnerability Management*
+RHTPA provides storage and management for SBOMs with *cross-referencing capabilities* between SBOMs and CVEs/Security Advisories that are continuously ingested from trusted sources like Red Hat. This helps teams:
+- Quickly identify which applications are affected by newly disclosed vulnerabilities
+- Understand both direct and transitive dependencies
+- Create incident response frameworks to prevent security issues in production
+
+2. *Blast Radius Analysis*
+Teams can analyze and estimate the blast radius of a given threat to help make decisions about how to fix it. When a vulnerability is announced, you can immediately see across your entire application portfolio which systems are exposed.
+
+3. *Compliance & Transparency*
+Organizations' DevSecOps and CISOs can more easily meet compliance requirements, have increased confidence when using open source software in production applications, and assess the level of exposure and risk profile for an application.
+
+====
+*Key Question answered:*
+
+"_How confident are you that you could identify all affected applications within 24 hours of a critical vulnerability announcement?_"
+
+RHTPA provides that visibility across the entire software portfolio.
+====
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lecture
+
+
+SBOMs & Vulnerability Exploitability eXchange (VEX) Files
+
+Typical Use Cases
+
+
+Lab
+Push an SBOM to TPA (UI and CLI)
+
+Analyze the SBOM
+
+Find a CVE
+
+Find affected products
+
+Find related Vendor Advisories, such as JBoss information
+
+CVEs and advisories sources
+
+Third-party software
