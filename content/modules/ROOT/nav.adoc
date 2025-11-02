@@ -41,6 +41,10 @@
 
 * xref:tssc-tpa/tssc-tpa.adoc[Module 8: Trusted Software Supply Chain with TPA]
 ** xref:tssc-tpa/correlation.adoc[Data Types & Correlation]
+** xref:tssc-tpa/exercises.adoc[Exercises]
+*** xref:tssc-tpa/ex1-uploading-sboms.adoc[Exercise: Uploading Data]
+*** xref:tssc-tpa/ex2-ui-usecases.adoc[Exercise: Exploring the Security Posture]
+*** xref:tssc-tpa/ex3-licenses.adoc[Exercise: (Open Source) License Compliance]
 
 * xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
 * xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle]

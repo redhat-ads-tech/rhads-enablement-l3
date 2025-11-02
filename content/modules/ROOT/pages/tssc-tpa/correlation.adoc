@@ -69,13 +69,13 @@ With
 * SBOMs listing packages and versions 
 * CVE data listing affected packages
 
-there isn't anything missing, is there? 
+and both (SBOMs and CVE data) having enough data in common to successfully match - there isn't anything missing, is there? 
 
 What is missing is *_Context information_*, especially if related to software artifacts ("products") procured from vendors.
 
 A simple mapping will tell you - here's a product (an SBOM) that has this vulnerability (a vulnerable component). 
 
-A vendor could tell you 
+A vendor could give you additional *context*, though: 
 
 * yes, it contains this vulnerability, but we are not using it in an exploitable fashion 
 * yes, it contains this vulnerability, but we have otherwise contained it
@@ -150,7 +150,7 @@ The VEX answers: *"This CVE affects these specific products, and here's the fix 
 
 CSAF files — representations of a _single product release along with the CVEs that it fixes and the components that it ships_ — allow consumers to keep their SBOM up-to-date beyond its initial release. 
 
-SBOM files are static documents that contain a listing of components in a specific version of a product. For example, the RHEL 9.2 release will have an accompanying SBOM that lists all components shipped by default in that release. Any security advisories released after RHEL 9.2 will update specific packages and provide information about component upgrades from those shipped in the 9.2 GA (generally available) version.
+SBOM files are static documents that contain a listing of components in a specific version of a product. For example, the RHEL 9.2 release has an accompanying SBOM that lists all components shipped by default in that release. Any *security advisories* released _after RHEL 9.2_ will update specific packages and provide information about component upgrades from those shipped in the 9.2 GA (generally available) version.
 
 VEX files then provide a listing of affectedness of a CVE to each and every product release. For example, a VEX file of a hypothetical CVE-2099-1000 would contain information about whether or not RHEL 9.2 is affected by the vulnerability tracked by this CVE.
 

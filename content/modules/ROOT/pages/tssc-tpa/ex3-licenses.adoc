@@ -1,0 +1,43 @@
+:imagesdir: ../../assets/images
+
+= Open Source License Compliance
+
+One recurring question for customers is - _"I know that my developers are using Open Source libraries and components. Who isn't?_ 
+
+_But, I am using software built on an Open Source foundation. Am I legally compliant if I use this in a commercial enterprise context? What are my obligations, if any?"_
+
+== The challenge of License identification
+
+Licenses don't have a formal naming schema and therefore can't be identified uniquely. SBOM generators (see chapter xref:security-practices/ex4-sboms.adoc[SBOM Creation]) try to enrich bare package information with license data where possible but the quality varies.
+
+However, as a first step, we have this (rather fuzzy) information in our SBOMs, so we can generate and download license information.
+
+NOTE: At the time of writing, TPA 2.1 is the latest. Version 2.2 (ETA Q4/25) will add some more functionality regarding licenses.
+
+For the time being - what we can do is ask someone who is very good at correlating fuzzy information and and answering vague questions: Your AI Model of choice, naturally.
+
+== Downloading a license report
+
+You can download a license report for any SBOM on the right hand menu (or via the "Actions" menu if you have the SBOM open)
+
+image::tssc-tpa/license-report.png[]
+
+For the time being, after downloading and unzipping, we can feed that into an AI to answer the question our customers ask: "Am I compliant?"
+
+
+=== AI Prompt & Result
+
+This is the prompt (asking Claude.ai and attaching the CSV license report):
+
+[.italic]
+____
+Here is a licence report in CSV format listing all open source licenses in an SBOM in column "license". Please group the licenses, since there might be some name variations. 
+Based on this data, gather information about the licenses and answer the following question: 
+"I am using software built on an Open Source foundation. Am I legally compliant if I use this in a commercial enterprise context? What are my obligations, if any?" 
+
+Please create a report.
+____
+
+
+This is the https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-tssc/license/quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io_l3-students_l3-rhads-demoimage_sbom_licenses.csv[CSV from TPA^,window="download"] and 
+https://github.com/redhat-tssc-tmm/l3-enablement-helpers/blob/497fb274da71c75d97ac532d1e41450dc01bf305/tpa-tssc/license/Open_Source_License_Compliance_Report.pdf[this is the report, window="pdf"]

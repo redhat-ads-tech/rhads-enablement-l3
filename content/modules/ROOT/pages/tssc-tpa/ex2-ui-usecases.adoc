@@ -1,0 +1,88 @@
+:imagesdir: ../../assets/images
+
+= The Security Posture according to TPA
+
+Once we have SBOM data (from our own applications, as well as vendor applications), vulnerability data and advisories in our management system - what *value* can we generate from it?
+
+The key question we asked in the beginning was:
+
+====
+*Key Question answered:*
+
+"_How confident are you that you could identify all affected applications within 24 hours of a critical vulnerability announcement?_"
+====
+
+So, how do we answer that question with TPA?
+
+NOTE: We only have a few SBOMs in the system, so imagine there was a large number of SBOMs from a company heavily developing applications and deploying them both standalone (e.g. as *.jar files) as well as container images.
+
+== Affected SBOMs ("products") by vulnerability
+
+First, let's check the "_critical vulnerability announcement_" from above:
+
+Assuming we know the vulnerability, open the {tpa_url}/vulnerabilities[Vulnerabilities view^,window="tpa"] in TPA and search for `CVE-2021-44228`:
+
+We get all vulnerabilities mentioning "CVE-2021-44228" (it had a big impact at the time so there are follow-up CVE mentioning it).
+
+image::tssc-tpa/vuln-search-log4j.png[]
+
+We can immediately see that we have one SBOM affected - so let's click on the vulnerability title and see more details - the "Related SBOMs" view of the vulnerability opens and I can see that "home-banking" is in status _"affected"_. +
+Clicking on the number in "Dependencies" shows us the package and version inside the SBOM that is causing the problem:
+
+image::tssc-tpa/vuln-search-log4j-affected-sbom.png[]
+
+Clicking on the package name shows us that this package (`log4j-core` in Version 2.13.3) has actually more than one vulnerability listed (as if one wasn't enough 🙄)
+
+image::tssc-tpa/vuln-search-log4j-affected-sbom-package-view.png[]
+
+Clicking on "SBOMs using Package" brings us to the package-centric view (regardless of vulnerability) of all SBOMs using *this package in this version*
+
+image::tssc-tpa/sboms-using-package-and-version.png[]
+
+== SBOM Vulnerabilities
+
+Coming from an SBOM perspective - I see that I still have an old vulnerability here in "devspaces/pluginregistry-rhel8". Is that problem possibly more widespread?
+
+Opening the Vulnerabilities Tab in the SBOM lists the oldest (and thus most likely to be exploited) vulnerabilities first. 
+
+(I can also sort by CVSS score, number of affected dependencies, etc).
+
+image::tssc-tpa/pypa-setuptools.png[]
+
+Clicking on the first vulnerability (2022-40897) shows me that devspaces actually contains two versions of the same package, only vulnerable, one fixed - and that our demoimage contains an even older version. 
+
+image::tssc-tpa/pypa-setuptools-across-sboms.png[]
+
+
+== Full-Text
+
+_"I heard there's a problem with the logback stack - what about it?"_
+
+Going to the {tpa_url}/search[TPA Search View^,window="tpa"] we can perform a full-text search and get a quick view (tagging the results by type, such as "Package", "Vulnerability", "Advisory",...) 
+
+image::tssc-tpa/generic-search.png[]
+
+Clicking on the "Packages view" I can see that different versions of logback have different levels of vulnerabilities. I'm interested if any of my SBOMs is using a vulnerable package.
+
+(Ok, we only have four in the database, so I could do that manually, but what if it was 4000?)
+
+image::tssc-tpa/generic-search-logback-results.png[]
+
+NOTE: This is a fulltext search that doesn't traverse all packages in an SBOM. Instead, we check if any of your SBOMs is using a package with vulnerabilities or via the vulnerabilities view search for "SBOMs affected".
+
+Checking the Red Hat logback-core shows us...
+
+image::tssc-tpa/logback-core-package.png[]
+
+We have a hit, sadly... for *this package in this version*
+
+image::tssc-tpa/model-mesh-logback.png[]
+
+But, let's make sure we don't have some skeletons in the closet and check the vulnerabilities listed for this package, going to the "Vulnerabilities" tab:
+
+image::tssc-tpa/logback-core-package-vulnerabilities.png[]
+
+If we check the `CVE-2024-12798`, we can see that indeed there is more than one SBOM affected - since the CVE lists a version *range*, and on closer inspection of the dependencies, we can see that "devspaces" is using a newer, but also vulnerable version - according to the CVE:
+
+image::tssc-tpa/logback-core-package-vulnerabilities-also-devspaces.png[]
+
