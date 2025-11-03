@@ -1,0 +1,196 @@
+:imagesdir: ../../assets/images
+
+= The correlation challenge
+
+== Vulnerability Data (CVE)
+
+The primary information source that tells us if a package (as part of an SBOM) is vulnerable is the CVE (Common Vulnerabilities and Exposures).
+
+TPA imports this data from two sources
+
+image::tssc-tpa/tpa-importers.png[]
+
+1) The https://www.cve.org/[CVE Program^,window="info"] database 
+
+[NOTE]
+====
+Red Hat has been appointed https://www.cve.org/PartnerInformation/ListofPartners/partner/redhat['CNA, CNA-LR and root roles'^,window="info"] in the CVE program:
+
+* *CVE Numbering Authority (CNA)*: An authorized entity with specific scope and responsibility to regularly assign CVE IDs and publish corresponding CVE Records.
+
+* *CVE Numbering Authority of Last Resort (CNA-LR)*: A CNA authorized by a Root to assign CVE IDs and to publish corresponding CVE Records within that Root’s scope for vulnerabilities not covered by the Scope of another CNA.
+
+* *Root*: An organization authorized within the CVE Program that is responsible, within a specific Scope, for the recruitment, training, and governance of one or more entities that are a CNA, CNA-LR, or another Root.
+====
+
+2) The https://github.com/github/advisory-database[GitHub Advisory Database^,window="info"]
+
+Aggregates CVEs plus security advisories from
+
+* Security advisories reported on GitHub
+* The National Vulnerability Database
+* The npm Security Advisories Database
+* The FriendsOfPHP Database
+* The Go Vulnerability Database
+* The Python Packaging Advisory Database
+* The Ruby Advisory Database
+* The RustSec Advisory Database
+
+=== Identification
+
+There are two attributes by which a package and its version can be matched to CVE information: (_"log4j-core version 2.13.1 is affected"_):
+
+* https://github.com/package-url/purl-spec[purl^,window="info"] (package URL) 
+* https://nvd.nist.gov/products/cpe[CPE^,window="info"] (Common Platform Enumeration)
+
+Both sources above support these identifiers for CVEs.
+
+
+*Identifiers in SBOMs:*
+
+Both major SBOM formats support multiple identifier types:
+
+*CycloneDX:*
+
+- Supports three fields for vulnerability identification: CPE, PURL, and SWID
+- CPE for operating systems/applications/hardware, SWID for installed software, and PURL for software package metadata
+
+*SPDX:*
+
+- SPDX 2.2+ supports PURL as an external reference, and SPDX 3.0 promotes PURL more prominently
+- Also supports CPE via ExternalRef fields
+- Includes document-specific internal identifiers (SPDXID) for tracking relationships
+
+
+=== What's missing?
+
+With 
+
+* SBOMs listing packages and versions 
+* CVE data listing affected packages
+
+and both (SBOMs and CVE data) having enough data in common to successfully match - there isn't anything missing, is there? 
+
+What is missing is *_Context information_*, especially if related to software artifacts ("products") procured from vendors.
+
+A simple mapping will tell you - here's a product (an SBOM) that has this vulnerability (a vulnerable component). 
+
+A vendor could give you additional *context*, though: 
+
+* yes, it contains this vulnerability, but we are not using it in an exploitable fashion 
+* yes, it contains this vulnerability, but we have otherwise contained it
+* yes, it contains this vulnerability, but we have patched it from product version xyz+ 
+
+Similarly, in larger enterprises, development teams could provide that information for transparency and compliance reasons, such as
+
+* yes, we know package xyz is vulnerable but only if configured in a specific manner that we are not using. 
+
+== VEX to give Context
+
+CSAF (Common Security Advisory Framework) VEX files (Vulnerability Exploitability eXchange) provide context focusing on the exploitability of CVEs in a product context - effectively reducing the number of false positives.
+
+Vendor Advisories (such as Red Hat Advisories "RHSA-2025:1234") use this format to provide additional context and fix status to users of their software.
+
+
+image::tssc-tpa/SBOM-CSAF-VEX.png[Matching SBOMs & VEX, link=self,  window="image"]
+
+
+*Understanding the SBOM and CSAF-VEX Relationship*
+
+The diagram illustrates how SBOMs, VEX and CSAF-VEX are mapped and provide answers to
+
+* *"What's in this product?"*
+* *"What's affected by this CVE?"*
+
+*SBOM* - "What's in this product?"
+
+An SBOM represents the release of a *single product* and lists all its components. 
+
+_Here:_
+
+- Product: "quarkus-bom" 
+- Contains component: "apache-mime4j-core" version 0.8.3
+
+The SBOM answers: *"This release of our product contains these specific components and versions."*
+
+---
+
+*VEX* - "What's affected by this CVE?"
+
+A VEX document is organized around *one or more CVEs* and identifies which products/components are affected by that specific vulnerability. It's a *vulnerability-centric view*.
+
+*Example from diagram:*
+
+- CVE-2023-26464 affects "Red Hat Build of Quarkus"
+- The vulnerable component is "apache-mime4j-core" (found in RHBQ 2.13)
+- Status: "fixed" in version 0.8.3
+
+The VEX answers: *"This CVE affects these specific products, and here's the fix status."*
+
+==== 
+
+*The key insight:* A single vulnerable component (like apache-mime4j-core) can appear in multiple products, and a single CVE can affect multiple products that all use that component.
+
+====
+
+*How They Link Together: CPEs and PURLs*
+
+1. *SBOM lists components with identifiers:*
+   - CPE: `cpe:/a/redhat:quarkus:2.13::el8`
+   - PURL: `pkg:maven/org.apache.james/apache-mime4j-core@0.8.3:redhat-00008?type=jar`
+
+2. *VEX references the same identifiers:*
+   - Uses the same CPE/PURL to identify which component in which product
+   - Adds vulnerability status information
+
+3. *CSAF adds Vendor Advisory Context*
+   - CSAF-RHSA-2023:0758 is the security advisory document
+   - References both the product (via CPE) and the component status
+   - Shows the fixed version
+
+CSAF files — representations of a _single product release along with the CVEs that it fixes and the components that it ships_ — allow consumers to keep their SBOM up-to-date beyond its initial release. 
+
+SBOM files are static documents that contain a listing of components in a specific version of a product. For example, the RHEL 9.2 release has an accompanying SBOM that lists all components shipped by default in that release. Any *security advisories* released _after RHEL 9.2_ will update specific packages and provide information about component upgrades from those shipped in the 9.2 GA (generally available) version.
+
+VEX files then provide a listing of affectedness of a CVE to each and every product release. For example, a VEX file of a hypothetical CVE-2099-1000 would contain information about whether or not RHEL 9.2 is affected by the vulnerability tracked by this CVE.
+
+---
+
+=== Example Chain
+
+Let's trace through the example in the diagram:
+
+1. **A vendor releases a product:**
+   - Creates SBOM: "quarkus-bom contains apache-mime4j-core v0.8.3"
+
+2. **A vulnerability is discovered:**
+   - CVE-2023-26464 is published affecting apache-mime4j-core in earlier versions
+
+3. **VEX provides exploitability context:**
+   - "CVE-2023-26464 affects Red Hat Build of Quarkus"
+   - "The vulnerable component is RBase-RHBo 2.13:apache-mime4j-core:0.8.3:redhat-0008"
+   - "Status: FIXED in version 0.8.3"
+
+4. **CSAF publishes product advisory and updates:**
+   - RHSA-2023:0758 describes the complete security update
+   - References the product and fix details
+
+
+
+=== Why This Matters
+
+**Without VEX:** You might scan your SBOM and see apache-mime4j-core listed. A vulnerability scanner might flag CVE-2023-26464, causing alarm.
+
+**With VEX:** The vendor can tell you: "Yes, we use that component, but this CVE is already fixed in our version" or "This CVE doesn't affect how we use this component." This dramatically reduces false positives.
+
+== VEX Imports in TPA
+
+The default installation has a disabled importer for all Red Hat CSAF and VEX data. Customers that don't make extensive use of Red Hat products most probably don't have a requirement for that much data. 
+
+image::tssc-tpa/tpa-importers-csaf.png[link=self,  window="image"]
+
+
+However, VEX files, CSAF VEX and OSV Advisories can be uploaded via the UI (or via the API):
+
+image::tssc-tpa/tpa-upload-vex.png[link=self,  window="image"]
+

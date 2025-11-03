@@ -152,7 +152,12 @@
     "devfile",
     "keylessly",
     "hyperscaler",
-    "productisation"
+    "productisation",
+    "sboms",
+    "pipelinerun",
+    "fulltext",
+    "CISO"
+
   ],
   "ignoreWords": [
     "sysout",
@@ -212,7 +217,17 @@
     "Chainguard",
     "smallrye",
     "RHACS",
-    "SSDF"
+    "SSDF",
+    "SWID",
+    "SPDXID",
+    "RHSA",
+    "CSAF",
+    "RHBQ",
+    "pluginregistry",
+    "logback",
+    "rhdp",
+    "NCSC"
+
   ],
   "ignorePaths": [
     "node_modules/**",
