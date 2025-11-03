@@ -1,18 +1,8 @@
-= Customize {product_rhdh_name}
+= Lab: Customize {product_rhdh_name} Appearance
 
 include::partial$logout-links.adoc[]
 
-Organizations can customize {product_rhdh_name} (RHDH) in many different ways to align with their specific needs and deliver a tailored developer experience. Customization options include:
-
-* **Visual customizations**: Modify appearance elements like title, logo, fonts, colors, headers, and themes to reflect your organization's branding
-* **Functional customizations**: Set up access control, configure plugins, and adjust other functional settings to meet your operational requirements
-
-This module focuses on the first: Visual customizations. It demonstrates the fundamental method for customizing your {product_rhdh_name} instance by walking through title and logo changes as a practical example. 
-
-[NOTE]
-====
-The same configuration techniques apply to all customization types, whether visual or functional. Visit the xref:setup-rhdh/foundations.adoc[Setup {product_rhdh_name}] module to understand how to configure functional aspects of a {product_rhdh_name} instance, like access control and plugin settings.
-====
+You can change {product_rhdh_name} appearance by configuring elements of the visual _theme_.
 
 {product_rhdh_name} provides two themes:
 
@@ -20,7 +10,7 @@ The same configuration techniques apply to all customization types, whether visu
 
 * The _Backstage_ theme is the simple base theme from {product_rhdh_name}'s open source https://backstage.io/[Backstage^] core.
 
-While more advanced project requirements might https://backstage.io/docs/conf/user-interface/#theming-architecture-overview[replace the entire theme^] with a custom provider or providers, this module focuses on the more common deployment task of modifying the included theme with visual elements that suit a company, brand, or team style.
+While advanced or reseller requirements might https://backstage.io/docs/conf/user-interface/#theming-architecture-overview[replace the entire theme^] with a custom provider or providers, this module focuses on the more common deployment task of modifying the included theme with visual elements that suit a company, brand, or team style.
 // "this code will create a simple functional home page": 3570 lines of YAML
 //
 // Some reluctance to include above link to backstage theme doc bc
@@ -36,7 +26,7 @@ The default theme mode is Auto, which sets {product_rhdh_name}'s Light or Dark m
 
 To select a theme mode, click your user name at the top right of any Developer Hub view and select *Settings* from the displayed menu to open the settings screen. Select the desired mode from the _Appearance_ section.
 
-image::customize-rhdh/uset-appearance.png[]
+image::rhdh-ui/uset-appearance.png[]
 
 === Save Screen Space
 
@@ -50,13 +40,13 @@ Each user can also choose whether to "pin" the left-hand sidebar in its expanded
 
 In the Developer Hub app-config, you can customize theme components including:
 
-* Company name and logo
+* Site/Page Title and Logo
 * Font color, size, and style of text in paragraphs, headings, headers, and buttons
 * Header color and gradient
 
 This module shows how to change the display title and logo to illustrate the procedure for customizing {product_rhdh_name} appearance. The xref:setup-rhdh/foundations.adoc[Setup {product_rhdh_name}] module uses the same method to configure functional aspects of a {product_rhdh_name} instance, like access control and plugin settings.
 
-== Lab
+== Customize {product_rhdh_name} Title and Logo
 
 At the overview level, specifying a title and logo for your {product_rhdh_name} takes 3 primary steps:
 First, you'll create a _Project_ (a namespace) for your custom RHDH instance. In that Project you'll create a _ConfigMap_ to store instance configuration, including an embedded image. Then, you'll create a short _CustomResource_ to define the RHDH instance you'd like the cluster to create and manage.
@@ -70,7 +60,7 @@ First, you'll create a _Project_ (a namespace) for your custom RHDH instance. In
 . Navigate to *Home > Projects*, then click the *Create project* button.
 . Enter the name `brand-rhdh` in the displayed dialog, then click *Create*.
 +
-image::customize-rhdh/create-proj.png[]
+image::rhdh-ui/create-proj.png[]
 
 === The app-config ConfigMap
 
@@ -84,7 +74,7 @@ The `app.title` key accepts a quoted string value to set the visible `<title>` e
 
 The `fullLogo` key accepts a base64-encoded SVG, PNG, or JPEG image to be shown at the top left corner of {product_rhdh_name} pages.
 
-image::customize-rhdh/fullLogo-default.png[]
+image::rhdh-ui/fullLogo-default.png[]
 
 {product_rhdh_name} uses encoded images for visual elements so they can be embedded in app-config rather than referencing an external file or URL.
 
@@ -212,7 +202,7 @@ NOTE: If *Application is not available* is displayed when you click the Location
 +
 . Select *Guest* to log in with just enough privilege to see the results of your title and logo customizations.
 
-image::customize-rhdh/brand-rhdh-logo.png[]
+image::rhdh-ui/brand-rhdh-logo.png[]
 
 [NOTE]
 ====
@@ -239,13 +229,3 @@ Once you've catenated the image specification with the encoded image data, copy 
 
 If your source logo image is in the (more desirable) SVG format, specify `data:image/svg+xml;base64` in your B64_FULL_LOGO variable. For a jpeg, specify `data:image/jpeg;base64`.
 ====
-
-== Tech Docs
-
-The TechDocs feature is installed by default with Red Hat Developer Hub. TechDocs provides a central and standardized system for creating, finding, and reading technical documentation.
-
-* Docs-as-Code: Documentation source files are stored alongside code in the same repository, conventionally in Markdown format. This promotes a "docs-as-code" process, making it easier and more obvious for developers to update documentation with the codebase.
-
-* Centralized, Yet Distributed: TechDocs centralizes the access point for all documentation within the Red Hat Developer Hub portal, while the documentation source files remain distributed across repositories owned by the teams that develop, use, and maintain them.
-
-* Automated Rendering and Publishing: TechDocs generates static HTML from Markdown or similar source files. This integrates into CI/CD processes to automate publishing. The generated HTML files are collected, accessible, and, most importantly, searchable alongside code, repos, APIs and services in {product_rhdh_name}.

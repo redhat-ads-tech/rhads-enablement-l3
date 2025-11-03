@@ -1,0 +1,103 @@
+= Tech Docs
+
+The TechDocs feature is installed by default with {product_rhdh_name}. TechDocs provides a central and standardized system for creating, finding, and reading technical documentation.
+
+* Docs-as-Code: Documentation source files are stored alongside code in the same repository, making it easier and more obvious for developers to update documentation along with code.
+
+* Centralized, but Distributed: TechDocs centralizes access to documentation within the developer portal, while distributing the documentation source files across repositories owned by the teams that develop, use, and maintain them.
+
+* Automated Rendering and Publishing: TechDocs (usually) generates static HTML from Markdown source files. This integrates into CI/CD processes to automate publication. Generated documentation is collected, accessible, and, most importantly, searchable alongside code, repos, APIs, and services in {product_rhdh_name}.
+
+== How it works
+
+TechDocs assumes documentation is a part of nearly every _Component_ in a {product_rhdh_name} Catalog. At a high level, TechDocs fetches, renders, and presents that documentation with the process enumerated below. Definitions and details follow in subsequent sections.
+
+. Docs reside with Component source in the Component repository, conventionally in https://manpages.debian.org/trixie/libmarkdown2-dev/markdown.7.en.html[Markdown^] format in a directory named `docs`.
+
+. A repository has a _build_ process, such as a pipeline or a GitHub action, triggered when changes happen. Usually this is when a commit changes the relevant source repository branch.
+
+. Part of that pipeline _generates_ static HTML from the Markdown source found beneath `/docs` and stores the result in a location accessible to TechDocs. This location is conventionally an AWS S3 _bucket_, or other storage presenting the S3 API.
+
+. The TechDocs plugin in {product_rhdh_name} _publishes_ the rendered documentation, making it available throughout {product_rhdh_name}: in the top level left navigation **Docs** item, from links within its Component, and in other relevant locations.
+
+. Edit icons on each document link back to the document source in the Component repository's `docs` directory. Developers edit documentation using repository service web editors, OpenShift DevSpaces, their favorite IDE, or any text editor, and add their changes to the repository through their team's usual code review/test/commit process. This is commonly represented by the generation of a _Pull Request_ (PR) in services like GitHub or GitLab.
+
+. When such changes are committed, TechDocs processing returns to Step #2, above.
+
+== Out of the box in {product_rhdh_name}
+
+The default installation of {product_rhdh_name} simplifies TechDocs processing with a lightweight local TechDocs instance. This provides complete TechDocs documentation editing, automatic rendering, and centralized discovery and reading without immediately setting up external requirements such as storage and pipelines. In this configuration TechDocs writes rendered documentation to ephemeral storage. This means generated HTML will not survive restarts of the Developer Hub Pod without further arrangement. In practice, for most introductory use this is not a problem, because documents are rendered again from their Markdown source and the cache of static HTML rebuilt on demand.
+
+Note, however, that {product_rhdh_name} documentation clearly states that the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/techdocs_for_red_hat_developer_hub/configuring-techdocs[included lightweight TechDocs configuration is not intended for production^] use.
+
+//Rebuild would be expensive if walking src repos of many components. BUT
+//constrained 1st by freq of RHDH restarts, 2nd by trigger tied to page req.
+//We don't build all docs at restart. Build on demand more or less,
+//modulo mkdocs ingesting eg, /docs/*, not just /docs/changed.md.
+//How many of the assumptions about scaling in
+//<https://backstage.io/docs/features/techdocs/architecture/>
+//apply to an OCP:RHADS:RHDH deployment?
+
+== Builder, Generator, Publisher
+
+Examine OpenShift > Administrator perspective > Project: `tssc-dh` > Workloads > ConfigMaps > 
+tssc-developer-hub-app-config
+
+The excerpt below shows the TechDocs process configuration defined in the `tssc-developer-hub-app-config` ConfigMap in the `tssc-dh` Project.
+
+[source,yaml]
+----
+[...]
+    techdocs:
+        builder: local
+        generator:
+            runIn: local
+        publisher:
+            type: local
+[...]
+----
+
+=== techdocs.builder
+
+The TechDocs _builder_ value determines whether settings for a resident TechDocs build process are available. With `builder: local`, the generation and publication steps may also be performed by TechDocs. If _builder_ is set to `external`, TechDocs assumes documents are generated and stored elsewhere and does no processing of documentation source, instead expecting to fetch and serve fully baked static HTML with the _publisher_ component alone.
+
+=== techdocs.generator
+
+The configured _generator_ compiles documentation source into presentation HTML. In the default configuration, _generator_'s _runIn_ attribute is `local`. The setting of _builder_ to `local` already implies that TechDocs will itself retrieve documentation source from entity repositories and convert it to HTML. Here, `local` sets the generator to _runIn_ the same process space as TechDocs.
+
+[NOTE]
+====
+The value of _generator_ _runIn_ may instead be `docker`, an anachronistic misnomer that refers to running the generator in its own Linux container. This is seen for example in development setups running directly on a host and using a generator container for convenience and isolation. Your {product_rhdh_name} instance is already running in a container, inside a Pod, as part of a Deployment on an OpenShift cluster. Setting _generator_ to _runIn_ the _local_ context avoids running a container inside of a container without due cause.
+====
+
+The TechDocs _generator_ is named and somewhat structured for modularity, so that the generator may be replaced by other implementations at specific sites today or in general releases in the future. This allows the possibility of converting documentation source in different formats in different ways and into different output products. Today, the TechDocs _generator_ is almost always https://github.com/backstage/mkdocs-techdocs-core[mkdocs-techdocs-core^], a plugin for the underlying https://www.mkdocs.org/[MkDocs^] site generator. This combination takes Markdown source as input and outputs static HTML.
+
+=== techdocs.publisher
+
+The name _publisher_ is somewhat overloaded. As the name implies, the publisher serves generated HTML documentation to Developer Hub users for reading in a web browser. When _builder_ is `local`, the publisher also handles writing prepared HTML to storage, later fetching it back to serve it. The value of _publisher.type_ determines where the publisher stores generated HTML. When _type_ is `local`, _publisher_ writes HTML to and serves it from storage locally available to the RHDH process. As shown above, the default lightweight TechDocs is configured with `techdocs.publisher.type: local`. The _publisher_ _type_ may instead be one of a few external storage providers, including `awsS3`. External storage configuration is part of the the second TechDocs lab.
+
+== Developer Experience: Find, Read, Edit Documentation
+
+The lightweight TechDocs process included in {product_rhdh_name} provides exactly the expected view/edit/build/view cycle for component documentation creators and users. While functionally equivalent, the default deployment is not recommended for production because it may not scale well to many documents, repositories, or developers.
+
+The build process configured entirely for the _local_ TechDocs context works like this:
+
+. As always, documentation source is stored alongside application code in the component repository.
+
+. A developer edits documentation source and commits changes to the component repository. In the default arrangement, this does not immediately trigger the documentation build process. The new document will be generated on demand when its HTML representation is next requested.
+
+. The developer's teammate looks up TechDocs for the component. TechDocs checks if document source has changed since the HTML was last generated. If it has, the _mkdocs-techdocs-core_ MkDocs plugin drives the MkDocs site builder in Developer Hub's _techdocs-backend_ module to render the Markdown source into HTML. The new HTML representation is made available to the teammate in the following series of display element updates:
+
+=== View the Latest Doc
+
+A new request for a document triggers TechDocs to check for updates in the document's source repository.
+
+When the source has changed, _techdocs-backend_ rebuilds the HTML representation and the page presents a banner. First, with a blue outline, the banner indicates the update is in progress.
+
+image::rhdh-ui/builddoc.png[]
+
+When generation is complete, the banner dons a green outline and asks the viewer to _please refresh_.
+
+image::rhdh-ui/plsrefr.png[]
+
+Clicking the **Refresh** link reloads the page with the latest HTML.
