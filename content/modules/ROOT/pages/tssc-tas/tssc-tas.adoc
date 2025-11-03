@@ -1,0 +1,68 @@
+:imagesdir: ../assets/images
+
+= Attestations, Tekton Chains & Enterprise Contract with TAS
+
+== Attestations with TAS
+
+In a previous chapter: xref:security-practices/security-practices.adoc[Foundations and Frameworks] and the corresponding exercise xref:security-practices/ex3-provenance.adoc[Provenance & Attestations] we already covered the basic principles of:
+
+* What is an attestation
+** Signed and attached metadata of any kind
+* What format are attestations "wrapped in"
+** The `in-toto` attestation format
+* What is a "predicate"
+** Basically the attestation "payload"
+* What predicates types are there
+** You can define your own, but common predicate types include SBOMs and SLSA provenance information
+* What is provenance
+** Metadata describing the build process, build sources, etc - describing how an artifact was generated and the data that was used to build it
+
+If you are new to this topic (i.e. you haven't followed any of the previous topics discussing Supply Chain Security) then please follow the two lessons above - otherwise many of the topics discussed here may not make much sense to you.
+
+== Tekton Chains
+
+What is Tekton Chains?
+
+== Enterprise Contract (Conforma)
+
+// TODO: Add Enterprise Contract content
+
+== Integration with TAS
+
+// TODO: Add TAS integration content 
+
+
+"Lecture
+Different types of attestations
+
+What is Tekton Chains
+
+The role of Enterprise Contract / Conforma (TAS)
+
+Intro to Rego policy language
+
+Generating provenance in other build systems
+
+Generic attestation (beyond SLSA)
+
+Sigstore Admission Controller vs ACS Admission controller
+
+
+Lab
+Configure Tekton Chains
+
+Dissect the Chains attestation
+
+Use Conforma (previously EC) to validate policies
+
+Build a generic attestation
+
+Build a custom EC Policy to validate it
+
+Configure the Sigstore 
+
+Rego Policy Language (build, validate attestations)
+
+Admission Controller as part of TAS (will be part of the next version)
+
+Keyless verification"

@@ -39,7 +39,7 @@
 *** xref:security-practices/ex3-provenance.adoc[Provenance & Attestations]
 *** xref:security-practices/ex4-sboms.adoc[SBOM Creation]
 * xref:tssc-tpa.adoc[Module 8: Trusted Software Supply Chain with TPA]
-* xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
+* xref:tssc-tas/tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
 * xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle]
 ** xref:production-rhdh/introduction.adoc[Foundations]
 *** xref:production-rhdh/introduction.adoc[An overview of the composite product set (RHADS)]
