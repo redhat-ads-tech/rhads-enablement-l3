@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Software Supply Chain Security: Foundations and Frameworks :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/security-practices/security-practices.html">
+    <link rel="prev" href="overview.html">
+    <link rel="next" href="understanding-keyless.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../customize-rhdh.html">Module 5: Customize Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../customize-rhdh.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../customize-rhdh.html#_lab">Hands-on Lab</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="overview.html">Module 7: Getting started with security best practices</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview.html">Overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="security-practices.html">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="understanding-keyless.html">Understanding Keyless Signing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex1-signing-images.html">Image Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex2-git-signing.html">Commit Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex3-provenance.html">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex4-sboms.html">SBOM Creation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/introduction.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/lab.html">Full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 11: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 12: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 13: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Module 14: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.html">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 15: RHADS Complete: Summary and Next Steps</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="overview.html">Module 7: Getting started with security best practices</a></li>
+    <li><a href="security-practices.html">Foundations and Frameworks</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Software Supply Chain Security: Foundations and Frameworks</h1>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Software supply chains are the backbone of modern application development. Every application you build relies on an ecosystem of dependencies, build tools, repositories, CI/CD pipelines, and distribution mechanisms. While this ecosystem enables rapid development and deployment, it also creates numerous opportunities for attackers to compromise your software before it ever reaches production.</p>
+</div>
+<div class="paragraph">
+<p>This reading material establishes the foundational concepts of software supply chain security, introduces the SLSA framework, and explains how signatures, attestations, and SBOMs work together to create a secure and verifiable software supply chain.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_part_1_understanding_software_supply_chain_security"><a class="anchor" href="#_part_1_understanding_software_supply_chain_security"></a>Part 1: Understanding Software Supply Chain Security</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_a_software_supply_chain"><a class="anchor" href="#_what_is_a_software_supply_chain"></a>What is a Software Supply Chain?</h3>
+<div class="paragraph">
+<p>A <strong>software supply chain</strong> encompasses all the components, processes, systems, and people involved in producing, distributing, and deploying software. This includes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Source code</strong> and version control systems</p>
+</li>
+<li>
+<p><strong>Dependencies</strong>: third-party libraries, open-source packages, and proprietary components</p>
+</li>
+<li>
+<p><strong>Build systems</strong> and CI/CD pipelines</p>
+</li>
+<li>
+<p><strong>Build environments</strong> and infrastructure</p>
+</li>
+<li>
+<p><strong>Package registries</strong> and artifact repositories</p>
+</li>
+<li>
+<p><strong>Distribution mechanisms</strong></p>
+</li>
+<li>
+<p><strong>Deployment platforms</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In a typical modern application, the supply chain is complex and interconnected. A single container image might depend on dozens of open-source libraries, each with their own dependencies, all built using various tools and platforms. This complexity creates a large attack surface.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_software_supply_chain_security_matters"><a class="anchor" href="#_why_software_supply_chain_security_matters"></a>Why Software Supply Chain Security Matters</h3>
+<div class="paragraph">
+<p>Software supply chain attacks have become increasingly prevalent and devastating. Unlike traditional attacks that target deployed applications directly, supply chain attacks compromise the software development and delivery process itself. These attacks are particularly dangerous because:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>High Impact</strong>: A single compromise can affect thousands or millions of downstream users</p>
+</li>
+<li>
+<p><strong>Trust Exploitation</strong>: Attackers exploit the trust relationships between software producers and consumers</p>
+</li>
+<li>
+<p><strong>Difficult Detection</strong>: Malicious code inserted during the build process can bypass traditional security controls</p>
+</li>
+<li>
+<p><strong>Persistent Threats</strong>: Once embedded in widely-used software, compromises can persist for extended periods</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notable_supply_chain_attacks"><a class="anchor" href="#_notable_supply_chain_attacks"></a>Notable Supply Chain Attacks</h3>
+<div class="paragraph">
+<p>Understanding real-world attacks helps illustrate why supply chain security is critical:</p>
+</div>
+<div class="paragraph">
+<p><strong>SolarWinds (2020)</strong>: Attackers compromised SolarWinds' build environment and inserted malicious code into the Orion platform update mechanism. This backdoor was distributed to over 18,000 organizations, including major corporations and U.S. government agencies. The attack demonstrated how compromising a trusted software vendor can provide access to vast numbers of downstream targets.</p>
+</div>
+<div class="paragraph">
+<p><strong>Codecov (2021)</strong>: Attackers modified the Bash Uploader script used in CI/CD pipelines, turning it into a mechanism for stealing credentials and secrets from development environments. This affected numerous software companies that used Codecov for code coverage reporting.</p>
+</div>
+<div class="paragraph">
+<p><strong>Log4j (2021)</strong>: While not a traditional supply chain attack, the Log4j vulnerability (Log4Shell) highlighted the widespread risk of vulnerabilities in ubiquitous dependencies. The vulnerability affected countless applications worldwide because Log4j is embedded in thousands of software products.</p>
+</div>
+<div class="paragraph">
+<p><strong>npm dependency confusion</strong>: Attackers exploited how package managers resolve dependencies by uploading malicious packages to public repositories with names matching internal private packages. Organizations that didn&#8217;t properly configure their package managers inadvertently installed malicious code.</p>
+</div>
+<div class="paragraph">
+<p><strong>3CX (2023)</strong>: The desktop applications of this communications software provider were compromised in a supply chain attack. The malicious code was signed with valid 3CX certificates, suggesting the build environment itself had been compromised.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_attack_surface_key_threat_vectors"><a class="anchor" href="#_the_attack_surface_key_threat_vectors"></a>The Attack Surface: Key Threat Vectors</h3>
+<div class="paragraph">
+<p>Software supply chain attacks can target multiple points in the development and delivery lifecycle:</p>
+</div>
+<div class="sect3">
+<h4 id="_source_code_threats"><a class="anchor" href="#_source_code_threats"></a>Source Code Threats</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Malicious code introduction</strong>: Attackers with access to repositories can insert vulnerabilities or backdoors</p>
+</li>
+<li>
+<p><strong>Compromised developer accounts</strong>: Stolen credentials can be used to commit malicious changes</p>
+</li>
+<li>
+<p><strong>Insecure developer workstations</strong>: Compromised development environments can introduce malicious code</p>
+</li>
+<li>
+<p><strong>Lack of code review</strong>: Insufficient review processes allow malicious or vulnerable code to be merged</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_build_system_threats"><a class="anchor" href="#_build_system_threats"></a>Build System Threats</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Compromised build infrastructure</strong>: Attackers who gain access to build systems can modify artifacts during compilation</p>
+</li>
+<li>
+<p><strong>Malicious build dependencies</strong>: Build tools and plugins can be compromised to inject malicious code</p>
+</li>
+<li>
+<p><strong>Unauthorized build modifications</strong>: Without proper controls, builds can be altered without detection</p>
+</li>
+<li>
+<p><strong>Dependency confusion</strong>: Attackers can trick build systems into using malicious dependencies</p>
+</li>
+<li>
+<p><strong>Compromised build credentials</strong>: Stolen credentials can be used to modify or replace legitimate artifacts</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_distribution_and_deployment_threats"><a class="anchor" href="#_distribution_and_deployment_threats"></a>Distribution and Deployment Threats</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Package registry compromise</strong>: Attackers with access to registries can replace legitimate packages with malicious ones</p>
+</li>
+<li>
+<p><strong>Man-in-the-middle attacks</strong>: Artifacts can be intercepted and modified during distribution</p>
+</li>
+<li>
+<p><strong>Compromised signing keys</strong>: If signing keys are stolen, attackers can sign malicious artifacts as legitimate</p>
+</li>
+<li>
+<p><strong>Lack of artifact verification</strong>: Without verification mechanisms, consumers cannot detect tampered artifacts</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dependency_threats"><a class="anchor" href="#_dependency_threats"></a>Dependency Threats</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Vulnerable dependencies</strong>: Known vulnerabilities in third-party components</p>
+</li>
+<li>
+<p><strong>Unmaintained dependencies</strong>: Abandoned projects that no longer receive security updates</p>
+</li>
+<li>
+<p><strong>Typosquatting</strong>: Packages with similar names to legitimate ones designed to trick developers</p>
+</li>
+<li>
+<p><strong>Transitive dependencies</strong>: Vulnerabilities or malicious code in dependencies of dependencies</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_core_principles_of_supply_chain_security"><a class="anchor" href="#_core_principles_of_supply_chain_security"></a>Core Principles of Supply Chain Security</h3>
+<div class="paragraph">
+<p>Protecting software supply chains requires a multi-layered approach focusing on several key principles:</p>
+</div>
+<div class="paragraph">
+<p><strong>1. Integrity</strong>: Ensure that software and artifacts are not tampered with during development, build, and distribution. This includes protecting source code, build processes, and deployed artifacts.</p>
+</div>
+<div class="paragraph">
+<p><strong>2. Transparency</strong>: Maintain visibility into all components and processes in the supply chain. Organizations should know what components they&#8217;re using, where they came from, and how they were built.</p>
+</div>
+<div class="paragraph">
+<p><strong>3. Verification</strong>: Implement mechanisms to verify the authenticity and integrity of software at each stage. This includes signing artifacts and validating signatures before use.</p>
+</div>
+<div class="paragraph">
+<p><strong>4. Provenance</strong>: Track the origin and build history of software artifacts. Knowing how software was built and where it came from is essential for trust.</p>
+</div>
+<div class="paragraph">
+<p><strong>5. Accountability</strong>: Establish clear ownership and responsibility for each component and process. This enables incident response and continuous improvement.</p>
+</div>
+<div class="paragraph">
+<p><strong>6. Least Privilege</strong>: Limit access to source code, build systems, and signing keys to only those who need it. Minimize the blast radius of a potential compromise.</p>
+</div>
+<div class="paragraph">
+<p><strong>7. Automation</strong>: Automate security controls to reduce human error and ensure consistent application of security policies.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_part_2_slsa_supply_chain_levels_for_software_artifacts"><a class="anchor" href="#_part_2_slsa_supply_chain_levels_for_software_artifacts"></a>Part 2: SLSA - Supply Chain Levels for Software Artifacts</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_slsa"><a class="anchor" href="#_what_is_slsa"></a>What is SLSA?</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/security-practices/slsa-dancing-goose-logo.svg" alt="slsa dancing goose logo">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><a href="https://slsa.dev/"><strong>SLSA</strong> (Supply Chain Levels for Software Artifacts, pronounced "salsa")</a> is a security framework designed to protect software supply chains from tampering and improve software artifact integrity. SLSA provides a common language and set of incrementally adoptable guidelines for securing software supply chains.</p>
+</div>
+<div class="paragraph">
+<p>SLSA is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A <strong>security framework</strong> that defines standards and controls to prevent tampering and improve integrity</p>
+</li>
+<li>
+<p>A <strong>checklist</strong> of increasing security requirements organized into levels</p>
+</li>
+<li>
+<p>A <strong>common language</strong> for discussing supply chain security maturity</p>
+</li>
+<li>
+<p>An <strong>actionable guide</strong> for organizations to improve their security posture progressively</p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_origins_and_history_of_slsa"><a class="anchor" href="#_origins_and_history_of_slsa"></a>Origins and History of SLSA</h3>
+<div class="paragraph">
+<p>SLSA was originally proposed by <strong>Google</strong> in 2021 as a response to the escalating threats against software supply chains. Google drew from its internal "Binary Authorization for Borg" (BAB) system, which had been protecting Google&#8217;s production services for years.</p>
+</div>
+<div class="paragraph">
+<p>In April 2023, SLSA version 1.0 was released by the <strong>Open Source Security Foundation (OpenSSF)</strong>, marking SLSA&#8217;s transition from a Google project to a vendor-neutral, community-driven initiative. SLSA is now maintained by a steering committee that includes representatives from major technology companies including Google, <strong>Red Hat</strong>, Microsoft, IBM, GitHub, VMware, Intel, and security-focused organizations.</p>
+</div>
+<div class="paragraph">
+<p>The project is hosted under the <strong>OpenSSF</strong>, part of the Linux Foundation, ensuring broad industry input and adoption.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_slsas_purpose_and_goals"><a class="anchor" href="#_slsas_purpose_and_goals"></a>SLSA&#8217;s Purpose and Goals</h3>
+<div class="paragraph">
+<p>SLSA was created to address several key challenges in software supply chain security:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Lack of Standards</strong>: Before SLSA, there was no common framework for evaluating supply chain security</p>
+</li>
+<li>
+<p><strong>Fragmented Approaches</strong>: Organizations used different methods, making it difficult to assess security posture</p>
+</li>
+<li>
+<p><strong>Progressive Hardening</strong>: SLSA provides a path from basic security to advanced protections</p>
+</li>
+<li>
+<p><strong>Measurable Security</strong>: SLSA levels provide concrete, measurable security improvements</p>
+</li>
+<li>
+<p><strong>Industry Alignment</strong>: A common framework enables collaboration and mutual recognition</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>SLSA aims to help:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Producers</strong>: Protect their software from tampering and insider threats</p>
+</li>
+<li>
+<p><strong>Consumers</strong>: Verify that software hasn&#8217;t been compromised</p>
+</li>
+<li>
+<p><strong>Infrastructure Providers</strong>: Harden build platforms and processes according to defined standards</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_understanding_slsa_levels"><a class="anchor" href="#_understanding_slsa_levels"></a>Understanding SLSA Levels</h3>
+<div class="paragraph">
+<p>SLSA defines four levels of increasing security assurance. Each level builds upon the previous one, making adoption incremental and practical. The levels were designed to start with easy, basic requirements and progress to more rigorous controls that protect against sophisticated attacks.</p>
+</div>
+<div class="paragraph">
+<p>As of SLSA v1.0, the framework is organized into <strong>tracks</strong>, each focusing on a specific area of the supply chain:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Build Track</strong>: Focuses on securing the build process (the primary focus of SLSA v1.0)</p>
+</li>
+<li>
+<p><strong>Source Track</strong>: Addresses source code integrity (in development)</p>
+</li>
+<li>
+<p><strong>Dependencies Track</strong>: Covers dependency management (in development)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For the Build Track, here are the four levels:</p>
+</div>
+<div class="sect3">
+<h4 id="_slsa_build_level_0_no_requirements"><a class="anchor" href="#_slsa_build_level_0_no_requirements"></a><strong>SLSA Build Level 0: No Requirements</strong></h4>
+<div class="paragraph">
+<p>This represents the absence of SLSA - no provenance, no guarantees. This is typical for local development builds or test builds that don&#8217;t require formal security controls.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_slsa_build_level_1_provenance_exists"><a class="anchor" href="#_slsa_build_level_1_provenance_exists"></a><strong>SLSA Build Level 1: Provenance Exists</strong></h4>
+<div class="paragraph">
+<p><strong>Goal</strong>: Document how artifacts were built</p>
+</div>
+<div class="paragraph">
+<p><strong>Key Requirements</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The build process must be <strong>fully scripted/automated</strong> (not manual)</p>
+</li>
+<li>
+<p><strong>Provenance is generated</strong> that describes how the artifact was built</p>
+</li>
+<li>
+<p>Provenance includes information about the build process, including:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>What was built (the artifact)</p>
+</li>
+<li>
+<p>How it was built (build process/commands)</p>
+</li>
+<li>
+<p>What inputs were used (dependencies, source code)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Protection Level</strong>: Minimal. Level 1 provides basic transparency but can be easily forged since provenance is not signed or verified.</p>
+</div>
+<div class="paragraph">
+<p><strong>Use Case</strong>: Initial adoption, internal development, establishing visibility into build processes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_slsa_build_level_2_provenance_is_signed"><a class="anchor" href="#_slsa_build_level_2_provenance_is_signed"></a><strong>SLSA Build Level 2: Provenance is Signed</strong></h4>
+<div class="paragraph">
+<p><strong>Goal</strong>: Verify that artifacts come from a trusted build service</p>
+</div>
+<div class="paragraph">
+<p><strong>Key Requirements</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All requirements from Level 1</p>
+</li>
+<li>
+<p><strong>Provenance is signed</strong> by the build service using a private key</p>
+</li>
+<li>
+<p>The build service must be <strong>hosted</strong> (not running on developer workstations)</p>
+</li>
+<li>
+<p>The build service must be <strong>service-generated</strong> (provenance is created by the build platform itself, not build steps)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Protection Level</strong>: Moderate. Level 2 provides cryptographic guarantees about provenance authenticity. Attackers cannot forge provenance without access to the build service&#8217;s signing keys. However, compromising the build service itself is still possible.</p>
+</div>
+<div class="paragraph">
+<p><strong>Threats Mitigated</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Prevents tampering with provenance</p>
+</li>
+<li>
+<p>Protects against builds run on compromised developer machines</p>
+</li>
+<li>
+<p>Enables verification that artifacts came from the intended build service</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Use Case</strong>: Production software that requires verifiable provenance and protection against basic tampering.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_slsa_build_level_3_provenance_is_non_falsifiable"><a class="anchor" href="#_slsa_build_level_3_provenance_is_non_falsifiable"></a><strong>SLSA Build Level 3: Provenance is Non-Falsifiable</strong></h4>
+<div class="paragraph">
+<p><strong>Goal</strong>: Ensure provenance cannot be forged even with access to build configuration</p>
+</div>
+<div class="paragraph">
+<p><strong>Key Requirements</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All requirements from Level 2</p>
+</li>
+<li>
+<p><strong>Source and build platform are tamper-proof</strong>: The build system must prevent user-defined build steps from accessing the provenance generation and signing mechanisms</p>
+</li>
+<li>
+<p><strong>Build definition is derived from source</strong>: The build instructions must come from version-controlled source, not passed at build time</p>
+</li>
+<li>
+<p><strong>All external parameters are recorded</strong> in provenance</p>
+</li>
+<li>
+<p>Provenance is <strong>generated before</strong> build steps run (preventing manipulation)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Protection Level</strong>: Strong. Level 3 ensures that even a malicious actor who controls the build configuration cannot forge provenance or hide their actions.</p>
+</div>
+<div class="paragraph">
+<p><strong>Threats Mitigated</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Insider threats (malicious developers)</p>
+</li>
+<li>
+<p>Compromised build configurations</p>
+</li>
+<li>
+<p>Unauthorized modifications during build</p>
+</li>
+<li>
+<p>Build environment tampering</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Use Case</strong>: Critical software where integrity is paramount, regulated environments, software serving large user bases.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_slsa_build_level_4_hermetic_and_reproducible_builds"><a class="anchor" href="#_slsa_build_level_4_hermetic_and_reproducible_builds"></a><strong>SLSA Build Level 4: Hermetic and Reproducible Builds</strong></h4>
+<div class="paragraph">
+<p><strong>Goal</strong>: Achieve the highest level of confidence in build integrity</p>
+</div>
+<div class="paragraph">
+<p><strong>Key Requirements</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All requirements from Level 3</p>
+</li>
+<li>
+<p><strong>Hermetic builds</strong>: Build processes run in completely isolated environments with no network access and explicitly declared dependencies only</p>
+</li>
+<li>
+<p><strong>Reproducible builds</strong>: Two independent builds from the same source produce bit-for-bit identical outputs</p>
+</li>
+<li>
+<p><strong>Two-party review</strong> of source changes</p>
+</li>
+<li>
+<p>Complete <strong>audit trail</strong> of all changes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Protection Level</strong>: Maximum. Level 4 provides the highest assurance that builds are correct and untampered.</p>
+</div>
+<div class="paragraph">
+<p><strong>Threats Mitigated</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All threats from previous levels</p>
+</li>
+<li>
+<p>Network-based attacks during build</p>
+</li>
+<li>
+<p>Undeclared dependencies</p>
+</li>
+<li>
+<p>Non-deterministic build processes</p>
+</li>
+<li>
+<p>Supply chain injection attacks</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Use Case</strong>: Extremely sensitive software, national security applications, software where regulatory compliance demands the highest level of assurance.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_slsa_tracks_and_future_development"><a class="anchor" href="#_slsa_tracks_and_future_development"></a>SLSA Tracks and Future Development</h3>
+<div class="paragraph">
+<p>While SLSA v1.0 focuses on the Build Track, the framework is designed to expand to cover the entire software supply chain:</p>
+</div>
+<div class="paragraph">
+<p><strong>Source Track</strong> (in development): Will address protecting source code repositories, ensuring code review processes, and preventing unauthorized modifications to source.</p>
+</div>
+<div class="paragraph">
+<p><strong>Dependencies Track</strong> (in development): Will focus on managing third-party dependencies, verifying their integrity, and assessing their security posture.</p>
+</div>
+<div class="paragraph">
+<p>The track-based approach makes SLSA more modular and practical to adopt. Organizations can achieve higher levels in one track while progressing in others, rather than needing to meet all requirements simultaneously.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_slsa_matters"><a class="anchor" href="#_why_slsa_matters"></a>Why SLSA Matters</h3>
+<div class="paragraph">
+<p>SLSA provides concrete, measurable benefits:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Risk Reduction</strong>: Systematically addresses supply chain vulnerabilities</p>
+</li>
+<li>
+<p><strong>Incident Response</strong>: When attacks occur, provenance helps determine what was affected</p>
+</li>
+<li>
+<p><strong>Compliance</strong>: Many regulations now require supply chain security controls</p>
+</li>
+<li>
+<p><strong>Trust</strong>: Demonstrates commitment to security to customers and partners</p>
+</li>
+<li>
+<p><strong>Vendor Management</strong>: Provides criteria for evaluating third-party software security</p>
+</li>
+<li>
+<p><strong>Progressive Improvement</strong>: Organizations can start small and improve incrementally</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_part_3_core_concepts_signatures_attestations_and_sboms"><a class="anchor" href="#_part_3_core_concepts_signatures_attestations_and_sboms"></a>Part 3: Core Concepts - Signatures, Attestations, and SBOMs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we understand the supply chain threat landscape and the SLSA framework, let&#8217;s explore three critical technical mechanisms that work together to secure software supply chains: <strong>signatures</strong>, <strong>attestations</strong>, and <strong>SBOMs</strong> (Software Bills of Materials).</p>
+</div>
+<div class="sect2">
+<h3 id="_digital_signatures_in_software_supply_chain_security"><a class="anchor" href="#_digital_signatures_in_software_supply_chain_security"></a>Digital Signatures in Software Supply Chain Security</h3>
+<div class="paragraph">
+<p><strong>Digital signatures</strong> provide cryptographic proof that a piece of software or metadata came from a specific entity and has not been altered.</p>
+</div>
+<div class="sect3">
+<h4 id="_signatures_in_supply_chain_security"><a class="anchor" href="#_signatures_in_supply_chain_security"></a><strong>Signatures in Supply Chain Security</strong></h4>
+<div class="paragraph">
+<p>In software supply chains, signatures are used to:</p>
+</div>
+<div class="paragraph">
+<p><strong>Verify Authenticity</strong>: Confirm that software came from the expected producer</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Container images signed by their publishers</p>
+</li>
+<li>
+<p>Packages signed by their maintainers</p>
+</li>
+<li>
+<p>Commits signed by authorized developers</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Detect Tampering</strong>: Ensure software hasn&#8217;t been modified after signing</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If content changes, the signature becomes invalid</p>
+</li>
+<li>
+<p>This protects against man-in-the-middle attacks and compromised registries</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Establish Trust Chains</strong>: Build hierarchies of trust</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Organizations sign artifacts with their keys</p>
+</li>
+<li>
+<p>Certificate authorities validate organizational identities</p>
+</li>
+<li>
+<p>Trust roots anchor the entire chain</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_traditional_vs_keyless_signing"><a class="anchor" href="#_traditional_vs_keyless_signing"></a><strong>Traditional vs. Keyless Signing</strong></h4>
+<div class="paragraph">
+<p><strong>Traditional Signing</strong> requires managing long-lived signing keys:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Advantages</strong>: Full control over keys, works offline</p>
+</li>
+<li>
+<p><strong>Challenges</strong>: Key rotation, secure storage, revocation and management complexity</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Keyless Signing</strong> (exemplified by Trusted Artifact Signer/Sigstore) uses short-lived certificates:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Identity is verified via OIDC (OpenID Connect)</p>
+</li>
+<li>
+<p>Short-lived certificates are issued for signing</p>
+</li>
+<li>
+<p>Signatures are recorded in transparency logs for verification</p>
+</li>
+<li>
+<p><strong>Advantages</strong>: No long-term key management, strong identity binding</p>
+</li>
+<li>
+<p><strong>Challenges</strong>: Requires signing and verification infrastructure (offline verification is possible, though)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_signatures_in_slsa"><a class="anchor" href="#_signatures_in_slsa"></a><strong>Signatures in SLSA</strong></h4>
+<div class="paragraph">
+<p>Signatures are fundamental to SLSA Level 2 and above:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>SLSA Level 2</strong> requires signed provenance</p>
+</li>
+<li>
+<p>The build service signs provenance with its private key</p>
+</li>
+<li>
+<p>Consumers verify the signature before trusting the provenance</p>
+</li>
+<li>
+<p>This prevents provenance forgery and enables trust in the build process</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Example Workflow</strong>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Build service creates provenance document</p>
+</li>
+<li>
+<p>Build service signs provenance with its private key</p>
+</li>
+<li>
+<p>Signature and provenance are published alongside the artifact</p>
+</li>
+<li>
+<p>Consumer downloads artifact, provenance, and signature</p>
+</li>
+<li>
+<p>Consumer verifies signature using build service&#8217;s public key</p>
+</li>
+<li>
+<p>If verification succeeds, consumer trusts the provenance claims</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_attestations_authenticated_statements_about_software"><a class="anchor" href="#_attestations_authenticated_statements_about_software"></a>Attestations: Authenticated Statements About Software</h3>
+<div class="paragraph">
+<p><strong>Attestations</strong> are authenticated (signed) statements about software artifacts. They provide a standardized way to associate metadata with software and verify that metadata&#8217;s authenticity.</p>
+</div>
+<div class="sect3">
+<h4 id="_what_is_an_attestation"><a class="anchor" href="#_what_is_an_attestation"></a><strong>What is an Attestation?</strong></h4>
+<div class="paragraph">
+<p>An attestation is a structured, signed document that contains:</p>
+</div>
+<div class="paragraph">
+<p><strong>Subject</strong>: The software artifact(s) being described</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Usually identified by cryptographic hash (digest)</p>
+</li>
+<li>
+<p>Can be container images, binaries, source code, or other artifacts</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Predicate</strong>: The claim or statement about the subject</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Different predicate types for different kinds of information</p>
+</li>
+<li>
+<p>Examples: provenance, SBOM, vulnerability scan results, test results</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Signature</strong>: Cryptographic signature over the entire statement</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Proves who made the attestation</p>
+</li>
+<li>
+<p>Ensures the attestation hasn&#8217;t been tampered with</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_in_toto_attestation_framework"><a class="anchor" href="#_the_in_toto_attestation_framework"></a><strong>The in-toto Attestation Framework</strong></h4>
+<div class="paragraph">
+<p><a href="https://in-toto.io/"><strong>in-toto</strong></a> is the standard framework for software attestations. It defines a common structure that works across different tools and ecosystems.</p>
+</div>
+<div class="paragraph">
+<p>An in-toto attestation has this structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "example-app",
+      "digest": {
+        "sha256": "abc123..."
+      }
+    }
+  ],
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "predicate": {
+    // Predicate-specific content here
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This envelope is then signed using DSSE (Dead Simple Signing Envelope), creating a complete, verifiable attestation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_types_of_attestations_predicate_types"><a class="anchor" href="#_types_of_attestations_predicate_types"></a><strong>Types of Attestations (Predicate Types)</strong></h4>
+<div class="paragraph">
+<p>The in-toto framework supports multiple predicate types for different use cases:</p>
+</div>
+<div class="paragraph">
+<p><strong>SLSA Provenance</strong>: Describes how an artifact was built</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Builder identity</p>
+</li>
+<li>
+<p>Build process and parameters</p>
+</li>
+<li>
+<p>Source code location</p>
+</li>
+<li>
+<p>Dependencies used</p>
+</li>
+<li>
+<p>Build timestamps</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>SPDX</strong>: Software Package Data Exchange format for SBOMs</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Lists all components in the software</p>
+</li>
+<li>
+<p>License information</p>
+</li>
+<li>
+<p>Dependency relationships</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>CycloneDX</strong>: Another SBOM format</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Component inventory</p>
+</li>
+<li>
+<p>Vulnerability information</p>
+</li>
+<li>
+<p>License compliance data</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Vulnerability Scan Results</strong>: Output from security scanners</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Known vulnerabilities in the artifact</p>
+</li>
+<li>
+<p>Severity levels</p>
+</li>
+<li>
+<p>Remediation recommendations</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Test Results</strong>: Records of tests run on the artifact</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Test suites executed</p>
+</li>
+<li>
+<p>Pass/fail status</p>
+</li>
+<li>
+<p>Coverage information</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Custom Predicates</strong>: Organizations can define their own predicate types for specific needs</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attestations_in_the_slsa_framework"><a class="anchor" href="#_attestations_in_the_slsa_framework"></a><strong>Attestations in the SLSA Framework</strong></h4>
+<div class="paragraph">
+<p>Attestations, particularly provenance attestations, are central to SLSA:</p>
+</div>
+<div class="paragraph">
+<p><strong>SLSA Provenance Attestations</strong> contain:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Builder</strong>: The build service that produced the artifact (e.g., "GitHub Actions")</p>
+</li>
+<li>
+<p><strong>Build Type</strong>: The kind of build process used</p>
+</li>
+<li>
+<p><strong>Invocation</strong>: What triggered the build (commit, tag, pull request)</p>
+</li>
+<li>
+<p><strong>Build Config</strong>: The build instructions that were executed</p>
+</li>
+<li>
+<p><strong>Materials</strong>: Input artifacts like source code and dependencies</p>
+</li>
+<li>
+<p><strong>Metadata</strong>: Build start/finish times, completeness information</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Example SLSA Provenance Predicate</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "builder": {
+    "id": "https://github.com/Attestations/GitHubHostedActions@v1"
+  },
+  "buildType": "https://github.com/Attestations/GitHubHostedActions@v1",
+  "invocation": {
+    "configSource": {
+      "uri": "git+https://github.com/org/repo.git",
+      "digest": {"sha1": "abc123..."},
+      "entryPoint": ".github/workflows/build.yml"
+    }
+  },
+  "materials": [
+    {
+      "uri": "git+https://github.com/org/repo.git",
+      "digest": {"sha1": "abc123..."}
+    },
+    {
+      "uri": "pkg:npm/express@4.18.2",
+      "digest": {"sha256": "def456..."}
+    }
+  ],
+  "metadata": {
+    "buildStartedOn": "2024-01-15T10:30:00Z",
+    "buildFinishedOn": "2024-01-15T10:35:00Z"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This provenance, when signed by the build service, becomes a verifiable attestation that can be checked by consumers.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_verification_of_attestations"><a class="anchor" href="#_verification_of_attestations"></a><strong>Verification of Attestations</strong></h4>
+<div class="paragraph">
+<p>To verify an attestation:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Verify the signature</strong>: Use the public key to verify the attestation was signed by the claimed signer</p>
+</li>
+<li>
+<p><strong>Check the subject</strong>: Ensure the artifact hash matches what you&#8217;re verifying</p>
+</li>
+<li>
+<p><strong>Validate the predicate</strong>: Check that the provenance claims meet your policies</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Was it built from an approved repository?</p>
+</li>
+<li>
+<p>Was the right build service used?</p>
+</li>
+<li>
+<p>Were only trusted dependencies included?</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Policy enforcement tools (like Enterprise Contract / Conforma [Part of Trusted Artifact Signer]) can automate this verification against organizational policies. As a matter of fact, Red Hat provides a large number of policies and <a href="https://conforma.dev/docs/policy/release_policy.html#_available_rule_collections">rule collections</a> for re-use and tailoring to customer&#8217;s needs.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_software_bill_of_materials_sbom"><a class="anchor" href="#_software_bill_of_materials_sbom"></a>Software Bill of Materials (SBOM)</h3>
+<div class="paragraph">
+<p>A <strong>Software Bill of Materials (SBOM)</strong> is a complete, structured inventory of all the components that make up a piece of software. Think of it as an ingredients label for software.</p>
+</div>
+<div class="sect3">
+<h4 id="_what_is_an_sbom"><a class="anchor" href="#_what_is_an_sbom"></a><strong>What is an SBOM?</strong></h4>
+<div class="paragraph">
+<p>An SBOM lists:</p>
+</div>
+<div class="paragraph">
+<p><strong>Components</strong>: Every library, module, and package included</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Name and version of each component</p>
+</li>
+<li>
+<p>Where it came from (publisher, repository)</p>
+</li>
+<li>
+<p>Component type (library, application, framework, etc.)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Dependencies</strong>: Relationships between components</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Which components depend on which others</p>
+</li>
+<li>
+<p>Transitive dependencies (dependencies of dependencies)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Licensing</strong>: Legal information about each component</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>License type (MIT, Apache, GPL, etc.)</p>
+</li>
+<li>
+<p>License obligations and restrictions</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Metadata</strong>: Additional descriptive information</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Component suppliers</p>
+</li>
+<li>
+<p>Build timestamps</p>
+</li>
+<li>
+<p>Cryptographic hashes</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_why_sboms_are_critical"><a class="anchor" href="#_why_sboms_are_critical"></a><strong>Why SBOMs Are Critical</strong></h4>
+<div class="paragraph">
+<p>SBOMs address several critical challenges in modern software development:</p>
+</div>
+<div class="paragraph">
+<p><strong>Rapid Vulnerability Response</strong>: When a vulnerability is disclosed (like Log4j), organizations need to quickly identify affected systems</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>With SBOMs, you can search for the vulnerable component across all your software</p>
+</li>
+<li>
+<p>Without SBOMs, you must manually investigate each application</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Visibility into Dependencies</strong>: Modern applications have complex dependency trees</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A single application might include hundreds of components</p>
+</li>
+<li>
+<p>Many dependencies are transitive (you didn&#8217;t explicitly include them)</p>
+</li>
+<li>
+<p>SBOMs provide complete visibility into this complexity</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>License Compliance</strong>: Open source licenses have various requirements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Some licenses require source code disclosure</p>
+</li>
+<li>
+<p>Others prohibit commercial use</p>
+</li>
+<li>
+<p>SBOMs help track and manage these obligations</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Supply Chain Risk Management</strong>: Understanding what&#8217;s in your software is fundamental to securing it</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Identify outdated or unmaintained components</p>
+</li>
+<li>
+<p>Detect components from untrusted sources</p>
+</li>
+<li>
+<p>Monitor for newly disclosed vulnerabilities</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Regulatory Compliance</strong>: Governments and industries increasingly mandate SBOMs</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>US Executive Order 14028 requires SBOMs for government software purchases</p>
+</li>
+<li>
+<p>Critical infrastructure sectors have SBOM requirements</p>
+</li>
+<li>
+<p>European regulations like the Cyber Resilience Act reference SBOMs</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sbom_formats"><a class="anchor" href="#_sbom_formats"></a><strong>SBOM Formats</strong></h4>
+<div class="paragraph">
+<p>Two primary formats dominate the SBOM landscape:</p>
+</div>
+<div class="paragraph">
+<p><strong>SPDX (Software Package Data Exchange)</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Originally developed by the Linux Foundation</p>
+</li>
+<li>
+<p>ISO/IEC standard (ISO/IEC 5962:2021)</p>
+</li>
+<li>
+<p>Comprehensive format covering licensing, security, and supply chain data</p>
+</li>
+<li>
+<p>Supports multiple serialization formats (JSON, XML, YAML, tag-value)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>CycloneDX</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Created by OWASP (Open Web Application Security Project)</p>
+</li>
+<li>
+<p>Focused on supply chain security use cases</p>
+</li>
+<li>
+<p>Lightweight and extensible</p>
+</li>
+<li>
+<p>Strong vulnerability tracking integration</p>
+</li>
+<li>
+<p>Supports JSON and XML</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Both formats are widely supported by tooling and recognized by regulatory bodies. The choice often depends on specific use cases and organizational preferences.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_creating_sboms"><a class="anchor" href="#_creating_sboms"></a><strong>Creating SBOMs</strong></h4>
+<div class="paragraph">
+<p>SBOMs can be generated through various tools and approaches:</p>
+</div>
+<div class="paragraph">
+<p><strong>Build-Time Generation</strong>: Tools integrated into CI/CD pipelines</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Syft: Generates SBOMs from container images, filesystems, and more</p>
+</li>
+<li>
+<p>Tern: Inspects container images layer by layer</p>
+</li>
+<li>
+<p>CycloneDX plugins for build tools (Maven, Gradle, npm, etc.)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Source Code Analysis</strong>: Tools that parse dependency manifests</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Parsing package-lock.json, requirements.txt, go.mod, etc.</p>
+</li>
+<li>
+<p>Build tool integrations (Maven dependencies plugin, etc.)</p>
+</li>
+<li>
+<p>IDE Plugins (Red Hat Dependency Analytics)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Image Scanning</strong>: Analyzing container images</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat Advanced Cluster Security (roxctl)</p>
+</li>
+<li>
+<p>Extracting package manager data</p>
+</li>
+<li>
+<p>Analyzing filesystem contents</p>
+</li>
+<li>
+<p>Identifying OS packages and application dependencies</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sboms_in_the_context_of_slsa"><a class="anchor" href="#_sboms_in_the_context_of_slsa"></a><strong>SBOMs in the Context of SLSA</strong></h4>
+<div class="paragraph">
+<p>SBOMs complement SLSA provenance:</p>
+</div>
+<div class="paragraph">
+<p><strong>Provenance</strong> tells you <strong>how</strong> software was built:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Which build system was used</p>
+</li>
+<li>
+<p>What source code was compiled</p>
+</li>
+<li>
+<p>What build process was followed</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>SBOMs</strong> tell you <strong>what&#8217;s in</strong> the software:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Which components are included</p>
+</li>
+<li>
+<p>What versions are present</p>
+</li>
+<li>
+<p>What vulnerabilities exist (if <em>used</em> in e.g. Trusted Profile Analyzer - the SBOM itself doesn&#8217;t contain vulnerability information)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Together, they provide comprehensive visibility:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Provenance verifies the build process integrity</p>
+</li>
+<li>
+<p>SBOMs reveal the actual composition</p>
+</li>
+<li>
+<p>Both can be provided as signed attestations</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Build service generates SLSA provenance attestation</p>
+</li>
+<li>
+<p>Build service also generates SBOM attestation</p>
+</li>
+<li>
+<p>Both attestations are signed and published</p>
+</li>
+<li>
+<p>Consumers verify both attestations to ensure:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The build process was trustworthy (provenance)</p>
+</li>
+<li>
+<p>The components are acceptable (SBOM)</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_sboms_for_security"><a class="anchor" href="#_using_sboms_for_security"></a><strong>Using SBOMs for Security</strong></h4>
+<div class="paragraph">
+<p>Organizations use SBOMs for several security workflows:</p>
+</div>
+<div class="paragraph">
+<p><strong>Vulnerability Management</strong>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Generate SBOM for each application</p>
+</li>
+<li>
+<p>Continuously monitor vulnerability databases (NVD, GitHub Advisory Database, etc.)</p>
+</li>
+<li>
+<p>When new vulnerabilities are disclosed, check SBOMs to identify affected applications</p>
+</li>
+<li>
+<p>Prioritize remediation based on criticality and exploitability</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Policy Enforcement</strong>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Define policies about acceptable components</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Block known vulnerable versions</p>
+</li>
+<li>
+<p>Require maintained dependencies</p>
+</li>
+<li>
+<p>Prohibit components from untrusted sources</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check SBOMs against policies before deployment</p>
+</li>
+<li>
+<p>Prevent non-compliant software from reaching production</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Supply Chain Risk Assessment</strong>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Analyze SBOMs to identify supply chain risks</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Outdated components</p>
+</li>
+<li>
+<p>Unmaintained dependencies</p>
+</li>
+<li>
+<p>Components with known vulnerabilities</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Score applications based on risk</p>
+</li>
+<li>
+<p>Prioritize security improvements</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Incident Response</strong>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>When a vulnerability/exploit/breach occurs, use SBOMs to understand scope</p>
+</li>
+<li>
+<p>Identify all systems using compromised components</p>
+</li>
+<li>
+<p>Accelerate containment and remediation</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_part_4_how_it_all_works_together"><a class="anchor" href="#_part_4_how_it_all_works_together"></a>Part 4: How It All Works Together</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Understanding each component individually is important, but the real power comes from seeing how signatures, attestations, and SBOMs work together within the SLSA framework to create a secure software supply chain.</p>
+</div>
+<div class="sect2">
+<h3 id="_the_complete_picture"><a class="anchor" href="#_the_complete_picture"></a>The Complete Picture</h3>
+<div class="paragraph">
+<p>Let&#8217;s walk through a comprehensive example of how these elements interact in a SLSA-conformant supply chain:</p>
+</div>
+<div class="sect3">
+<h4 id="_step_1_secure_build_process_slsa_build_track"><a class="anchor" href="#_step_1_secure_build_process_slsa_build_track"></a><strong>Step 1: Secure Build Process (SLSA Build Track)</strong></h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Developer commits code</strong> to a version-controlled repository</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Code is reviewed and approved (SLSA Level 4 requirement)</p>
+</li>
+<li>
+<p>Commits are signed by developers</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>CI/CD pipeline triggers</strong> a build</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Build runs on a hosted build service (SLSA Level 2+ requirement)</p>
+</li>
+<li>
+<p>Build configuration comes from version control (SLSA Level 3 requirement)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Build service executes the build</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Build runs in an isolated environment (SLSA Level 3+)</p>
+</li>
+<li>
+<p>Build service records all build parameters and dependencies</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_2_generate_provenance_slsa_requirement"><a class="anchor" href="#_step_2_generate_provenance_slsa_requirement"></a><strong>Step 2: Generate Provenance (SLSA Requirement)</strong></h4>
+<div class="paragraph">
+<p>The build service generates SLSA provenance containing:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What was built (artifact digest)</p>
+</li>
+<li>
+<p>How it was built (build type, configuration)</p>
+</li>
+<li>
+<p>Where source code came from (repository URI and commit hash)</p>
+</li>
+<li>
+<p>What dependencies were used (material digests)</p>
+</li>
+<li>
+<p>When the build occurred (timestamps)</p>
+</li>
+<li>
+<p>Who/what triggered the build (invocation details)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This provenance is structured as an in-toto attestation with predicate type <code><a href="https://slsa.dev/provenance/v1" class="bare">https://slsa.dev/provenance/v1</a></code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_3_generate_sbom_best_practice"><a class="anchor" href="#_step_3_generate_sbom_best_practice"></a><strong>Step 3: Generate SBOM (Best Practice)</strong></h4>
+<div class="paragraph">
+<p>During or after the build, an SBOM is generated:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Scan the built artifact for all components</p>
+</li>
+<li>
+<p>Extract version information for each dependency</p>
+</li>
+<li>
+<p>Identify licenses for each component</p>
+</li>
+<li>
+<p>Create structured SBOM (SPDX or CycloneDX format)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_4_sign_attestations_slsa_level_2_requirement"><a class="anchor" href="#_step_4_sign_attestations_slsa_level_2_requirement"></a><strong>Step 4: Sign Attestations (SLSA Level 2+ Requirement)</strong></h4>
+<div class="paragraph">
+<p>The build service signs both attestations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Uses its private signing key (or keyless signing via Sigstore)</p>
+</li>
+<li>
+<p>Creates cryptographic signatures over both the provenance and SBOM attestations</p>
+</li>
+<li>
+<p>These signatures prove the attestations came from the build service and haven&#8217;t been tampered with</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>At SLSA Level 3+, the signing mechanism is isolated from user-defined build steps, preventing forgery.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_5_publish_artifacts_and_attestations"><a class="anchor" href="#_step_5_publish_artifacts_and_attestations"></a><strong>Step 5: Publish Artifacts and Attestations</strong></h4>
+<div class="paragraph">
+<p>The build service publishes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The software artifact (e.g., container image) to a registry</p>
+</li>
+<li>
+<p>The signed provenance attestation</p>
+</li>
+<li>
+<p>The signed SBOM attestation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For container images with OCI-compliant registries:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Attestations can be attached directly to the image</p>
+</li>
+<li>
+<p>Tools like <code>cosign</code> store attestations as image tags with special naming conventions</p>
+</li>
+<li>
+<p>Both artifact and attestations are accessible through the same registry</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_6_distribution_with_transparency"><a class="anchor" href="#_step_6_distribution_with_transparency"></a>Step 6: Distribution with Transparency</h4>
+<div class="paragraph">
+<p>Optionally, signatures and attestations are recorded in transparency logs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Trusted Artifact Signer&#8217;s/Sigstore&#8217;s Rekor provides a tamper-evident log</p>
+</li>
+<li>
+<p>Each entry is cryptographically verifiable</p>
+</li>
+<li>
+<p>Provides non-repudiation and audit trail</p>
+</li>
+<li>
+<p>Enables detection of backdated or revoked signatures</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consumer_verification_workflow"><a class="anchor" href="#_consumer_verification_workflow"></a>Consumer Verification Workflow</h3>
+<div class="paragraph">
+<p>How would a consumer (someone deploying or using the software - internally or externally) verify all of this:</p>
+</div>
+<div class="sect3">
+<h4 id="_step_1_download_artifact_and_attestations"><a class="anchor" href="#_step_1_download_artifact_and_attestations"></a><strong>Step 1: Download Artifact and Attestations</strong></h4>
+<div class="paragraph">
+<p>Consumer downloads:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The software artifact (container image, binary, package)</p>
+</li>
+<li>
+<p>The provenance attestation</p>
+</li>
+<li>
+<p>The SBOM attestation</p>
+</li>
+<li>
+<p>Associated signatures</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Tools like <code>cosign</code> can automate this for container images.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_2_verify_signatures"><a class="anchor" href="#_step_2_verify_signatures"></a><strong>Step 2: Verify Signatures</strong></h4>
+<div class="paragraph">
+<p>Consumer verifies cryptographic signatures:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use the build service&#8217;s public key (or verify via transparency log for keyless signing)</p>
+</li>
+<li>
+<p>Confirm the attestations were actually signed by the trusted build service</p>
+</li>
+<li>
+<p>Ensure attestations haven&#8217;t been tampered with</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If signatures don&#8217;t verify, reject the artifact—it may have been tampered with.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_3_verify_provenance_against_policies"><a class="anchor" href="#_step_3_verify_provenance_against_policies"></a><strong>Step 3: Verify Provenance Against Policies</strong></h4>
+<div class="paragraph">
+<p>Consumer checks the provenance attestation against their policies:</p>
+</div>
+<div class="paragraph">
+<p><strong>Source Verification</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Did this come from an approved source repository?</p>
+</li>
+<li>
+<p>Was it built from the expected branch or tag?</p>
+</li>
+<li>
+<p>Was the source code commit signed by an authorized developer?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Build Verification</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Was it built by an approved build service?</p>
+</li>
+<li>
+<p>Was the right build process used?</p>
+</li>
+<li>
+<p>Did the build run with acceptable parameters?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Dependency Verification</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Were only approved dependencies used?</p>
+</li>
+<li>
+<p>Are all dependencies from trusted sources?</p>
+</li>
+<li>
+<p>Do dependency versions match expectations?</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Tools like Enterprise Contract / Conforma (part of Trusted Artifact Signer) can automate the validation of attestation and artifact signatures and subsequent policy enforcement (applying policies to attestation data). This drastically minimises the complexity of these verification steps.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_4_analyze_sbom"><a class="anchor" href="#_step_4_analyze_sbom"></a><strong>Step 4: Analyze SBOM</strong></h4>
+<div class="paragraph">
+<p>Consumer analyzes the SBOM:</p>
+</div>
+<div class="paragraph">
+<p><strong>Vulnerability Scanning</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check all components against vulnerability databases</p>
+</li>
+<li>
+<p>Identify any components with known CVEs</p>
+</li>
+<li>
+<p>Assess risk based on severity and exploitability</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>License Compliance</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Verify all component licenses are acceptable</p>
+</li>
+<li>
+<p>Check for license conflicts or obligations</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Component Approval</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ensure all components come from approved sources</p>
+</li>
+<li>
+<p>Check that no prohibited or outdated components are present</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Tools like Red Hat Trusted Profile Analyzer (Trustify) can automate SBOM analysis.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_5_make_deployment_decision"><a class="anchor" href="#_step_5_make_deployment_decision"></a><strong>Step 5: Make Deployment Decision</strong></h4>
+<div class="paragraph">
+<p>Based on verification results, the consumer decides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploy</strong>: If all checks pass, the artifact meets security and policy requirements</p>
+</li>
+<li>
+<p><strong>Reject</strong>: If verification fails or policies are violated, prevent deployment</p>
+</li>
+<li>
+<p><strong>Flag for Review</strong>: If concerns exist but aren&#8217;t blocking, alert security teams</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_integration_with_tools"><a class="anchor" href="#_integration_with_tools"></a>Integration with Tools</h3>
+<div class="paragraph">
+<p>In your hands-on exercises, you&#8217;ll work with tools that implement these concepts:</p>
+</div>
+<div class="paragraph">
+<p><strong>Red Hat Trusted Artifact Signer</strong> (based on Sigstore):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Provides signing infrastructure</p>
+</li>
+<li>
+<p>Issues short-lived certificates</p>
+</li>
+<li>
+<p>Records signatures in transparency logs</p>
+</li>
+<li>
+<p>Enables keyless signing for builds</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Cosign</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Signs container images and attestations using the Trusted Artifact SIgner Infrastructure</p>
+</li>
+<li>
+<p>Attaches attestations to OCI images</p>
+</li>
+<li>
+<p>Verifies signatures and attestations</p>
+</li>
+<li>
+<p>Supports both key-based and keyless signing</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Enterprise Contract / Conforma</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enforces policies on attestations (provenance or other)</p>
+</li>
+<li>
+<p>Verifies SLSA levels are met (for provenance attestations)</p>
+</li>
+<li>
+<p>Checks build sources, parameters, and processes</p>
+</li>
+<li>
+<p>Provides automated policy-as-code enforcement, regardless of attestation type</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Syft and roxctl</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Generate SBOMs from various sources</p>
+</li>
+<li>
+<p>Support multiple SBOM formats</p>
+</li>
+<li>
+<p>Integrate into CI/CD pipelines</p>
+</li>
+<li>
+<p>Provide comprehensive component inventories</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Red Hat Trusted Profile Analyzer</strong> (based on Trustify):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Analyzes SBOMs for vulnerabilities</p>
+</li>
+<li>
+<p>Provides risk scoring and prioritization</p>
+</li>
+<li>
+<p>Tracks component security over time</p>
+</li>
+<li>
+<p>Helps manage vulnerability remediation</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_real_world_benefits"><a class="anchor" href="#_real_world_benefits"></a>Real-World Benefits</h3>
+<div class="paragraph">
+<p>When all these pieces work together, you achieve:</p>
+</div>
+<div class="paragraph">
+<p><strong>Automated Trust</strong>: Software can be automatically verified without manual inspection</p>
+</div>
+<div class="paragraph">
+<p><strong>Rapid Incident Response</strong>: When vulnerabilities are disclosed, quickly identify affected systems using SBOMs</p>
+</div>
+<div class="paragraph">
+<p><strong>Policy Enforcement</strong>: Prevent deployment of software that doesn&#8217;t meet security standards</p>
+</div>
+<div class="paragraph">
+<p><strong>Audit Trail</strong>: Complete, verifiable record of how software was built and what it contains</p>
+</div>
+<div class="paragraph">
+<p><strong>Supply Chain Transparency</strong>: Clear visibility into the entire software supply chain</p>
+</div>
+<div class="paragraph">
+<p><strong>Risk Reduction</strong>: Systematically address supply chain security risks</p>
+</div>
+<div class="paragraph">
+<p><strong>Compliance</strong>: Meet regulatory requirements for software security and transparency</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Software supply chain security is no longer optional—it&#8217;s a critical requirement for modern software development. The threat landscape is complex, with attackers targeting every stage of the software lifecycle from source code to deployment.</p>
+</div>
+<div class="paragraph">
+<p>The SLSA framework provides a practical, incremental path toward securing software supply chains. By defining clear levels and requirements, SLSA gives organizations a roadmap for improvement. Whether starting at Level 1 with basic provenance or striving for Level 4 with hermetic builds, every step increases security.</p>
+</div>
+<div class="paragraph">
+<p>Signatures, attestations, and SBOMs are the technical mechanisms that make SLSA work in practice. Signatures provide cryptographic proof of authenticity. Attestations offer a standardized way to make verifiable claims about software. SBOMs deliver the transparency needed to understand and manage software composition.</p>
+</div>
+<div class="paragraph">
+<p>Together, these elements create a comprehensive defense against supply chain attacks. When a container image comes with signed SLSA provenance showing it was built from approved source in a trusted build system, and an SBOM shows it contains only approved, non-vulnerable components, you can deploy with confidence.</p>
+</div>
+<div class="paragraph">
+<p>As you move into the hands-on exercises, you&#8217;ll gain practical experience with the tools that implement these concepts. You&#8217;ll sign images and commits, generate and verify attestations, create and analyze SBOMs, and enforce policies that protect your supply chain. These skills are increasingly essential for anyone involved in software development, deployment, or sales in today&#8217;s threat environment.</p>
+</div>
+<div class="paragraph">
+<p>The journey to a secure software supply chain is incremental, but every step matters. By understanding these foundational concepts and implementing them with industry-standard tools, you&#8217;ll help your customers build more secure, trustworthy software systems.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="overview.html" class="query-params-link">Module 7: Getting started with security best practices</a></span>
+  <span class="next"><a href="understanding-keyless.html" class="query-params-link">Understanding Keyless Signing</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
