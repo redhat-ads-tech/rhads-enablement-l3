@@ -317,7 +317,7 @@ In the same realm (1) go to users (2) and click on `user1` (3):
 
 image:m3-tpa-openshift/keycloak-users-edit.png[]
 
-Click on the _Role Mapping_ tab (4) and then _Assign Role_ (5) and assign the `tpa-users` role to `user1`:
+Click on the _Role Mapping_ tab (4) and then _Assign Role_ (5) and assign the `tpa-user` role to `user1`:
 
 image:m3-tpa-openshift/keycloak-users-assign-role.png[]
 image:m3-tpa-openshift/keycloak-users-assign-role-tpa-user.png[]
