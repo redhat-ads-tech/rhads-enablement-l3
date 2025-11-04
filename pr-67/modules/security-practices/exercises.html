@@ -27,6 +27,7 @@
           <a class="navbar-link" href="#">Links</a>
           <div class="navbar-dropdown navbar-dropdown-right">
             <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+            <a class="navbar-item navbar-item-right-content" href="env.html" target="_blank">Lab</a>
           </div>
         </div>
       </div>
@@ -194,7 +195,28 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tssc-tpa/correlation.html">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex1-uploading-sboms.html">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex2-ui-usecases.html">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex3-licenses.html">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
@@ -324,6 +346,13 @@
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../end-to-end.html">Module 15: RHADS Complete: Summary and Next Steps</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../env.html">My lab environment details</a>
   </li>
 </ul>
   </li>
@@ -482,6 +511,44 @@ cd l3-enablement-helpers/security-concepts
 </div>
 <div class="paragraph">
 <p>You should now have a new terminal <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">here</a> that we will be using going forward, since it has all the tools and configuration already installed.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/security-practices/attention-please.png" alt="attention please">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>In this Lab environment, <strong>Trusted Artifact Signer</strong> and <strong>OpenShift</strong> use the same Keycloak Realm (in case you were wondering why it says "TRUSTED-ARTIFACT-SIGNER" when you login to OpenShift).</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>PLEASE LOG OUT OF THE {openshift_console_url}[OPENSHIFT CONSOLE^,window="console"] NOW</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock">If you&#8217;re still logged in as <code>admin</code>, the image signing, code commit signing and attestation steps below will <strong><em>automatically use the <code>admin</code> user</em></strong> since you already have an open session (with the console).</p>
+<p class="tableblock">You won&#8217;t be able to sign with <code>user1</code> / <code>{rhdh_user_password}</code>.</p>
+<p class="tableblock">It&#8217;s ok to sign with <code>admin</code> but we want to avoid the impression that signing is an admin task - as long as you have an OIDC Identity, you can sign.</p>
+<p class="tableblock">Also, all the ready-made examples that you can copy &amp; paste use <code>user1</code>.</p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
