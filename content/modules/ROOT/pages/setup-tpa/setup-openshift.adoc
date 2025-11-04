@@ -332,7 +332,7 @@ image:m3-tpa-openshift/keycloak-users-assigned-role-tpa-admin.png[]
 
 *Clients*
 
-Now that we have the client scopes, have assigned these to new roles that we created and assigned those roles to users... we need the clients that provide us with the authentication endpoints for TPA:
+Now that we have the client scopes, have assigned these to new roles that we created and assigned those roles to users, we need the clients that provide us with the authentication endpoints for TPA:
 
 In the same realm (1), go to _Clients_ (2). Here, you could create the clients manually and configure them (especially the client scopes that we need associated with this client) - but we have created import files for you, so you can instead use _Import Client_ (3).
 
