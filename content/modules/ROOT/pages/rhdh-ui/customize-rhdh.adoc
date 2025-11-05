@@ -24,7 +24,7 @@ The default theme mode is Auto, which sets {product_rhdh_name}'s Light or Dark m
 
 === Change the Theme Mode
 
-To select a theme mode, click your user name at the top right of any Developer Hub view and select *Settings* from the displayed menu to open the settings screen. Select the desired mode from the _Appearance_ section.
+Within any {product_rhdh_name} instance (including the one you're about to create), you can select a theme mode by clicking your user name at the top right and selecting *Settings* from the displayed menu to open the settings screen. Select the desired mode from the _Appearance_ section.
 
 image::rhdh-ui/uset-appearance.png[]
 
@@ -200,7 +200,7 @@ Now that you've created the `Backstage` custom resource, and the pods are up and
 +
 NOTE: If *Application is not available* is displayed when you click the Location, wait another 1-2 minutes. It can take some time for the pod readiness check to pass after a pod restart.
 +
-. Select *Guest* to log in with just enough privilege to see the results of your title and logo customizations.
+. Select *Guest* to log in with just enough privilege to see the results of your title and logo customizations. The custom logo in the top left corner of the page. The custom title is usually shown as the title of your browser tab, depending on your browser.
 
 image::rhdh-ui/brand-rhdh-logo.png[]
 

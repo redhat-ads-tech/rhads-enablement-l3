@@ -12,7 +12,7 @@ The TechDocs feature is installed by default with {product_rhdh_name}. TechDocs 
 
 TechDocs assumes documentation is a part of nearly every _Component_ in a {product_rhdh_name} Catalog. At a high level, TechDocs fetches, renders, and presents that documentation with the process enumerated below. Definitions and details follow in subsequent sections.
 
-. Docs reside with Component source in the Component repository, conventionally in https://manpages.debian.org/trixie/libmarkdown2-dev/markdown.7.en.html[Markdown^] format in a directory named `docs`.
+. Docs reside with the Component source code in the Component's source code repository, conventionally in https://manpages.debian.org/trixie/libmarkdown2-dev/markdown.7.en.html[Markdown^] format in a directory named `docs`.
 
 . A repository has a _build_ process, such as a pipeline or a GitHub action, triggered when changes happen. Usually this is when a commit changes the relevant source repository branch.
 
@@ -28,7 +28,7 @@ TechDocs assumes documentation is a part of nearly every _Component_ in a {produ
 
 The default installation of {product_rhdh_name} simplifies TechDocs processing with a lightweight local TechDocs instance. This provides complete TechDocs documentation editing, automatic rendering, and centralized discovery and reading without immediately setting up external requirements such as storage and pipelines. In this configuration TechDocs writes rendered documentation to ephemeral storage. This means generated HTML will not survive restarts of the Developer Hub Pod without further arrangement. In practice, for most introductory use this is not a problem, because documents are rendered again from their Markdown source and the cache of static HTML rebuilt on demand.
 
-Note, however, that {product_rhdh_name} documentation clearly states that the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/techdocs_for_red_hat_developer_hub/configuring-techdocs[included lightweight TechDocs configuration is not intended for production^] use.
+Note, however, that {product_rhdh_name} documentation clearly states that the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/techdocs_for_red_hat_developer_hub/configuring-techdocs[included lightweight TechDocs configuration is not intended for production^] use: in addition to the ephemeral nature of the storage, there is a limit on the maximum number and size of documents that can be rendered and stored, which will quickly be exceeded in a production environment. We'll revisit this topic in a later lab.
 
 //Rebuild would be expensive if walking src repos of many components. BUT
 //constrained 1st by freq of RHDH restarts, 2nd by trigger tied to page req.
@@ -40,11 +40,14 @@ Note, however, that {product_rhdh_name} documentation clearly states that the ht
 
 == Builder, Generator, Publisher
 
-Examine OpenShift > Administrator perspective > Project: `tssc-dh` > Workloads > ConfigMaps > 
-tssc-developer-hub-app-config
+In the appearance customization lab, you worked in the OpenShift Project `brand-rhdh` and created a new {product_rhdh_name} instance. In this lab, you'll begin with a provided Developer Hub already running in a another Project, named `tssc-dh`.  This instance has been configured with a default but fully functional TechDocs system 
 
+. On the OpenShift Web Console, Select the Administrator perspective, navigate to _Workloads_ > _ConfigMaps_, and ensure the `tssc-dh` Project is selected in the project selector drop-down.
+
+. Find and click on the `tssc-developer-hub-app-config` ConfigMap to view the `app-config.yaml` file that contains the TechDocs process configuration for this pre-installed instance of {product_rhdh_name}.
++
 The excerpt below shows the TechDocs process configuration defined in the `tssc-developer-hub-app-config` ConfigMap in the `tssc-dh` Project.
-
++
 [source,yaml]
 ----
 [...]

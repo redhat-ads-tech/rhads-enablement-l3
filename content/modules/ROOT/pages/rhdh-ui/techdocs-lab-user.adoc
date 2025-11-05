@@ -1,12 +1,12 @@
 = TechDocs Lab 1: Creating and Editing TechDocs
 
-In the appearance customization lab, you worked in the OpenShift Project `brand-rhdh` and created a new {product_rhdh_name} instance. In this lab, you'll begin with a provided Developer Hub already running in a another Project, named `tssc-dh`. The steps that follow illustrate the intended user experience for developers reading and writing TechDocs and demonstrate the operation of the default _local_-context TechDocs included with RHDH and detailed in the preceding xref:techdocs-foundations.adoc[TechDocs Foundations].
+Continuing with the pre-installed Developer Hub instance running in the OpenShift Project `tssc-dh`, the steps that follow illustrate the intended user experience for developers reading and writing TechDocs and demonstrate the operation of the default _local_-context TechDocs included with RHDH and detailed in the preceding xref:techdocs-foundations.adoc[TechDocs Foundations].
 
 == Create
 
 Component instances created from the _Quarkus Java_ Template include a basic set of TechDocs for both the source and gitops repositories. The documentation for the Component describes how the Template creates the Component repos and outlines the example source code the repos contain.
 
-. Navigate to {rhdh_url}[Red Hat Developer Hub^, window="rhdh"] and login as {rhdh_user} with password {rhdh_user_password}.
+. Navigate to {rhdh_url}[{product_rhdh_name}^, window="rhdh"] and login as `{rhdh_user}` with password `{rhdh_user_password}`.
 
 . Click the circled plus sign (+) near top right to open the Self-Service catalog.
 
@@ -30,9 +30,7 @@ Component instances created from the _Quarkus Java_ Template include a basic set
 
 **Repository Owner**: `user1`
 
-**Repository Server**: <{gitlab_url}>
-  NB: trick is strip `proto://` and trailing slash get just the svc URI
-  //TODO check and adjust templated URI string
+**Repository Server**: `gitlab-gitlab.{openshift_cluster_ingress_domain}`
 
 **CI Provider**: Not immediately used. Leave the default.
 
@@ -60,6 +58,8 @@ Click *Create* button to instantiate the Template into a new Component.
 
 . Click the pencil-and-paper Edit icon to the right of the first document heading, _Trusted Application Pipeline Software Template_, in your _uq_ document.
 
+. Log into GitLab using username `{gitlab_user}` and password `{gitlab_user_password}`.
+
 . Arrive in the doc source in the GitLab/user1/uq source repository that holds your component source and documentation.
 
 . Edit the document in the repository service editor for the quickest experience. For example, you might change the second sentence to clarify it, or change the page first heading for the highest visibility in the result.
@@ -86,6 +86,11 @@ Click *Create* button to instantiate the Template into a new Component.
 . Click **Unregister Location** in the presented dialog
 
 . Notice that the **Owned Components** list no longer includes the _uq_ Component.
+
+[NOTE]
+====
+Even when components are unregistered from the {product_rhdh_name} Catalog, any external resources (e.g. GitLab repositories, OpenShift projects, etc.) associated with the component may still exist. If another component is later created with the same name (e.g. `uq`) by the same user (e.g. `user1`), resources may fail to be created due to conflicts.
+====
 
 == Summary (to Restate...)
 
