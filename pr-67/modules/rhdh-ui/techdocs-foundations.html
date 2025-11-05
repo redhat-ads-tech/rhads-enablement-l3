@@ -425,7 +425,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Docs reside with the Component source code in the Component&#8217;s source code repository, conventionally in <a href="https://manpages.debian.org/trixie/libmarkdown2-dev/markdown.7.en.html" target="_blank" rel="noopener">Markdown</a> format in a directory named <code>docs</code>.</p>
+<p>Docs reside with Component source in the Component&#8217;s repository, conventionally in <a href="https://manpages.debian.org/trixie/libmarkdown2-dev/markdown.7.en.html" target="_blank" rel="noopener">Markdown</a> format in a directory named <code>docs</code>.</p>
 </li>
 <li>
 <p>A repository has a <em>build</em> process, such as a pipeline or a GitHub action, triggered when changes happen. Usually this is when a commit changes the relevant source repository branch.</p>
@@ -453,7 +453,7 @@
 <p>The default installation of Red Hat Developer Hub simplifies TechDocs processing with a lightweight local TechDocs instance. This provides complete TechDocs documentation editing, automatic rendering, and centralized discovery and reading without immediately setting up external requirements such as storage and pipelines. In this configuration TechDocs writes rendered documentation to ephemeral storage. This means generated HTML will not survive restarts of the Developer Hub Pod without further arrangement. In practice, for most introductory use this is not a problem, because documents are rendered again from their Markdown source and the cache of static HTML rebuilt on demand.</p>
 </div>
 <div class="paragraph">
-<p>Note, however, that Red Hat Developer Hub documentation clearly states that the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/techdocs_for_red_hat_developer_hub/configuring-techdocs" target="_blank" rel="noopener">included lightweight TechDocs configuration is not intended for production</a> use: in addition to the ephemeral nature of the storage, there is a limit on the maximum number and size of documents that can be rendered and stored, which will quickly be exceeded in a production environment. We&#8217;ll revisit this topic in a later lab.</p>
+<p>Note, however, that Red Hat Developer Hub documentation clearly states that the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/techdocs_for_red_hat_developer_hub/configuring-techdocs" target="_blank" rel="noopener">included lightweight TechDocs configuration is not intended for production</a> use. The second TechDocs lab constructs an example production deployment.</p>
 </div>
 </div>
 </div>
@@ -461,15 +461,15 @@
 <h2 id="_builder_generator_publisher"><a class="anchor" href="#_builder_generator_publisher"></a>Builder, Generator, Publisher</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the appearance customization lab, you worked in the OpenShift Project <code>brand-rhdh</code> and created a new Red Hat Developer Hub instance. In this lab, you&#8217;ll begin with a provided Developer Hub already running in a another Project, named <code>tssc-dh</code>.  This instance has been configured with a default but fully functional TechDocs system</p>
+<p>In the appearance customization lab, you worked in the OpenShift Project <code>brand-rhdh</code> and created a new Red Hat Developer Hub instance. In this lab, you&#8217;ll begin with a provided Developer Hub already running in a the <code>tssc-dh</code> Project. This instance is configured with the default lightweight TechDocs process.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>On the OpenShift Web Console, Select the Administrator perspective, navigate to <em>Workloads</em> &gt; <em>ConfigMaps</em>, and ensure the <code>tssc-dh</code> Project is selected in the project selector drop-down.</p>
+<p>In the OpenShift Web Console, Select the Administrator perspective, navigate to <em>Workloads</em> &gt; <em>ConfigMaps</em>, and ensure the <code>tssc-dh</code> Project is selected in the project selector drop-down.</p>
 </li>
 <li>
-<p>Find and click on the <code>tssc-developer-hub-app-config</code> ConfigMap to view the <code>app-config.yaml</code> file that contains the TechDocs process configuration for this pre-installed instance of Red Hat Developer Hub.</p>
+<p>Find and click on the <code>tssc-developer-hub-app-config</code> ConfigMap to view the the key parts of the TechDocs process configuration of this instance of Red Hat Developer Hub.</p>
 <div class="paragraph">
 <p>The excerpt below shows the TechDocs process configuration defined in the <code>tssc-developer-hub-app-config</code> ConfigMap in the <code>tssc-dh</code> Project.</p>
 </div>
@@ -529,7 +529,7 @@
 <h2 id="_developer_experience_find_read_edit_documentation"><a class="anchor" href="#_developer_experience_find_read_edit_documentation"></a>Developer Experience: Find, Read, Edit Documentation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The lightweight TechDocs process included in Red Hat Developer Hub provides exactly the expected view/edit/build/view cycle for component documentation creators and users. While functionally equivalent, the default deployment is not recommended for production because it may not scale well to many documents, repositories, or developers.</p>
+<p>The lightweight TechDocs process included in Red Hat Developer Hub provides exactly the expected view/edit/build/view cycle for component documentation creators and users. While functionally equivalent, the default deployment is not recommended for production because it may not scale to many documents, repositories, or developers.</p>
 </div>
 <div class="paragraph">
 <p>The build process configured entirely for the <em>local</em> TechDocs context works like this:</p>

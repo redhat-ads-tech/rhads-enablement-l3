@@ -399,7 +399,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Continuing with the pre-installed Developer Hub instance running in the OpenShift Project <code>tssc-dh</code>, the steps that follow illustrate the intended user experience for developers reading and writing TechDocs and demonstrate the operation of the default <em>local</em>-context TechDocs included with RHDH and detailed in the preceding <a href="#techdocs-foundations.adoc" class="xref unresolved">TechDocs Foundations</a>.</p>
+<p>The steps that follow employ the pre-installed Developer Hub instance running in the OpenShift Project <code>tssc-dh</code> to illustrate the intended user experience for developers reading and writing TechDocs and to demonstrate the operation of the default <em>local</em>-context TechDocs process included with RHDH and detailed in the preceding <a href="#techdocs-foundations.adoc" class="xref unresolved">TechDocs Foundations</a>.</p>
 </div>
 </div>
 </div>
@@ -566,7 +566,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Even when components are unregistered from the Red Hat Developer Hub Catalog, any external resources (e.g. GitLab repositories, OpenShift projects, etc.) associated with the component may still exist. If another component is later created with the same name (e.g. <code>uq</code>) by the same user (e.g. <code>user1</code>), resources may fail to be created due to conflicts.</p>
+<p>Unregistering a Component removes it from the Red Hat Developer Hub Catlog, but does not remove or change external resources that may have been created or executed when the Component was created from its Template. Git repos, OpenShift Projects, Deployments, Pods, and other resources associated with the unregistered Component will still exist. In fact, you can re-register a Component by again providing RHDH a reference to its source repo that still contains a <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/-/blob/main/catalog-info.yaml"><code>catalog-info.yaml</code> definition</a>. Without further arrangement to cleanup such resources, however, a later instantiation attempting to specify an identical Component name beneath the identical org or user could lead to name conflicts or other resource contention. For example, if your <code>user1 TSSC</code> creates another <code>uq</code>.</p>
 </div>
 </td>
 </tr>
