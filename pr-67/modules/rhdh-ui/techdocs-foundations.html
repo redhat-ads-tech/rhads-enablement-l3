@@ -455,8 +455,11 @@
 <div class="paragraph">
 <p>Note, however, that Red Hat Developer Hub documentation clearly states that the <a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/techdocs_for_red_hat_developer_hub/configuring-techdocs" target="_blank" rel="noopener">included lightweight TechDocs configuration is not intended for production</a> use.</p>
 </div>
-<div class="sect2">
-<h3 id="_builder_generator_publisher"><a class="anchor" href="#_builder_generator_publisher"></a>Builder, Generator, Publisher</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_builder_generator_publisher"><a class="anchor" href="#_builder_generator_publisher"></a>Builder, Generator, Publisher</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Examine OpenShift &gt; Administrator perspective &gt; Project: <code>tssc-dh</code> &gt; Workloads &gt; ConfigMaps &gt;
 tssc-developer-hub-app-config</p>
@@ -476,14 +479,14 @@ tssc-developer-hub-app-config</p>
 [...]</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_techdocs_builder"><a class="anchor" href="#_techdocs_builder"></a>techdocs.builder</h4>
+<div class="sect2">
+<h3 id="_techdocs_builder"><a class="anchor" href="#_techdocs_builder"></a>techdocs.builder</h3>
 <div class="paragraph">
 <p>The TechDocs <em>builder</em> value determines whether settings for a resident TechDocs build process are available. With <code>builder: local</code>, the generation and publication steps may also be performed by TechDocs. If <em>builder</em> is set to <code>external</code>, TechDocs assumes documents are generated and stored elsewhere and does no processing of documentation source, instead expecting to fetch and serve fully baked static HTML with the <em>publisher</em> component alone.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_techdocs_generator"><a class="anchor" href="#_techdocs_generator"></a>techdocs.generator</h4>
+<div class="sect2">
+<h3 id="_techdocs_generator"><a class="anchor" href="#_techdocs_generator"></a>techdocs.generator</h3>
 <div class="paragraph">
 <p>The configured <em>generator</em> compiles documentation source into presentation HTML. In the default configuration, <em>generator</em>'s <em>runIn</em> attribute is <code>local</code>. The setting of <em>builder</em> to <code>local</code> already implies that TechDocs will itself retrieve documentation source from entity repositories and convert it to HTML. Here, <code>local</code> sets the generator to <em>runIn</em> the same process space as TechDocs.</p>
 </div>
@@ -505,15 +508,17 @@ tssc-developer-hub-app-config</p>
 <p>The TechDocs <em>generator</em> is named and somewhat structured for modularity, so that the generator may be replaced by other implementations at specific sites today or in general releases in the future. This allows the possibility of converting documentation source in different formats in different ways and into different output products. Today, the TechDocs <em>generator</em> is almost always <a href="https://github.com/backstage/mkdocs-techdocs-core" target="_blank" rel="noopener">mkdocs-techdocs-core</a>, a plugin for the underlying <a href="https://www.mkdocs.org/" target="_blank" rel="noopener">MkDocs</a> site generator. This combination takes Markdown source as input and outputs static HTML.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_techdocs_publisher"><a class="anchor" href="#_techdocs_publisher"></a>techdocs.publisher</h4>
+<div class="sect2">
+<h3 id="_techdocs_publisher"><a class="anchor" href="#_techdocs_publisher"></a>techdocs.publisher</h3>
 <div class="paragraph">
 <p>The name <em>publisher</em> is somewhat overloaded. As the name implies, the publisher serves generated HTML documentation to Developer Hub users for reading in a web browser. When <em>builder</em> is <code>local</code>, the publisher also handles writing prepared HTML to storage, later fetching it back to serve it. The value of <em>publisher.type</em> determines where the publisher stores generated HTML. When <em>type</em> is <code>local</code>, <em>publisher</em> writes HTML to and serves it from storage locally available to the RHDH process. As shown above, the default lightweight TechDocs is configured with <code>techdocs.publisher.type: local</code>. The <em>publisher</em> <em>type</em> may instead be one of a few external storage providers, including <code>awsS3</code>. External storage configuration is part of the the second TechDocs lab.</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_developer_experience_find_read_edit_documentation"><a class="anchor" href="#_developer_experience_find_read_edit_documentation"></a>Developer Experience: Find, Read, Edit Documentation</h3>
+</div>
+<div class="sect1">
+<h2 id="_developer_experience_find_read_edit_documentation"><a class="anchor" href="#_developer_experience_find_read_edit_documentation"></a>Developer Experience: Find, Read, Edit Documentation</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The lightweight TechDocs process included in Red Hat Developer Hub provides exactly the expected view/edit/build/view cycle for component documentation creators and users. While functionally equivalent, the default deployment is not recommended for production because it may not scale well to many documents, repositories, or developers.</p>
 </div>
@@ -533,8 +538,8 @@ tssc-developer-hub-app-config</p>
 </li>
 </ol>
 </div>
-<div class="sect3">
-<h4 id="_view_the_latest_doc"><a class="anchor" href="#_view_the_latest_doc"></a>View the Latest Doc</h4>
+<div class="sect2">
+<h3 id="_view_the_latest_doc"><a class="anchor" href="#_view_the_latest_doc"></a>View the Latest Doc</h3>
 <div class="paragraph">
 <p>A new request for a document triggers TechDocs to check for updates in the document&#8217;s source repository.</p>
 </div>
@@ -556,7 +561,6 @@ tssc-developer-hub-app-config</p>
 </div>
 <div class="paragraph">
 <p>Clicking the <strong>Refresh</strong> link reloads the page with the latest HTML.</p>
-</div>
 </div>
 </div>
 </div>
