@@ -156,7 +156,9 @@
     "sboms",
     "pipelinerun",
     "fulltext",
-    "CISO"
+    "CISO",
+    "mkdocs",
+    "MkDocs"
 
   ],
   "ignoreWords": [

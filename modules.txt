@@ -3,7 +3,7 @@ Module 2: Setup RHDH: Install and setup the tools to fit customer environments w
 Module 3: Setup TPA: Install and setup the tools to fit customer environments with TPA
 Module 4: Setup TAS: Install and setup the tools to fit customer environments with TAS
 Module 5: Customer configurations and third-party integrations: Customizing the tools to fit customer environments
-Module 6: Customer configurations RHDH: Customizing RHDH
+Module 6: RHDH User Interface: Configure Appearance and TechDocs
 Module 7: Orchestrator Overview
 Module 8: Getting started with security best practices
 Module 9: Trusted Software Supply Chain with TPA
