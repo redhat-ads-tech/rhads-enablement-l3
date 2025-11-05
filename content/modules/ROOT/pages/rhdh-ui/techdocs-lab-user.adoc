@@ -1,6 +1,6 @@
 = TechDocs Lab 1: Creating and Editing TechDocs
 
-Continuing with the pre-installed Developer Hub instance running in the OpenShift Project `tssc-dh`, the steps that follow illustrate the intended user experience for developers reading and writing TechDocs and demonstrate the operation of the default _local_-context TechDocs included with RHDH and detailed in the preceding xref:techdocs-foundations.adoc[TechDocs Foundations].
+The steps that follow employ the pre-installed Developer Hub instance running in the OpenShift Project `tssc-dh` to illustrate the intended user experience for developers reading and writing TechDocs and to demonstrate the operation of the default _local_-context TechDocs process included with RHDH and detailed in the preceding xref:techdocs-foundations.adoc[TechDocs Foundations].
 
 == Create
 
@@ -89,7 +89,7 @@ Click *Create* button to instantiate the Template into a new Component.
 
 [NOTE]
 ====
-Even when components are unregistered from the {product_rhdh_name} Catalog, any external resources (e.g. GitLab repositories, OpenShift projects, etc.) associated with the component may still exist. If another component is later created with the same name (e.g. `uq`) by the same user (e.g. `user1`), resources may fail to be created due to conflicts.
+Unregistering a Component removes it from the {product_rhdh_name} Catalog, but does not remove or change external resources that may have been created or executed when the Component was created from its Template. Git repos, OpenShift Projects, Deployments, Pods, and other resources associated with the unregistered Component will still exist. In fact, you can re-register a Component by again providing RHDH a reference to its source repo that still contains a https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/-/blob/main/catalog-info.yaml[`catalog-info.yaml` definition]. Without further arrangement to cleanup such resources, however, a later instantiation attempting to specify an identical Component name beneath the identical org or user could lead to name conflicts or other resource contention. For example, if your `user1 TSSC` creates another `uq`.
 ====
 
 == Summary (to Restate...)
