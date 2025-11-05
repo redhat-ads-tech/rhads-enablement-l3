@@ -399,7 +399,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the appearance customization lab, you worked in the OpenShift Project <code>brand-rhdh</code> and created a new Red Hat Developer Hub instance. In this lab, you&#8217;ll begin with a provided Developer Hub already running in a another Project, named <code>tssc-dh</code>. The steps that follow illustrate the intended user experience for developers reading and writing TechDocs and demonstrate the operation of the default <em>local</em>-context TechDocs included with RHDH and detailed in the preceding <a href="#techdocs-foundations.adoc" class="xref unresolved">TechDocs Foundations</a>.</p>
+<p>Continuing with the pre-installed Developer Hub instance running in the OpenShift Project <code>tssc-dh</code>, the steps that follow illustrate the intended user experience for developers reading and writing TechDocs and demonstrate the operation of the default <em>local</em>-context TechDocs included with RHDH and detailed in the preceding <a href="#techdocs-foundations.adoc" class="xref unresolved">TechDocs Foundations</a>.</p>
 </div>
 </div>
 </div>
@@ -412,7 +412,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to {rhdh_url}[Red Hat Developer Hub^, window="rhdh"] and login as {rhdh_user} with password {rhdh_user_password}.</p>
+<p>Navigate to {rhdh_url}[Red Hat Developer Hub^, window="rhdh"] and login as <code>{rhdh_user}</code> with password <code>{rhdh_user_password}</code>.</p>
 </li>
 <li>
 <p>Click the circled plus sign (+) near top right to open the Self-Service catalog.</p>
@@ -449,9 +449,7 @@
 <p><strong>Repository Owner</strong>: <code>user1</code></p>
 </div>
 <div class="paragraph">
-<p><strong>Repository Server</strong>: &lt;{gitlab_url}&gt;
-  NB: trick is strip <code>proto://</code> and trailing slash get just the svc URI
-  //TODO check and adjust templated URI string</p>
+<p><strong>Repository Server</strong>: <code>gitlab-gitlab.{openshift_cluster_ingress_domain}</code></p>
 </div>
 <div class="paragraph">
 <p><strong>CI Provider</strong>: Not immediately used. Leave the default.</p>
@@ -502,6 +500,9 @@
 <ol class="arabic">
 <li>
 <p>Click the pencil-and-paper Edit icon to the right of the first document heading, <em>Trusted Application Pipeline Software Template</em>, in your <em>uq</em> document.</p>
+</li>
+<li>
+<p>Log into GitLab using username <code>{gitlab_user}</code> and password <code>{gitlab_user_password}</code>.</p>
 </li>
 <li>
 <p>Arrive in the doc source in the GitLab/user1/uq source repository that holds your component source and documentation.</p>
@@ -556,6 +557,20 @@
 <p>Notice that the <strong>Owned Components</strong> list no longer includes the <em>uq</em> Component.</p>
 </li>
 </ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Even when components are unregistered from the Red Hat Developer Hub Catalog, any external resources (e.g. GitLab repositories, OpenShift projects, etc.) associated with the component may still exist. If another component is later created with the same name (e.g. <code>uq</code>) by the same user (e.g. <code>user1</code>), resources may fail to be created due to conflicts.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
