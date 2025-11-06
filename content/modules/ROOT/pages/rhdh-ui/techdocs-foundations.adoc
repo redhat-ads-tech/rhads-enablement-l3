@@ -40,7 +40,7 @@ Note, however, that {product_rhdh_name} documentation clearly states that the ht
 
 == Builder, Generator, Publisher
 
-In the appearance customization lab, you worked in the OpenShift Project `brand-rhdh` and created a new {product_rhdh_name} instance. In this lab, you'll begin with a provided Developer Hub already running in a the `tssc-dh` Project. This instance is configured with the default lightweight TechDocs process. 
+In the appearance customization lab, you worked in the OpenShift Project `brand-rhdh` and created a new {product_rhdh_name} instance. In this lab, you'll begin with a provided Developer Hub already running in the `tssc-dh` Project. This instance is configured with the default lightweight TechDocs process. 
 
 . In the OpenShift Web Console, Select the Administrator perspective, navigate to _Workloads_ > _ConfigMaps_, and ensure the `tssc-dh` Project is selected in the project selector drop-down.
 
