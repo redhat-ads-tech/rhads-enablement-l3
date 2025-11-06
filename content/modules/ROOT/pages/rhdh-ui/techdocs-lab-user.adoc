@@ -1,0 +1,99 @@
+= TechDocs Lab 1: Creating and Editing TechDocs
+
+The steps that follow employ the pre-installed Developer Hub instance running in the OpenShift Project `tssc-dh` to illustrate the intended user experience for developers reading and writing TechDocs and to demonstrate the operation of the default _local_-context TechDocs process included with RHDH and detailed in the preceding xref:techdocs-foundations.adoc[TechDocs Foundations].
+
+== Create
+
+Component instances created from the _Quarkus Java_ Template include a basic set of TechDocs for both the source and gitops repositories. The documentation for the Component describes how the Template creates the Component repos and outlines the example source code the repos contain.
+
+. Navigate to {rhdh_url}[{product_rhdh_name}^, window="rhdh"] and login as `{rhdh_user}` with password `{rhdh_user_password}`.
+
+. Click the circled plus sign (+) near top right to open the Self-Service catalog.
+
+. Locate the _Quarkus Java - Trusted Application Pipeline_ from the grid of Template cards. Click **Choose** to open it. For the remainder of this numbered list of steps, a `fixed width font` indicates a string literal to type directly into a form text field. **Bold** indicates a GUI button or menu selection element. 
+
+. Fill out the Template instance configuration form as follows, clicking the **Next** button at bottom right to advance from each section to the next:
+
+=== Section 1: Application Information
+
+**Name**: `uq`
+
+**Owner**: Choose **user1 TSSC** from the pull-down menu. Note that after selecting **user1 TSSC** the menu field shows that user's underlying RHDH identity, i.e., `user:default/user1`.
+
+=== Section 2: Application Repository Information
+
+**Host Type**: GitLab (from menu)
+
+**Repository Name**: `uq`
+
+**Repository Default Branch**: `main`
+
+**Repository Owner**: `user1`
+
+**Repository Server**: `gitlab-gitlab.{openshift_cluster_ingress_domain}`
+
+**CI Provider**: Not immediately used. Leave the default.
+
+=== Section 3: Deployment Information
+
+**Image Registry**: `quay.io` (the Template default)
+
+**Image Organization**: `rhadsl3` (contrived, nonexistent)
+
+**Image Name**: `uq`
+
+**Deployment Namespace**: `tssc-app` (the default)
+
+=== Section 4: Review
+
+Click *Create* button to instantiate the Template into a new Component.
+
+== Visit-ate
+
+. Click **Docs** in the left navigation, then click **uq**.
+
+. See the Doc -- which explains what the Template did when it created your _uq_ Component.
+
+== Edit and Regenerate
+
+. Click the pencil-and-paper Edit icon to the right of the first document heading, _Trusted Application Pipeline Software Template_, in your _uq_ document.
+
+. Log into GitLab using username `{gitlab_user}` and password `{gitlab_user_password}`.
+
+. Arrive in the doc source in the GitLab/user1/uq source repository that holds your component source and documentation.
+
+. Edit the document in the repository service editor for the quickest experience. For example, you might change the second sentence to clarify it, or change the page first heading for the highest visibility in the result.
+
+. Leave the default **Commit message**, or edit it if you like. The commit message can't be blank.
+.. Leave the **Target Branch** set to the default, `main`.
+
+. Click the *Commit changes* button.
+
+. Navigate or switch browser tabs back to your component's TechDoc index page in {product_rhdh_name}. Refresh the browser if you don't see the expected "building", then "please refresh" banner.
+
+. Click the **Refresh** link in the green-outlined "please refresh" banner to load the latest HTML rendition of your document.
+
+== Cleanup (Annihilate)
+
+. In {product_rhdh_name}, click **Catalog** in the left navigation.
+
+. Click **uq** in the **Owned Components** Catalog list to open your Component.
+
+. Click the "falafel menu" (three stacked dots) near top right to expand the entity actions menu.
+
+. Click **Unregister entity**
+
+. Click **Unregister Location** in the presented dialog
+
+. Notice that the **Owned Components** list no longer includes the _uq_ Component.
+
+[NOTE]
+====
+Unregistering a Component removes it from the {product_rhdh_name} Catalog, but does not remove or change external resources that may have been created or executed when the Component was created from its Template. Git repos, OpenShift Projects, Deployments, Pods, and other resources associated with the unregistered Component will still exist. In fact, you can re-register a Component by again providing RHDH a reference to its source repo that still contains a https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/-/blob/main/catalog-info.yaml[`catalog-info.yaml` definition]. Without further arrangement to cleanup such resources, however, a later instantiation attempting to specify an identical Component name beneath the identical org or user could lead to name conflicts or other resource contention. For example, if your `user1 TSSC` creates another `uq`.
+====
+
+== Summary (to Restate...)
+
+This is the basic experience {product_rhdh_name} TechDocs provides to developers, technical writers, and other team members. Docs with code, docs _as_ code, and an edit process that works just like changing and committing any other project code. Behind the scenes, triggered, automatic publication happens through a pipelined build, in this case resident with RHDH and the TechDocs plugins.
+
+You know how TechDocs works, and how to use the default configuration included with {product_rhdh_name} to generate and edit documentation. Up next: Configuring TechDocs for much larger scale.
