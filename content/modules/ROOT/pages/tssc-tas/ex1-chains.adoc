@@ -1,3 +1,273 @@
 :imagesdir: ../../assets/images
 
 = Tekton Chains
+
+== The Chains configuration
+
+Since Tekton Chains is a Tekton Component, on OpenShift, it is configured and managed by the {openshift_console_url}/k8s/all-namespaces/operators.coreos.com\~v1alpha1~ClusterServiceVersion?cluster-service-version=pipelines[OpenShift Pipelines Operator^,window="console"].
+
+Therefore, it is also *configured* via the operator:
+
+In our https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[terminal^,window="terminal"], take a look at the `tektonconfig` custom resource (CR), specifically the `spec.chain` section:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc get tektonconfig -n openshift-operators -o yaml | less
+----
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q]
+
+The operator turns the global `tektonconfig` into a `chains-config` ConfigMap in the "openshift-pipelines" namespace, that the Chains Controller reads.
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc get configmap chains-config -n openshift-pipelines -o jsonpath='{.data}' | jq
+----
+
+[source,json]
+----
+{
+  "artifacts.oci.format": "simplesigning",
+  "artifacts.oci.storage": "oci",
+  "artifacts.pipelinerun.format": "in-toto",
+  "artifacts.pipelinerun.storage": "oci",
+  "artifacts.taskrun.format": "in-toto",
+  "artifacts.taskrun.storage": "oci",
+  "transparency.enabled": "true",
+  "transparency.url": "https://rekor-server-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io"
+}
+----
+
+IMPORTANT: Don't change or patch this ConfigMap directly, as the operator will reconcile it based on the global `tektonconfig` CR.
+
+NOTE: If you closely compare the `chains-config` configMap and the "chain" section in the `tektonConfig` you will also notice that the configMap contains all the info that Chains needs to run, but not the Chains configuration itself: `generateSigningSecret: true` is missing, for example, also the Chains "master switch": `disabled: false`
+
+=== The current configuration
+
+So, what do these values mean (we'll look at the `tektonconfig`)
+
+[source, yaml]
+----
+    chain:
+      artifacts.oci.format: simplesigning
+      artifacts.oci.storage: oci
+      artifacts.pipelinerun.format: in-toto
+      artifacts.pipelinerun.storage: oci
+      artifacts.taskrun.format: in-toto
+      artifacts.taskrun.storage: oci
+      disabled: false
+      generateSigningSecret: true
+      options: {}
+      performance:
+        disable-ha: false
+      transparency.enabled: "true"
+      transparency.url: https://rekor-server-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io
+----
+
+Here's a breakdown of each Tekton Chains configuration parameter:
+
+*Artifact Format & Storage:*
+
+- `artifacts.oci.format: simplesigning` - Uses "classic" signing format for OCI (container) images; creates the cryptographic signatures for artifacts (images)
+- `artifacts.oci.storage: oci` - Stores OCI artifact signatures in the OCI registry itself (alongside the images)
+- `artifacts.pipelinerun.format: in-toto` - Creates attestations for PipelineRuns using the in-toto format (for more information about the `in-toto` format and attestations in general, see xref:security-practices/ex3-provenance.adoc[Provenance & Attestations])
+- `artifacts.pipelinerun.storage: oci` - Stores PipelineRun attestations in the OCI registry
+- `artifacts.taskrun.format: in-toto` - Creates attestations for TaskRuns using the in-toto format
+- `artifacts.taskrun.storage: oci` - Stores TaskRun attestations in the OCI registry
+
+
+*Core Settings:*
+
+- `disabled: false` - Chains controller is active and will sign/attest TaskRuns and PipelineRuns
+- `generateSigningSecret: true` - Automatically creates signing keys for Chains (rather than providing your own) and stores it in the `signing-secrets` secret in the `openshift-pipelines` namespace
+- `options: {}` - Additional configuration options (currently empty)
+
+*Performance:*
+
+- `performance.disable-ha: false` - High Availability is enabled; multiple Chains controller replicas can run for redundancy
+
+*Transparency Log:*
+
+- `transparency.enabled: "true"` - Enables publishing signatures/attestations to the configured Rekor transparency log for public verification
+- `transparency.url` - The Rekor server endpoint where signatures are logged (part of Trusted Artifact Signer/Sigstore) to provide an immutable audit trail
+
+
+
+=== Configuration Options
+
+For reference and to give you some ideas of the options available (feel free to play with the configuration - it's not a customer environment, after all) here's a full list of configuration options and what they do
+
+*Click & Expand to see the full list of configuration options*
+
+[%collapsible]
+=====
+include::./ex1-chains-configoptions.adoc[]
+=====
+
+== Chains in action
+
+In this environment, we have a running Chains configuration that is used in all the exercises leveraging Red Hat Developer Hub as our Developer Portal and "Frontend" to the CI and CD (through the Tekton and ArgoCD plugins).
+
+So, let's use what we have and generate an image with associated signature and attestation, so we can see what the above configuration generated.
+
+First, login to our {rhdh_url}[Red Hat Developer Hub instance^,window="rhdh"] as `{rhdh_user}` with password `{rhdh_user_password}`
+
+[IMPORTANT]
+====
+[cols="1,4",frame=none,grid=none]
+|===
+a|image::tssc-tas/rhdh-logout.png[]
+a|Should you automatically be logged in as `admin`, please log out and log back in again as `{rhdh_user}` with password `{rhdh_user_password}`
+|===
+====
+
+Click on the "Self-Service" button (the (+) icon) to get to the {rhdh_url}/create[Self-Service Page^,window="rhdh"]
+
+image::tssc-tas/rhdh-self-service-button.png[]
+
+Scroll down to the template named "Securing a Quarkus Service Software Supply Chain (Tekton)" and click on {rhdh_url}/create/templates/default/quarkus-stssc-template["Choose"^,window="rhdh"]
+
+image::tssc-tas/rhdh-self-service-button-choose-template.png[]
+
+. Change the name to *`tekton-chains-test`* and leave the other fields at their default values
+. Click "Next"
+
+IMPORTANT: All the following scripts and examples assume you gave it the name "*_tekton-chains-test_*" - if you give it any other name, you will have to adapt accordingly.
+
+image::tssc-tas/rhdh-tekton-chains-test.png[ link=self, window="image"]
+
+Leave all other fields at their default values and click "Next" and then "Review", followed by "Create". +
+_(Click on the images for full size)_
+
+[cols="1,1,1",frame=none,grid=none]
+|===
+a|image::tssc-tas/rhdh-tekton-chains-test-2.png[ link=self, window="image"]
+a|image::tssc-tas/rhdh-tekton-chains-test-3.png[ link=self ,window="image"]
+a|image::tssc-tas/rhdh-tekton-chains-test-4.png[ link=self, window="image"]
+|===
+
+The template will instantiate all the necessary resources, from the git repo to the ArgoCD artifacts - and for our context here, *The Pipeline*, which will run automatically for an initial build after a few moments. 
+
+Click on {rhdh_url}/catalog/default/component/tekton-chains-test["Open Component in Catalog"^,window="rhdh"]
+
+image::tssc-tas/rhdh-tekton-chains-test-run-open-component.png[ link=self, window="image"]
+
+When you click the {rhdh_url}/catalog/default/component/tekton-chains-test/ci["CI" tab^, window="rhdh"] on the Component Page, you'll see that a pipeline has just started (give it a moment if it hasn't already). 
+
+image::tssc-tas/rhdh-tekton-chains-test-homepage.png[link=self, window="image"]
+
+After the pipelinerun has finished, you can see that the pipelinerun itslef has been signed and attested (the little "shield" showing "signed" when hovering over it.)
+
+image::tssc-tas/rhdh-tekton-chains-test-homepage-ci.png[link=self, window="image"]
+
+When we go to the {rhdh_url}/catalog/default/component/tekton-chains-test/image-registry[Image Registry Tab^,window="rhdh"], we can see that the image has two tags, but also three associated elements:
+
+* an SBOM (created by a pipeline task, using `syft`)
+* a signature (`*.sig`)
+* an attestation (`*.att`)
+
+Both of which haven't been created by an explicit `sign and attest` pipeline task, but by *Tekton Chains*.
+
+image::tssc-tas/rhdh-tekton-chains-test-homepage-image-registry.png[]
+
+If we open that in {quay_url}/repository/tssc/tekton-chains-test?tab=tags[Quay directly^, window="quay"] we can see that Quay also recognises the signature (which the Quay Plugin for Red Hat Developer Hub doesn't show in its current version):
+
+NOTE: To login to Quay, use `{quay_admin_user}` and `{quay_admin_password}`
+
+image::tssc-tas/rhdh-tekton-chains-test-quay.png[link=self, window="image"]
+
+
+== The Chains Attestations
+
+To take a closer look at the attestations and signature, we need to download and inspect them. 
+As in earlier exercises, we will be using `cosign` for this. 
+
+Therefore, please open the https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"] again. 
+
+NOTE: If you're asked to login again - choose any user you might have saved in your browser (such as `{rhdh_user}` with `{rhdh_user_password}` or `{openshift_admin_user}` with `{openshift_admin_password}`)
+
+To get our helper scripts, we need to clone the helpers repository again - and we'll start with obtaining the full image reference on Quay and store it in the `$CHAINS_IMAGE` variable
+
+[source,bash,role=execute,subs=attributes+]
+----
+git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers/tas-tssc
+source ./get-chains-image-sha.sh
+echo ""
+echo $CHAINS_IMAGE
+----
+
+We will again (as in other modules) use `cosign verify` but we need the public key, since our current Chains configuration uses a public/private key pair. 
+Cosign then also verifies against the Rekor instance (which you can see if you type `help` since we have all that in environment variables).
+
+Unless you use the `--insecure-ignore-tlog`, cosign will always verify the Rekor inclusion.
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE
+----
+
+[NOTE]
+====
+In our Chains configuration, we have `generateSigningSecret: true` that triggers the Pipelines Operator to create a secret `signing-secrets`, which contains the `cosign.pub` key, which cosign automatically recognises. +
+Therefore, we can reference it via the `k8s://` prefix.
+
+To reference a key, we can use
+
+* File path: `--key cosign.pub`
+* Environment variable: `--key env://VARIABLE_NAME`
+* Kubernetes secret: `--key k8s://namespace/secret-name`
+* KMS: `--key gcpkms://...` or `--key awskms://...`
+====
+
+So, we can tell that it is a valid signature (that also has its inclusion proof in Rekor)
+
+[source, console]
+----
+cosign verify --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq
+
+Verification for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837 --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - Existence of the claims in the transparency log was verified offline
+  - The signatures were verified against the specified public key
+[
+  {
+    "critical": {
+      "identity": {
+        "docker-reference": "quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test"
+      },
+      "image": {
+        "docker-manifest-digest": "sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837"
+      },
+      "type": "cosign container image signature"
+    },
+    "optional": null
+  }
+]
+----
+
+Similarly, we can validate the attestation's integrity and signature, if we know its type - but trying doesn't hurt, so `cosign` will give us an error if it's default `prediacte type` (custom) doesn't match what we have in the attestations:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify-attestation --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq
+----
+
+[source, console]
+----
+cosign verify-attestation --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq
+Error: none of the attestations matched the predicate type: custom, found: https://slsa.dev/provenance/v0.2,https://slsa.dev/provenance/v0.2
+error during command execution: none of the attestations matched the predicate type: custom, found: https://slsa.dev/provenance/v0.2,https://slsa.dev/provenance/v0.2
+----
+
+So, it tells us what predicate types we have and we can then check
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify-attestation --type https://slsa.dev/provenance/v0.2 --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq -r '.payload' | base64 -d | jq . | less
+----
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q] 
+
+NOTE: We added the `jq` and `base64` command pipes, since the `cosign verify-attestation` will return the attestation as `payload` in its base64-encoded format. With this, we can actually see what's in the attestation that we just *_successfully verified_*.
+
+

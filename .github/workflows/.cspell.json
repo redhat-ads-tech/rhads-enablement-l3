@@ -228,7 +228,8 @@
     "pluginregistry",
     "logback",
     "rhdp",
-    "NCSC"
+    "NCSC",
+    "microdnf"
 
   ],
   "ignorePaths": [

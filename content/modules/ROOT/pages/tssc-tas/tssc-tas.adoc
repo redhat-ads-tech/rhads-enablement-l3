@@ -122,7 +122,7 @@ The RHACS admission controller prevents users from creating or updating workload
 
 ACS policies cover a slightly different aspect of the workload lifecycle:
 
-* ACS can verify that an admissible image has been signed via `cosign` / Tusted Artifact Signer and verify that against the TAS Rekor database
+* ACS can verify that an admissible image has been signed via `cosign` / Trusted Artifact Signer and verify that against the TAS Rekor database
 
 But that is where the overlap with Enterprise Contract or the Sigstore Admission Controller ends and the workload security focus of ACS starts:
 
