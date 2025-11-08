@@ -196,6 +196,8 @@ echo ""
 echo $CHAINS_IMAGE
 ----
 
+=== Verification
+
 We will again (as in other modules) use `cosign verify` but we need the public key, since our current Chains configuration uses a public/private key pair. 
 Cosign then also verifies against the Rekor instance (which you can see if you type `help` since we have all that in environment variables).
 
@@ -246,7 +248,7 @@ The following checks were performed on each of these signatures:
 ]
 ----
 
-Similarly, we can validate the attestation's integrity and signature, if we know its type - but trying doesn't hurt, so `cosign` will give us an error if it's default `prediacte type` (custom) doesn't match what we have in the attestations:
+Similarly, we can validate the attestation's integrity and signature, if we know its type - but trying doesn't hurt, so `cosign` will give us an error if it's default `predicate type` (custom) doesn't match what we have in the attestations:
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -264,10 +266,147 @@ So, it tells us what predicate types we have and we can then check
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify-attestation --type https://slsa.dev/provenance/v0.2 --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq -r '.payload' | base64 -d | jq . | less
+cosign verify-attestation --type https://slsa.dev/provenance/v0.2 --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq '.payload = "<payload>"'
+----
+
+[NOTE] 
+====
+We added the `jq` replacing the `payload` with a fixed string. If you try without, you will see that the `payload` contains a very long base64-encoded string - which is the actual attestation. +
+We'll look at that in more detail later - for now, we have *_successfully verified_* the attestations:
+
+[source,console]
+----
+cosign verify-attestation --type https://slsa.dev/provenance/v0.2 --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq '.payload = "<payload>"'
+
+Verification for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837 --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - Existence of the claims in the transparency log was verified offline
+  - The signatures were verified against the specified public key
+{
+  "payloadType": "application/vnd.in-toto+json",
+  "payload": "<payload>",
+  "signatures": [
+    {
+      "keyid": "SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU",
+      "sig": "MEUCIFAEpX6AElGd+AjsJRwRPKYfRj/LuCqLix0011BWm0rQAiEAp2zYjpkMFTLf54PTMX/RkD5OKpYLGnXGLSd0rtzgnG8="
+    }
+  ]
+}
+{
+  "payloadType": "application/vnd.in-toto+json",
+  "payload": "<payload>",
+  "signatures": [
+    {
+      "keyid": "SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU",
+      "sig": "MEUCIH/Fr8cDTSrsitgfVS/OHGBv/5XhvB8wjrk1mIxZfpsrAiEA79EFeVM37iyp3iCJk2QSAPMsnCuH5m43qCtEYq5+2eU="
+    }
+  ]
+}
+----
+====
+
+=== Download & Inspect
+
+After successfully verifying the attestation, we can download and inspect it:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation --predicate-type https://slsa.dev/provenance/v0.2 $CHAINS_IMAGE | jq '.payload = "<payload>"'
+----
+
+NOTE: As you might have noticed, the `download attestation` subcommand doesn't take a `key`, so it doesn't verify the signature or its integrity - however, the output is in the same format as `cosign verify-attestation` (above).
+
+[source,console]
+----
+cosign download attestation --predicate-type https://slsa.dev/provenance/v0.2 $CHAINS_IMAGE | jq '.payload = "<payload>"'
+{
+  "payloadType": "application/vnd.in-toto+json",
+  "payload": "<payload>",
+  "signatures": [
+    {
+      "keyid": "SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU",
+      "sig": "MEUCIFAEpX6AElGd+AjsJRwRPKYfRj/LuCqLix0011BWm0rQAiEAp2zYjpkMFTLf54PTMX/RkD5OKpYLGnXGLSd0rtzgnG8="
+    }
+  ]
+}
+{
+  "payloadType": "application/vnd.in-toto+json",
+  "payload": "<payload>",
+  "signatures": [
+    {
+      "keyid": "SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU",
+      "sig": "MEUCIH/Fr8cDTSrsitgfVS/OHGBv/5XhvB8wjrk1mIxZfpsrAiEA79EFeVM37iyp3iCJk2QSAPMsnCuH5m43qCtEYq5+2eU="
+    }
+  ]
+}
+----
+
+So, we know the `payload` has the OCI-recognised MIME-type `application/vnd.in-toto+json` and its signature. 
+
+Taking a look at the actual attestation (the payload) requires decoding it - we'll again use `jq` for that:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation --predicate-type https://slsa.dev/provenance/v0.2 $CHAINS_IMAGE |  jq -r '.payload' | base64 -d | jq . | less
 ----
 *HINT:* Exit `less` with kbd:[q] or kbd:[Q] 
 
-NOTE: We added the `jq` and `base64` command pipes, since the `cosign verify-attestation` will return the attestation as `payload` in its base64-encoded format. With this, we can actually see what's in the attestation that we just *_successfully verified_*.
+[TIP]
+====
+As you can see, these two attestations are quite verbose. If you'd like to study them in more detail in your IDE / JSON Tooling of choice, you can download it, since the Terminal is just another pod on OpenShift.
+
+In the Terminal, run:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation --predicate-type https://slsa.dev/provenance/v0.2 $CHAINS_IMAGE |  jq -r '.payload' | base64 -d | jq . > /workspace/chains-attestations.json
+----
+
+*On your local machine*, log in to OpenShift using the https://oauth-openshift.{openshift_cluster_ingress_domain}/oauth/token/display[admin account token^,window="token"] (Click _"request another token"_ if you follow the link).
+
+Then, find the terminal's pod name:
+[source,bash,role=execute,subs=attributes+]
+----
+oc get pods -n ttyd
+----
+[source,console]
+----
+NAME                                   READY   STATUS    RESTARTS   AGE
+ttyd-admin-terminal-6bf48d8b95-zz8tk   2/2     Running   0          31h
+----
+(_yours will be different_)
+
+With the pod name from your environment, copy the file to your machine to inspect it
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc cp <use-your-pod-name-here>:/workspace/chains-attestations.json chains-attestations.json -c ttyd -n ttyd
+----
+
+====
+
+When you look closer, you can see that we have two `in-toto` attestations of type `\https://slsa.dev/provenance/v0.2` 
+
+* one with `"buildType": "tekton.dev/v1beta1/TaskRun"` 
+* one with `"buildType": "tekton.dev/v1beta1/PipelineRun"`
+
+Both have the `builder.id: "https://tekton.dev/chains/v2"`
+
+Both also contain all the `environment` and `parameters` data under `invocation` as well as the used `materials` (task images and git source for the pipelinerun) and build timestamps under `metadata`.
+
+So, we have a full description of the build environment and the inputs that were used to create the artifact (which is the "subject" in the `in-toto` statement "envelope")
+
+(_click to enlarge_)
+[cols="1,1",frame=none,grid=none]
+|===
+a|TaskRun:
+
+image::tssc-tas/chains-attestations-taskrun.png[ link=self, window="image"]
+a|PipelineRun: 
+
+image::tssc-tas/chains-attestations-pipelinerun.png[ link=self ,window="image"]
+|===
+
 
 
