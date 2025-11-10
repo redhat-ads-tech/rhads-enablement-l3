@@ -1,3 +1,736 @@
 :imagesdir: ../../assets/images
 
 = Enterprise Contract (Conforma)
+
+As outlined in previous chapters (e.g. xref:security-practices/overview.adoc[Module 7: Getting started with security best practices]), downloading attestations and validating them, parsing attestation (predicate) content and applying rules to it _could_ be done manually or scipted via bash scripts (in theory). +
+But, why would we - we have Conforma / Enterprise Contract to do just that in a very convenient and reproducible way.
+
+[IMPORTANT]
+====
+We are continuing this exercise with the results (specifically, with the image and its attestations) that we build in the previous exercise.
+
+If you haven't already done so, please go through the previous exercise to create an image via a Tekton Pipeline Run (with Tekton Chains attestations).
+====
+
+== Working with existing SLSA policies
+
+As a follow-up to the previous chapter, let's see what we already have available as policies and rules and how to apply them to the image and attestations that Tekton Chains created.
+
+=== The Conforma SLSA Policies
+
+The Conforma community provides a huge set of rules grouped by 
+
+* https://conforma.dev/docs/policy/release_policy.html[Release Policy^,window="conforma"]
+* https://conforma.dev/docs/policy/pipeline_policy.html[Pipeline Policy^,window="conforma"]
+* https://conforma.dev/docs/policy/build_task_policy.html[Build Task Policy^,window="conforma"]
+* https://conforma.dev/docs/policy/task_policy.html[Task Policy^,window="conforma"]
+* https://conforma.dev/docs/policy/stepaction_policy.html[StepAction Policy^,window="conforma"]
+
+that are ready to use and can cloned and tailored to match specific requirements.
+
+Each policy contains a number of Rego-language policy rules that can be used in your image verification to check for policy compliance.
+
+Let's quickly use one and then go through the command and its parameters:
+
+In our https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[terminal^,window="terminal"], check if the `$CHAINS_IMAGE` variable is still available (we set that in the previous exercise):
+
+[source,bash,role=execute,subs=attributes+]
+----
+echo $CHAINS_IMAGE
+---- 
+
+If it isn't, please refer to the previous exercise (where we `source ./get-chains-image-sha.sh`).
+
+Then, execute the below `ec validate image` command. If you followed xref:security-practices/ex3-provenance.adoc[Module 7, Exercise 3 - "Provenance & Attestations"] you will notice that we're extending the basic command with a policy configuration now:
+
+[source,bash,role=execute,subs=attributes+]
+----
+  ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '{
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "attestation_type",
+          "slsa_provenance_available",
+          "slsa_source_version_controlled"
+        ]
+      }
+    }]
+  }' \
+  --output yaml \
+  --show-successes \
+  --info
+---- 
+
+If you inspect the results, you will see that it
+
+* *validated the image signature*
+
+[source,yaml]
+----
+  containerImage: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837
+  name: Unnamed
+  signatures:
+  - keyid: ""
+    sig: MEUCIGPqLX+O3Hg9jLJ6i7DoXUnNIL3cDenXW+BhgyPVEi/8AiEAgfJmO9tP8N6KVX2nPE+qgrySlPeKo68+Q8QiNI+Hy/8=
+----
+
+* *found and validated the two attestations (for integrity and syntax)*
+
+[source,yaml]
+----
+- attestations:
+  - predicateBuildType: tekton.dev/v1beta1/TaskRun
+    predicateType: https://slsa.dev/provenance/v0.2
+    signatures:
+    - keyid: SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU
+      sig: MEUCIFAEpX6AElGd+AjsJRwRPKYfRj/LuCqLix0011BWm0rQAiEAp2zYjpkMFTLf54PTMX/RkD5OKpYLGnXGLSd0rtzgnG8=
+    type: https://in-toto.io/Statement/v0.1
+  - predicateBuildType: tekton.dev/v1beta1/PipelineRun
+    predicateType: https://slsa.dev/provenance/v0.2
+    signatures:
+    - keyid: SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU
+      sig: MEUCIH/Fr8cDTSrsitgfVS/OHGBv/5XhvB8wjrk1mIxZfpsrAiEA79EFeVM37iyp3iCJk2QSAPMsnCuH5m43qCtEYq5+2eU=
+    type: https://in-toto.io/Statement/v0.1
+----
+
+Up to this point, this is what we've already seen in previous exercises. + 
+Here, we add the policies for validation now - that you can see are executed and pass or fail.
+
+[source,yaml]
+----
+  successes:
+  - metadata:
+      code: attestation_type.deprecated_policy_attestation_format
+      collections:
+      - minimal
+      - redhat
+      - redhat_rpms
+      description: The Conforma CLI now places the attestation data in a different
+        location. This check fails if the expected new format is not found.
+      effective_on: "2023-08-31T00:00:00Z"
+      title: Deprecated policy attestation format
+    msg: Pass
+  - metadata:
+      code: attestation_type.known_attestation_type
+      collections:
+      - minimal
+      - redhat
+      - redhat_rpms
+      depends_on:
+      - attestation_type.pipelinerun_attestation_found
+      description: Confirm the attestation found for the image has a known attestation
+        type.
+      title: Known attestation type found
+    msg: Pass
+----
+
+[NOTE]
+====
+Some noteworthy things about the last command:
+
+* If you replace `--output yaml` with `--output json` you can easily parse the output with `jq` or some other means of JSON processing
+
+* The `--show-successes` adds the passed rules. If you omit that, you'll only see rule violations along with the other metadata
+
+* The `--info` adds more context to both passed and failed rule violations. 
+
+====
+
+=== The `--policy` parameter explained
+
+The `--policy` parameter in our command tells `ec` where to find the `policyConfiguration`, which we have inline in JSON format here:
+
+
+[console,json]
+----
+  {
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "attestation_type",
+          "slsa_provenance_available",
+          "slsa_source_version_controlled"
+        ]
+      }
+    }]
+  }
+----
+
+* `sources` is an array, meaning you can specify more than one `source`, combining multiple policy sources.
+
+For each source, you can configure
+
+* `policy` - The Rule Logic (or its location)
++
+The policy field contains the Rego policy files (.rego files) that define:
++
+--
+* What to check (e.g., "verify all tasks are from trusted sources")
+* How to evaluate it (the actual rule logic)
+* The rule metadata (titles, descriptions, failure messages)
+--
++
+These are the actual rule implementations - the code that performs the validation. In this case, we are using an `oci:` image that contains the rules, we could also use a `git:` reference or a file path.
+
+* `data` - The Configuration Values (or their location)
++
+The data field contains rule data - the configuration that parameterizes the policies:
++
+--
+* Allowlists/denylists (e.g., list of trusted task bundles)
+* Thresholds (e.g., max CVE severity levels, leeway days)
+* Expected values (e.g., required git branches, required tasks)
+* Environment-specific configuration
+--
++
+This is the input data that the policy rules reference when making decisions.
+
+
+This allows for separation of policies (the validation rules) and the data they act on. 
+
+[NOTE] 
+====
+When referencing a `git:` location, the double slash `//` denotes the separation of the git repository and the location of the files inside the repository, both for `data` and `policy`
+
+`https://github.com/enterprise-contract/ec-policies//example/data`
+
+You can also add a git reference for a branch
+
+`https://github.com/enterprise-contract/ec-policies//example/data?ref=main`
+
+or a commit 
+
+`https://github.com/enterprise-contract/ec-policies//example/data?ref=abc123def`
+
+Take a look the the data used for our example command https://github.com/conforma/policy/tree/main/example/data[here^,window="github"] 
+
+====
+
+* `config` - for fine-tuning the scope of the validation by including or excluding rules
++
+In our example, we specifically included three rule packages to be verified. Had we not done that, all rules would have been applied. 
+
+Similarly, we can exclude specific rules (see below).
+
+
+=== Rule Collections
+
+Instead of explicitly listing all rules we want to use, we can also use available https://conforma.dev/docs/policy/release_policy.html#_available_rule_collections["Rule Collections"^,window="conforma"] 
+
+Let's try that by using the `slsa3` rule collection from the Release Policy:
+
+[source,bash,role=execute,subs=attributes+]
+----
+  ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '{
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "@slsa3"
+        ]
+      }
+    }]
+  }' \
+  --info
+---- 
+
+In this clear-text format (we omitted the `--output` formatting) we can see that we have 20 rules in this rule collection 
+
+`Violations: 1, Warnings: 0, Successes: 19`
+
+and one failed. +
+Since we added `--info` it provided us with the context on how to fix it or how to disable the rule in the format `<rule-package>.<rule-name>`:
+
+[source,console]
+----
+Results:
+✕ [Violation] slsa_source_correlated.source_code_reference_provided
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837
+  Reason: Expected source code reference was not provided for verification
+  Title: Source code reference provided
+  Description: Check if the expected source code reference is provided. To exclude this rule add
+  "slsa_source_correlated.source_code_reference_provided" to the `exclude` section of the policy configuration.
+  Solution: Provide the expected source code reference in inputs.
+
+Error: success criteria not met
+----
+
+So, we'll add that exception (just to make it work):
+
+[source,bash,role=execute,subs=attributes+]
+----
+    ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '{
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "@slsa3"
+        ],
+        "exclude": [
+          "slsa_source_correlated.source_code_reference_provided"
+        ]
+      }
+    }]
+  }' --info
+
+----
+
+Now the validation succeeded: `Violations: 0, Warnings: 0, Successes: 19`
+
+[NOTE]
+====
+You might be wondering why the SLSA validation failed if we built (and attested all the inputs) via Tekton Chains.
+
+The reason here is that we took the automatically built image (right after we instantiated the template in the previous chapter). 
+An "empty commit" triggered that pipeline run - and github doesn't add all the necessary metadata to the webhook on empty commits.
+
+You can try if 
+
+* you go back to our component on {rhdh_url}/catalog/default/component/tekton-chains-test[Red Hat Developer Hub^,window="rhdh"]
+* edit the source code directly in GitLab by following the {gitlab_url}/development/tekton-chains-test["View Source"] link and commit your change
+* after the pipeline finishes, run the `get-chains-image-sha.sh` script again
+* Now try without the "exclude" section
+====
+
+=== Parameter formats
+
+Including the `policy` inline as JSON is not the only way to use it. You can include inline YAML, but for production use cases, you'd want to include the `policyConfig` as a YAML file or, in a git repository:
+
+==== *Inline YAML*
+
+[source,bash,role=execute,subs=attributes+]
+----
+ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '
+sources:
+  - policy:
+      - "oci::quay.io/enterprise-contract/ec-release-policy:latest"
+    data:
+      - "git::https://github.com/enterprise-contract/ec-policies//example/data"
+    config:
+      include:
+        - "@slsa3"
+      exclude:
+        - "slsa_source_correlated.source_code_reference_provided"
+' --info
+----
+
+==== *External YAML File*
+
+Create the configuration:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cat > policy.yaml << 'EOF'
+sources:
+  - policy:
+      - "oci::quay.io/enterprise-contract/ec-release-policy:latest"
+    data:
+      - "git::https://github.com/enterprise-contract/ec-policies//example/data"
+    config:
+      include:
+        - "@slsa3"
+      exclude:
+        - "slsa_source_correlated.source_code_reference_provided"
+EOF
+----
+
+and then run the `ec` statement with the file reference
+
+[source,bash,role=execute,subs=attributes+]
+----
+ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy policy.yaml \
+  --info
+
+----
+
+==== *git YAML reference*
+
+Assuming we have the file in a git repo, we would use
+
+[source,bash]
+----
+ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy git::https://github.com/your-org/your-repo//path/to/policy.yaml \ 
+  --info
+----
+NOTE: Again, the double forward slash `//` is used for separation of repository (`\https://github.com/your-org/your-repo`) from the path in the repo (`path/to/policy.yaml`)
+
+== Building a custom attestation
+
+The major use case for attestations is to generate (and attest) artifact provenance for SLSA compliance. The predicate types and formats are well-known and well defined - and the Conforma policies are available to use (or to tailor) as needed.
+
+However, Conforma & attestations (via Trusted Artifact Signer / `cosign`) can do much more. 
+
+Imagine a use case, where a customer wants to have verifiable and auditable proof of a release approval given via their ServiceNow ticketing system.
+
+In addition to the SLSA provenance (in our case generated by Tekton Chains), we would use a task or process that attests the release approval - and then verify it before deployment.
+
+First of all, we'd have to define a custom predicate (and we're free to add anything that might be worthwhile to record (auditability) and can be used for verification).
+
+=== Custom Predicate
+
+We'll define a custom predicate type (`\https://redhat.com/ads-scholars/v1`) and for our simple example, we'll store it as a file (in a real process that would be dynamically generated from the data in e.g. ServiceNow).
+
+[source,bash,role=execute,subs=attributes+]
+----
+cat > release-approval-predicate.json <<'EOF'
+{
+  "release": {
+    "approved": true,
+    "approvalDate": "2025-11-08T12:00:00Z",
+    "approver": "Jane Smith",
+    "approverEmail": "jane.smith@example.com"
+  },
+  "serviceNowTickets": [
+    {
+      "ticketId": "CHG0012345",
+      "url": "https://servicenow.example.com/nav_to.do?uri=change_request.do?sys_id=abc123",
+      "type": "Change Request",
+      "status": "Approved",
+      "approvalDate": "2025-11-07T15:30:00Z"
+    },
+    {
+      "ticketId": "RITM0067890",
+      "url": "https://servicenow.example.com/nav_to.do?uri=sc_req_item.do?sys_id=def456",
+      "type": "Requested Item",
+      "status": "Closed Complete",
+      "completionDate": "2025-11-08T09:00:00Z"
+    }
+  ],
+  "metadata": {
+    "processVersion": "1.0",
+    "complianceFramework": "ADS-Scholars Release Policy",
+    "notes": "Standard release approval process completed"
+  }
+}
+EOF
+---- 
+
+NOTE: Here, we have a single data structure (array) `serviceNowTickets[]`, but it could be more than one and basically anything that can we wrapped into JSON. 
+
+=== Attesting the custom predicate
+
+We could use keyless attestation via `cosign` (see xref:security-practices/ex3-provenance.adoc#_attesting[Provenance & Attestations]), but we'll use the current Tekton Chains configuration and the `k8s://openshift-pipelines/signing-secrets`, which also contains the private key and its password. 
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign attest \
+  --key k8s://openshift-pipelines/signing-secrets \
+  --type https://redhat.com/ads-scholars/v1 \
+  --predicate release-approval-predicate.json \
+  $CHAINS_IMAGE
+---- 
+
+For sake of completeness, we quickly verify the attestation (although `ec` will also do that):
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify-attestation \ 
+--type https://redhat.com/ads-scholars/v1 \ 
+--key k8s://openshift-pipelines/signing-secrets \ 
+$CHAINS_IMAGE |  jq -r '.payload' | base64 -d | jq .
+----
+
+
+[source,console]
+----
+cosign verify-attestation \
+--type https://redhat.com/ads-scholars/v1 \
+--key k8s://openshift-pipelines/signing-secrets \
+$CHAINS_IMAGE |  jq -r '.payload' | base64 -d | jq .
+
+Verification for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837 --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - Existence of the claims in the transparency log was verified offline
+  - The signatures were verified against the specified public key
+{
+  "_type": "https://in-toto.io/Statement/v0.1",
+  "predicateType": "https://redhat.com/ads-scholars/v1",
+  "subject": [
+    {
+      "name": "quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test",
+      "digest": {
+        "sha256": "7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837"
+      }
+    }
+  ],
+  "predicate": {
+    "metadata": {
+      "complianceFramework": "ADS-Scholars Release Policy",
+      "notes": "Standard release approval process completed",
+      "processVersion": "1.0"
+    },
+    "release": {
+      "approvalDate": "2025-11-08T12:00:00Z",
+      "approved": true,
+      "approver": "Jane Smith",
+      "approverEmail": "jane.smith@example.com"
+    },
+    "serviceNowTickets": [
+      {
+        "approvalDate": "2025-11-07T15:30:00Z",
+        "status": "Approved",
+        "ticketId": "CHG0012345",
+        "type": "Change Request",
+        "url": "https://servicenow.example.com/nav_to.do?uri=change_request.do?sys_id=abc123"
+      },
+      {
+        "completionDate": "2025-11-08T09:00:00Z",
+        "status": "Closed Complete",
+        "ticketId": "RITM0067890",
+        "type": "Requested Item",
+        "url": "https://servicenow.example.com/nav_to.do?uri=sc_req_item.do?sys_id=def456"
+      }
+    ]
+  }
+}
+----
+
+== Building a custom policy to validate 
+
+=== The Policy
+
+Take your time to inspect it - in the end it comes down to
+
+1) From all the attestations present (all will be part of the input), filter the ones with our predicateType:
+----
+release_approval_attestations := [att |
+    some att in input.attestations
+    att.statement.predicateType == "https://redhat.com/ads-scholars/v1"
+]
+----
+
+2) Check for values in the JSON structure (check any rule)
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+cat > release-approval-policy.rego <<'EOF'
+package redhat.release_approval
+
+import rego.v1
+
+# METADATA
+# title: Release Approval Attestation Check
+# description: >-
+#   Verify that the image has a valid release approval attestation
+#   with ServiceNow ticket approvals.
+# custom:
+#   short_name: release_approval_present
+#   failure_msg: Release approval attestation is missing or invalid
+#   solution: >-
+#     Ensure the release approval process is completed and the attestation
+#     is created with valid ServiceNow ticket references before deployment.
+#   collections:
+#     - release_approval
+
+# Helper to get all attestations of our custom type
+release_approval_attestations := [att |
+    some att in input.attestations
+    att.statement.predicateType == "https://redhat.com/ads-scholars/v1"
+]
+
+# METADATA
+# title: Release Approval Attestation Exists
+# description: >-
+#   At least one release approval attestation must be present.
+# custom:
+#   short_name: attestation_exists
+deny contains result if {
+    count(release_approval_attestations) == 0
+    result := {
+        "code": "redhat.release_approval.attestation_exists",
+        "msg": "No release approval attestation found for image",
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# METADATA
+# title: Release Must Be Approved
+# description: >-
+#   The release approval attestation must indicate that the release
+#   has been approved.
+# custom:
+#   short_name: release_approved
+deny contains result if {
+    some att in release_approval_attestations
+    approved := object.get(att, ["statement", "predicate", "release", "approved"], false)
+    approved != true
+    result := {
+        "code": "redhat.release_approval.release_approved",
+        "msg": "Release is not approved in the attestation",
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# METADATA
+# title: ServiceNow Tickets Present
+# description: >-
+#   The release approval attestation must contain at least one
+#   ServiceNow ticket reference.
+# custom:
+#   short_name: servicenow_tickets_present
+deny contains result if {
+    some att in release_approval_attestations
+    tickets := object.get(att, ["statement", "predicate", "serviceNowTickets"], [])
+    count(tickets) == 0
+    result := {
+        "code": "redhat.release_approval.servicenow_tickets_present",
+        "msg": sprintf(
+            "No ServiceNow tickets found in release approval attestation (found %d tickets)",
+            [count(tickets)]
+        ),
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# METADATA
+# title: All ServiceNow Tickets Are Approved or Complete
+# description: >-
+#   All ServiceNow tickets referenced in the attestation must be
+#   in an approved or completed state.
+# custom:
+#   short_name: servicenow_tickets_approved
+deny contains result if {
+    some att in release_approval_attestations
+    tickets := object.get(att, ["statement", "predicate", "serviceNowTickets"], [])
+    
+    some ticket in tickets
+    status := object.get(ticket, "status", "Unknown")
+    not ticket_is_approved(status)
+    
+    ticket_id := object.get(ticket, "ticketId", "Unknown")
+    result := {
+        "code": "redhat.release_approval.servicenow_tickets_approved",
+        "msg": sprintf(
+            "ServiceNow ticket %s has invalid status: %s (expected 'Approved' or 'Closed Complete')",
+            [ticket_id, status]
+        ),
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# Helper function to check if a ticket status indicates approval
+ticket_is_approved(status) if {
+    status == "Approved"
+}
+
+ticket_is_approved(status) if {
+    status == "Closed Complete"
+}
+
+# METADATA
+# title: Approver Information Present
+# description: >-
+#   The release approval attestation must include approver information.
+# custom:
+#   short_name: approver_info_present
+deny contains result if {
+    some att in release_approval_attestations
+    release := object.get(att, ["statement", "predicate", "release"], {})
+    
+    # Check if approver name is missing or empty
+    approver := object.get(release, "approver", "")
+    approver == ""
+    
+    result := {
+        "code": "redhat.release_approval.approver_info_present",
+        "msg": "Release approval attestation missing approver information",
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# Optional: Warning for old approvals (e.g., older than 30 days)
+# METADATA
+# title: Release Approval Not Too Old
+# description: >-
+#   The release approval should not be older than 30 days to ensure
+#   current compliance with release policies.
+# custom:
+#   short_name: approval_freshness
+warn contains result if {
+    some att in release_approval_attestations
+    approval_date_str := object.get(att, ["statement", "predicate", "release", "approvalDate"], "")
+    approval_date_str != ""
+    
+    # Parse the approval date
+    approval_time := time.parse_rfc3339_ns(approval_date_str)
+    current_time := time.now_ns()
+    
+    # Calculate age in days (nanoseconds to days)
+    age_days := (current_time - approval_time) / (1000000000 * 60 * 60 * 24)
+    
+    age_days > 30
+    
+    result := {
+        "code": "redhat.release_approval.approval_freshness",
+        "msg": sprintf(
+            "Release approval is %d days old (older than 30 days)",
+            [floor(age_days)]
+        ),
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+EOF
+----
+
+=== Testing the policy
+
+We can test the policy using `opa` (Open Policy Agent) - or, since OPA is part of `ec`, we can use the `ec opa` subcommand.
+
+First, we need to download the attestation data:
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation \ 
+--predicate-type https://redhat.com/ads-scholars/v1 \ 
+$CHAINS_IMAGE > attestation-payload.json
+----
+
+Then we'll create the test input for OPA:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cat > test-input.json <<EOF
+{
+  "attestations": [
+    $(cat attestation-payload.json | jq -c .)
+  ]
+}
+EOF
+----
+
+
+
+== Reference: Rego and OPA

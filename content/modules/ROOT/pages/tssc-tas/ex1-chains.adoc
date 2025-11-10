@@ -408,5 +408,7 @@ a|PipelineRun:
 image::tssc-tas/chains-attestations-pipelinerun.png[ link=self ,window="image"]
 |===
 
+This is a standardized format (the slsa.dev/provenance/v0.2 format) that Enterprise Contract / Conforma policies and rules can interpret to validate the content. 
 
+More on that in the next chapter.
 

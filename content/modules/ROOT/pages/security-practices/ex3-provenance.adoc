@@ -70,7 +70,7 @@ If we wanted to attest the below empty envelope (`"predicate": {}`), we would ha
       }
     }
   ],
-  "predicateType": "https://example.com/predicate/v1",
+  "predicateType": "https://example.com/CodeReview/v1",
   "predicate": {}
 }
 ----
