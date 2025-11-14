@@ -205,7 +205,7 @@ Unless you use the `--insecure-ignore-tlog`, cosign will always verify the Rekor
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE
+cosign verify --key k8s://openshift-pipelines/signing-secrets $CHAINS_IMAGE | jq
 ----
 
 [NOTE]
