@@ -514,7 +514,7 @@ Do the same in the `spec.oidc.IssuerUrl` (this is Keycloak realm where we define
 
 And, while you still have it in your clipboard, also for the `spec.storage.region`:
 
-`region: https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443`
+`region: \https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443`
 
 NOTE: Even though it is called `region` here, for ODF we need to use the OpenShift Storage `s3` endpoint, including the port `:443`. For AWS S3, you'd need the actual region (refer to the https://docs.redhat.com/en/documentation/red_hat_trusted_profile_analyzer/2.1/html/deployment_guide/select-your-installation-platform#installing-trusted-profile-analyzer-by-using-helm-with-aws_deploy[product documentation^] for setup with AWS services). 
 
@@ -579,6 +579,9 @@ image:m3-tpa-openshift/operator-tpa-failed.png[]
 image:m3-tpa-openshift/operator-tpa-failed-detailed.png[]
 
 However, if you go to the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments[Deployments Page^,window="console"], you can see the importer and server deployments with 1/1 pods.
+
+NOTE: This may take a while and they even might fail first, before they are healthily up and running as shown below.
+
 
 image:m3-tpa-openshift/operator-tpa-failed-deployment.png[]
 
@@ -735,13 +738,15 @@ Since we're running `helm` to install, you don't have to download them - but you
 
 Use your editor of choice (`nano` or `vim`) and change the following values (for `values.yaml` or `values-fs.yaml` depending on which storage option you want to use):
 
-. Set `storage.region` to `https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443`
-`
+. Set `storage.region` to `\https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443`
+
+NOTE: Make sure you copied and ran the above commands, as that makes sure you're creating all the artifacts and you get the correct bucket name when running the `s3.sh` script. 
+
 . In `storage.bucket`, paste the value for the `trustify` bucket that we just got as output from the `s3.sh` script. 
 +
 `bucket: <run_s3.sh_from_your_namespace_to_get_the_bucket_name>`
 
-. Set `oidc.issuerUrl` to https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`
+. Set `oidc.issuerUrl` to `\https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`
 +
 NOTE: If you decide to try out the `filesystem` storage, obviously you don't have to change any value there - these are left in the `values-fs.yaml` file for reference, but commented out. You still need to change the `oidc.issuerUrl` field, but that's all.
 
