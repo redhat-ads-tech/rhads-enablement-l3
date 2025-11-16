@@ -53,6 +53,11 @@
 *** xref:tssc-tas/ex1-chains.adoc[Tekton Chains]
 *** xref:tssc-tas/ex2-enterprise-contract.adoc[Conforma and Rego policies]
 *** xref:tssc-tas/ex3-sigstore-controller.adoc[Sigstore Admission Controller]
+**** xref:tssc-tas/ex3.1-sigstore-prep.adoc[Preparation]
+**** xref:tssc-tas/ex3.2-sigstore-install.adoc[Installation]
+**** xref:tssc-tas/ex3.3-sigstore-config.adoc[Configuration]
+**** xref:tssc-tas/ex3.4-sigstore-cip.adoc[ClusterImagePolicies]
+
 *** xref:tssc-tas/ex4-acs-controller.adoc[RHACS Admission Controller]
 *** xref:tssc-tas/ex5-imagepolicies.adoc[OpenShift ImagePolicies]
 

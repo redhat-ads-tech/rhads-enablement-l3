@@ -102,7 +102,7 @@ syft $IMAGE --enrich all --output cyclonedx-json=demo-image-sbom-syft.json
 ====
 We have added `--enrich all` here. Syft can query e.g. maven central for additional information, such as license information for packages. Especially when it comes to security, "more is better" - so the more information we can get, the better.
 
-We will upload and manage SBOMs in xref:tssc-tpa.adoc[Module 8: Trusted Software Supply Chain with TPA] but if you'd like to take a quick look, we'll have to format it (`jq`) and make it accessible (`less`). 
+We will upload and manage SBOMs in xref:tssc-tpa/tssc-tpa.adoc[Module 8: Trusted Software Supply Chain with TPA] but if you'd like to take a quick look, we'll have to format it (`jq`) and make it accessible (`less`). 
 
 *HINT:* Exit `less` with kbd:[q] or kbd:[Q]
 
@@ -405,7 +405,7 @@ cosign download attestation $IMAGE --predicate-type "https://cyclonedx.org/bom" 
 
 === Simple Signature and Integrity Verification
 
-In the previous chapter (and to more extent in xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]) we used Enterprise Contract / Conforma for the basic verification.
+In the previous chapter (and to more extent in xref:tssc-tas/tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]) we used Enterprise Contract / Conforma for the basic verification.
 
 If we simply want to check the integrity and certificate claims (OIDC Identity and OIDC Issuer) without applying policies, we can use `cosign verify-attestation:`
 

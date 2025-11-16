@@ -1,3 +1,109 @@
 :imagesdir: ../../assets/images
 
-= Enterprise Contract (Conforma)
+= The Sigstore Admission Controller 
+
+As outlined in this chapter's introduction, admission controllers are our "last line of defense", should someone try to deploy directly to the cluster (assuming that all "regular" deployments are coming from a security-augmented supply chain, using ADS products and configurations).
+
+== How does it work?
+
+The Red Hat build of the Sigstore Admission Controller (part of Red Hat Trusted Artifact Signer) can be installed via an operator.
+
+Following the installation, it relies on three k8s CRs (Custom Resources):
+
+=== The PolicyController Resource
+
+The PolicyController CR defines the global behaviour of the Admission Controller:
+
+* Which namespaces it should act on
+** typically as an "opt-in" based on namespace labels
+** "opt-out" is also possible, but it should be noted that this might cause problems with system namespaces, if not used cautiously. When applying "opt-out" patterns, a `no-match-policy` with "warn" should be defined (more on that in the exercise).
+
+* Additional global configuration, such as custom certificate authorities (CA) or the aforementioned `no-match-policy` that defines the default behaviour (which can be overruled by the `ClusterImagePolicy`)
+
+
+=== The TrustRoot Resource
+
+If you went through previous RHTAS chapters and exercises, the name "Trust Root" should ring a bell.
+The Trust Root is the collection and configuration of public certificates of the various services that Trusted Artifact Signer provides, such as Fulcio (the Certificate Issuer) and Rekor (the Transparency Database).
+
+When you issue a `cosign initialize`, a Trust Root is obtained from the TUF (The Update Framework) endpoint of the TAS installation and stored in the user's home directory `~/.sigstore`. 
+
+[source,json]
+----
+podman-terminal:/workspace/l3-enablement-helpers$ cosign initialize
+Root status: 
+ {
+        "local": "/home/student/.sigstore/root",
+        "remote": "https://tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io",
+        "metadata": {
+                "root.json": {
+                        "version": 1,
+                        "len": 4128,
+                        "expiration": "04 Nov 26 22:11 UTC",
+                        "error": ""
+                },
+                "snapshot.json": {
+                        "version": 1,
+                        "len": 994,
+                        "expiration": "04 Nov 26 22:11 UTC",
+                        "error": ""
+                },
+                "targets.json": {
+                        "version": 1,
+                        "len": 2071,
+                        "expiration": "04 Nov 26 22:11 UTC",
+                        "error": ""
+                },
+                "timestamp.json": {
+                        "version": 1,
+                        "len": 995,
+                        "expiration": "04 Nov 26 22:11 UTC",
+                        "error": ""
+                }
+        },
+        "targets": [
+                "trusted_root.json",
+                "ctfe.pub",
+                "rekor.pub",
+                "fulcio_v1.crt.pem"
+        ]
+}
+----
+
+The same applies here, but we need to create it as a k8s CR.
+
+[IMPORTANT]
+====
+Same as with `cosign initialize`, we can also manually define our custom Trust Root by manually defining the certificates and where they are stored, *BUT* 
+
+Only by using TUF (what we see as `remote:` in the above example) the controller will take care of refreshing the certificates after they have been rotated in the central RHTAS instance. +
+If we use a manually configured Trust Root, we have to manually update the certificates - while the policy-controller will do that automatically using TUF.
+====
+
+=== The ClusterImagePolicy
+
+The ClusterImagePolicy defines (for the namespaces that have been configured to be watched via the `PolicyController` Resource) 
+
+* The images that it should be applied
+* The "Authorities" that the image signatures will be verified against
+* Attestations that should be validated
+* `cue` or `Rego` policies that should be validated against images, image metadata and/or attestations
+* Behaviour for failed validations 
+** if none is defined at the policy level, the default behaviour (see above) at the `PolicyController` level is used
+** Can be `enforce` (image will be rejected) or `warn` (image accepted but warning issued)
+
+Given the flexibility and abundance of options, we will have to prepare our exercises (next chapter).
+
+We will need 
+
+* an unsigned image
+* a keylessly signed image
+* an image signed with a cosign key (similar to what our default Tekton Chains configuration does)
+* a signed image with a (signed) attestation
+
+But, fear not - we have prepared a number of scripts for you that will do the majority of the preparation for you. 
+
+[NOTE] 
+====
+All of the scripts and artifacts prepared for you should not only make the lab experience a (hopefully) smooth one, but are there for you to re-use, study and dissect - so please feel free to take a deeper look.
+====

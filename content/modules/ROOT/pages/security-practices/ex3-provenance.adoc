@@ -382,7 +382,7 @@ _errors contains error if {
 }
 ----
 
-Using and building policies is part of xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
+Using and building policies is part of xref:tssc-tas/tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
 
 
 ====

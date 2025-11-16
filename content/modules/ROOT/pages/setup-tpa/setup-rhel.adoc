@@ -107,4 +107,4 @@ After completing the TPA workshop, you'll be ready to:
 * Integrate with trusted software supply chain workflows
 * Provide detailed reporting and analytics
 
-* Explore the xref:tssc-tpa.adoc[Trusted Software Supply Chain with TPA] module for advanced use cases on OpenShift
+* Explore the xref:tssc-tpa/tssc-tpa.adoc[Trusted Software Supply Chain with TPA] module for advanced use cases on OpenShift

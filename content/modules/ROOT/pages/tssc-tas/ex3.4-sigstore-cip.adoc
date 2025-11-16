@@ -1,0 +1,114 @@
+:imagesdir: ../../assets/images
+
+= Cluster Image Policies (CIP)
+
+First, we need a new namespace that we want the controller to watch and label it appropriately: 
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc new-project student-admission-test
+oc label namespace student-admission-test policy.rhtas.com/include=true
+----
+
+Before we create a `ClusterImagePolicy` (CIP) let's take a look at some important components and principles.
+
+== CIP Structure
+
+Among a lot of other configuration options, the most important ones are the `spec.images.glob[]` (an image pattern) and the `spec.authorities` (used to validate signatures and attestations).
+
+=== Image Patterns 
+
+The `ClusterImagePolicy` specifies `spec.images` which specifies a list of `glob` matching patterns. These matching patterns will be matched against the image digest of `PodSpec` resources attempting to be deployed. +
+
+NOTE: The resource type that the policy matches the image against (default: `PodSpec`) can be changed, but with the default setting it will make sure that all higher-level k8s resources that make use of "PodSpec" (such as Deployments) will return an error if the policy denies an image.
+
+Glob uses golang https://pkg.go.dev/path/filepath#Match[filepath^,window="docs"] semantics for matching the images against. Additionally you can specify a more traditional `**` to match any number of characters. 
+
+[source,yaml]
+----
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: image-policy
+spec:
+  images:
+  - glob: "**" <1>
+----
+<1> will match any image from any repository in any registry
+
+=== Authorities
+
+When a policy is selected to be evaluated against the matched image (the namespace is being watched and the image matches the `glob`), the authorities will be used to validate signatures and attestations. If at least one authority is satisfied and a signature or attestation is validated, the policy is validated.
+
+Authorities are combined as a boolean "or" (at least one is satisfied within a CIP). 
+
+There are different types auf Authorities that can be used for validation of images and attestations:
+
+* `key` validates against a static key provided
+** inline
+** in a k8s secret *in the namespace where the `policy-controller` is installed
+** in a KMS (Azure, AWS, GCP, HashiCorp Vault)
+
+* 'keyless' validates against a `sigstore` (Trusted Artifact Signer) installation
+
+* `static` doesn't validate anything, but instead is statically either `pass` or `fail`
+
+== Admission of Images
+
+How does it work together when you define multiple policies with multiple authorities?
+
+An image is admitted after it has been validated against all `ClusterImagePolicy` that matched the image (`glob`) and that there was at least one passing `authority` in each of the matched `ClusterImagePolicy`. + 
+*So each `ClusterImagePolicy` that matches is _AND_ for admission, and within each `ClusterImagePolicy` `authorities` are _OR_.*
+
+Having three policies defined, an example of an allowed admission would be 
+____
+. If the image matched against `policy1` and `policy3` +
+. A valid signature or attestation was obtained for `policy1` with at least one of the `policy1` authorities +  
+. A valid signature or attestation was obtained for `policy3` with at least one of the `policy3` authorities +
+. The image is admitted
+____
+
+An example of a denied admission would be:
+____
+. If the image matched against `policy1` and `policy2` +
+. A valid signature or attestation was obtained for `policy1` with at least one of the `policy1` authorities +
+. No valid signature or attestation was obtained for `policy2` with at least one of the `policy2` authorities +
+. The image is *not* admitted
+____
+
+*By default, any image that does not match a policy is rejected!*
+
+
+*TODO* 
+In addition to that, Policy Controller offers a configurable behavior defining whether to allow, deny or warn whenever an image does not match a policy. This behavior can be configured using the config-policy-controller ConfigMap created under the release namespace (by default cosign-system), and by adding an entry with the property no-match-policy and its value warn|allow|deny. By default, any image that does not match a policy is rejected whenever no-match-policy is not configured in the ConfigMap.
+
+== A simple CIP
+
+To try the PolicyController with the images we created, we'll create a simple CIP:
+
+* matching all images (`glob: "**"`)
+* a single `keyless` authority, pointing to our RHTAS instance
+
+[source,yaml]
+----
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - keyless:
+        url: $FULCIO_URL
+        trustRootRef: $TRUST_ROOT_RESOURCE
+        identities:
+          - issuer: $OIDC_ISSUER_URL
+            subject: $OIDC_SUBJECT
+      ctlog:
+        url: $REKOR_URL
+        trustRootRef: $TRUST_ROOT_RESOURCE
+----
+
+
+
