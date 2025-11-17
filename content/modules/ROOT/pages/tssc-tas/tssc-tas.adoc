@@ -111,6 +111,8 @@ The RHTAS Policy Controller resolves container image tags to validate that the c
 
 You can define and enforce policies to restrict what container images can run in your Red Hat OpenShift cluster. One such requirement could be, to only allow specified images to run that match a certain signing key, and to verify attestations. You can chose to enforce strict policies, or use warning mode to better understand how a policy will impact your environment. You can also define and enforce policies based on other supply chain metadata. 
 
+NOTE: Red Hat's build of the Sigstore Policy Controller is Tech Preview as of RHTAS 1.3
+
 
 === The ACS (Advanced Cluster Security) Admission Controller
 
@@ -154,37 +156,3 @@ NOTE: This feature has been Tech Preview from OCP 4.16 to 4.19 - it has turned G
 
 
 
-"Lecture
-Different types of attestations
-
-What is Tekton Chains
-
-The role of Enterprise Contract / Conforma (TAS)
-
-Intro to Rego policy language
-
-Generating provenance in other build systems
-
-Generic attestation (beyond SLSA)
-
-Sigstore Admission Controller vs ACS Admission controller
-
-
-Lab
-Configure Tekton Chains
-
-Dissect the Chains attestation
-
-Use Conforma (previously EC) to validate policies
-
-Build a generic attestation
-
-Build a custom EC Policy to validate it
-
-Configure the Sigstore 
-
-Rego Policy Language (build, validate attestations)
-
-Admission Controller as part of TAS (will be part of the next version)
-
-Keyless verification"
