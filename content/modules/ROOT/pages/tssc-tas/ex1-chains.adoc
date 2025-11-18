@@ -155,7 +155,7 @@ When you click the {rhdh_url}/catalog/default/component/tekton-chains-test/ci["C
 
 image::tssc-tas/rhdh-tekton-chains-test-homepage.png[link=self, window="image"]
 
-After the pipelinerun has finished, you can see that the pipelinerun itslef has been signed and attested (the little "shield" showing "signed" when hovering over it.)
+After the pipelinerun has finished, you can see that the pipelinerun itself has been signed and attested (the little "shield" showing "signed" when hovering over it.)
 
 image::tssc-tas/rhdh-tekton-chains-test-homepage-ci.png[link=self, window="image"]
 

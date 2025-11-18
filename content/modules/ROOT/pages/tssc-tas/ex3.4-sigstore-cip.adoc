@@ -503,7 +503,7 @@ spec:
 EOF
 ----
 
-The admissioncontroller should now also allow images that have been signed by that `cosign` key:
+The admission controller should now also allow images that have been signed by that `cosign` key:
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -956,12 +956,12 @@ quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-si
 [NOTE]
 ====
 If you look closely, it will also tell you that `validation failed for authority keyless-no-attestation` - because it also tried this authority, since the other failed with with the `rego` policy validation error. +
-Remember, for `authorities` it's an *OR*, so if one suceeds, it will pass. So, it will try all - but in this case all fail.
+Remember, for `authorities` it's an *OR*, so if one succeeds, it will pass. So, it will try all - but in this case all fail.
 ====
 
 === Complex `rego` policies
 
-Let's say (given our comparatively simple attestation) we'd like to have a more complex vaildation logic:
+Let's say (given our comparatively simple attestation) we'd like to have a more complex validation logic:
 
 . Does the attestation contain at least one ServiceNow Ticket?
 . For all ServiceNow Tickets: 
@@ -1459,7 +1459,7 @@ image::tssc-tas/rhdh-tekton-chains-test-quay.png[link=self, window="image"]
 If you don't, you'll have to go through that exercise to create an image that has been attested by *Tekton Chains*
 ====
 
-We will now combine a few things from the prvious chapters:
+We will now combine a few things from the previous chapters:
 
 . The image with the Chains attestation of type `\https://slsa.dev/provenance/v0.2`
 . `ec` (Enterprise Contract or _execute conforma_) validating SLSA compliance

@@ -2,7 +2,7 @@
 
 = Enterprise Contract (Conforma)
 
-As outlined in previous chapters (e.g. xref:security-practices/overview.adoc[Module 7: Getting started with security best practices]), downloading attestations and validating them, parsing attestation (predicate) content and applying rules to it _could_ be done manually or scipted via bash scripts (in theory). +
+As outlined in previous chapters (e.g. xref:security-practices/overview.adoc[Module 7: Getting started with security best practices]), downloading attestations and validating them, parsing attestation (predicate) content and applying rules to it _could_ be done manually or scripted via bash scripts (in theory). +
 But, why would we - we have Conforma / Enterprise Contract to do just that in a very convenient and reproducible way.
 
 [IMPORTANT]
@@ -182,7 +182,7 @@ These are the actual rule implementations - the code that performs the validatio
 
 * `data` - The Configuration Values (or their location)
 +
-The data field contains rule data - the configuration that parameterizes the policies:
+The data field contains rule data - the configuration that parameterises the policies:
 +
 --
 * Allowlists/denylists (e.g., list of trusted task bundles)
@@ -1046,7 +1046,7 @@ _Policy Language for Validation_
 
 === What is Rego?
 
-Rego is a declarative policy language developed by the Open Policy Agent (OPA) project. It's designed specifically for expressing policies as code and making authorization and validation decisions across various enviroinment and in multiple scenarios. +
+Rego is a declarative policy language developed by the Open Policy Agent (OPA) project. It's designed specifically for expressing policies as code and making authorization and validation decisions across various environment and in multiple scenarios. +
 
 As shown in previous chapters, Rego is the policy engine behind tools like Enterprise Contract (now Conforma), which validates software supply chain security.
 
