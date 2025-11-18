@@ -1,3 +1,0 @@
-:imagesdir: ../../assets/images
-
-= Enterprise Contract (Conforma)

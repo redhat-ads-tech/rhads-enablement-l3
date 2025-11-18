@@ -1,3 +1,76 @@
 :imagesdir: ../../assets/images
 
-= Enterprise Contract (Conforma)
+= Advanced Cluster Security (ACS) Admission Controllers
+
+Each OpenShift (or Kubernetes) Cluster secured by Advanced Cluster Security has an Admission Controller that will enforce ACS policies:
+
+image::tssc-tas/acs-highlevel.png[link=self,window="images"]
+
+== ACS Secured Clusters
+
+When you log into the {acs_url}[ACS Console^,window="acs"] (with user `{acs_admin_user}` and password `{acs_admin_password}`) you can find the "secured clusters" und "Central Control" and their configuration by going to "Platform Configuration" and "Clusters" (1)
+
+image::tssc-tas/acs-cluster-config.png[] 
+
+When you click on the Cluster Status, you can open a detailed view, which will also give you the status of the admission controller for this "Secured Cluster":
+
+image::tssc-tas/acs-cluster-config-detail.png[]
+
+
+=== Admission Controller and Policies
+
+When you go to the "Policy Management" View (also under "Platform Configuration") you will see a lot of policies, also with several "Lifecycle" stages.
+
+For the Admission Controller, only the "Deploy" lifecycle stage is of relevance - it will evaluate the policy (if active and properly defined) on deployment and act on it (Inform or Inform&Enforce = Block the Deployment).
+
+* The "Build" Lifecycle applies to policies that can be used during the build phase, in other words by using `roxctl` in a CI or some other script environment.
+
+* The "Runtime" Lifecycle continuously monitors running Pods, for example if we want to detect (and avoid) a container starting e.g. "curl" or "dnf" for possible side-loading attacks.
+
+image::tssc-tas/acs-policies.png[]
+
+If you filter by the "DEPLOY" lifecycle, you can see all system policies that have been defined for the deployment (i.e. can be enforced by the ACS Admission Controller)
+
+image::tssc-tas/acs-policies-deploy.png[]
+
+As you can see, ACS focuses more on the vulnerability side of security, where the Sigstore Admission Controller focuses on the integrity and attestation.
+
+Checking for valid signatures is where they have an overlap, so let's create policies that
+
+. check for a valid signature
+. check the number of vulnerabilities is below a certain threshold
+. will block a deployment if violated
+
+[NOTE] 
+====
+Generally ACS supports (and recommends) to keep policies focused on one specific task (e.g. check for a valid signature). This way, they can be re-used and configured separately. + 
+For example, if I don't want to block the deployment but just warn if the number of CVEs found is above a threshold - but I don't want any unsigned deployment. +
+Enforcement is on the policy level - if I combine too many rules in one policy, I lose flexibility. 
+====
+
+=== Preparation: Adding Trusted Image Signers
+
+
+
+
+
+
+1) Click on "Create policy"
+
+image::tssc-tas/acs-create-policy.png[]
+
+2) Give it a name, severity and assign a category - if you want you can also provide a description, rationale and remediation guidance, which will be displayed on policy violation.
+
+Click "Next"
+
+image::tssc-tas/acs-create-policy-2.png[]
+
+3) Select "Deploy" as the lifecycle stage (as that is relevant for admission control) and click "next"
+
+image::tssc-tas/acs-create-policy-3.png[]
+
+4) Define the rules that make up this policy. You start by "dragging and dropping", then configure the policy field you "dropped":
+
+
+
+

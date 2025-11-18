@@ -145,9 +145,22 @@ ACS runtime enforcement policies can do much more, for example watch for network
 
 OpenShift also has a built-in capability to verify sigstore image signatures and block images that don't adhere to signature requirements as set out by `ImagePolicies` and `ClusterImagePolicies`.
 
-However, the image signature is the only parameter checked, so it only provides a subset of the verification options that the Admission Controllers offer.
+[IMPORTANT]
+====
+In the context of *Red Hat's build of the Sigstore Admission Controller* we'll also talk about `ClusterImagePolicies`, but these are from a different API scope:
+
+The Admission Controller `ClusterImagePolicies` are of type `clusterimagepolicies.policy.sigstore.dev`, whereas the `ImagePolicies` and `ClusterImagePolicies` mentioned here are of type `config.openshift.io`
+
+====
+
+
+However, only the image signature is checked and validity of the `rekor` public signature included in the image signature, but there is no online verification of inclusion proof, so it only provides a subset of the verification options that the Admission Controllers offer.
+
+In addition, if this feature is used with Trusted Artifact Signer, it doesn't recognise or use "TUF" (The Update Framework), so there is no automatic refresh of `rekor` public keys after a certificate rotation.
 
 NOTE: This feature has been Tech Preview from OCP 4.16 to 4.19 - it has turned GA with 4.20
+
+You can read more about this https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/nodes/nodes-sigstore-using[here^,window="docs"]
 
 
 
