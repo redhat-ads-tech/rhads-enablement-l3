@@ -56,6 +56,22 @@ if [ -z "$QUAY_URL" ]; then
 fi
 echo "Quay URL: $QUAY_URL"
 
+# Get ACS URL from route
+ACS_URL=$(oc get route central -n tssc-acs -o jsonpath='{.spec.host}')
+if [ -z "$ACS_URL" ]; then
+    echo "Error: Could not retrieve ACS URL"
+    exit 1
+fi
+echo "ACS URL: https://$ACS_URL"
+
+# Get ACS admin password from secret
+ACS_ADMIN_PASSWORD=$(oc get secret central-htpasswd -n tssc-acs -o jsonpath='{.data.password}' | base64 -d)
+if [ -z "$ACS_ADMIN_PASSWORD" ]; then
+    echo "Error: Could not retrieve ACS admin password"
+    exit 1
+fi
+echo "ACS admin password retrieved"
+
 echo "Starting build process..."
 echo "Removing old site..."
 rm -rf ./www/*
@@ -74,6 +90,9 @@ podman run --rm --name showroom-builder --platform linux/amd64 \
   --attribute quay_admin_password="$RHDH_USER_PASSWORD" \
   --attribute openshift_admin_user="admin" \
   --attribute openshift_admin_password="admin-password" \
+  --attribute acs_url="https://$ACS_URL" \
+  --attribute acs_admin_user="admin" \
+  --attribute acs_admin_password="$ACS_ADMIN_PASSWORD" \
   default-site.yml
 
 echo "Build process complete. Check the ./www folder for the generated site."

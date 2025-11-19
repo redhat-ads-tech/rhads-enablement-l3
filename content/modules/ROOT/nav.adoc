@@ -59,7 +59,7 @@
 **** xref:tssc-tas/ex3.4-sigstore-cip.adoc[ClusterImagePolicies]
 
 *** xref:tssc-tas/ex4-acs-controller.adoc[RHACS Admission Controller]
-
+*** xref:tssc-tas/ex-controller-summary.adoc[Admission Controllers Summary]
 
 * xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle]
 ** xref:production-rhdh/introduction.adoc[Foundations]
