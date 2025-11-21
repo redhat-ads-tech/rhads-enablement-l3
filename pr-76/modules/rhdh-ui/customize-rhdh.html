@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab: Customize Red Hat Developer Hub Appearance :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhdh-ui/customize-rhdh.html">
+    <link rel="prev" href="foundations.html">
+    <link rel="next" href="techdocs-foundations.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+            <a class="navbar-item navbar-item-right-content" href="env.html" target="_blank">Lab</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="foundations.html">Module 5: Red Hat Developer Hub User Interface</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="foundations.html">Foundations</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="customize-rhdh.html">Hands-on Lab: Customize RHDH Appearance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="techdocs-foundations.html">TechDocs Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="techdocs-lab-user.html">TechDocs Lab 1: Creating and Editing TechDocs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/overview.html">Module 7: Getting started with security best practices</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/overview.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/security-practices.html">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/understanding-keyless.html">Understanding Keyless Signing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex1-signing-images.html">Image Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex2-git-signing.html">Commit Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex3-provenance.html">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex4-sboms.html">SBOM Creation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tssc-tpa/correlation.html">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex1-uploading-sboms.html">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex2-ui-usecases.html">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex3-licenses.html">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex1-chains.html">Tekton Chains</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex2-enterprise-contract.html">Conforma and Rego policies</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/ex3-sigstore-controller.html">Sigstore Admission Controller</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.1-sigstore-prep.html">Preparation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.2-sigstore-install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.3-sigstore-config.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.4-sigstore-cip.html">ClusterImagePolicies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex4-acs-controller.html">RHACS Admission Controller</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex-controller-summary.html">Admission Controllers Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/introduction.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/lab.html">Full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 11: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 12: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 13: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Module 14: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.html">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 15: RHADS Complete: Summary and Next Steps</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../env.html">My lab environment details</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="foundations.html">Module 5: Red Hat Developer Hub User Interface</a></li>
+    <li><a href="customize-rhdh.html">Hands-on Lab: Customize RHDH Appearance</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Lab: Customize Red Hat Developer Hub Appearance</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Quick Logout Links</strong></p>
+</div>
+<div class="paragraph">
+<p>Prior to starting this module, click the following two links and make sure you log out of previous sessions to prevent errors related to performing actions as the wrong user.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="{openshift_console_url}" target="_blank" rel="noopener">Logout from OpenShift</a></p>
+</li>
+<li>
+<p><a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/users/sign_out" target="_blank" rel="noopener">Logout from GitLab</a></p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can change Red Hat Developer Hub appearance by configuring elements of the visual <em>theme</em>.</p>
+</div>
+<div class="paragraph">
+<p>Red Hat Developer Hub provides two themes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <em>Red Hat Developer Hub</em> theme features elements and colors integrated with the Red Hat look and feel seen in the OpenShift Web Console, ACM, Cockpit, and other familiar interfaces. It is the default.</p>
+</li>
+<li>
+<p>The <em>Backstage</em> theme is the simple base theme from Red Hat Developer Hub&#8217;s open source <a href="https://backstage.io/" target="_blank" rel="noopener">Backstage</a> core.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>While advanced or reseller requirements might <a href="https://backstage.io/docs/conf/user-interface/#theming-architecture-overview" target="_blank" rel="noopener">replace the entire theme</a> with a custom provider or providers, this module focuses on the more common deployment task of modifying the included theme with visual elements that suit a company, brand, or team style.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_per_user_appearance_settings"><a class="anchor" href="#_per_user_appearance_settings"></a>Per-User Appearance Settings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Any Red Hat Developer Hub user can select their preference from the provided <strong>Light</strong>, <strong>Dark</strong>, or <strong>Auto</strong> theme modes.</p>
+</div>
+<div class="paragraph">
+<p>The default theme mode is Auto, which sets Red Hat Developer Hub&#8217;s Light or Dark mode from the user&#8217;s local system preferences.</p>
+</div>
+<div class="sect2">
+<h3 id="_change_the_theme_mode"><a class="anchor" href="#_change_the_theme_mode"></a>Change the Theme Mode</h3>
+<div class="paragraph">
+<p>In any Red Hat Developer Hub instance, including the one you&#8217;re about to create, you can select a theme mode by clicking your user name at the top right and selecting <strong>Settings</strong> from the displayed menu to open the Settings screen. Select the desired mode from the <em>Appearance</em> section.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/rhdh-ui/uset-appearance.png" alt="uset appearance">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_save_screen_space"><a class="anchor" href="#_save_screen_space"></a>Save Screen Space</h3>
+<div class="paragraph">
+<p>Each user can also choose whether to "pin" the left-hand sidebar in its expanded state, showing icons and names, or to collapse the sidebar to display only icons.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_global_appearance_options"><a class="anchor" href="#_global_appearance_options"></a>Global Appearance Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat Developer Hub configuration is set in a file conventionally named <code>app-config.yaml</code>. To customize global elements of RHDH appearance, you&#8217;ll modify settings in an app-config for your instance in the same way you would for any instance of RHDH or Backstage. Instead of a file in the container&#8217;s filesystem, however, an OpenShift <em>ConfigMap</em> will hold the <code>app-config.yaml</code> data for your RHDH instance. This externalizes the RHDH configuration and allows you to manage it more easily (for example, using GitOps to synchronize changes across multiple environments).</p>
+</div>
+<div class="sect2">
+<h3 id="_what_you_can_change"><a class="anchor" href="#_what_you_can_change"></a>What You Can Change</h3>
+<div class="paragraph">
+<p>In the Developer Hub app-config, you can customize theme components including:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Site/Page Title and Logo</p>
+</li>
+<li>
+<p>Font color, size, and style of text in paragraphs, headings, headers, and buttons</p>
+</li>
+<li>
+<p>Header color and gradient</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This module shows how to change the display title and logo to illustrate the procedure for customizing Red Hat Developer Hub appearance. The <a href="../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> module uses the same method to configure functional aspects of a Red Hat Developer Hub instance, like access control and plugin settings.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customize_red_hat_developer_hub_title_and_logo"><a class="anchor" href="#_customize_red_hat_developer_hub_title_and_logo"></a>Customize Red Hat Developer Hub Title and Logo</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At the overview level, specifying a title and logo for your Red Hat Developer Hub takes 3 primary steps:
+First, you&#8217;ll create a <em>Project</em> (a namespace) for your custom RHDH instance. In that Project you&#8217;ll create a <em>ConfigMap</em> to store instance configuration, including an embedded image. Then, you&#8217;ll create a short <em>CustomResource</em> to define the RHDH instance you&#8217;d like the cluster to create and manage.</p>
+</div>
+<div class="sect2">
+<h3 id="_create_an_openshift_project"><a class="anchor" href="#_create_an_openshift_project"></a>Create an OpenShift Project</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to the {openshift_console_url}[OpenShift Web Console^]. Log in with the credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Switch to the <strong>Administrator</strong> perspective using the <strong>Perspective Switcher</strong> in the top-left of the UI.</p>
+</li>
+<li>
+<p>Navigate to <strong>Home &gt; Projects</strong>, then click the <strong>Create project</strong> button.</p>
+</li>
+<li>
+<p>Enter the name <code>brand-rhdh</code> in the displayed dialog, then click <strong>Create</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/rhdh-ui/create-proj.png" alt="create proj">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_app_config_configmap"><a class="anchor" href="#_the_app_config_configmap"></a>The app-config ConfigMap</h3>
+<div class="paragraph">
+<p>You&#8217;ll customize the title and logo of an instance of Red Hat Developer Hub by setting two keys in your app-config: <code>app.title</code> and <code>app.branding.fullLogo</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_app_title"><a class="anchor" href="#_app_title"></a><code>app.title</code></h4>
+<div class="paragraph">
+<p>The <code>app.title</code> key accepts a quoted string value to set the visible <code>&lt;title&gt;</code> element of pages in your Red Hat Developer Hub instance. It&#8217;s easiest to see this title in your browser window&#8217;s title bar or in the label on a browser tab.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_app_branding_fulllogo"><a class="anchor" href="#_app_branding_fulllogo"></a><code>app.branding.fullLogo</code></h4>
+<div class="paragraph">
+<p>The <code>fullLogo</code> key accepts a base64-encoded SVG, PNG, or JPEG image to be shown at the top left corner of Red Hat Developer Hub pages.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/rhdh-ui/fullLogo-default.png" alt="fullLogo default">
+</div>
+</div>
+<div class="paragraph">
+<p>Red Hat Developer Hub uses encoded images for visual elements so they can be embedded in app-config rather than referencing an external file or URL.</p>
+</div>
+<div class="paragraph">
+<p>This module provides an encoded image in the sample code for app-config. It also explains how to encode your own image.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_the_configmap"><a class="anchor" href="#_create_the_configmap"></a>Create the ConfigMap</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy the ConfigMap declaration from the code block below.</p>
+</li>
+<li>
+<p>In the OpenShift Web Console, Administrator perspective, select <strong>Workloads</strong> to expand it, then select <strong>ConfigMaps</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>Create ConfigMap</strong> button at top right.</p>
+</li>
+<li>
+<p>Change the <strong>Configure via:</strong> selection radio button to "YAML view".</p>
+</li>
+<li>
+<p>In the presented text entry field, delete the provided YAML skeleton entirely.</p>
+</li>
+<li>
+<p>Paste the copied ConfigMap YAML into the empty text field, then click <strong>Create</strong> to commit the <code>rhdh-config</code> ConfigMap.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rhdh-config
+  namespace: brand-rhdh
+data:
+  app-config.yaml: |
+    app:
+      baseUrl: https://backstage-rhdh-brand-rhdh.{openshift_cluster_ingress_domain}
+      title: "Project Ideal X - Developer Hub"
+      branding:
+        fullLogo: data:image/png;base64,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
+    # Enable guest sign-in WITHOUT AUTHENTICATION.
+    # This configuration is UNSAFE and suitable for TESTING ONLY.
+    auth:
+      providers:
+        guest:
+          dangerouslyAllowOutsideDevelopment: true
+    backend:
+      baseUrl: https://backstage-rhdh-brand-rhdh.{openshift_cluster_ingress_domain}
+      cors:
+        origin: https://backstage-rhdh-brand-rhdh.{openshift_cluster_ingress_domain}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Alternatively, you can also create new ConfigMap resources (like the <code>rhdh-config</code> ConfigMap from above) using the <code>oc</code> command line utility.</p>
+</div>
+<div class="paragraph">
+<p><em>Do not perform these steps if you&#8217;ve already created the <code>rhdh-config</code> ConfigMap in the OpenShift Web Console.</em></p>
+</div>
+<div class="paragraph">
+<p>This requires:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>the OpenShift <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/cli_tools/openshift-cli-oc"><em>oc</em>(1)</a> command line tool</p>
+</li>
+<li>
+<p>the same credentials you used to log in to the OpenShift Web Console</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The OpenShift Web Terminal provides these requirements. Click the <code>&gt;_</code> icon near the top right of the OpenShift Web Console to open the Web Terminal.</p>
+</div>
+<div class="paragraph">
+<p>In the shell session below, <em>cat</em>(1) creates and opens a new file, <code>app-config.yaml</code>, then waits for input. You can paste in your ConfigMap YAML, then type <kbd>CTRL-D</kbd> to signal the end of the file. <em>Cat</em> writes the file, closes it, and exits. Then <em>oc</em>(1) uses <code>app-config.yaml</code> as the definition of a new ConfigMap.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% cat &gt; app-config.yaml
+# Paste ConfigMap YAML here
+^D
+% ls
+app-config.yaml
+% oc create configmap rhdh-config --from-file=app-config.yaml --namespace=brand-rhdh
+configmap/rhdh-config created</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_declare_a_backstage_instance"><a class="anchor" href="#_declare_a_backstage_instance"></a>Declare a Backstage Instance</h3>
+<div class="paragraph">
+<p>You&#8217;ve stored a custom Red Hat Developer Hub configuration in your <code>rhdh-config</code> ConfigMap, where your instance will be able to find it. Now it&#8217;s time to inform the Red Hat Developer Hub Operator so it will deploy and maintain the set of RHDH components in your Project on the OpenShift cluster. To do that, you&#8217;ll create a <code>Backstage</code> Custom Resource&#8201;&#8212;&#8201;a particular <em>kind</em> of Resource defined in the cluster&#8217;s API to represent an instance of Red Hat Developer Hub. The key part of your Custom Resource is naming the <em>ConfigMap</em> that should be consulted for Red Hat Developer Hub configuration. You can see your <code>rhdh-config</code> ConfigMap named in the <code>configMaps</code> list beneath application.appConfig:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+  name: rhdh
+  namespace: brand-rhdh
+spec:
+  application:
+    appConfig:
+      mountPath: /opt/app-root/src
+      # This instructs the operator to mount the ConfigMap
+      # that you created into the Backstage Pods
+      configMaps:
+        - name: rhdh-config <i class="conum" data-value="1"></i><b>(1)</b>
+    route:
+      enabled: true
+  database:
+    enableLocalDb: true</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The name of the ConfigMap that contains the Red Hat Developer Hub configuration
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy this Custom Resource YAML to your computer&#8217;s clipboard.</p>
+</li>
+<li>
+<p>In the OpenShift Web Console, Administrator perspective, click the plus icon ("<strong>+</strong>") near the top right to expand its menu, then click <strong>Import YAML</strong>.</p>
+</li>
+<li>
+<p>Paste the <code>Backstage</code> Custom Resource YAML from your clipboard into the presented text field. Click <strong>Create</strong> to apply the Resource on the cluster.</p>
+</li>
+<li>
+<p>The Red Hat Developer Hub Operator will respond by creating and managing the pods and components for an RHDH instance, according to the configuration it finds in your <code>rhdh-config</code> ConfigMap.</p>
+</li>
+<li>
+<p>Navigate to <strong>Workloads &gt; Pods</strong> in the OpenShift Web Console (making sure you&#8217;ve selected the <code>brand-rhdh</code> project in the project selector) and watch the database pod (a <code>PostgreSQL</code> pod) and the Backstage pod starting. Wait for both to be marked as "Running" and "Ready".</p>
+</li>
+</ol>
+</div></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_visit_your_red_hat_developer_hub_instance"><a class="anchor" href="#_visit_your_red_hat_developer_hub_instance"></a>Visit your Red Hat Developer Hub Instance</h3>
+<div class="paragraph">
+<p>Now that you&#8217;ve created the <code>Backstage</code> custom resource, and the pods are up and running, you can access your Red Hat Developer Hub deployment using the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/networking_overview/index#nw-understanding-networking-routes-ingress_understanding-networking" target="_blank" rel="noopener">Route</a> established by the RHDH Operator:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select <strong>Networking &gt; Routes</strong> from the OpenShift Web Console&#8217;s left navigation.</p>
+</li>
+<li>
+<p>Confirm that your <strong>brand-rhdh</strong> project is selected in the project selector.</p>
+</li>
+<li>
+<p>Click the URL in the <strong>Location</strong> column on the <strong>Routes</strong> view. You should be presented with the Red Hat Developer Hub sign-in dialog.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If <strong>Application is not available</strong> is displayed when you click the Location, wait another 1-2 minutes. It can take some time for the pod readiness check to pass after a pod restart.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Select <strong>Guest</strong> to log in with just enough privilege to see the results of your title and logo customizations. The custom logo appears in the top left corner of the page. The custom title appears in the label of your browser tab or window.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/rhdh-ui/brand-rhdh-logo.png" alt="brand rhdh logo">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>How to make the encoded image</strong></p>
+</div>
+<div class="paragraph">
+<p><em>This lab provides an encoded image in the ConfigMap YAML. These steps are informational and not required to complete the module.</em></p>
+</div>
+<div class="paragraph">
+<p>You can produce an encoded image string in the format Red Hat Developer Hub expects by doing something like the following on your local *nix system:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">% ls
+logo.png # Your logo image
+% PNGLOGOB64=$(base64 -i logo.png) # Var holds image in base64
+% B64_FULL_LOGO="data:image/png;base64,$PNGLOGOB64" # Catenate type spec with encoded image
+% echo $B64_FULL_LOGO # Echo result to terminal
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI8AAAA7CAYAAABCONnwAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A[...]
+% echo $B64_FULL_LOGO &gt; logo.b64 # Write result to file</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you&#8217;ve catenated the image specification with the encoded image data, copy the result from your terminal, or <em>echo</em>(1) it out to a file and open the file in a program that makes copying easier. Use the string to replace the provided image data in your <code>rhdh-config</code> ConfigMap.</p>
+</div>
+<div class="paragraph">
+<p>Red Hat Developer Hub works best with source icon images in the scalable SVG format. It also supports PNG and JPEG icon images. This exercise uses a PNG source image for simplicity while retaining an alpha channel to look acceptable against the gray background.</p>
+</div>
+<div class="paragraph">
+<p>If your source logo image is in the (more desirable) SVG format, specify <code>data:image/svg+xml;base64</code> in your B64_FULL_LOGO variable. For a jpeg, specify <code>data:image/jpeg;base64</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="foundations.html" class="query-params-link">Module 5: Red Hat Developer Hub User Interface</a></span>
+  <span class="next"><a href="techdocs-foundations.html" class="query-params-link">TechDocs Foundations</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
