@@ -109,4 +109,4 @@ After completing the TAS workshop, you'll be ready to:
 * Integrate RHTAS into your CI/CD pipelines
 * Implement keyless and key-based signing workflows
 * Configure verification policies for your software supply chain
-* Explore the xref:tssc-tas.adoc[Trusted Software Supply Chain with TAS] module for advanced use cases on OpenShift
+* Explore the xref:tssc-tas/tssc-tas.adoc[Trusted Software Supply Chain with TAS] module for advanced use cases on OpenShift

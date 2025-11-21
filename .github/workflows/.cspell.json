@@ -158,7 +158,16 @@
     "fulltext",
     "CISO",
     "mkdocs",
-    "MkDocs"
+    "MkDocs",
+    "Firestore",
+    "Grafeas",
+    "Archivista",
+    "docstore",
+    "docdb",
+    "SPIFFE",
+    "SVID",
+    "keyfully",
+    "parameterises"
 
   ],
   "ignoreWords": [
@@ -228,7 +237,12 @@
     "pluginregistry",
     "logback",
     "rhdp",
-    "NCSC"
+    "NCSC",
+    "microdnf",
+    "Ummm",
+    "opadocs",
+    "Aaand",
+    "deployedimage"
 
   ],
   "ignorePaths": [

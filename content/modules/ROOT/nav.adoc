@@ -48,7 +48,19 @@
 *** xref:tssc-tpa/ex2-ui-usecases.adoc[Exercise: Exploring the Security Posture]
 *** xref:tssc-tpa/ex3-licenses.adoc[Exercise: (Open Source) License Compliance]
 
-* xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
+* xref:tssc-tas/tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
+** xref:tssc-tas/exercises.adoc[Exercises]
+*** xref:tssc-tas/ex1-chains.adoc[Tekton Chains]
+*** xref:tssc-tas/ex2-enterprise-contract.adoc[Conforma and Rego policies]
+*** xref:tssc-tas/ex3-sigstore-controller.adoc[Sigstore Admission Controller]
+**** xref:tssc-tas/ex3.1-sigstore-prep.adoc[Preparation]
+**** xref:tssc-tas/ex3.2-sigstore-install.adoc[Installation]
+**** xref:tssc-tas/ex3.3-sigstore-config.adoc[Configuration]
+**** xref:tssc-tas/ex3.4-sigstore-cip.adoc[ClusterImagePolicies]
+
+*** xref:tssc-tas/ex4-acs-controller.adoc[RHACS Admission Controller]
+*** xref:tssc-tas/ex-controller-summary.adoc[Admission Controllers Summary]
+
 * xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle]
 ** xref:production-rhdh/introduction.adoc[Foundations]
 *** xref:production-rhdh/introduction.adoc[An overview of the composite product set (RHADS)]

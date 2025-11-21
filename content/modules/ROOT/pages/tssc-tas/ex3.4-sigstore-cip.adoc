@@ -1,0 +1,1634 @@
+:imagesdir: ../../assets/images
+
+= Cluster Image Policies (CIP)
+
+First, we need a new namespace that we want the controller to watch and label it appropriately: 
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc new-project student-admission-test
+oc label namespace student-admission-test policy.rhtas.com/include=true
+----
+
+Before we create a `ClusterImagePolicy` (CIP) let's take a look at some important components and principles.
+
+== CIP Structure
+
+Among a lot of other configuration options, the most important ones are the `spec.images.glob[]` (an image pattern) and the `spec.authorities` (used to validate signatures and attestations).
+
+=== Image Patterns 
+
+The `ClusterImagePolicy` specifies `spec.images` which specifies a list of `glob` matching patterns. These matching patterns will be matched against the image digest of `PodSpec` resources attempting to be deployed. +
+
+NOTE: The resource type that the policy matches the image against (default: `PodSpec`) can be changed, but with the default setting it will make sure that all higher-level k8s resources that make use of "PodSpec" (such as Deployments) will return an error if the policy denies an image.
+
+Glob uses golang https://pkg.go.dev/path/filepath#Match[filepath^,window="docs"] semantics for matching the images against. Additionally you can specify a more traditional `**` to match any number of characters. 
+
+[source,yaml]
+----
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: image-policy
+spec:
+  images:
+  - glob: "**" <1>
+----
+<1> will match any image from any repository in any registry
+
+=== Authorities
+
+When a policy is selected to be evaluated against the matched image (the namespace is being watched and the image matches the `glob`), the authorities will be used to validate signatures and attestations. If at least one authority is satisfied and a signature or attestation is validated, the policy is validated.
+
+Authorities are combined as a boolean "or" (at least one is satisfied within a CIP). 
+
+There are different types auf Authorities that can be used for validation of images and attestations:
+
+* `key` validates against a static key provided
+** inline
+** in a k8s secret *in the namespace where the `policy-controller` is installed
+** in a KMS (Azure, AWS, GCP, HashiCorp Vault)
+
+* 'keyless' validates against a `sigstore` (Trusted Artifact Signer) installation
+
+* `static` doesn't validate anything, but instead is statically either `pass` or `fail`
+
+== Admission of Images
+
+How does it work together when you define multiple policies with multiple authorities?
+
+An image is admitted after it has been validated against all `ClusterImagePolicy` that matched the image (`glob`) and that there was at least one passing `authority` in each of the matched `ClusterImagePolicy`. + 
+*So each `ClusterImagePolicy` that matches is _AND_ for admission, and within each `ClusterImagePolicy` `authorities` are _OR_.*
+
+Having three policies defined, an example of an allowed admission would be 
+____
+. If the image matched against `policy1` and `policy3` +
+. A valid signature or attestation was obtained for `policy1` with at least one of the `policy1` authorities +  
+. A valid signature or attestation was obtained for `policy3` with at least one of the `policy3` authorities +
+. The image is admitted
+____
+
+An example of a denied admission would be:
+____
+. If the image matched against `policy1` and `policy2` +
+. A valid signature or attestation was obtained for `policy1` with at least one of the `policy1` authorities +
+. No valid signature or attestation was obtained for `policy2` with at least one of the `policy2` authorities +
+. The image is *not* admitted
+____
+
+*By default, any image that does not match a policy is rejected!*
+
+
+== A simple CIP
+
+To try the PolicyController with the images we created, we'll create a simple CIP:
+
+* matching all images (`glob: "**"`)
+* a single `keyless` authority, pointing to our RHTAS instance
+
+[source,yaml]
+----
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: cluster-image-policy
+spec:
+  images:
+    - glob: "**" <1>
+  authorities:
+    - keyless:
+        url: $FULCIO_URL <2>
+        trustRootRef: $TRUST_ROOT_RESOURCE <3>
+        identities:
+          - issuer: $OIDC_ISSUER_URL <4>
+            subject: $OIDC_SUBJECT <5>
+      ctlog:
+        url: $REKOR_URL <6>
+        trustRootRef: $TRUST_ROOT_RESOURCE <3>
+----
+<1> This policy will match all images, from anywhere
+<2> The `keyless` authority will check for signature certificates issued by this `fulcio` endpoint
+<3> The `TrustRoot` CR we defined earlier
+<4> The verified OIDC identity needs to have come from this OIDC system 
+<5> The `subject` is the OIDC identity, in our case `pipeline-auth@demo.redhat.com`
+<6> If we don't provide a Transparency Log (rekor) endpoint, it will fall back to the public good instance of rekor.
+
+=== Create the CIP
+
+We need to create the the ClusterImagePolicy in the `policy-controller-operator` namespace, and we'll use the variables pointing to our pre-installed RHTAS again (since we keylessly signed one of the images with this RHTAS).
+
+NOTE: Remember, our "Podman Terminal" comes with these preconfigured, simply type `help` in the terminal to see the full list.
+
+[source,bash,role=execute,subs=attributes+]
+----
+
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo "OIDC_ISSUER_URL:     ${OIDC_ISSUER_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuer: $OIDC_ISSUER_URL
+            subject: pipeline-auth@demo.redhat.com
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+EOF
+
+----
+
+=== Testing the CIP
+
+We had labelled our `student-admission-test` namespace with `policy.rhtas.com/include=true`, so we'll deploy into that one to verify if our policy is working.
+
+[source,console]
+----
+oc get project student-admission-test -o jsonpath='{.metadata.labels}' | jq
+{
+  "kubernetes.io/metadata.name": "student-admission-test",
+  "openshift-pipelines.tekton.dev/namespace-reconcile-version": "1.19.3",
+  "pod-security.kubernetes.io/audit": "baseline",
+  "pod-security.kubernetes.io/audit-version": "latest",
+  "pod-security.kubernetes.io/warn": "baseline",
+  "pod-security.kubernetes.io/warn-version": "latest",
+  "policy.rhtas.com/include": "true"
+}
+----
+
+When we created the images to test with, we stored an environment variable `$IMAGE` that contains the image and tag - we'll use that for some testing. In each of the directories, we have a `deploy.yaml`, that contains a `deployment`, a `service` and a `route` for our simple test image: 
+
+[source,yaml]
+----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsigned-image
+  labels:
+    app: unsigned-image
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unsigned-image
+  template:
+    metadata:
+      labels:
+        app: unsigned-image
+    spec:
+      containers:
+      - name: unsigned-image
+        image: $IMAGE
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+----
+
+So, we'll use that and see what happens:
+
+=== Unsigned Image
+
+The one policy we have deployed matches all images and has one authority, checking for a keylessly signed image.
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/unsigned-image 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+[source,console,role=wrap]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned:2025-11-17_14-41
+service/unsigned-image created
+route.route.openshift.io/unsigned-image created
+Error from server (BadRequest): error when creating "STDIN": admission webhook "policy.rhtas.com" denied the request: validation failed: failed policy: simple-cluster-image-policy: spec.template.spec.containers[0].image
+quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned:2025-11-17_14-41@sha256:c3804ea119c09bdbc9d5e15321b3d63393829523dc9061f05ee0d6906fb2806d signature keyless validation failed for authority authority-0 for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned@sha256:c3804ea119c09bdbc9d5e15321b3d63393829523dc9061f05ee0d6906fb2806d: no signatures found
+----
+
+And this is what we'd expect - `no signatures found` ✅
+
+In other words - no unsigned image will make it to this namespace!
+
+=== Signed with a key
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+
+
+[source,console,role=wrap]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43
+service/signed-image-key created
+route.route.openshift.io/signed-image-key created
+Error from server (BadRequest): error when creating "STDIN": admission webhook "policy.rhtas.com" denied the request: validation failed: failed policy: simple-cluster-image-policy: spec.template.spec.containers[0].image
+quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824 signature keyless validation failed for authority authority-0 for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824: no matching signatures: error verifying bundle: nil certificate provided
+----
+
+Again, it worked - it recognises the signature but the authority we created can't verify it: `no matching signatures` ✅
+
+
+=== Keylessly Signed Image
+
+We signed that keylessly with RHTAS and the `subject` (aka OIDC Identity) `pipeline-auth@demo.redhat.com`, which is what our authority expects:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keyless 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+[source,console,role=wrap]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-keylessly:2025-11-17_14-44
+deployment.apps/signed-image-keyless created
+service/signed-image-keyless created
+route.route.openshift.io/signed-image-keyless created
+----
+
+image::tssc-tas/ah-yeah.gif[]
+
+Aaand, our image is admitted without further ado - it matched the policy's `glob` and its signature could be verified against the authority, which defined the RHTAS endpoints and the `subject` that the image needed to be verified by.
+
+And here's https://signed-image-keyless-student-admission-test.{openshift_cluster_ingress_domain}[more proof^,window="deployedimage"] it made it onto our cluster. 😉
+
+
+[TIP]
+====
+During image creation, we have made sure that the repositories on Quay are *_public_*. + 
+If you see an error message like this: `<image:tag> must be an image digest: ...`
+
+[source,console,role=wrap]
+----
+Error from server (BadRequest): error when creating "STDIN": admission webhook "policy.rhtas.com" denied the request: validation failed: invalid value: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned:2025-11-15_20-27 must be an image digest: spec.template.spec.containers[0].image
+----
+
+then the `MutatingWebhook` can't resolve the tag to an image digest - most probably it doesn't have access to the repository on your registry. 
+
+You can solve that by 
+
+1) using an image digest directly in your deployment resource (which is a good practice for production deployments anyway, as tags might change and you might want to control which exact image you're deploying)
+
+2) Granting the webhook access to the registry/repository by adding and linking a `.dockerconfigjson` secret (pull secret) to the Webhook Service Account in the `policy-controller-operator` namespace:
+
+[source,console]
+----
+oc get sa -n policy-controller-operator 
+NAME                                                     SECRETS   AGE
+builder                                                  1         23h
+default                                                  1         23h
+deployer                                                 1         23h
+l3-students-policycontroller-policy-controller-webhook   1         23h <1>
+pipeline                                                 1         23h
+----
+<1> The Webhook SA that resolves tags into digests
+
+
+====
+
+== Extending the CIP
+
+Now that we have built and tested our first `ClusterImagePolicy`, we'll change it a bit.
+
+=== RegEx expressions
+
+Similar to what we learned about `cosign verify` and its use of the `--certificate-identity-regexp` and `--certificate-oidc-issuer-regexp` options, we can do the same in our `keyless` `authority`, using `issuerRegExp` instead of `issuer` and `subjectRegExp` instead of `subject`, respectively.
+
+If we wanted to admit all images signed by a Red Hatter that authenticated against any OIDC system running on the `redhatworkshops.io` domain:
+
+[source,yaml]
+----
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+
+----
+
+With that in mind, we'll update our ClusterImagePolicy:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+EOF
+----
+
+Now, we can deploy our keylessly signed image again:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keyless 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+[NOTE]
+====
+You might be wondering - the deploy.yaml hasn't changed, so would it really validate if I deploy the same again?
+
+You can see that - even though the deployment hasn't changed - it says `configured`, not `unchanged`, as we might expect. That's because the `MutatingWebHook` and then the `ValidationWebHook` are triggered whenever we instantiate any k8s artifact that has a `PodSpec` in this namespace.
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-keylessly:2025-11-17_14-44
+deployment.apps/signed-image-keyless configured <1>
+service/signed-image-keyless unchanged
+route.route.openshift.io/signed-image-keyless unchanged
+----
+<1> The admission webhooks modified (tag to digest conversion) and validated the `deployment`
+
+====
+
+[TIP]
+====
+If you really want to verify that it worked
+
+* redeploy the `ClusterImagePolicy` but modify the RegEx pattern, so it won't match and try again - it will fail.
+* delete the deployment and try again (there is only one, because the other deployments were blocked - not just the pods or containers within them)
+
+[source,console]
+----
+oc get deployment
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+signed-image-keyless   1/1     1            1           108m
+----
+====
+
+=== Images signed with a key
+
+We learned earlier, that we can add more than one `authority` to an `ClusterImagePolicy` and these are combined with *OR*, meaning an image is admitted if
+
+* it matches the policies `glob` pattern
+* at least one of the authorities can validate it
+
+[source,yaml]
+----
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+    - key:
+        secretRef: <1>
+          name: secretName   
+      ctlog: <2>
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root  
+----
+<1> The `secretRef` specifies the secret location name in the same namespace where policy-controller is installed. The first key value will be used in the secret.
+<2> `ctlog` is optional here - if omitted, it will just verify the signature against the public key in the secret. If provided, it will also verify that there is a corresponding entry in the transparency log (more secure).
+
+We signed our image with the `cosign` key that Tekton Chains is also using in its current "key-ful" configuration. Since the requirement for `key` authorities (if they use a k8s secret) is to have the secret in the `policy-controller-operator` namespace, we'll have to copy it over:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/config
+./copy-signing-key.sh
+----
+
+[source,console]
+----
+oc describe secret chains-cosign-pubkey -n policy-controller-operator 
+Name:         chains-cosign-pubkey
+Namespace:    policy-controller-operator
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+cosign.pub:  177 bytes
+----
+
+With the public key secret in place, we can modify our `ClusterImagePolicy` to add an `authority`:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+EOF
+----
+
+The admission controller should now also allow images that have been signed by that `cosign` key:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43
+deployment.apps/signed-image-key created <1>
+service/signed-image-key unchanged
+route.route.openshift.io/signed-image-key unchanged
+----
+<1> The `deployment` of the "keyfully" signed image is now admitted. The `service` and `route` had been there from our previous try when the `deployment` was blocked.
+
+== Attestations
+
+Similar to Enterprise Contract (Conforma), the Sigstore Admission Controller can also check for the existence of signed attestations associated with that image. Since it checks if the attestation has been signed, it is part of the `authority` structure:
+
+[source,yaml]
+----
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation <1>
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+    - name: key-with-attestation-check <1>
+      key:
+        secretRef: 
+          name: secretName   
+      ctlog: 
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root  
+      attestations: <2>
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+----
+<1> For more complex CIPs, it'a good idea to give authorities (and attestation checks) a name, since these will be part of error messages or warnings (instead of `authority-0`, `authority-1` and so on.)
+<2> The attestations array - if included, each attestation must be present for the `authority` to approve the image
+
+Apply these changes (names) and additions (attestation check for the `key` authority) to our `simple-cluster-image-policy`:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+EOF
+----
+
+With that change, we'll check if our keylessly signed image will still be admitted (it should) and our "keyfully" signed image, but without the attestation works (it shouldn't):
+
+*Keyless* ✅
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keyless 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+As expected, this works:
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-keylessly:2025-11-17_14-44
+deployment.apps/signed-image-keyless configured <1>
+service/signed-image-keyless unchanged
+route.route.openshift.io/signed-image-keyless unchanged
+----
+<1> Webhooks have been applied
+
+
+*With Key but without attestation* ❌
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+And now - it is complaining about the missing attestation, as it should: `no matching attestations` - and also `no matching signatures` (of the attestation). ❌
+
+[source,console,role=wrap]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43
+service/signed-image-key unchanged
+route.route.openshift.io/signed-image-key unchanged
+Error from server (BadRequest): error when applying patch:
+{"spec":{"template":{"spec":{"$setElementOrder/containers":[{"name":"signed-image-key"}],"containers":[{"image":"quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43","name":"signed-image-key"}]}}}}
+to:
+Resource: "apps/v1, Resource=deployments", GroupVersionKind: "apps/v1, Kind=Deployment"
+Name: "signed-image-key", Namespace: "student-admission-test"
+for: "STDIN": error when patching "STDIN": admission webhook "policy.rhtas.com" denied the request: validation failed: failed policy: simple-cluster-image-policy: spec.template.spec.containers[0].image
+quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824 attestation key validation failed for authority key-with-attestation-check for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824: no matching attestations:  signature keyless validation failed for authority keyless-no-attestation for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824: no matching signatures: error verifying bundle: nil certificate provided
+----
+
+=== Adding an attestation
+
+Similar to our previous exercise xref:tssc-tas/ex2-enterprise-contract.adoc#_building_a_custom_attestation[Building a custom attestation] we'll add our own attestation to the "keyfully" signed image.
+
+[NOTE]
+====
+You could also use an image that was signed and attested by *Tekton Chains*. In that case, you'd have to use the `\https://slsa.dev/provenance/v0.2` predicateType. + 
+You could also attest that keylessly - then you'd add that to the `keyless-no-attestation` authority for verification (and probably change its name 😉)
+====
+
+We'll use the same attestation:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore
+cat > release-approval-predicate.json <<'EOF'
+{
+  "release": {
+    "approved": true,
+    "approvalDate": "2025-11-08T12:00:00Z",
+    "approver": "Jane Smith",
+    "approverEmail": "jane.smith@example.com"
+  },
+  "serviceNowTickets": [
+    {
+      "ticketId": "CHG0012345",
+      "url": "https://servicenow.example.com/nav_to.do?uri=change_request.do?sys_id=abc123",
+      "type": "Change Request",
+      "status": "Approved",
+      "approvalDate": "2025-11-07T15:30:00Z"
+    },
+    {
+      "ticketId": "RITM0067890",
+      "url": "https://servicenow.example.com/nav_to.do?uri=sc_req_item.do?sys_id=def456",
+      "type": "Requested Item",
+      "status": "Closed Complete",
+      "completionDate": "2025-11-08T09:00:00Z"
+    }
+  ],
+  "metadata": {
+    "processVersion": "1.0",
+    "complianceFramework": "ADS-Scholars Release Policy",
+    "notes": "Standard release approval process completed"
+  }
+}
+EOF
+---- 
+
+and we'll attest it with the public/private key pair stored in the `openshift-pipelines` namespace - the same that we also used to sign the image.
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+source prep/signed-image-keys/image.env
+cosign attest \
+  --key k8s://openshift-pipelines/signing-secrets \
+  --type https://redhat.com/ads-scholars/v1 \
+  --predicate release-approval-predicate.json \
+  $IMAGE
+---- 
+
+[NOTE]
+====
+If you restarted the terminal pod between exercises, you might have lost the cached `cosign` login data to Quay and you will get an error message when `cosign` tries to push the attestation. + 
+In that case, just run `./cosign-login.sh` from that same directory.
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore
+./cosign-login.sh
+----
+====
+
+If we now try to deploy it again, it will pass, since it has at least one signed attestation of the required type `\https://redhat.com/ads-scholars/v1`
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43
+deployment.apps/signed-image-key configured
+service/signed-image-key unchanged
+route.route.openshift.io/signed-image-key unchanged
+----
+
+Now it passed ✅👍
+
+=== Adding a `rego` policy
+
+So far, we have successfully verified that all images deployed to our `student-admission-test` are either
+
+* (keylessly) signed by a Red Hatter that was authenticated by any OIDC System ending with `redhatworkshops.io` +
+or +
+* signed with a `cosign` key *AND* has a signed attestation of type `\https://redhat.com/ads-scholars/v1`
+
+Beyond checking for the existence of the attestation, we haven't done anything with it. However, we can also apply a policy to the attestation (validate the attestation content).
+
+We can extend the `attestation` in our ClusterImagePolicy with a policy that applies to attestation. (Yes, yes, yes - agreed. A _policy_ inside a _policy_ is a bit...cumbersome?) 
+
+[source,yaml]
+----
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation 
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+    - name: key-with-attestation-check 
+      key:
+        secretRef: 
+          name: secretName   
+      ctlog: 
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root  
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: <1>
+          type: rego <2>
+          data: | <3>
+            package sigstore
+            default isCompliant = false
+            isCompliant {
+              input.predicate.release.approved == true
+            }
+
+----
+<1> For this attestation, we define an additional policy 
+<2> We use `rego` as language. Available options are `rego` or `cue`
+<3> Here, we define an inline `rego` policy
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego 
+          data: | 
+            package sigstore
+            default isCompliant = false
+            isCompliant {
+              input.predicate.release.approved == true
+            }
+EOF
+----
+
+Now we can try to deploy our image again - given that the attestation contains this section:
+
+[source,json]
+----
+"release": {
+    "approved": true,
+    "approvalDate": "2025-11-08T12:00:00Z",
+    "approver": "Jane Smith",
+    "approverEmail": "jane.smith@example.com"
+  }
+---- 
+
+We can expect this to pass.
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+...which it does:
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43
+deployment.apps/signed-image-key configured
+service/signed-image-key unchanged
+route.route.openshift.io/signed-image-key unchanged
+----
+
+We can modify our policy to validate a predicate field to force a fail (for sake of completeness):
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego 
+          data: | 
+            package sigstore
+            default isCompliant = false
+            isCompliant {
+              input.predicate.release.approved == true
+              input.predicate.release.approverEmail == "jane.doe@example.com"
+            }
+EOF
+----
+
+Checking with our image and attestation:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+As expected, it fails now: `failed evaluating rego policy for type check-approval`
+
+[source,console,role=wrap]
+----
+Error from server (BadRequest): error when applying patch:
+{"spec":{"template":{"spec":{"$setElementOrder/containers":[{"name":"signed-image-key"}],"containers":[{"image":"quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43","name":"signed-image-key"}]}}}}
+to:
+Resource: "apps/v1, Resource=deployments", GroupVersionKind: "apps/v1, Kind=Deployment"
+Name: "signed-image-key", Namespace: "student-admission-test"
+for: "STDIN": error when patching "STDIN": admission webhook "policy.rhtas.com" denied the request: validation failed: failed policy: simple-cluster-image-policy: spec.template.spec.containers[0].image
+quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824 failed evaluating rego policy for type check-approval: policy is not compliant for query 'isCompliant = data.sigstore.isCompliant' signature keyless validation failed for authority keyless-no-attestation for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824: no matching signatures: error verifying bundle: nil certificate provided
+----
+
+[NOTE]
+====
+If you look closely, it will also tell you that `validation failed for authority keyless-no-attestation` - because it also tried this authority, since the other failed with with the `rego` policy validation error. +
+Remember, for `authorities` it's an *OR*, so if one succeeds, it will pass. So, it will try all - but in this case all fail.
+====
+
+=== Complex `rego` policies
+
+Let's say (given our comparatively simple attestation) we'd like to have a more complex validation logic:
+
+. Does the attestation contain at least one ServiceNow Ticket?
+. For all ServiceNow Tickets: 
+.. If the ticket is a "Change Request" the status has to be "Approved"
+.. If the ticket is a "Requested Item" the status has to be "Closed Complete"
+
+we can encapsulate this _inline_ as shown below - so please apply this slightly more complex `ClusterImagePolicy`:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego 
+          data: | 
+                package sigstore
+    
+                default isCompliant = false
+                
+                isCompliant {
+                  # Check that release is approved
+                  input.predicate.release.approved == true
+                  
+                  # Check that serviceNowTickets array exists and has at least one entry
+                  count(input.predicate.serviceNowTickets) > 0
+                  
+                  # Check that all tickets have valid status for their type
+                  not any_invalid_ticket_status
+                }
+                
+                # Helper rule: checks if ANY ticket has an invalid status
+                any_invalid_ticket_status {
+                  ticket := input.predicate.serviceNowTickets[_]
+                  not valid_ticket_status(ticket)
+                }
+                
+                # Helper rule: validates ticket status based on type
+                valid_ticket_status(ticket) {
+                  ticket.type == "Change Request"
+                  ticket.status == "Approved"
+                }
+                
+                valid_ticket_status(ticket) {
+                  ticket.type == "Requested Item"
+                  ticket.status == "Closed Complete"
+                }
+EOF
+----
+
+...and we also want to check if it is working (again, with our image & attestation):
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+For a negative test (validation failed) for sake of completeness, open the section below, apply the policy and test:
+
+*Click & Expand*
+[%collapsible]
+====
+include::./ex3.4.1-sigstore-cip-fail.adoc[]
+====
+
+=== Externalising rego policies
+
+For more complex `rego` policies, having those _inline_ with the `ClusterImagePolicy` has two important drawbacks:
+
+. Management: Managing and testing more complex rego policies as inline rego code can become cumbersome
+. Coupling: If inline, you cannot manage or update them independently, also making re-use of the rego logic in more than one CIP impossible
+
+==== *Using ConfigMaps*
+
+We can externalise our `rego` logic by moving it to a `configMap` and then reference it from the `ClusterImagePolicy`:
+
+[source,yaml]
+----
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego 
+          configMapRef:
+            name: policy-config
+            key: approval-policy
+----
+
+To make that work, we need to create a `configMap` with our policy in the `policy-controller-operator` namespace:
+
+We already have our above rego policy as a file `approval-policy.rego` in our helpers repository:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore
+cat approval-policy.rego
+----
+
+So, we can create a `configMap` like this:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore
+oc create configmap policy-config --from-file=approval-policy=approval-policy.rego \
+-n policy-controller-operator
+oc describe configmap policy-config -n policy-controller-operator
+----
+
+Now, apply our `ClusterImagePolicy` with the externalised `rego` policy:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego  
+          configMapRef:
+            name: policy-config
+            key: approval-policy
+EOF
+----
+
+and test if our validation still works:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+It does, as expected:
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43
+deployment.apps/signed-image-key configured
+service/signed-image-key unchanged
+route.route.openshift.io/signed-image-key unchanged
+----
+
+==== *Using URLs*
+
+Another option to externalise rego policies is by providing a `https` URL to fetch the `rego` policy from:
+
+[source,yaml]
+----
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego 
+          remote:
+            url: "https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tas-tssc/controllers/sigstore/approval-policy.rego"
+            sha256sum: 5a5917ccad0eddf7d60375e5612d2913164828f8ac4be8ffbd7dc0d8e5fa5934
+----
+
+[IMPORTANT]
+====
+For `remote` locations, the policy controller requires a sha256 fingerprint in the configuration to make sure that the policy is exactly what you expect it to be.
+
+To get the fingerprint, use `curl` with a piped `sha256sum` for example
+[source,bash,role=wrap]
+----
+curl -sL https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tas-tssc/controllers/sigstore/approval-policy.rego | sha256sum
+5a5917ccad0eddf7d60375e5612d2913164828f8ac4be8ffbd7dc0d8e5fa5934  -
+----
+====
+
+Let's try this one:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego  
+          remote:
+            url: "https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tas-tssc/controllers/sigstore/approval-policy.rego"
+            sha256sum: 5a5917ccad0eddf7d60375e5612d2913164828f8ac4be8ffbd7dc0d8e5fa5934
+
+EOF
+----
+
+...and test it again:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43
+deployment.apps/signed-image-key configured
+service/signed-image-key unchanged
+route.route.openshift.io/signed-image-key unchanged
+----
+
+== Tips & Tricks
+
+=== Testing Policies with `warn`
+
+To learn the impact of your policy before making it `live` across your cluster, you can configure the `mode` on the policy level. Allowed values are `enforce` (the default) or `warn` - which will admit the image, but issue a warning.
+
+If we use that with our policy, we should be allowed to even deploy the unsigned image:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  mode: warn <1>
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego  
+          remote:
+            url: "https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tas-tssc/controllers/sigstore/approval-policy.rego"
+            sha256sum: 5a5917ccad0eddf7d60375e5612d2913164828f8ac4be8ffbd7dc0d8e5fa5934
+
+EOF
+----
+<1> on the policy `spec` level, specify the "enforcement mode"
+
+Now, let's try to deploy our *unsigned* image:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/unsigned-image 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+As expected, our image (deployment) passes now, but with warnings:
+
+[source,console,role=wrap]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned:2025-11-17_14-41
+Warning: failed policy: simple-cluster-image-policy: spec.template.spec.containers[0].image
+Warning: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned:2025-11-17_14-41@sha256:c3804ea119c09bdbc9d5e15321b3d63393829523dc9061f05ee0d6906fb2806d signature keyless validation failed for authority keyless-no-attestation for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned@sha256:c3804ea119c09bdbc9d5e15321b3d63393829523dc9061f05ee0d6906fb2806d: no signatures found attestation key validation failed for authority key-with-attestation-check for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned@sha256:c3804ea119c09bdbc9d5e15321b3d63393829523dc9061f05ee0d6906fb2806d: no matching attestations: 
+deployment.apps/unsigned-image created <1>
+service/unsigned-image unchanged
+route.route.openshift.io/unsigned-image unchanged
+----
+<1> This time the deployment has been created, despite the failing policy
+
+=== Fine-tuning Policies with Labels and ResourceTypes
+
+If a policy is too coarse for your needs (remember, every namespace labelled `policy.rhtas.com/include=true` will be subject to all policies) - you can fine-tune it:
+
+As mentioned earlier, by default all Resources that use a direct or implicit `PodSpec` field will be enforced - that's why our deployment was blocked.
+
+You can tailor this behaviour to specific resource types by adding the `match` field:
+
+[source,yaml]
+----
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  match: <1>
+  - resource: jobs
+    group: batch
+    version: v1
+  - resource: pods
+    version: v1
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+----
+<1> This policy would only be enforced on jobs and pods
+
+This can be tuned even more by specifying labels:
+
+[source,yaml]
+----
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  match: <1>
+  - resource: cronjobs
+    group: batch
+    version: v1
+    selector:
+      matchLabels: <2>
+        prod: x-cluster1
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+----
+<1> This policy would only be enforced on cronjobs
+<2> ...but only those with the label `prod=x-cluster1`
+
+IMPORTANT: This feature only supports the selection of the following resource types: `pods`, `statefulsets`, `daemonsets`, `cronjobs`, `jobs`, `deployments` and `replicasets`.
+
+=== Combining Conforma and ClusterImagePolicies
+
+If you are using complex Conforma (Enterprise Contract) policies, for example evaluating SLSA compliance, you don't have to rebuild that logic (and the policies) for use by the Sigstore Policy Controller.
+
+A valid case is to run the `ec validate image` with complex SLSA compliance checks (or whatever you want `ec` to validate) and then *attest the ec results*.
+
+In that case, your `rego` logic in the `ClusterImagePolicy` would just have to verify your custom attestation with the `ec` results - and if your image couldn't be validated in `ec` or has gaps in the `ec` results, it wouldn't be admitted.
+
+image::tssc-tas/greatidea.gif[width=200]
+
+[IMPORTANT]
+====
+For this example, we'll re-use the image from our xref:tssc-tas/ex1-chains.adoc[Tekton Chains Exercise], so please check if you have an image in {quay_url}/repository/tssc/tekton-chains-test?tab=tags[Quay here^, window="quay"]. + 
+To login to Quay, use `{quay_admin_user}` and `{quay_admin_password}`
+
+image::tssc-tas/rhdh-tekton-chains-test-quay.png[link=self, window="image"]
+
+If you don't, you'll have to go through that exercise to create an image that has been attested by *Tekton Chains*
+====
+
+We will now combine a few things from the previous chapters:
+
+. The image with the Chains attestation of type `\https://slsa.dev/provenance/v0.2`
+. `ec` (Enterprise Contract or _execute conforma_) validating SLSA compliance
+. We will capture the `ec` result and wrap that in a custom predicate
+. We will attest that predicate
+. We will then change our ClusterImagePolicy to validate this custom attestation 
+.. This last step effectively offloads the complex SLSA validation to `ec` and its numerous SLSA policies. 
+
+NOTE: We're doing this in our terminal, but naturally this should happen as part of the release pipeline.
+
+First, let's get the `$CHAINS_IMAGE` variable again, pointing to the most recent tag that we (our Tekton Pipeline, with Chains enabled) has pushed:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/slsa-example
+source ./get-chains-image-sha.sh <1>
+echo "Now validating SLSA compliance"
+ec validate image \
+--image $CHAINS_IMAGE \
+--public-key k8s://openshift-pipelines/signing-secrets \
+--rekor-url $SIGSTORE_REKOR_URL \
+--policy '{
+  "sources": [{
+    "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+    "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+    "config": {
+      "include": [
+        "@slsa3"
+      ],
+      "exclude": [
+        "slsa_source_correlated.source_code_reference_provided"
+      ]
+    }
+  }]
+}' --info --show-successes --output json | jq > ec-validation-predicate.json <2>
+
+----
+<1> we need to source it, so the `$CHAINS_IMAGE` variable is available for subsequent steps
+<2> we'll store the full result as json
+
+If you want, take look at the result:
+
+[source,bash,role=execute,subs=attributes+]
+----
+less ec-validation-predicate.json
+----
+*HINT:* Exit `less` with kbd:[q] or kbd:[Q]
+
+We will attest this now as our custom predicateType `\https://redhat.com/ads-scholars/v2/ec-validation`, using the same key that *Tekton Chains* used to create its SLSA attestations:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign attest \
+  --key k8s://openshift-pipelines/signing-secrets \
+  --type https://redhat.com/ads-scholars/v2/ec-validation \
+  --predicate ec-validation-predicate.json \
+  $CHAINS_IMAGE
+---- 
+
+For sake of completeness, we quickly verify the attestation:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify-attestation \ 
+--type https://redhat.com/ads-scholars/v2/ec-validation \ 
+--key k8s://openshift-pipelines/signing-secrets \ 
+$CHAINS_IMAGE |  jq -r '.payload' | base64 -d | jq .
+----
+
+And now, we'll update our policy to validate our new custom attestation for all images (glob: "**") that have been signed with the cosign key that Tekton Chains uses:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v2/ec-validation
+        policy: 
+          type: rego  
+          data: | 
+                package sigstore
+
+                default isCompliant = false
+                
+                isCompliant {
+                  # Check that ec run attested was a success
+                  input.predicate.success == true
+                  
+                  # Check that @slsa3 rule set was included in the policy
+                  slsa3_included
+                  
+                  # Check that there are no warnings in any component
+                  no_warnings
+                }
+                
+                # Helper: Check if @slsa3 is in the included rule sets
+                slsa3_included {
+                  input.predicate.policy.sources[_].config.include[_] == "@slsa3"
+                }
+                
+                # Helper: Check that no component has warnings
+                no_warnings {
+                  not any_component_has_warnings
+                }
+                
+                # Helper: Check if any component has warnings
+                any_component_has_warnings {
+                  component := input.predicate.components[_]
+                  count(component.warnings) > 0
+                }
+EOF
+----
+
+NOTE: This `rego` policy could also have been externalised as previously shown, but we kept it _inline_ for readability here.
+
+And now, let's try to deploy the attested image:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/slsa-example 
+echo ""
+echo "IMAGE: ${CHAINS_IMAGE}"
+sed "s|\$IMAGE|$CHAINS_IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+[source,console]
+----
+IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+deployment.apps/slsa-verified-signed-image created
+service/slsa-verified-signed-image unchanged
+route.route.openshift.io/slsa-verified-signed-image unchanged
+----
+
+==== *What Gets Validated*
+
+Based on the attestation structure, which is basically the `ec` result, this policy ensures: 
+
+* ✅ Overall EC validation succeeded (predicate.success == true)
+* ✅ At least one `ec` policy source used the @slsa3 collection
+* ✅ No component reported any warnings

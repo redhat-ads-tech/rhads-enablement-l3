@@ -70,7 +70,7 @@ If we wanted to attest the below empty envelope (`"predicate": {}`), we would ha
       }
     }
   ],
-  "predicateType": "https://example.com/predicate/v1",
+  "predicateType": "https://example.com/CodeReview/v1",
   "predicate": {}
 }
 ----
@@ -382,7 +382,7 @@ _errors contains error if {
 }
 ----
 
-Using and building policies is part of xref:tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
+Using and building policies is part of xref:tssc-tas/tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
 
 
 ====

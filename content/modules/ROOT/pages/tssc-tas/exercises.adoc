@@ -1,0 +1,91 @@
+:imagesdir: ../../assets/images
+
+= Exercises
+
+== Topics covered
+
+In the following chapters we will cover
+
+* Tekton Chains
+** Configuring Tekton Chains
+** Looking at the Chains-generated Attestations
+
+* Enterprise Contract / Conforma
+** Enterprise Contract / Conforma policies
+** Existing (SLSA) policies by Red Hat
+** A short introduction to the Rego language
+** Building custom `ec` policies using Rego
+
+* Sigstore Admission Controller
+** Installing the Sigstore Admission Controller
+** Configuring the Sigstore Admission Controller
+** Using attestation verification with the Sigstore Admission Controller
+
+* Advanced Cluster Security 
+** Using the ACS Admission Controller
+** Configuring the ACS Admission Controller
+** Building an ACS policy
+
+* Using the OpenShift ImagePolicy
+
+== Preparation
+
+We'll be using cli commands in many of the chapters, so we'll need a terminal - we will use the "Podman Terminal" again, since it has all the cli tools as well as the environment configuration for TAS already configured.
+
+[NOTE]
+====
+If you have the "Podman Terminal" already running from previous exercises, you can re-use it, but make sure you start with a fresh instance:
+
+Go to the https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[terminal^,window="terminal"], run the `terminal-reset` command and wait for a moment until a new terminal pod has come back up. 
+
+[source,console]
+----
+podman-terminal:/workspace$ terminal-reset 
+=== Terminal Environment Reset Tool ===
+
+Current pod: ttyd-admin-terminal-6bf48d8b95-jgrxs
+Namespace: ttyd
+
+Current pod information:
+$ oc get pod ttyd-admin-terminal-6bf48d8b95-jgrxs -n ttyd
+NAME                                   READY   STATUS    RESTARTS   AGE
+ttyd-admin-terminal-6bf48d8b95-jgrxs   2/2     Running   0          2m47s
+
+WARNING: This will delete the current pod and create a new one.
+All of the following will be lost:
+  • Environment variables set during this session
+  • Files created in non-persistent directories (/tmp, /workspace, etc.)
+  • Command history from this session
+  • Any running processes
+  • Temporary configurations
+
+Do you really want to reset this terminal environment? (yes/no): 
+yes
+
+Resetting terminal environment...
+Your terminal will disconnect shortly.
+Refresh your browser to connect to the new pod.
+Note: It may take 30-60 seconds for the new pod to be ready.
+
+$ oc delete pod ttyd-admin-terminal-6bf48d8b95-jgrxs -n ttyd
+pod "ttyd-admin-terminal-6bf48d8b95-jgrxs" deleted
+----
+
+====
+
+
+=== Install the "Podman Terminal"
+
+We'll use that going forward, so please open the {openshift_console_url}/terminal[OpenShift terminal^,window="terminal"] and login as `{openshift_admin_user}` with `{openshift_admin_password}`
+
+Then, clone the following repository and execute the terminal deployment:
+
+[source,bash,role=execute,subs=attributes+]
+----
+git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers/security-concepts
+./deploy-podman-terminal.sh 
+----
+
+You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] that we will be using going forward, since it has all the tools and configuration already installed.
+

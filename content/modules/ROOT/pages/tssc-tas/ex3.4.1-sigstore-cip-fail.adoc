@@ -1,0 +1,104 @@
+:imagesdir: ../../assets/images
+
+The rego policy in this CIP will check for the status value "Closed" in the "Requested Item" ServiceNow Ticket attestation field. We know that it is (and has to be) "Closed Completed", so testing with the given attestation should fail. 
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project policy-controller-operator
+echo ""
+echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
+echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
+echo ""
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: simple-cluster-image-policy
+spec:
+  images:
+    - glob: "**"
+  authorities:
+    - name: keyless-no-attestation
+      keyless:
+        url: $SIGSTORE_FULCIO_URL
+        trustRootRef: trust-root
+        identities:
+          - issuerRegExp: '\.redhatworkshops\.io/'
+            subjectRegExp: '.*@.*redhat\.com$'
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root
+    - name: key-with-attestation-check
+      key:
+        secretRef:
+          name: chains-cosign-pubkey
+      ctlog:
+        url: $SIGSTORE_REKOR_URL
+        trustRootRef: trust-root     
+      attestations: 
+      - name: check-approval
+        predicateType: https://redhat.com/ads-scholars/v1
+        policy: 
+          type: rego 
+          data: | 
+                package sigstore
+    
+                default isCompliant = false
+                
+                isCompliant {
+                  # Check that release is approved
+                  input.predicate.release.approved == true
+                  
+                  # Check that serviceNowTickets array exists and has at least one entry
+                  count(input.predicate.serviceNowTickets) > 0
+                  
+                  # Check that all tickets have valid status for their type
+                  not any_invalid_ticket_status
+                }
+                
+                # Helper rule: checks if ANY ticket has an invalid status
+                any_invalid_ticket_status {
+                  ticket := input.predicate.serviceNowTickets[_]
+                  not valid_ticket_status(ticket)
+                }
+                
+                # Helper rule: validates ticket status based on type
+                valid_ticket_status(ticket) {
+                  ticket.type == "Change Request"
+                  ticket.status == "Approved"
+                }
+                
+                valid_ticket_status(ticket) {
+                  ticket.type == "Requested Item"
+                  ticket.status == "Closed"
+                }
+EOF
+----
+
+And the test:
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc project student-admission-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys 
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -
+----
+
+As expected, it fails with `evaluating rego policy for type check-approval: policy is not compliant`
+
+[source,console,role=wrap]
+----
+Error from server (BadRequest): error when applying patch:
+{"spec":{"template":{"spec":{"$setElementOrder/containers":[{"name":"signed-image-key"}],"containers":[{"image":"quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43","name":"signed-image-key"}]}}}}
+to:
+Resource: "apps/v1, Resource=deployments", GroupVersionKind: "apps/v1, Kind=Deployment"
+Name: "signed-image-key", Namespace: "student-admission-test"
+for: "STDIN": error when patching "STDIN": admission webhook "policy.rhtas.com" denied the request: validation failed: failed policy: simple-cluster-image-policy: spec.template.spec.containers[0].image
+quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-17_14-43@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824 signature keyless validation failed for authority keyless-no-attestation for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key@sha256:358b575f24615d8bfc096dae0d43649086b1b6235ecbae9f3c911bfc686c1824: no matching signatures: error verifying bundle: nil certificate provided failed evaluating rego policy for type check-approval: policy is not compliant for query 'isCompliant = data.sigstore.isCompliant'
+----
+
+'''
