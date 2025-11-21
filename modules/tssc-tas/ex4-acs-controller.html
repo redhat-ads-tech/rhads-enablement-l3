@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Advanced Cluster Security (ACS) Admission Controllers :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/tssc-tas/ex4-acs-controller.html">
+    <link rel="prev" href="ex3.4-sigstore-cip.html">
+    <link rel="next" href="ex-controller-summary.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+            <a class="navbar-item navbar-item-right-content" href="env.html" target="_blank">Lab</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-ui/foundations.html">Module 5: Red Hat Developer Hub User Interface</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/foundations.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/customize-rhdh.html">Hands-on Lab: Customize RHDH Appearance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/techdocs-foundations.html">TechDocs Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/techdocs-lab-user.html">TechDocs Lab 1: Creating and Editing TechDocs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/overview.html">Module 7: Getting started with security best practices</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/overview.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/security-practices.html">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/understanding-keyless.html">Understanding Keyless Signing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex1-signing-images.html">Image Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex2-git-signing.html">Commit Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex3-provenance.html">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex4-sboms.html">SBOM Creation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tssc-tpa/correlation.html">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex1-uploading-sboms.html">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex2-ui-usecases.html">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex3-licenses.html">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex1-chains.html">Tekton Chains</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex2-enterprise-contract.html">Conforma and Rego policies</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ex3-sigstore-controller.html">Sigstore Admission Controller</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.1-sigstore-prep.html">Preparation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.2-sigstore-install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.3-sigstore-config.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.4-sigstore-cip.html">ClusterImagePolicies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="ex4-acs-controller.html">RHACS Admission Controller</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex-controller-summary.html">Admission Controllers Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/introduction.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/lab.html">Full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 11: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 12: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 13: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Module 14: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.html">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 15: RHADS Complete: Summary and Next Steps</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../env.html">My lab environment details</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a></li>
+    <li><a href="exercises.html">Exercises</a></li>
+    <li><a href="ex4-acs-controller.html">RHACS Admission Controller</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Advanced Cluster Security (ACS) Admission Controllers</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each OpenShift (or Kubernetes) Cluster secured by Advanced Cluster Security has an Admission Controller that will enforce ACS policies:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-highlevel.png" target="images"><img src="../_images/tssc-tas/acs-highlevel.png" alt="acs highlevel"></a>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_acs_secured_clusters"><a class="anchor" href="#_acs_secured_clusters"></a>ACS Secured Clusters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you log into the {acs_url}[ACS Console^,window="acs"] (with user <code>{acs_admin_user}</code> and password <code>{acs_admin_password}</code>) you can find the "secured clusters" und "Central Control" and their configuration by going to "Platform Configuration" and "Clusters" (1)</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-cluster-config.png" alt="acs cluster config">
+</div>
+</div>
+<div class="paragraph">
+<p>You can also {acs_url}/main/clusters[click here^,window="acs"]</p>
+</div>
+<div class="paragraph">
+<p>When you click on the Cluster Status, you can open a detailed view, which will also give you the status of the admission controller for this "Secured Cluster":</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-cluster-config-detail.png" alt="acs cluster config detail">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_admission_controller_and_policies"><a class="anchor" href="#_admission_controller_and_policies"></a>Admission Controller and Policies</h3>
+<div class="paragraph">
+<p>When you go to the {acs_url}/main/policy-management/policies["Policy Management" View^,window="acs"] (also under "Platform Configuration") you will see a lot of policies, also with several "Lifecycle" stages.</p>
+</div>
+<div class="paragraph">
+<p>For the Admission Controller, only the "Deploy" lifecycle stage is of relevance - it will evaluate the policy (if active and properly defined) on deployment and act on it (Inform or Inform&amp;Enforce = Block the Deployment).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The "Build" Lifecycle applies to policies that can be used during the build phase, in other words by using <code>roxctl</code> in a CI or some other script environment.</p>
+</li>
+<li>
+<p>The "Runtime" Lifecycle continuously monitors running Pods, for example if we want to detect (and avoid) a container starting e.g. "curl" or "dnf" for possible side-loading attacks.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-policies.png" alt="acs policies">
+</div>
+</div>
+<div class="paragraph">
+<p>If you filter by the {acs_url}/main/policy-management/policies?s%5BLifecycle%20Stage%5D=DEPLOY["DEPLOY lifecycle"^,window=acs], you can see all system policies that have been defined for the deployment (i.e. can be enforced by the ACS Admission Controller)</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-policies-deploy.png" alt="acs policies deploy">
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, ACS focuses more on the vulnerability side of security, where the Sigstore Admission Controller focuses on the integrity and attestations.</p>
+</div>
+<div class="paragraph">
+<p>Checking for valid signatures is where they have an overlap, so let&#8217;s create policies that</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>check for a valid signature</p>
+</li>
+<li>
+<p>check the number of vulnerabilities is below a certain threshold</p>
+</li>
+<li>
+<p>will block a deployment if violated</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Generally ACS supports (and recommends) to keep policies focused on one specific task (e.g. check for a valid signature). This way, they can be re-used and configured separately.<br>
+For example, if I don&#8217;t want to block the deployment but just warn if the number of CVEs found is above a threshold - but I don&#8217;t want any unsigned deployment.<br>
+Enforcement is on the policy level - if I combine too many rules in one policy, I lose flexibility.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preparation_adding_trusted_image_signers"><a class="anchor" href="#_preparation_adding_trusted_image_signers"></a>Preparation: Adding Trusted Image Signers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before we build a policy that verifies what a "good signature" is, we need to define an "Integration", namely a "Signature Integration":</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-integration.png" alt="acs create integration">
+</div>
+</div>
+<div class="paragraph">
+<p>Go to "Platform Configuration" (1) - Integrations (2) - Signature Integrations (3), or {acs_url}/main/integrations/signatureIntegrations/signature[click here^,window="acs"] then click on "New Integration"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-integration-new-integration.png" alt="acs create integration new integration">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_key_verification"><a class="anchor" href="#_key_verification"></a>Key verification</h3>
+<div class="paragraph">
+<p>We can add more than one key to validate images - so images from multiple signature sources can be validated with the same signature integration.<br>
+We can also create multiple integrations with a single key each.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-create-signature-integration-pubkey.png" target="image"><img src="../_images/tssc-tas/acs-create-signature-integration-pubkey.png" alt="acs create signature integration pubkey"></a>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_keyless_verification"><a class="anchor" href="#_keyless_verification"></a>Keyless verification</h3>
+<div class="paragraph">
+<p>Another option (can also be used in the same integration) is to verify "keylessly signed" images by providing the RHTAS endpoints.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-signature-integration-keyless.png" alt="acs create signature integration keyless">
+</div>
+</div>
+<div class="paragraph">
+<p>If we want to verify proof-of-inclusion with the Rekor transparency log (proof that the signing event has happened and has been recorded), we can configure that also - or disable, but that would be less secure.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-signature-integration-tlog.png" alt="acs create signature integration tlog">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For keyless signing/verification the Transparency log is typically part of the process - for "key-ful" signing, this is recommended, but not required. Therefore we have somewhat redundant fields here. One Rekor configuration tied to the "keyless" verification and one general one. This might change in the future.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_the_integration"><a class="anchor" href="#_creating_the_integration"></a>Creating the integration</h3>
+<div class="paragraph">
+<p>With that said, let&#8217;s create a new Integration.</p>
+</div>
+<div class="paragraph">
+<p>1) {acs_url}/main/integrations/signatureIntegrations/signature[Start here^,window="acs"] and click on "New Integration"</p>
+</div>
+<div class="paragraph">
+<p>2) Give it a name, such as "Cosign Keys"</p>
+</div>
+<div class="paragraph">
+<p>3) We have prepared a script that prints all the configuration data you need. Go to  <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">the terminal here</a> and run this script:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you have restarted your cluster or terminal pod, you will not have the helper scripts available. In that case, first clone them again:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and the following command will work.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /workspace/l3-enablement-helpers/tas-tssc/controllers/acs
+./get-signature-integration-info.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will get a printout similar to this one <strong>(yours will be different)</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">==========================================
+ACS Signature Integration Configuration
+==========================================
+
+==========================================
+Section: Cosign Public Key
+==========================================
+
+Public Key Name: cosign.pub
+
+Public Key Value:
+-------------------
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZikcD8YR+C/ztTzhkzLO4fyOtJF0
+h/dLYKfC7zcIQQ46U6b7G0NrLZ0R2M7TnY0LATWMcWRrq7ok4hrBpmn/pw==
+-----END PUBLIC KEY-----
+
+==========================================
+Section: Transparency Log
+==========================================
+
+Rekor URL:
+-------------------
+https://rekor-server-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io
+
+Rekor Public Key:
+-------------------
+Initializing cosign (this may take a moment)...
+Cosign initialized successfully
+
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEA5stoARjjvmULrZodK4a3aRYTnIA
+/KpMwc/8G/+4uK01Qb1MRL+ZS0sD2TmXQ0si1ky/yJ3ZMft5F5dCGRL9pQ==
+-----END PUBLIC KEY-----</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now copy the values over - it will look similar to this <strong>(your values will be different)</strong> - then click "Save"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-signature-integration-filled.png" alt="acs create signature integration filled">
+</div>
+</div>
+<div class="paragraph">
+<p>When you {acs_url}/main/integrations/signatureIntegrations/signature[click here^,window="acs"], you should now have a new "Signature Integration" with our keys that Tekton Chains (and we) used to sign images.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-signature-integration-created.png" alt="acs create signature integration created">
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_policies"><a class="anchor" href="#_creating_policies"></a>Creating Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before we create our policies to test with, let&#8217;s quickly create a new namespace. Why, you ask?<br>
+Because our previous testing namespace (<code>student-admission-test</code>) is still being watched by our <code>ClusterImagePolicy</code> from the previous chapter - because we labelled that namespace accordingly with <code>policy.rhtas.com/include=true</code>.</p>
+</div>
+<div class="paragraph">
+<p>We don&#8217;t want two Admission Controllers step on each other&#8217;s feet, because both will be validating the signature - therefore we use a new namespace. More on that (and how ACS policies can be scoped) later.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc new-project student-acs-test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s go to the {acs_url}/main/policy-management/policies["Policy Management" View^,window="acs"] and then</p>
+</div>
+<div class="paragraph">
+<p>1) Click on "Create policy"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy.png" alt="acs create policy">
+</div>
+</div>
+<div class="paragraph">
+<p>2) Give it a name (<strong>HINT:</strong> Start the name with "0-" so it&#8217;s easier to find later), severity and pick a category - if you want you can also provide a description, rationale and remediation guidance, which will be displayed on policy violation.</p>
+</div>
+<div class="paragraph">
+<p>Click "Next"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-2.png" alt="acs create policy 2">
+</div>
+</div>
+<div class="paragraph">
+<p>3) Select "Deploy" as the lifecycle stage (as that is relevant for admission control) and click "next"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-3.png" alt="acs create policy 3">
+</div>
+</div>
+<div class="paragraph">
+<p>4) Define the rules that make up this policy. You start by "dragging and dropping", then configure the policy field you "dropped" (<strong>HINT:</strong> Drop it in the <em>grey</em> box, otherwise it won&#8217;t work)</p>
+</div>
+<div class="paragraph">
+<p>Start with the "Image Signature"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-4-dnd.png" alt="acs create policy 4 dnd">
+</div>
+</div>
+<div class="paragraph">
+<p>Then, configure your first rule by selecting an image signer (what we just created)</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-4-dnd-image-signer.png" alt="acs create policy 4 dnd image signer">
+</div>
+</div>
+<div class="paragraph">
+<p>Click next and define an "Inclusion Scope"</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If you don&#8217;t restrict your policies by defining inclusion or exclusion scopes, the will automatically apply to <strong>all namespaces on all secured clusters</strong>!
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-5-add-inclusion.png" alt="acs create policy 5 add inclusion">
+</div>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll add our "production" cluster (it&#8217;s the only secured cluster we have in this environment) and our namespace <code>student-acs-test</code></p>
+</div>
+<div class="paragraph">
+<p>We could add more inclusion scopes and also work with RegEx for namespaces and deployment labels, but we&#8217;ll leave it at that.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-5-inclusion.png" alt="acs create policy 5 inclusion">
+</div>
+</div>
+<div class="paragraph">
+<p>Click next.</p>
+</div>
+<div class="paragraph">
+<p>For "Actions", we&#8217;ll leave it at "Enabled" and "Inform" (for now).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-6-inform.png" alt="acs create policy 6 inform">
+</div>
+</div>
+<div class="paragraph">
+<p>"Inform" is comparable to "warn" with the Sigstore Admission controller. It will issue a warning when we try to deploy an image that violates the policy.
+ACS has a "violations" dashboard, where this will pop up - and also "Notifiers" that would inform via e.g. Slack, Jira, etc (we haven&#8217;t defined any).</p>
+</div>
+<div class="paragraph">
+<p>"Inform and Enforce" would additionally block the deployment, as you would expect from an admission controller.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>We&#8217;re dealing with "Deploy" policies here - but depending on the lifecycle, "Enforce" has different consequences:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Build</strong> - It will break the Pipeline (roxctl will exit with a non-0 exit code)</p>
+</li>
+<li>
+<p><strong>Deploy</strong> - as just mentioned, will stop a deployment</p>
+</li>
+<li>
+<p><strong>Runtime</strong> - will kill a pod (but not its <code>deployment</code>, so depending on configuration it will come back until it violates the policy again, will we terminated, comes back up&#8230;&#8203;)</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Click next, review and save.</p>
+</div>
+<div class="paragraph">
+<p>We should now have our first policy, scoped to run on our <code>student-acs-test</code> namespace on "production" only.<br>
+It should verify if a valid signature by our cosign key is available and will also check if there is proof of that signing event in the Rekor transparency log.</p>
+</div>
+<div class="paragraph">
+<p>In our {acs_url}/main/policy-management/policies["Policy Management" View^,window="acs"] we should now see our policy.<br>
+You can edit it via the menu on the right, or just by clicking on its name and picking "Edit Policy" from the actions menu on the right.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-create-policy-7-done.png" alt="acs create policy 7 done">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing_our_first_policy"><a class="anchor" href="#_testing_our_first_policy"></a>Testing our first policy</h3>
+<div class="paragraph">
+<p>Ok, let&#8217;s see what it does when we try to deploy our unsigned image to our <code>student-acs-test</code> namespace:</p>
+</div>
+<div class="paragraph">
+<p>In the <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">terminal</a> run the following code again:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you have restarted your cluster or terminal pod since you built the image, it will not have the <code>image.env</code> file containing the <code>&lt;image:tag&gt;</code>.<br>
+In that case, simply run the build for both the unsigned and the key-signed image again:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/unsigned-image
+./build.sh
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys
+./build.sh</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project student-acs-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/unsigned-image
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ok, that worked, as expected (we&#8217;re just at "Inform" level) - but where is our warning?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned:2025-11-19_12-03
+deployment.apps/unsigned-image created
+service/unsigned-image created
+route.route.openshift.io/unsigned-image created</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s in the {acs_url}/main/violations?violationState=ACTIVE&amp;filteredWorkflowView=Applications%20view[Violations Dashboard^,window="acs"] and would have triggered a notification to our Notifier of choice (if we had defined any):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-violations-unsigned.png" alt="acs violations unsigned">
+</div>
+</div>
+<div class="paragraph">
+<p>So, let&#8217;s see what happens if we set it to "enforce":</p>
+</div>
+<div class="paragraph">
+<p>From the {acs_url}/main/policy-management/policies["Policy Management" View^,window="acs"], use the menu on the right (as shown above) or open it and use the "Actions Menu"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-edit-policy.png" alt="acs edit policy">
+</div>
+</div>
+<div class="paragraph">
+<p>You can click through via "Next, Next, Next,&#8230;&#8203;" or you can directly go to "Actions"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-edit-shortcut-actions.png" alt="acs edit shortcut actions">
+</div>
+</div>
+<div class="paragraph">
+<p>When you switch to "Inform &amp; Enforce", you can tailor on which lifecycle stages the enforcement will actually happen. Since we defined this policy to only support the "Deploy" lifecycle, we can only enable "Enforce on Deploy". If we had a policy applicable to multiple stages, we could fine-tune where enforcement should happen.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-edit-enforce.png" alt="acs edit enforce">
+</div>
+</div>
+<div class="paragraph">
+<p>Click "Next", then "Save"</p>
+</div>
+<div class="paragraph">
+<p>Now, let&#8217;s try again in our terminal:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project student-acs-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/unsigned-image
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Huh? All good? 🤔<br></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-unsigned:2025-11-19_12-03
+deployment.apps/unsigned-image unchanged
+service/unsigned-image unchanged
+route.route.openshift.io/unsigned-image unchanged</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>That&#8217;s because no deployment is actually happening (deployment unchanged) - this is important to note: If the malicious image is already on the cluster, a deployment-scoped policy won&#8217;t act on it. A "runtime"-scoped would.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>ok, so let&#8217;s delete it first and then try again:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project student-acs-test
+oc delete deployment unsigned-image
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/unsigned-image
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A-ha! 💡 Now the Admission Controller enforces the policy and blocks the deployment - anf we had provided some meaningful Description, a rationale for the policy and common remediation strategies, these would also be shown here (and would appear in logs, etc.)</p>
+</div>
+<div class="listingblock wrap">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Error from server (Failed currently enforced policies from RHACS): error when creating "STDIN": admission webhook "policyeval.stackrox.io" denied the request:
+The attempted operation violated 1 enforced policy, described below:
+
+Policy: 0-Check Cosign Signature
+- Description:
+    ↳
+- Rationale:
+    ↳
+- Remediation:
+    ↳
+- Violations:
+    - Container 'unsigned-image' image signature is unverified
+
+
+In case of emergency, add the annotation {"admission.stackrox.io/break-glass": "ticket-1234"} to your deployment with an updated ticket number</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition to that, we can also find the Violation in the {acs_url}/main/violations?violationState=ATTEMPTED&amp;filteredWorkflowView=Applications%20view["Attempted"^,window="acs"] view in ACS.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/acs-violations-unsigned-attempted.png" alt="acs violations unsigned attempted">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_control"><a class="anchor" href="#_control"></a>Control</h3>
+<div class="paragraph">
+<p>OK, now we know our policy blocks an unsigned image - but would it allow an image singed with the correct key and inclusion proof in the Rekor transparency database?</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s try:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project student-acs-test
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As expected, that worked ✅</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-19_12-04
+deployment.apps/signed-image-key created
+service/signed-image-key created
+route.route.openshift.io/signed-image-key created</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_a_vulnerability_focused_policy"><a class="anchor" href="#_a_vulnerability_focused_policy"></a>A vulnerability-focused policy</h3>
+<div class="paragraph">
+<p>Verifying image signatures is something that the Sigstore Admission Controller can do as well, so let&#8217;s add something that Sigstore can&#8217;t but ACS excels at: Scanning for vulnerabilities.</p>
+</div>
+<div class="paragraph">
+<p>So, we&#8217;ll create a policy "0-no fixable vulnerabilities" that doesn&#8217;t allow any <strong>FIXABLE</strong> severity:</p>
+</div>
+<div class="paragraph">
+<p>Since you&#8217;ve already learned how to create a policy:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to the {acs_url}/main/policy-management/policies[Policy Management View^,window="acs"]</p>
+</li>
+<li>
+<p>Create a new policy with name <code>0-no fixable vulnerabilities</code></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Severity: High</p>
+</li>
+<li>
+<p>Categories: Supply Chain Security</p>
+</li>
+<li>
+<p>Description: <code>Verifies there are no fixable known vulnerabilities</code></p>
+</li>
+<li>
+<p>Rationale: <code>If a fix is available, we should try our best to incorporate it as soon as possible</code></p>
+</li>
+<li>
+<p>Guidance: <code>Use the "roxctl scan image" command or ask the security team for a detailed scan of the image, including "fixed by" data</code></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Lifecycle</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Assign it at least the <code>Deploy</code> lifecycle, but a policy like this could also be used during <code>Build</code></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Rules</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>From the <strong>Image Contents</strong> section, drag the "Fixable" to the policy field. We could combine that with e.g. "Severity" to say <span class="menuseq"><b class="menu">Fixable of Severity</b>&#160;<i class="fa fa-angle-right caret"></i> <b class="menuitem">Important</b></span>, but we&#8217;ll leave it here.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Scope</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add an Inclusion Scope</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Cluster "Production"</p>
+</li>
+<li>
+<p>Namespace <code>student-acs-test</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Actions</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Set "Inform and Enforce"</p>
+</li>
+<li>
+<p>Enable enforcement on "Deploy" (note that you could also enforce on Build, as we had added that as a lifecycle in the beginning)</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Click on the thumbnails to enlarge:</p>
+</div>
+<table class="tableblock frame-none grid-cols stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-violations-policy-1.png" target="images"><img src="../_images/tssc-tas/acs-violations-policy-1.png" alt="acs violations policy 1"></a>
+</div>
+</div></div></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-violations-policy-2.png" target="images"><img src="../_images/tssc-tas/acs-violations-policy-2.png" alt="acs violations policy 2"></a>
+</div>
+</div></div></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-violations-policy-3.png" target="images"><img src="../_images/tssc-tas/acs-violations-policy-3.png" alt="acs violations policy 3"></a>
+</div>
+</div></div></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-violations-policy-4.png" target="images"><img src="../_images/tssc-tas/acs-violations-policy-4.png" alt="acs violations policy 4"></a>
+</div>
+</div></div></td>
+<td class="tableblock halign-center valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-violations-policy-5.png" target="images"><img src="../_images/tssc-tas/acs-violations-policy-5.png" alt="acs violations policy 5"></a>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Note that you have a preview on the "Review" page, so you can directly check if your policy and scope is ok and also which deployments wouldn&#8217;t have gone through (since it is not a "Runtime" policy, there&#8217;s nothing it can do about it.)</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/tssc-tas/acs-violations-policy-6-preview.png" target="images"><img src="../_images/tssc-tas/acs-violations-policy-6-preview.png" alt="acs violations policy 6 preview"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>So, let us put this to the test:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project student-acs-test
+oc delete deployment signed-image-key <i class="conum" data-value="1"></i><b>(1)</b>
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/prep/signed-image-keys
+source image.env
+echo ""
+echo "IMAGE: ${IMAGE}"
+sed "s|\$IMAGE|$IMAGE|g" deploy.yaml | oc apply -f -</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>We need to delete the deployment first again, otherwise it&#8217;ll remain unchanged and nothing will be validated/enforced</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now that we try to deploy this one, you can see it&#8217;s being blocked because of the <strong>fixable</strong> vulnerabilities present:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">IMAGE: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/l3-students/l3-rhads-signed-key:2025-11-19_17-45
+service/signed-image-key unchanged
+route.route.openshift.io/signed-image-key unchanged
+Error from server (Failed currently enforced policies from RHACS): error when creating "STDIN": admission webhook "policyeval.stackrox.io" denied the request:
+The attempted operation violated 1 enforced policy, described below:
+
+Policy: 0-no fixable vulnerabilities
+- Description:
+    ↳ Verifies there are no fixable known vulnerabilities
+- Rationale:
+    ↳ If a fix is available, we should try our best to incorporate it as soon as
+      possible
+- Remediation:
+    ↳ Use the "roxctl scan image" command or ask the security team for a detailed scan
+      of the image, including "fixed by" data
+- Violations:
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'httpd' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'httpd-core' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'httpd-filesystem' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'httpd-tools' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'mod_ldap' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'mod_lua' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'mod_session' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-47252 (CVSS 0) (severity Unknown) found in component 'mod_ssl' (version 1:2.4.62-4.el9) in container 'signed-image-key', resolved by version 1:2.4.62-4.el9_6.4
+    - Fixable CVE-2024-56433 (CVSS 0) (severity Low) found in component 'shadow-utils' (version 2:4.9-12.el9) in container 'signed-image-key', resolved by version 2:4.9-15.el9
+    - Fixable CVE-2025-23048 (CVSS 0) (severity Unknown) found in component 'httpd' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    - Fixable CVE-2025-23048 (CVSS 0) (severity Unknown) found in component 'httpd-core' (version 2.4.62-4.el9) in container 'signed-image-key', resolved by version 0:2.4.62-4.el9_6.4
+    [...]
+In case of emergency, add the annotation {"admission.stackrox.io/break-glass": "ticket-1234"} to your deployment with an updated ticket number</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>We&#8217;re building the images with a D-rated base image on purpose.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-dockerfile hljs" data-lang="dockerfile">FROM registry.access.redhat.com/ubi9/httpd-24:9.6-1754468607</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we built with <code>:latest</code>, depending on the work of the Red Hat image catalog maintainers, we might have a situation with no fixable CVEs at some point, and our policy wouldn&#8217;t fire.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="ex3.4-sigstore-cip.html" class="query-params-link">ClusterImagePolicies</a></span>
+  <span class="next"><a href="ex-controller-summary.html" class="query-params-link">Admission Controllers Summary</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
