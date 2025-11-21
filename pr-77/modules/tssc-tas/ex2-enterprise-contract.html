@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Enterprise Contract (Conforma) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/tssc-tas/ex2-enterprise-contract.html">
+    <link rel="prev" href="ex1-chains.html">
+    <link rel="next" href="ex3-sigstore-controller.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+            <a class="navbar-item navbar-item-right-content" href="env.html" target="_blank">Lab</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-ui/foundations.html">Module 5: Red Hat Developer Hub User Interface</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/foundations.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/customize-rhdh.html">Hands-on Lab: Customize RHDH Appearance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/techdocs-foundations.html">TechDocs Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/techdocs-lab-user.html">TechDocs Lab 1: Creating and Editing TechDocs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/overview.html">Module 7: Getting started with security best practices</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/overview.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/security-practices.html">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/understanding-keyless.html">Understanding Keyless Signing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex1-signing-images.html">Image Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex2-git-signing.html">Commit Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex3-provenance.html">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex4-sboms.html">SBOM Creation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tssc-tpa/correlation.html">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex1-uploading-sboms.html">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex2-ui-usecases.html">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex3-licenses.html">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex1-chains.html">Tekton Chains</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="ex2-enterprise-contract.html">Conforma and Rego policies</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ex3-sigstore-controller.html">Sigstore Admission Controller</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.1-sigstore-prep.html">Preparation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.2-sigstore-install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.3-sigstore-config.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ex3.4-sigstore-cip.html">ClusterImagePolicies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex4-acs-controller.html">RHACS Admission Controller</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ex-controller-summary.html">Admission Controllers Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/introduction.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/lab.html">Full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 11: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 12: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 13: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Module 14: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.html">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 15: RHADS Complete: Summary and Next Steps</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../env.html">My lab environment details</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a></li>
+    <li><a href="exercises.html">Exercises</a></li>
+    <li><a href="ex2-enterprise-contract.html">Conforma and Rego policies</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Enterprise Contract (Conforma)</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>As outlined in previous chapters (e.g. <a href="../security-practices/overview.html" class="xref page">Module 7: Getting started with security best practices</a>), downloading attestations and validating them, parsing attestation (predicate) content and applying rules to it <em>could</em> be done manually or scripted via bash scripts (in theory).<br>
+But, why would we - we have Conforma / Enterprise Contract to do just that in a very convenient and reproducible way.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>We are continuing this exercise with the results (specifically, with the image and its attestations) that we build in the previous exercise.</p>
+</div>
+<div class="paragraph">
+<p>If you haven&#8217;t already done so, please go through the previous exercise to create an image via a Tekton Pipeline Run (with Tekton Chains attestations).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_working_with_existing_slsa_policies"><a class="anchor" href="#_working_with_existing_slsa_policies"></a>Working with existing SLSA policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As a follow-up to the previous chapter, let&#8217;s see what we already have available as policies and rules and how to apply them to the image and attestations that Tekton Chains created.</p>
+</div>
+<div class="sect2">
+<h3 id="_the_conforma_slsa_policies"><a class="anchor" href="#_the_conforma_slsa_policies"></a>The Conforma SLSA Policies</h3>
+<div class="paragraph">
+<p>The Conforma community provides a huge set of rules grouped by</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://conforma.dev/docs/policy/release_policy.html" target="conforma">Release Policy</a></p>
+</li>
+<li>
+<p><a href="https://conforma.dev/docs/policy/pipeline_policy.html" target="conforma">Pipeline Policy</a></p>
+</li>
+<li>
+<p><a href="https://conforma.dev/docs/policy/build_task_policy.html" target="conforma">Build Task Policy</a></p>
+</li>
+<li>
+<p><a href="https://conforma.dev/docs/policy/task_policy.html" target="conforma">Task Policy</a></p>
+</li>
+<li>
+<p><a href="https://conforma.dev/docs/policy/stepaction_policy.html" target="conforma">StepAction Policy</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>that are ready to use and can cloned and tailored to match specific requirements.</p>
+</div>
+<div class="paragraph">
+<p>Each policy contains a number of Rego-language policy rules that can be used in your image verification to check for policy compliance.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s quickly use one and then go through the command and its parameters:</p>
+</div>
+<div class="paragraph">
+<p>In our <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">terminal</a>, check if the <code>$CHAINS_IMAGE</code> variable is still available (we set that in the previous exercise):</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo $CHAINS_IMAGE</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If it isn&#8217;t, please refer to the previous exercise (where we <code>source ./get-chains-image-sha.sh</code>).</p>
+</div>
+<div class="paragraph">
+<p>Then, execute the below <code>ec validate image</code> command. If you followed <a href="../security-practices/ex3-provenance.html" class="xref page">Module 7, Exercise 3 - "Provenance &amp; Attestations"</a> you will notice that we&#8217;re extending the basic command with a policy configuration now:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">  ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '{
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "attestation_type",
+          "slsa_provenance_available",
+          "slsa_source_version_controlled"
+        ]
+      }
+    }]
+  }' \
+  --output yaml \
+  --show-successes \
+  --info</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you inspect the results, you will see that it</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>validated the image signature</strong></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">  containerImage: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837
+  name: Unnamed
+  signatures:
+  - keyid: ""
+    sig: MEUCIGPqLX+O3Hg9jLJ6i7DoXUnNIL3cDenXW+BhgyPVEi/8AiEAgfJmO9tP8N6KVX2nPE+qgrySlPeKo68+Q8QiNI+Hy/8=</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>found and validated the two attestations (for integrity and syntax)</strong></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- attestations:
+  - predicateBuildType: tekton.dev/v1beta1/TaskRun
+    predicateType: https://slsa.dev/provenance/v0.2
+    signatures:
+    - keyid: SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU
+      sig: MEUCIFAEpX6AElGd+AjsJRwRPKYfRj/LuCqLix0011BWm0rQAiEAp2zYjpkMFTLf54PTMX/RkD5OKpYLGnXGLSd0rtzgnG8=
+    type: https://in-toto.io/Statement/v0.1
+  - predicateBuildType: tekton.dev/v1beta1/PipelineRun
+    predicateType: https://slsa.dev/provenance/v0.2
+    signatures:
+    - keyid: SHA256:gElT0CKh7ref5P9CLalcPOSJB2ojX/28MCZFEhUrDSU
+      sig: MEUCIH/Fr8cDTSrsitgfVS/OHGBv/5XhvB8wjrk1mIxZfpsrAiEA79EFeVM37iyp3iCJk2QSAPMsnCuH5m43qCtEYq5+2eU=
+    type: https://in-toto.io/Statement/v0.1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Up to this point, this is what we&#8217;ve already seen in previous exercises.<br>
+Here, we add the policies for validation now - that you can see are executed and pass or fail.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">  successes:
+  - metadata:
+      code: attestation_type.deprecated_policy_attestation_format
+      collections:
+      - minimal
+      - redhat
+      - redhat_rpms
+      description: The Conforma CLI now places the attestation data in a different
+        location. This check fails if the expected new format is not found.
+      effective_on: "2023-08-31T00:00:00Z"
+      title: Deprecated policy attestation format
+    msg: Pass
+  - metadata:
+      code: attestation_type.known_attestation_type
+      collections:
+      - minimal
+      - redhat
+      - redhat_rpms
+      depends_on:
+      - attestation_type.pipelinerun_attestation_found
+      description: Confirm the attestation found for the image has a known attestation
+        type.
+      title: Known attestation type found
+    msg: Pass</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Some noteworthy things about the last command:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If you replace <code>--output yaml</code> with <code>--output json</code> you can easily parse the output with <code>jq</code> or some other means of JSON processing</p>
+</li>
+<li>
+<p>The <code>--show-successes</code> adds the passed rules. If you omit that, you&#8217;ll only see rule violations along with the other metadata</p>
+</li>
+<li>
+<p>The <code>--info</code> adds more context to both passed and failed rule violations.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_policy_parameter_explained"><a class="anchor" href="#_the_policy_parameter_explained"></a>The <code>--policy</code> parameter explained</h3>
+<div class="paragraph">
+<p>The <code>--policy</code> parameter in our command tells <code>ec</code> where to find the <code>policyConfiguration</code>, which we have inline in JSON format here:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  {
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "attestation_type",
+          "slsa_provenance_available",
+          "slsa_source_version_controlled"
+        ]
+      }
+    }]
+  }</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sources</code> is an array, meaning you can specify more than one <code>source</code>, combining multiple policy sources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For each source, you can configure</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>policy</code> - The Rule Logic (or its location)</p>
+<div class="paragraph">
+<p>The policy field contains the Rego policy files (.rego files) that define:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>What to check (e.g., "verify all tasks are from trusted sources")</p>
+</li>
+<li>
+<p>How to evaluate it (the actual rule logic)</p>
+</li>
+<li>
+<p>The rule metadata (titles, descriptions, failure messages)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>These are the actual rule implementations - the code that performs the validation. In this case, we are using an <code>oci:</code> image that contains the rules, we could also use a <code>git:</code> reference or a file path.</p>
+</div>
+</li>
+<li>
+<p><code>data</code> - The Configuration Values (or their location)</p>
+<div class="paragraph">
+<p>The data field contains rule data - the configuration that parameterises the policies:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Allowlists/denylists (e.g., list of trusted task bundles)</p>
+</li>
+<li>
+<p>Thresholds (e.g., max CVE severity levels, leeway days)</p>
+</li>
+<li>
+<p>Expected values (e.g., required git branches, required tasks)</p>
+</li>
+<li>
+<p>Environment-specific configuration</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This is the input data that the policy rules reference when making decisions.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This allows for separation of policies (the validation rules) and the data they act on.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When referencing a <code>git:</code> location, the double slash <code>//</code> denotes the separation of the git repository and the location of the files inside the repository, both for <code>data</code> and <code>policy</code></p>
+</div>
+<div class="paragraph">
+<p><code><a href="https://github.com/enterprise-contract/ec-policies//example/data" class="bare">https://github.com/enterprise-contract/ec-policies//example/data</a></code></p>
+</div>
+<div class="paragraph">
+<p>You can also add a git reference for a branch</p>
+</div>
+<div class="paragraph">
+<p><code><a href="https://github.com/enterprise-contract/ec-policies//example/data?ref=main" class="bare">https://github.com/enterprise-contract/ec-policies//example/data?ref=main</a></code></p>
+</div>
+<div class="paragraph">
+<p>or a commit</p>
+</div>
+<div class="paragraph">
+<p><code><a href="https://github.com/enterprise-contract/ec-policies//example/data?ref=abc123def" class="bare">https://github.com/enterprise-contract/ec-policies//example/data?ref=abc123def</a></code></p>
+</div>
+<div class="paragraph">
+<p>Take a look the the data used for our example command <a href="https://github.com/conforma/policy/tree/main/example/data" target="github">here</a></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>config</code> - for fine-tuning the scope of the validation by including or excluding rules</p>
+<div class="paragraph">
+<p>In our example, we specifically included three rule packages to be verified. Had we not done that, all rules would have been applied.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Similarly, we can exclude specific rules (see below).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rule_collections"><a class="anchor" href="#_rule_collections"></a>Rule Collections</h3>
+<div class="paragraph">
+<p>Instead of explicitly listing all rules we want to use, we can also use available <a href="https://conforma.dev/docs/policy/release_policy.html#_available_rule_collections" target="conforma">Rule Collections</a></p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s try that by using the <code>slsa3</code> rule collection from the Release Policy:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">  ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '{
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "@slsa3"
+        ]
+      }
+    }]
+  }' \
+  --info</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this clear-text format (we omitted the <code>--output</code> formatting) we can see that we have 20 rules in this rule collection</p>
+</div>
+<div class="paragraph">
+<p><code>Violations: 1, Warnings: 0, Successes: 19</code></p>
+</div>
+<div class="paragraph">
+<p>and one failed.<br>
+Since we added <code>--info</code> it provided us with the context on how to fix it or how to disable the rule in the format <code>&lt;rule-package&gt;.&lt;rule-name&gt;</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Results:
+✕ [Violation] slsa_source_correlated.source_code_reference_provided
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837
+  Reason: Expected source code reference was not provided for verification
+  Title: Source code reference provided
+  Description: Check if the expected source code reference is provided. To exclude this rule add
+  "slsa_source_correlated.source_code_reference_provided" to the `exclude` section of the policy configuration.
+  Solution: Provide the expected source code reference in inputs.
+
+Error: success criteria not met</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, we&#8217;ll add that exception (just to make it work):</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">    ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '{
+    "sources": [{
+      "policy": ["oci::quay.io/enterprise-contract/ec-release-policy:latest"],
+      "data": ["git::https://github.com/enterprise-contract/ec-policies//example/data"],
+      "config": {
+        "include": [
+          "@slsa3"
+        ],
+        "exclude": [
+          "slsa_source_correlated.source_code_reference_provided"
+        ]
+      }
+    }]
+  }' --info</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now the validation succeeded: <code>Violations: 0, Warnings: 0, Successes: 19</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You might be wondering why the SLSA validation failed if we built (and attested all the inputs) via Tekton Chains.</p>
+</div>
+<div class="paragraph">
+<p>The reason here is that we took the automatically built image (right after we instantiated the template in the previous chapter).
+An "empty commit" triggered that pipeline run - and github doesn&#8217;t add all the necessary metadata to the webhook on empty commits.</p>
+</div>
+<div class="paragraph">
+<p>You can try if</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>you go back to our component on {rhdh_url}/catalog/default/component/tekton-chains-test[Red Hat Developer Hub^,window="rhdh"]</p>
+</li>
+<li>
+<p>edit the source code directly in GitLab by following the {gitlab_url}/development/tekton-chains-test["View Source"] link and commit your change</p>
+</li>
+<li>
+<p>after the pipeline finishes, run the <code>get-chains-image-sha.sh</code> script again</p>
+</li>
+<li>
+<p>Now try without the "exclude" section</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameter_formats"><a class="anchor" href="#_parameter_formats"></a>Parameter formats</h3>
+<div class="paragraph">
+<p>Including the <code>policy</code> inline as JSON is not the only way to use it. You can include inline YAML, but for production use cases, you&#8217;d want to include the <code>policyConfig</code> as a YAML file or, in a git repository:</p>
+</div>
+<div class="sect3">
+<h4 id="_inline_yaml"><a class="anchor" href="#_inline_yaml"></a><strong>Inline YAML</strong></h4>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy '
+sources:
+  - policy:
+      - "oci::quay.io/enterprise-contract/ec-release-policy:latest"
+    data:
+      - "git::https://github.com/enterprise-contract/ec-policies//example/data"
+    config:
+      include:
+        - "@slsa3"
+      exclude:
+        - "slsa_source_correlated.source_code_reference_provided"
+' --info</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_external_yaml_file"><a class="anchor" href="#_external_yaml_file"></a><strong>External YAML File</strong></h4>
+<div class="paragraph">
+<p>Create the configuration:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; policy.yaml &lt;&lt; 'EOF'
+sources:
+  - policy:
+      - "oci::quay.io/enterprise-contract/ec-release-policy:latest"
+    data:
+      - "git::https://github.com/enterprise-contract/ec-policies//example/data"
+    config:
+      include:
+        - "@slsa3"
+      exclude:
+        - "slsa_source_correlated.source_code_reference_provided"
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and then run the <code>ec</code> statement with the file reference</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy policy.yaml \
+  --info</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_git_yaml_reference"><a class="anchor" href="#_git_yaml_reference"></a><strong>git YAML reference</strong></h4>
+<div class="paragraph">
+<p>Assuming we have the file in a git repo, we would use</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image \
+  --image $CHAINS_IMAGE \
+  --public-key k8s://openshift-pipelines/signing-secrets \
+  --rekor-url $SIGSTORE_REKOR_URL \
+  --policy git::https://github.com/your-org/your-repo//path/to/policy.yaml \
+  --info</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Again, the double forward slash <code>//</code> is used for separation of repository (<code>https://github.com/your-org/your-repo</code>) from the path in the repo (<code>path/to/policy.yaml</code>)
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_a_custom_attestation"><a class="anchor" href="#_building_a_custom_attestation"></a>Building a custom attestation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The major use case for attestations is to generate (and attest) artifact provenance for SLSA compliance. The predicate types and formats are well-known and well defined - and the Conforma policies are available to use (or to tailor) as needed.</p>
+</div>
+<div class="paragraph">
+<p>However, Conforma &amp; attestations (via Trusted Artifact Signer / <code>cosign</code>) can do much more.</p>
+</div>
+<div class="paragraph">
+<p>Imagine a use case, where a customer wants to have verifiable and auditable proof of a release approval given via their ServiceNow ticketing system.</p>
+</div>
+<div class="paragraph">
+<p>In addition to the SLSA provenance (in our case generated by Tekton Chains), we would use a task or process that attests the release approval - and then verify it before deployment.</p>
+</div>
+<div class="paragraph">
+<p>First of all, we&#8217;d have to define a custom predicate (and we&#8217;re free to add anything that might be worthwhile to record (for auditability) and can be used for verification).</p>
+</div>
+<div class="sect2">
+<h3 id="_custom_predicate"><a class="anchor" href="#_custom_predicate"></a>Custom Predicate</h3>
+<div class="paragraph">
+<p>We&#8217;ll define a custom predicate type (<code>https://redhat.com/ads-scholars/v1</code>) and for our simple example, we&#8217;ll store it as a file (in a real process that would be dynamically generated from the data in e.g. ServiceNow).</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; release-approval-predicate.json &lt;&lt;'EOF'
+{
+  "release": {
+    "approved": true,
+    "approvalDate": "2025-11-08T12:00:00Z",
+    "approver": "Jane Smith",
+    "approverEmail": "jane.smith@example.com"
+  },
+  "serviceNowTickets": [
+    {
+      "ticketId": "CHG0012345",
+      "url": "https://servicenow.example.com/nav_to.do?uri=change_request.do?sys_id=abc123",
+      "type": "Change Request",
+      "status": "Approved",
+      "approvalDate": "2025-11-07T15:30:00Z"
+    },
+    {
+      "ticketId": "RITM0067890",
+      "url": "https://servicenow.example.com/nav_to.do?uri=sc_req_item.do?sys_id=def456",
+      "type": "Requested Item",
+      "status": "Closed Complete",
+      "completionDate": "2025-11-08T09:00:00Z"
+    }
+  ],
+  "metadata": {
+    "processVersion": "1.0",
+    "complianceFramework": "ADS-Scholars Release Policy",
+    "notes": "Standard release approval process completed"
+  }
+}
+EOF</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Here, we have a single data structure (array) <code>serviceNowTickets[]</code>, but it could be more than one and basically anything that can we wrapped into JSON.<br>
+It&#8217;s a <strong>custom predicate</strong>, therefore we&#8217;re free to add anything we want to verify later (or record for posterity and auditability purposes).</p>
+</div>
+<div class="paragraph">
+<p>Remember, through the <code>in-toto</code> format, the predicate (what we record here) will be tied to the image via the <code>subject</code> definition.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_attesting_the_custom_predicate"><a class="anchor" href="#_attesting_the_custom_predicate"></a>Attesting the custom predicate</h3>
+<div class="paragraph">
+<p>We could use keyless attestation via <code>cosign</code> (see <a href="../security-practices/ex3-provenance.html#_attesting" class="xref page">Provenance &amp; Attestations</a>), but we&#8217;ll use the current Tekton Chains configuration and the <code>k8s://openshift-pipelines/signing-secrets</code>, which also contains the private key and its password.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign attest \
+  --key k8s://openshift-pipelines/signing-secrets \
+  --type https://redhat.com/ads-scholars/v1 \
+  --predicate release-approval-predicate.json \
+  $CHAINS_IMAGE</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For sake of completeness, we quickly verify the attestation (although <code>ec</code> will also do that):</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign verify-attestation \
+--type https://redhat.com/ads-scholars/v1 \
+--key k8s://openshift-pipelines/signing-secrets \
+$CHAINS_IMAGE |  jq -r '.payload' | base64 -d | jq .</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">cosign verify-attestation \
+--type https://redhat.com/ads-scholars/v1 \
+--key k8s://openshift-pipelines/signing-secrets \
+$CHAINS_IMAGE |  jq -r '.payload' | base64 -d | jq .
+
+Verification for quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837 --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - Existence of the claims in the transparency log was verified offline
+  - The signatures were verified against the specified public key
+{
+  "_type": "https://in-toto.io/Statement/v0.1",
+  "predicateType": "https://redhat.com/ads-scholars/v1",
+  "subject": [
+    {
+      "name": "quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test",
+      "digest": {
+        "sha256": "7c68fabb7701e5d63f6cd17914fc026501e91ff0696570da780a7d95a2a98837"
+      }
+    }
+  ],
+  "predicate": {
+    "metadata": {
+      "complianceFramework": "ADS-Scholars Release Policy",
+      "notes": "Standard release approval process completed",
+      "processVersion": "1.0"
+    },
+    "release": {
+      "approvalDate": "2025-11-08T12:00:00Z",
+      "approved": true,
+      "approver": "Jane Smith",
+      "approverEmail": "jane.smith@example.com"
+    },
+    "serviceNowTickets": [
+      {
+        "approvalDate": "2025-11-07T15:30:00Z",
+        "status": "Approved",
+        "ticketId": "CHG0012345",
+        "type": "Change Request",
+        "url": "https://servicenow.example.com/nav_to.do?uri=change_request.do?sys_id=abc123"
+      },
+      {
+        "completionDate": "2025-11-08T09:00:00Z",
+        "status": "Closed Complete",
+        "ticketId": "RITM0067890",
+        "type": "Requested Item",
+        "url": "https://servicenow.example.com/nav_to.do?uri=sc_req_item.do?sys_id=def456"
+      }
+    ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_a_custom_policy_to_validate"><a class="anchor" href="#_building_a_custom_policy_to_validate"></a>Building a custom policy to validate</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_the_policy"><a class="anchor" href="#_the_policy"></a>The Policy</h3>
+<div class="paragraph">
+<p>Take your time to inspect it (below) - in the end it comes down to</p>
+</div>
+<div class="paragraph">
+<p>1) From all the attestations present (all will be part of the input), filter the ones with our predicateType:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>release_approval_attestations contains att if {
+    some att in input.attestations
+    att.statement.predicateType == "https://redhat.com/ads-scholars/v1"
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2) Check for values in the JSON structure, for example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>approved := object.get(att, ["statement", "predicate", "release", "approved"], false)
+or
+tickets := object.get(att, ["statement", "predicate", "serviceNowTickets"], [])</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Here&#8217;s the policy:</strong></p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; release-approval-policy.rego &lt;&lt;'EOF'
+package redhat.release_approval
+
+import rego.v1
+
+# METADATA
+# title: Release Approval Attestation Check
+# description: &gt;-
+#   Verify that the image has a valid release approval attestation
+#   with ServiceNow ticket approvals.
+# custom:
+#   short_name: release_approval_present
+#   failure_msg: Release approval attestation is missing or invalid
+#   solution: &gt;-
+#     Ensure the release approval process is completed and the attestation
+#     is created with valid ServiceNow ticket references before deployment.
+#   collections:
+#     - release_approval
+
+# Helper to get all attestations of our custom type
+release_approval_attestations contains att if {
+    some att in input.attestations
+    att.statement.predicateType == "https://redhat.com/ads-scholars/v1"
+}
+
+
+# METADATA
+# title: Release Approval Attestation Exists
+# description: &gt;-
+#   At least one release approval attestation must be present.
+# custom:
+#   short_name: attestation_exists
+deny contains result if {
+    count(release_approval_attestations) == 0
+    result := {
+        "code": "redhat.release_approval.attestation_exists",
+        "msg": "No release approval attestation found for image",
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# METADATA
+# title: Release Must Be Approved
+# description: &gt;-
+#   The release approval attestation must indicate that the release
+#   has been approved.
+# custom:
+#   short_name: release_approved
+deny contains result if {
+    some att in release_approval_attestations
+    approved := object.get(att, ["statement", "predicate", "release", "approved"], false)
+    approved != true
+    result := {
+        "code": "redhat.release_approval.release_approved",
+        "msg": "Release is not approved in the attestation",
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# METADATA
+# title: ServiceNow Tickets Present
+# description: &gt;-
+#   The release approval attestation must contain at least one
+#   ServiceNow ticket reference.
+# custom:
+#   short_name: servicenow_tickets_present
+deny contains result if {
+    some att in release_approval_attestations
+    tickets := object.get(att, ["statement", "predicate", "serviceNowTickets"], [])
+    count(tickets) == 0
+    result := {
+        "code": "redhat.release_approval.servicenow_tickets_present",
+        "msg": sprintf(
+            "No ServiceNow tickets found in release approval attestation (found %d tickets)",
+            [count(tickets)]
+        ),
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# METADATA
+# title: All ServiceNow Tickets Are Approved or Complete
+# description: &gt;-
+#   All ServiceNow tickets referenced in the attestation must be
+#   in an approved or completed state.
+# custom:
+#   short_name: servicenow_tickets_approved
+deny contains result if {
+    some att in release_approval_attestations
+    tickets := object.get(att, ["statement", "predicate", "serviceNowTickets"], [])
+
+    some ticket in tickets
+    status := object.get(ticket, "status", "Unknown")
+    not ticket_is_approved(status)
+
+    ticket_id := object.get(ticket, "ticketId", "Unknown")
+    result := {
+        "code": "redhat.release_approval.servicenow_tickets_approved",
+        "msg": sprintf(
+            "ServiceNow ticket %s has invalid status: %s (expected 'Approved' or 'Closed Complete')",
+            [ticket_id, status]
+        ),
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# Helper function to check if a ticket status indicates approval
+ticket_is_approved(status) if {
+    status == "Approved"
+}
+
+ticket_is_approved(status) if {
+    status == "Closed Complete"
+}
+
+# METADATA
+# title: Approver Information Present
+# description: &gt;-
+#   The release approval attestation must include approver information.
+# custom:
+#   short_name: approver_info_present
+deny contains result if {
+    some att in release_approval_attestations
+    release := object.get(att, ["statement", "predicate", "release"], {})
+
+    # Check if approver name is missing or empty
+    approver := object.get(release, "approver", "")
+    approver == ""
+
+    result := {
+        "code": "redhat.release_approval.approver_info_present",
+        "msg": "Release approval attestation missing approver information",
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+
+# Optional: Warning for old approvals (e.g., older than 30 days)
+# METADATA
+# title: Release Approval Not Too Old
+# description: &gt;-
+#   The release approval should not be older than 30 days to ensure
+#   current compliance with release policies.
+# custom:
+#   short_name: approval_freshness
+warn contains result if {
+    some att in release_approval_attestations
+    approval_date_str := object.get(att, ["statement", "predicate", "release", "approvalDate"], "")
+    approval_date_str != ""
+
+    # Parse the approval date
+    approval_time := time.parse_rfc3339_ns(approval_date_str)
+    current_time := time.now_ns()
+
+    # Calculate age in days (nanoseconds to days)
+    age_days := (current_time - approval_time) / (1000000000 * 60 * 60 * 24)
+
+    age_days &gt; 30
+
+    result := {
+        "code": "redhat.release_approval.approval_freshness",
+        "msg": sprintf(
+            "Release approval is %d days old (older than 30 days)",
+            [floor(age_days)]
+        ),
+        "effective_on": "2025-01-01T00:00:00Z",
+    }
+}
+EOF</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing_the_policy"><a class="anchor" href="#_testing_the_policy"></a>Testing the policy</h3>
+<div class="paragraph">
+<p>Before we can test it, we need to tell <code>ec</code> where to find it.</p>
+</div>
+<div class="paragraph">
+<p><code>ec</code> will automatically use all <code>*.rego</code> files in a given directory, so in general it is a good idea to have a local <code>policy</code> directory (if the policy is on the local filesystem). For git repos, you would use the <code>git:</code> reference - but development starts locally&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Therefore, we&#8217;re creating a <code>local-policy.yaml</code> file (the <code>policyConfig</code>) that points to our current working directory, where the <code>release-approval-policy.rego</code> that we just created resides (copy the policy somewhere else and change the path reference, if you want to):</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; local-policy.yaml &lt;&lt;EOF
+sources:
+  - policy:
+      - ./
+EOF</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_testing_with_the_image_attestation"><a class="anchor" href="#_testing_with_the_image_attestation"></a><strong>Testing with the image attestation</strong></h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Yes, normally one would test (and debug) locally, but there is one difference between local predicate files and the way that <code>ec</code> validates attestations that we&#8217;d like to highlight - therefore we start with the image first.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image \
+--image $CHAINS_IMAGE \
+--public-key k8s://openshift-pipelines/signing-secrets \
+--rekor-url $SIGSTORE_REKOR_URL \
+--policy local-policy.yaml \
+--info \
+--show-successes</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">ec validate image \
+--image $CHAINS_IMAGE \
+--public-key k8s://openshift-pipelines/signing-secrets \
+--rekor-url $SIGSTORE_REKOR_URL \
+--policy local-policy.yaml \
+--info \
+--show-successes
+Success: true
+Result: SUCCESS
+Violations: 0, Warnings: 0, Successes: 10
+Component: Unnamed
+ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+
+Results:
+✓ [Success] builtin.attestation.signature_check
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Attestation signature check passed
+  Description: The attestation signature matches available signing materials.
+
+✓ [Success] builtin.attestation.syntax_check
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Attestation syntax check passed
+  Description: The attestation has correct syntax.
+
+✓ [Success] builtin.image.signature_check
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Image signature check passed
+  Description: The image signature matches available signing materials.
+
+✓ [Success] redhat.release_approval.approval_freshness
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Release Approval Not Too Old
+  Description: The release approval should not be older than 30 days to ensure current compliance with release policies.
+
+✓ [Success] redhat.release_approval.approver_info_present
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Approver Information Present
+  Description: The release approval attestation must include approver information.
+
+✓ [Success] redhat.release_approval.attestation_exists
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Release Approval Attestation Exists
+  Description: At least one release approval attestation must be present.
+
+✓ [Success] redhat.release_approval.release_approval_present
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Release Approval Attestation Check
+  Description: Verify that the image has a valid release approval attestation with ServiceNow ticket approvals.
+
+✓ [Success] redhat.release_approval.release_approved
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: Release Must Be Approved
+  Description: The release approval attestation must indicate that the release has been approved.
+
+✓ [Success] redhat.release_approval.servicenow_tickets_approved
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: All ServiceNow Tickets Are Approved or Complete
+  Description: All ServiceNow tickets referenced in the attestation must be in an approved or completed state.
+
+✓ [Success] redhat.release_approval.servicenow_tickets_present
+  ImageRef: quay-vtm4r.apps.cluster-vtm4r.dynamic.redhatworkshops.io/tssc/tekton-chains-test@sha256:e12b7912703a8b07949b21a2fe4eb0603777d827f3d43c6082d6f71700a5334e
+  Title: ServiceNow Tickets Present
+  Description: The release approval attestation must contain at least one ServiceNow ticket reference.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_testing_and_debugging_with_local_attestationspredicates"><a class="anchor" href="#_testing_and_debugging_with_local_attestationspredicates"></a><strong>Testing (and debugging) with local attestations/predicates</strong></h4>
+<div class="paragraph">
+<p>For local testing, we can use the attestation in a local file, which is good for debugging, as we can <em>massage</em> both the policy and the attestation.</p>
+</div>
+<div class="paragraph">
+<p>First, we need to download the attestation data:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation \
+--predicate-type https://redhat.com/ads-scholars/v1 \
+$CHAINS_IMAGE &gt; attestation-payload.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This gives us the the base64-encoded attestation - if we need to tweak it for debugging purposes, this doesn&#8217;t help us much, so we should also create a decoded version:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>ec</code> automatically decodes the base64 payload, so there is no need for that - unless you&#8217;re debugging and need to see what <code>ec</code> and your policy is actually evaluating.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat attestation-payload.json | jq '.payload |= (@base64d | fromjson)' &gt; attestation-payload-decoded.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With that, we can use <code>ec validate input</code> (not <code>image</code>) to validate a local attestation file.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate input \
+--file attestation-payload-decoded.json \
+--policy local-policy.yaml \
+--show-successes \
+--info \
+--output yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">filepaths:
+- filepath: attestation-payload-decoded.json
+  success: false
+  success-count: 6
+  successes:
+  - metadata:
+      code: redhat.release_approval.approval_freshness
+      description: The release approval should not be older than 30 days to ensure
+        current compliance with release policies.
+      title: Release Approval Not Too Old
+    msg: Pass
+  [...]
+  violations:
+  - metadata:
+      code: redhat.release_approval.attestation_exists
+      description: At least one release approval attestation must be present. To exclude
+        this rule add "redhat.release_approval.attestation_exists" to the `exclude`
+        section of the policy configuration.
+      title: Release Approval Attestation Exists
+    msg: No release approval attestation found for image
+  warnings: []
+policy:
+  sources:
+  - policy:
+    - ./
+success: false
+Error: success criteria not met</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong><em>Ummm&#8230;&#8203; wait a moment&#8230;&#8203;.</em></strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/wait-what.gif" alt="wait what" width="150">
+</div>
+</div>
+<div class="paragraph">
+<p>We just downloaded that same attestation from the image we just validated successfully - so it should show the same results, shouldn&#8217;t it?</p>
+</div>
+<div class="paragraph">
+<p>Why is <code>redhat.release_approval.attestation_exists</code> failing here when it succeeds against the image directly?</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s take a look at the rule:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#   short_name: attestation_exists
+deny contains result if {
+    count(release_approval_attestations) == 0
+[...]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ok, so <code>release_approval_attestations</code> is empty - where does it come from?<br>
+A few lines above, we have</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Helper to get all attestations of our custom type
+release_approval_attestations contains att if {
+    some att in input.attestations
+    att.statement.predicateType == "https://redhat.com/ads-scholars/v1"
+}</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>input</code> is everything that is passed to <code>ec</code> - in this case our file.</p>
+</li>
+<li>
+<p>the variable <code>att</code> contains all <code>attestations</code> in <code>input</code></p>
+</li>
+<li>
+<p>then, we check for all <code>att</code> that contain our custom predicateType in <code>statement.predicateType</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Looking at our file structure (<code>attestation-payload-decoded.json</code>), we see that we don&#8217;t have the <code>attestations.statement.*</code> structure.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This is the fundamental difference between <code>ec validate image</code> and <code>ec validate input</code>.</p>
+</div>
+<div class="paragraph">
+<p>With <code>validate image</code> ec interprets the <code>in-toto statement</code> and feeds the attestations into its validation (that&#8217;s why the policy works).</p>
+</div>
+<div class="paragraph">
+<p>With <code>validate input</code>, ec takes the input <strong>verbatim</strong> and doesn&#8217;t transform anything - and by just downloading and decoding the attestation, we&#8217;re missing the <code>attestations[<strong>].statement.</strong></code> structure.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>So, for local testing, we&#8217;ll "massage" our input first to include the necessary structure:</p>
+</div>
+<div class="paragraph">
+<p>We can do that in "one go" directly from the image:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation --predicate-type https://redhat.com/ads-scholars/v1 $CHAINS_IMAGE |   jq '{attestations: [{statement: (.payload | @base64d | fromjson)}]}' &gt; attestation-input.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or, as we have already downloaded and decoded the attestation, we can (without the decoding) use our existing <code>attestation-payload-decoded.json</code> to create the same:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat attestation-payload-decoded.json | jq '{attestations: [{statement: .payload}]}' &gt; attestation-input.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With this file, we can now run the validation, as we tried before</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate input \
+--file attestation-input.json \
+--policy local-policy.yaml \
+--show-successes \
+--info \
+--output yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">filepaths:
+- filepath: attestation-input.json
+  success: true
+  success-count: 7
+  successes:
+  [...]
+  - metadata:
+      code: redhat.release_approval.attestation_exists
+      description: At least one release approval attestation must be present.
+      title: Release Approval Attestation Exists
+    msg: Pass
+  [...]
+  violations: []
+  warnings: []
+policy:
+  sources:
+  - policy:
+    - ./
+success: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we can test and modify our rules (or attestations) locally to start developing our custom rules (and attestations).</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_regos_deny_pattern"><a class="anchor" href="#_regos_deny_pattern"></a>Rego&#8217;s deny pattern</h3>
+<div class="paragraph">
+<p>You wanted to ask something? Yes?</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/tssc-tas/wait-hmm.gif" alt="wait hmm">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>You&#8217;re right - WHY DID IT WORK AT ALL?</strong></p>
+</div>
+<div class="paragraph">
+<p>Or, in other words - only one rule failed (<code>attestation_exists</code>), but all the other rules are dependent on <code>release_approval_attestations</code> - and if that is empty, why did all the other rules succeed?</p>
+</div>
+<div class="paragraph">
+<p>Excellent question, glad you asked! 😉</p>
+</div>
+<div class="paragraph">
+<p>This is a subtle but <strong>important Rego behaviour</strong>.</p>
+</div>
+<div class="paragraph">
+<p>When <code>release_approval_attestations</code> is empty (<code>count == 0</code>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><code>attestation_exists</code> rule</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Explicitly checks <code>count(&#8230;&#8203;) == 0</code> and generates a denial → <strong>FAILS</strong> ❌</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Other rules</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>some att in release_approval_attestations</code>, which never matches when the set is empty, so the rule body never executes and no denials are generated → <strong>PASSES</strong> ✅</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In Rego&#8217;s <code>deny</code> pattern:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A rule that produces no results = no violations found = <strong>success</strong></p>
+</li>
+<li>
+<p>A rule that produces results = violations found = <strong>failure</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So the other rules "pass" not because they validated correct data, but because they couldn&#8217;t iterate over an empty set and therefore <strong><em>generated no violations</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>This is actually a logic issue with the policy design! If there are no attestations of the custom type:
+- Only <code>attestation_exists</code> catches it and fails
+- All other rules silently pass</p>
+</div>
+<div class="paragraph">
+<p>If you want the other rules to also fail when attestations are missing, you&#8217;d need to add explicit checks like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">deny contains result if {
+    count(release_approval_attestations) &gt; 0  # Ensure attestations exist
+    some att in release_approval_attestations
+    # ... rest of logic
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is <strong>IMPORTANT TO KEEP IN MIND</strong> when building rego rules and logic!</p>
+</div>
+<div class="paragraph">
+<p>In our case, having just the <code>attestation_exists</code> check is sufficient - if that passes, the others will have data to validate. And if it fails, the policy validation will have failed (all rules in a policy have to pass for it to succeed).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reference_introduction_to_rego"><a class="anchor" href="#_reference_introduction_to_rego"></a>Reference: Introduction to Rego</h2>
+<div class="sectionbody">
+<div class="paragraph lead">
+<p><em>Policy Language for Validation</em></p>
+</div>
+<div class="sect2">
+<h3 id="_what_is_rego"><a class="anchor" href="#_what_is_rego"></a>What is Rego?</h3>
+<div class="paragraph">
+<p>Rego is a declarative policy language developed by the Open Policy Agent (OPA) project. It&#8217;s designed specifically for expressing policies as code and making authorization and validation decisions across various environment and in multiple scenarios.<br></p>
+</div>
+<div class="paragraph">
+<p>As shown in previous chapters, Rego is the policy engine behind tools like Enterprise Contract (now Conforma), which validates software supply chain security.</p>
+</div>
+<div class="paragraph">
+<p>Unlike imperative programming languages that describe <em>how</em> to compute something, Rego is declarative—you describe <em>what</em> the desired outcome should be, and the engine figures out how to evaluate it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_core_principles_of_rego"><a class="anchor" href="#_core_principles_of_rego"></a>Core Principles of Rego</h3>
+<div class="sect3">
+<h4 id="_1_declarative_nature"><a class="anchor" href="#_1_declarative_nature"></a>1. Declarative Nature</h4>
+<div class="paragraph">
+<p>Rego policies describe the conditions that must be true or false, not the steps to check them. The policy engine automatically determines the evaluation order and handles complex logical relationships.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_2_query_based_evaluation"><a class="anchor" href="#_2_query_based_evaluation"></a>2. Query-Based Evaluation</h4>
+<div class="paragraph">
+<p>Policies are evaluated by querying them with input data. The engine returns whether the policy allows or denies an action, along with any computed values or reasons.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_3_separation_of_policy_and_code"><a class="anchor" href="#_3_separation_of_policy_and_code"></a>3. Separation of Policy and Code</h4>
+<div class="paragraph">
+<p>Rego enables you to decouple policy decisions from application logic. This allows security teams and compliance officers to manage policies independently of development teams.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_4_composability"><a class="anchor" href="#_4_composability"></a>4. Composability</h4>
+<div class="paragraph">
+<p>Policies can reference and build upon other policies, enabling modular and reusable policy definitions across your organization.</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_language_constructs"><a class="anchor" href="#_language_constructs"></a>Language Constructs</h3>
+<div class="sect3">
+<h4 id="_packages_and_imports"><a class="anchor" href="#_packages_and_imports"></a>Packages and Imports</h4>
+<div class="paragraph">
+<p>Every Rego file begins with a package declaration that defines the namespace for the rules within:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">package myapp.authz
+
+import rego.v1
+import future.keywords.if
+import future.keywords.in</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The imports enable modern Rego syntax and keywords for cleaner, more readable policies.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rules"><a class="anchor" href="#_rules"></a>Rules</h4>
+<div class="paragraph">
+<p>Rules are the fundamental building blocks of Rego. They define conditions and assign values. Rules have the form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">rule_name := value if { conditions }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or for boolean rules:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">rule_name if { conditions }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_variables"><a class="anchor" href="#_variables"></a>Variables</h4>
+<div class="paragraph">
+<p>Variables in Rego are assigned using the <code>:=</code> operator for simple assignment or <code>=</code> for unification:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">user := input.user
+user_role = input.user.role</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_input_and_data"><a class="anchor" href="#_input_and_data"></a>Input and Data</h4>
+<div class="paragraph">
+<p>Rego policies operate on two types of data:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>input</strong>: The JSON document provided when querying the policy (request context, attestations, image metadata)</p>
+</li>
+<li>
+<p><strong>data</strong>: Pre-loaded documents available to all policies (configuration, reference data, approved lists)</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Remember the Conforma SLSA policies that we checked earlier? We explicitly passed in the reference data, such as lists to use in evaluations.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_logical_operators"><a class="anchor" href="#_logical_operators"></a>Logical Operators</h4>
+<div class="paragraph">
+<p>Rego supports standard logical operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>==, !=</strong>: Equality and inequality</p>
+</li>
+<li>
+<p><strong>&lt;, &gt;, &#8656;, &gt;=</strong>: Comparison operators</p>
+</li>
+<li>
+<p><strong>not</strong>: Negation</p>
+</li>
+<li>
+<p>Conditions in a rule body are implicitly ANDed together</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_built_in_functions"><a class="anchor" href="#_built_in_functions"></a>Built-in Functions</h4>
+<div class="paragraph">
+<p>Rego provides numerous built-in functions for string manipulation, array operations, mathematical computations, and more. Examples include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>count(collection)</code> - Returns the number of elements</p>
+</li>
+<li>
+<p><code>startswith(string, prefix)</code> - Checks if string starts with prefix</p>
+</li>
+<li>
+<p><code>time.parse_rfc3339_ns(string)</code> - Parses RFC3339 timestamp</p>
+</li>
+<li>
+<p><code>regex.match(pattern, string)</code> - Pattern matching</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A comprehensive list can be found at the <a href="https://www.openpolicyagent.org/docs/policy-reference" target="opadocs">Open Policy Agent Docs</a> page.</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_simple_examples"><a class="anchor" href="#_simple_examples"></a>Simple Examples</h3>
+<div class="sect3">
+<h4 id="_example_1_basic_authorization"><a class="anchor" href="#_example_1_basic_authorization"></a>Example 1: Basic Authorization</h4>
+<div class="paragraph">
+<p>A simple policy to check if a user is an admin:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">package example.authz
+
+import rego.v1
+
+default allow := false
+
+allow if {
+    input.user.role == "admin"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Input Example:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+    "user": {
+        "name": "alice",
+        "role": "admin"
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Result:</strong> <code>allow = true</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_2_multi_condition_policy"><a class="anchor" href="#_example_2_multi_condition_policy"></a>Example 2: Multi-Condition Policy</h4>
+<div class="paragraph">
+<p>A more complex policy with multiple conditions (OR logic):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">package example.access
+
+import rego.v1
+
+allow if {
+    input.method == "GET"
+    input.path[0] == "public"
+}
+
+allow if {
+    input.user.authenticated
+    input.user.role == "member"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Multiple rule definitions with the same name create OR logic. This policy allows access if either: (1) the request is a GET to a public path, OR (2) the user is authenticated and has the member role.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_3_iteration_and_collection_operations"><a class="anchor" href="#_example_3_iteration_and_collection_operations"></a>Example 3: Iteration and Collection Operations</h4>
+<div class="paragraph">
+<p>Checking if a user has required permissions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rego hljs" data-lang="rego">package example.permissions
+
+import rego.v1
+
+required_permissions := ["read", "write"]
+
+has_all_permissions if {
+    every perm in required_permissions {
+        perm in input.user.permissions
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>every</code> keyword iterates over the collection and ensures all conditions are met. The <code>in</code> operator checks for set membership.</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_further_reading"><a class="anchor" href="#_further_reading"></a>Further reading</h3>
+<div class="paragraph">
+<p>To continue learning Rego and Enterprise Contract:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Explore the OPA Playground at <a href="https://play.openpolicyagent.org" target="opadocs">https://play.openpolicyagent.org</a> for interactive learning</p>
+</li>
+<li>
+<p>Review the official Rego documentation at <a href="https://openpolicyagent.org/docs" target="opadocs">https://openpolicyagent.org/docs</a></p>
+</li>
+<li>
+<p>Study the Enterprise Contract policy examples at <a href="https://conforma.dev" target="opadocs">https://conforma.dev</a></p>
+</li>
+<li>
+<p>Browse existing policies at <a href="https://github.com/conforma/policy" target="opadocs">https://github.com/conforma/policy</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="ex1-chains.html" class="query-params-link">Tekton Chains</a></span>
+  <span class="next"><a href="ex3-sigstore-controller.html" class="query-params-link">Sigstore Admission Controller</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
