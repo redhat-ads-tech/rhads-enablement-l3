@@ -95,28 +95,28 @@ In our TSSC (Trusted Software Supply Chain) context, there are two Admission Con
 
 === The Sigstore Policy Controller
 
-The Red Hat Trusted Artifact Signer (RHTAS) build of the Sigstore Policy Controller Operator is an Red Hat OpenShift Container Platform admission controller designed to enforce policies by using supply-chain metadata. Essentially, the RHTAS Policy Controller acts as a gatekeeper for OpenShift by making deployed workloads adhere to your security policies.
+The Red Hat Trusted Artifact Signer (RHTAS) build of the Sigstore Policy Controller Operator is a Red Hat OpenShift Container Platform admission controller designed to enforce policies by using supply-chain metadata. Essentially, the RHTAS Policy Controller acts as a gatekeeper for OpenShift by making deployed workloads adhere to your security policies.
 
 The RHTAS Policy Controller has these key features:
 
 *Easy integration with the RHTAS service*
 
-The Policy Controller Operator uses the established, trusted, and transparent services provided by RHTAS, such as Rekor’s transparency log, and Fulcio’s short-lived certificates for stronger signature validation. You can also take advantage of Trusted Artifact Signer’s secure Trust Root as a source of public keys and certificates used in artifact verification, along with auditing Rekor’s transparency log. 
+The Policy Controller Operator uses the established, trusted, and transparent services provided by RHTAS, such as Rekor's transparency log, and Fulcio's short-lived certificates for stronger signature validation. You can also take advantage of Trusted Artifact Signer's secure Trust Root as a source of public keys and certificates used in artifact verification, along with auditing Rekor's transparency log. 
 
 *Verification of container image signatures*
 
-The RHTAS Policy Controller resolves container image tags to validate that the container image being ran does not differ from what was signed by RHTAS service. You can automatically verify signatures and attestations for container images, these can be enforced on a per-namespace basis, and you can create multiple policies to fit your security needs. You can create custom resources, such as, ClusterImagePolicy to define the rules for validating container images. 
+The RHTAS Policy Controller resolves container image tags to validate that the container image being run does not differ from what was signed by RHTAS service. You can automatically verify signatures and attestations for container images, these can be enforced on a per-namespace basis, and you can create multiple policies to fit your security needs. You can create custom resources like `ClusterImagePolicy` to define the rules for validating container images. 
 
 *Defining and enforcing workload policies*
 
-You can define and enforce policies to restrict what container images can run in your Red Hat OpenShift cluster. One such requirement could be, to only allow specified images to run that match a certain signing key, and to verify attestations. You can chose to enforce strict policies, or use warning mode to better understand how a policy will impact your environment. You can also define and enforce policies based on other supply chain metadata. 
+You can define and enforce policies to restrict what container images can run in your Red Hat OpenShift cluster. One such requirement could be to only allow specified images to run that match a certain signing key, and to verify attestations. You can choose to enforce strict policies, or use warning mode to better understand how a policy will impact your environment. You can also define and enforce policies based on other supply chain metadata. 
 
 NOTE: Red Hat's build of the Sigstore Policy Controller is Tech Preview as of RHTAS 1.3
 
 
 === The ACS (Advanced Cluster Security) Admission Controller
 
-Red Hat Advanced Cluster Security for Kubernetes works with Kubernetes admission controllers and OpenShift Container Platform admission plugins that allow to enforce security policies before Kubernetes or OpenShift Container Platform creates workloads, for example, deployments, daemon sets or jobs.
+_Red Hat Advanced Cluster Security for Kubernetes_ (RHACS) works with Kubernetes admission controllers and OpenShift Container Platform admission plugins that can enforce security policies before Kubernetes or OpenShift Container Platform creates workloads, for example, deployments, daemon sets or jobs.
 
 The RHACS admission controller prevents users from creating or updating workloads that violate policies configured in RHACS. 
 

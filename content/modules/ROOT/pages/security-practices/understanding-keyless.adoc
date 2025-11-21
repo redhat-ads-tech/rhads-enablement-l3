@@ -58,7 +58,7 @@ a|
 *Benefits*
 
 * *Convenience:* Convenient tooling, easy artifact signing & verification, eliminating the difficult problem of key management and rotation.
-* *Security:* With _Trusted Artifact Signer_, the artifact is not just signed; it’s signed with an ephemeral key, associated with a known identity, and auditable.
+* *Security:* With _Trusted Artifact Signer_, the artifact is not just signed; it's signed with an ephemeral key, associated with a known identity, and auditable.
 
 |===
 
