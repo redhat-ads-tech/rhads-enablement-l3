@@ -34,7 +34,7 @@ We'll be using cli commands in many of the chapters, so we'll need a terminal - 
 
 [NOTE]
 ====
-If you have *not yet created* the "Podman Terminal" from previous exercises, you can *ignore this note* for now (it is useful for reseetting your terminal later if needed).
+If you have *not yet created* the "Podman Terminal" from previous exercises, you can *ignore this note* for now (it is useful for resetting your terminal later if needed).
 
 If you *do* have the "Podman Terminal" already running from previous exercises, you can re-use it, but make sure you start with a fresh instance:
 
