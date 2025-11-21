@@ -26,7 +26,6 @@ In the following chapters we will cover
 ** Configuring the ACS Admission Controller
 ** Building an ACS policy
 
-* Using the OpenShift ImagePolicy
 
 == Preparation
 
@@ -88,4 +87,21 @@ cd l3-enablement-helpers/security-concepts
 ----
 
 You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] that we will be using going forward, since it has all the tools and configuration already installed.
+
+
+=== Initialize your Trust Root
+
+We have just asked you to start with a fresh "Podman Terminal" - therefore, you need to initialize (meaning: download) a fresh *Trust Root* from the Red Hat Trusted Artifact Signer TUF (The Update Framework) endpoint.
+
+We have done this before - it's a simple call of `cosign initialize` - this uses the `COSIGN_ROOT` and `TUF_URL` environment variables (you can check the environment variables pointing to your RHTAS instance by typing `help`).
+
+IMPORTANT: Do this in your "Podman Terminal" that we just deployed - we will exclusively use the "Podman Terminal" in the exercises! 
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign initialize
+----
+
+This creates the *Trust Root* structure in your user's home directory (under `~/.sigstore`) that verification commands in the next chapters need.
+
 
