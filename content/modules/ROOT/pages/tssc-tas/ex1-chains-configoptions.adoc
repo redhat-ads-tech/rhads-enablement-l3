@@ -123,7 +123,7 @@ Same options as TaskRun signer: `x509`, `kms`, `none`
 - `storage.docdb.mongo-server-url` - Direct MongoDB connection URI (not recommended, stores in ConfigMap)
 - `storage.docdb.mongo-server-url-dir` - Path to directory containing file named `MONGO_SERVER_URL` with connection string (recommended, uses Secret)
 - `storage.docdb.mongo-server-url-path` - Direct path to file containing MongoDB connection URI (recommended, uses Secret)
-- These options override each other in order: path > dir > url > MONGO_SERVER_URL env var
+- These options override each other in order: path > dir > url > `MONGO_SERVER_URL` environment variable
 
 
 *`storage.grafeas.projectid`*

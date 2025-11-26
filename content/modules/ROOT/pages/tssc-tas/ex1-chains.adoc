@@ -16,7 +16,7 @@ oc get tektonconfig -n openshift-operators -o yaml | less
 ----
 *HINT:* Exit `less` with kbd:[q] or kbd:[Q]
 
-The operator turns the global `tektonconfig` into a `chains-config` ConfigMap in the "openshift-pipelines" namespace, that the Chains Controller reads.
+The operator turns the global `tektonconfig` into a `chains-config` ConfigMap in the `openshift-pipelines` namespace, that the Chains Controller reads. Look at it with:
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -412,3 +412,10 @@ This is a standardized format (the slsa.dev/provenance/v0.2 format) that Enterpr
 
 More on that in the next chapter.
 
+== Summary
+
+In this chapter, you learned how to configure Tekton Chains and how to use it to sign and attest images and pipelines.
+
+You also learned how to verify the attestations and signatures and how to download and inspect them.
+
+In the next chapter, you will learn how to use Enterprise Contract / Conforma to validate the attestations and signatures (and ultimately how RHADS and RHACS combined can enforce security policies for your images and pipelines through their respective admission controllers). On to the next chapter! 
