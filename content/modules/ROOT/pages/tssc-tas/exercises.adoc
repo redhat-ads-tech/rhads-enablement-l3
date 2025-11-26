@@ -33,7 +33,9 @@ We'll be using cli commands in many of the chapters, so we'll need a terminal - 
 
 [NOTE]
 ====
-If you have the "Podman Terminal" already running from previous exercises, you can re-use it, but make sure you start with a fresh instance:
+If you have *not yet created* the "Podman Terminal" from previous exercises, you can *ignore this note* for now (it is useful for resetting your terminal later if needed).
+
+If you *do* have the "Podman Terminal" already running from previous exercises, you can re-use it, but make sure you start with a fresh instance:
 
 Go to the https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[terminal^,window="terminal"], run the `terminal-reset` command and wait for a moment until a new terminal pod has come back up. 
 
@@ -75,7 +77,7 @@ pod "ttyd-admin-terminal-6bf48d8b95-jgrxs" deleted
 
 === Install the "Podman Terminal"
 
-We'll use that going forward, so please open the {openshift_console_url}/terminal[OpenShift terminal^,window="terminal"] and login as `{openshift_admin_user}` with `{openshift_admin_password}`
+We'll use that going forward, so please open the {openshift_console_url}/terminal[OpenShift terminal^,window="terminal"] and login as `{openshift_admin_user}` with `{openshift_admin_password}` if needed, and click *Start* if this is the first time you're opening the terminal.
 
 Then, clone the following repository and execute the terminal deployment:
 
@@ -86,7 +88,9 @@ cd l3-enablement-helpers/security-concepts
 ./deploy-podman-terminal.sh 
 ----
 
-You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] that we will be using going forward, since it has all the tools and configuration already installed.
+Wait for the pod to be ready.  
+
+You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[here^,window="terminal"] (you may need to login again with the above credentials) that we will be using going forward, since it has all the tools and configuration already installed. You can close the original terminal window if you like (the one used to spawn the new Podman Terminal).
 
 
 === Initialize your Trust Root

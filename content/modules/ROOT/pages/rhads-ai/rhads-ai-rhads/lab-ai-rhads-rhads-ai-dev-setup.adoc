@@ -4,7 +4,7 @@
 Using a pre-existing software template, you will create a new resource in Red Hat Developer Hub. This resource will serve as a blank template for your team to build an AI agent. You are leveraging the templates already setup with all necessary Kubernetes manifests, including the trusted software supply chain, deployments, and application promotion. In the next lab, your team will add their application source code to this new resource, integrating it into the software development lifecycle.
 
 == Scenario 
-You are part of the AI Engineering team, and you will leverage the tools set up by the AI Platform Engineering team. These tools are setup with best practices aligned with your organization’s guidelines.
+You are part of the AI Engineering team, and you will leverage the tools set up by the AI Platform Engineering team. These tools are setup with best practices aligned with your organization's guidelines.
 
 Let's get started.
 

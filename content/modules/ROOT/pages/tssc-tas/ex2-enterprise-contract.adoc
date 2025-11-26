@@ -200,15 +200,15 @@ This allows for separation of policies (the validation rules) and the data they 
 ====
 When referencing a `git:` location, the double slash `//` denotes the separation of the git repository and the location of the files inside the repository, both for `data` and `policy`
 
-`https://github.com/enterprise-contract/ec-policies//example/data`
+`\https://github.com/enterprise-contract/ec-policies//example/data`
 
 You can also add a git reference for a branch
 
-`https://github.com/enterprise-contract/ec-policies//example/data?ref=main`
+`\https://github.com/enterprise-contract/ec-policies//example/data?ref=main`
 
 or a commit 
 
-`https://github.com/enterprise-contract/ec-policies//example/data?ref=abc123def`
+`\https://github.com/enterprise-contract/ec-policies//example/data?ref=abc123def`
 
 Take a look the the data used for our example command https://github.com/conforma/policy/tree/main/example/data[here^,window="github"] 
 

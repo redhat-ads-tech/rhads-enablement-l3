@@ -42,11 +42,11 @@ When a policy is selected to be evaluated against the matched image (the namespa
 
 Authorities are combined as a boolean "or" (at least one is satisfied within a CIP). 
 
-There are different types auf Authorities that can be used for validation of images and attestations:
+There are different types of Authorities that can be used for validation of images and attestations:
 
 * `key` validates against a static key provided
 ** inline
-** in a k8s secret *in the namespace where the `policy-controller` is installed
+** in a k8s `Secret` in the namespace where the `policy-controller` is installed
 ** in a KMS (Azure, AWS, GCP, HashiCorp Vault)
 
 * 'keyless' validates against a `sigstore` (Trusted Artifact Signer) installation
