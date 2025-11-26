@@ -457,7 +457,7 @@
 <p><strong>HINT:</strong> Exit <code>less</code> with <kbd>q</kbd> or <kbd>Q</kbd></p>
 </div>
 <div class="paragraph">
-<p>The operator turns the global <code>tektonconfig</code> into a <code>chains-config</code> ConfigMap in the "openshift-pipelines" namespace, that the Chains Controller reads.</p>
+<p>The operator turns the global <code>tektonconfig</code> into a <code>chains-config</code> ConfigMap in the <code>openshift-pipelines</code> namespace, that the Chains Controller reads. Look at it with:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -881,7 +881,7 @@ If you closely compare the <code>chains-config</code> configMap and the "chain" 
 <p><code>storage.docdb.mongo-server-url-path</code> - Direct path to file containing MongoDB connection URI (recommended, uses Secret)</p>
 </li>
 <li>
-<p>These options override each other in order: path &gt; dir &gt; url &gt; MONGO_SERVER_URL env var</p>
+<p>These options override each other in order: path &gt; dir &gt; url &gt; <code>MONGO_SERVER_URL</code> environment variable</p>
 </li>
 </ul>
 </div>
@@ -1761,6 +1761,20 @@ ttyd-admin-terminal-6bf48d8b95-zz8tk   2/2     Running   0          31h</code></
 <div class="paragraph">
 <p>More on that in the next chapter.</p>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this chapter, you learned how to configure Tekton Chains and how to use it to sign and attest images and pipelines.</p>
+</div>
+<div class="paragraph">
+<p>You also learned how to verify the attestations and signatures and how to download and inspect them.</p>
+</div>
+<div class="paragraph">
+<p>In the next chapter, you will learn how to use Enterprise Contract / Conforma to validate the attestations and signatures (and ultimately how RHADS and RHACS combined can enforce security policies for your images and pipelines through their respective admission controllers). On to the next chapter!</p>
 </div>
 </div>
 </div>
