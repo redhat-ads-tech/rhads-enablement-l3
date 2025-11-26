@@ -15,7 +15,7 @@ The rise of AI has created new roles in the industry, such as AI Engineers. Thes
 
 The diagram below shows the key personas involved in the AI development lifecycle and how they interact. Understanding these roles will help you achieve your goal as a Consultant since it will help you engage with the appropriate teams and make recommendations for future projects.
 
-image::ai-intro/personas_ai.png[Personas]
+image::ai-intro/personas_ai.png[Personas,link=self, window="image"]
 
 Platform Engineers build and maintain ACME's Application PLatform: OpenShift. An application platform that provides foundational technologies with the necessary tools to support MLOps and AIOps engineers efficiently deploy models to production while following best practices. Then, AI Engineers will build AI applications using the deployed large language models (LLMs) that the Data Scientists first trained and built. 
 
@@ -42,7 +42,7 @@ A potential use case is a RAG-enabled chatbot that can query information related
 
 5. **Generation:** The LLM will generate a response for the user.
 
-image::ai-intro/rag_how_works.png[RAG flow]
+image::ai-intro/rag_how_works.png[RAG flow,link=self, window="image"]
 
 
 === Benefits
@@ -96,7 +96,7 @@ MCP provides defines both MCP clients and MCP servers. Developers can use MCP se
 * Many available pre-built integrations that a LLM can directly plug into
 * MCP makes it flexibility to switch between different LLM providers
 
-image::ai-intro/mcp_architecture.png[MCP architecture]
+image::ai-intro/mcp_architecture.png[MCP architecture,link=self, window="image"]
 
 link:https://www.anthropic.com/news/model-context-protocol[Model Context Protocol- Anthropic website,window='_blank']
 
@@ -117,7 +117,7 @@ The following image, created by the link:https://llama-stack.readthedocs.io/en/l
 ** Telemetry
 ** Tools
 
-image::ai-intro/llama_stack.png[Llama Stack]
+image::ai-intro/llama_stack.png[Llama Stack,link=self, window="image"]
 
 === Benefits
 

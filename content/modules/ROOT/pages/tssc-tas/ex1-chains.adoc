@@ -122,11 +122,11 @@ a|Should you automatically be logged in as `admin`, please log out and log back 
 
 Click on the "Self-Service" button (the (+) icon) to get to the {rhdh_url}/create[Self-Service Page^,window="rhdh"]
 
-image::tssc-tas/rhdh-self-service-button.png[]
+image::tssc-tas/rhdh-self-service-button.png[link=self, window="image"]
 
 Scroll down to the template named "Securing a Quarkus Service Software Supply Chain (Tekton)" and click on {rhdh_url}/create/templates/default/quarkus-stssc-template["Choose"^,window="rhdh"]
 
-image::tssc-tas/rhdh-self-service-button-choose-template.png[]
+image::tssc-tas/rhdh-self-service-button-choose-template.png[link=self, window="image"]
 
 . Change the name to *`tekton-chains-test`* and leave the other fields at their default values
 . Click "Next"
@@ -167,7 +167,7 @@ When we go to the {rhdh_url}/catalog/default/component/tekton-chains-test/image-
 
 Both of which haven't been created by an explicit `sign and attest` pipeline task, but by *Tekton Chains*.
 
-image::tssc-tas/rhdh-tekton-chains-test-homepage-image-registry.png[]
+image::tssc-tas/rhdh-tekton-chains-test-homepage-image-registry.png[link=self, window="image"]
 
 If we open that in {quay_url}/repository/tssc/tekton-chains-test?tab=tags[Quay directly^, window="quay"] we can see that Quay also recognises the signature (which the Quay Plugin for Red Hat Developer Hub doesn't show in its current version):
 

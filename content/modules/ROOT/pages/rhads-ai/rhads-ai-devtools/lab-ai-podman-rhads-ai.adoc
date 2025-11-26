@@ -21,7 +21,7 @@ You are part of the Python AI Development team. Your responsibility is to experi
 * Click *Podman AI Lab*. Your screen should look similar to this:
 
 +
-image:rhads-ai/local-lab/podman-screen.png[width=30%]
+image:rhads-ai/local-lab/podman-screen.png[width=30%,link=self, window="image"]
 
 
 == Set up and explore AI tools
@@ -30,15 +30,15 @@ image:rhads-ai/local-lab/podman-screen.png[width=30%]
 
 * Click *Models* -> *Catalog*
 
-image:rhads-ai/local-lab/podman-model-catalog.png[width=30%]
+image:rhads-ai/local-lab/podman-model-catalog.png[width=30%,link=self, window="image"]
 
 * Select and *download* the model: *ibm-granite/granite-3.3-8b-instruct-GGUF*
 
-image:rhads-ai/local-lab/podman-download-model.png[width=100%]
+image:rhads-ai/local-lab/podman-download-model.png[width=100%,link=self, window="image"]
 
 * Once finished, check the *Downloads* tab.
 
-image:rhads-ai/local-lab/model-downloaded.png[width=100%]
+image:rhads-ai/local-lab/model-downloaded.png[width=100%,link=self, window="image"]
 
 Now you can create a service to allow applications to consume the model easily.
 
@@ -46,96 +46,96 @@ Now you can create a service to allow applications to consume the model easily.
 Podman AI Lab allows you to create model services and playgrounds to build AI applications. 
 The model service is used for inference, allowing AI applications to consume it via HTTP.
 
-image:rhads-ai/local-lab/podman-serving-playgrounds.png[width=100%]
+image:rhads-ai/local-lab/podman-serving-playgrounds.png[width=100%,link=self, window="image"]
 
 * Click Models -> Services
 * Click *New Model Service*
 +
-image:rhads-ai/local-lab/new-model-service.png[width=100%]
+image:rhads-ai/local-lab/new-model-service.png[width=100%,link=self, window="image"]
 
 * Review the information,  then click *Create Service* 
 
 +
-image:rhads-ai/local-lab/create-model-service.png[width=100%]
+image:rhads-ai/local-lab/create-model-service.png[width=100%,link=self, window="image"]
 
 * When the model service is ready, click the *start* icon.
 
 +
-image:rhads-ai/local-lab/model-service-start.png[width=100%]
+image:rhads-ai/local-lab/model-service-start.png[width=100%,link=self, window="image"]
 
 * The service is now started and ready to be consumed:
 
 +
-image:rhads-ai/local-lab/model-service-started.png[width=100%]
+image:rhads-ai/local-lab/model-service-started.png[width=100%,link=self, window="image"]
 
 
 === Explore LLama Stack
 
 * Select *Llama Stack* from *Podman AI Lab*
 +
-image:rhads-ai/local-lab/podman-llamastack.png[width=40%]
+image:rhads-ai/local-lab/podman-llamastack.png[width=40%,link=self, window="image"]
 
 * Select *Start Llama Stack container*: 
 +
-image:rhads-ai/local-lab/llama-stack-start.png[width=100%]
+image:rhads-ai/local-lab/llama-stack-start.png[width=100%,link=self, window="image"]
 
 * Llama Stack will begin building the container. Once finished, all steps will appear in green.
 
 +
-image:rhads-ai/local-lab/llama-stack-running-container.png[width=100%]
+image:rhads-ai/local-lab/llama-stack-running-container.png[width=100%,link=self, window="image"]
 
 
 * Click *Explore Llama-Stack Environment*
 +
-image:rhads-ai/local-lab/llama-stack-explore.png[Podman LLama Stack Explore]
+image:rhads-ai/local-lab/llama-stack-explore.png[Podman LLama Stack Explore,link=self, window="image"]
 
 * Explore the *Llama Stack UI* and enter the question, *"What is an AI agent"* in the chat box: 
 
-image:rhads-ai/local-lab/llama-stack-chat.png[LLama Stack UI]
+image:rhads-ai/local-lab/llama-stack-chat.png[LLama Stack UI,link=self, window="image"]
 
 
 == Use the Podman AI Lab recipe to build a chatbot
 Podman AI Lab provides many recipes you can use as a starting point to build your own applications, explore AI tools, or learn about AI Lab.
 
 
-image:rhads-ai/local-lab/anatomy-recipe.png[width=100%]
+image:rhads-ai/local-lab/anatomy-recipe.png[width=100%,link=self, window="image"]
 
 
 * Click *Recipe Catalog*.
 
-image:rhads-ai/local-lab/recipe-click.png[width=30%]
+image:rhads-ai/local-lab/recipe-click.png[width=30%,link=self, window="image"]
 
 
 * Explore the different recipes available *Recipe Catalog* and select the *ChatBot using Llama Stack* by clicking on *More Details*
 
-image:rhads-ai/local-lab/podman-recipe-list.png[width=100%]
+image:rhads-ai/local-lab/podman-recipe-list.png[width=100%,link=self, window="image"]
 
 *Take time to explore the recipe.* 
 
 * Click the *start* icon.
 
-image:rhads-ai/local-lab/chatbot-start.png[width=100%]
+image:rhads-ai/local-lab/chatbot-start.png[width=100%,link=self, window="image"]
 
 * Click *Start chatbot recipe* to build the chatbot.
 
-image:rhads-ai/local-lab/start-recipe.png[width=100%]
+image:rhads-ai/local-lab/start-recipe.png[width=100%,link=self, window="image"]
 
 * The process will take a few seconds:
 
-image:rhads-ai/local-lab/podman-recipe-starting.png[width=100%]
+image:rhads-ai/local-lab/podman-recipe-starting.png[width=100%,link=self, window="image"]
 
 * Once the chatbot is ready, Click *Open Details*
 
-image:rhads-ai/local-lab/chatbot-ready.png[width=90%]
+image:rhads-ai/local-lab/chatbot-ready.png[width=90%,link=self, window="image"]
 
 
 * To explore the chatbot, click the *Open AI App* icon.
 
-image:rhads-ai/local-lab/open-chatbot.png[width=100%]
+image:rhads-ai/local-lab/open-chatbot.png[width=100%,link=self, window="image"]
 
 * Next, explore and test the chatbot. 
 
-image:rhads-ai/local-lab/chatbot-running.png[width=100%]
+image:rhads-ai/local-lab/chatbot-running.png[width=100%,link=self, window="image"]
 
 
 * *Congratulations, you have built an AI chatbot integrated with LLama Stack using Podman AI Lab.*
@@ -144,28 +144,28 @@ image:rhads-ai/local-lab/chatbot-running.png[width=100%]
 
 ** In Podman AI Lab, click *AI APPS* -> *Running*
 
-image:rhads-ai/local-lab/ailab-running.png[width=40%]
+image:rhads-ai/local-lab/ailab-running.png[width=40%,link=self, window="image"]
 
 * Then, click *Open Recipe*
 
-image:rhads-ai/local-lab/chatbot-recipe.png[width=90%]
+image:rhads-ai/local-lab/chatbot-recipe.png[width=90%,link=self, window="image"]
 
 * Review the *Summary* section.
 
-image:rhads-ai/local-lab/ailab-chatbot-summary.png[width=100%]
+image:rhads-ai/local-lab/ailab-chatbot-summary.png[width=100%,link=self, window="image"]
 
 
 * In the *Repository* section, click *containers/ai-lab-recipe*
 
-image:rhads-ai/local-lab/open-repository.png[width=80%]
+image:rhads-ai/local-lab/open-repository.png[width=80%,link=self, window="image"]
 
 * Confirm to *open external website*
 
-image:rhads-ai/local-lab/open-external-website.png[width=80%]
+image:rhads-ai/local-lab/open-external-website.png[width=80%,link=self, window="image"]
 
 * The GitHub repository includes all the recipes displayed in Podman AI Lab: link:https://github.com/containers/ai-lab-recipes[ai-lab-recipes,window='_blank'].
 
-image:rhads-ai/local-lab/ailab-recipes.png[width=80%]
+image:rhads-ai/local-lab/ailab-recipes.png[width=80%,link=self, window="image"]
 
 
 == Conclusion

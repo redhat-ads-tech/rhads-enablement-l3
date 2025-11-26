@@ -87,7 +87,7 @@ Once RBAC is enabled, you'll verify that the deny-by-default policy is working c
 
 This confirms that the deny-by-default policy is in effect. You can see that no entities are visible to *user1* in the following screenshot.
 
-image::setup-rhdh/security-deny-by-default.png[]
+image::setup-rhdh/security-deny-by-default.png[link=self, window="image"]
 
 === Confirm Administrator Access
 
@@ -98,10 +98,10 @@ image::setup-rhdh/security-deny-by-default.png[]
 . Select *Catalog* from the side menu.
 . This *admin* user should have full access to entities in the Software Catalog, as shown.
 +
-image::setup-rhdh/security-admin-catalog-access.png[]
+image::setup-rhdh/security-admin-catalog-access.png[link=self, window="image"]
 . Next, select *Administration > RBAC* item in the side menu - the RBAC UI should be displayed.
 +
-image::setup-rhdh/security-rbac-view-admin.png[]
+image::setup-rhdh/security-rbac-view-admin.png[link=self, window="image"]
 
 Now that you've confirmed RBAC is enabled, and that the *admin* user can access the RBAC administration view, it's time to manage RBAC policies.
 
@@ -114,7 +114,7 @@ With RBAC enabled and administrator access confirmed, you can now create policie
 . While logged in as an administrator, navigate to *Administration > RBAC* in the {product_rhdh_name} interface.
 . This interface displays existing policies and provides options to create, modify, and delete access policies.
 +
-image::setup-rhdh/security-rbac-view-admin.png[]
+image::setup-rhdh/security-rbac-view-admin.png[link=self, window="image"]
 . Click the pre-existing *rbac_admin* policy and confirm that your *admin* user is a member.
 
 === Create a Group-Based Access Policy
@@ -128,34 +128,34 @@ You'll create a policy that grants basic catalog viewing permissions to users in
   * *Description*: `Grants basic catalog viewing permissions to TSSC group members`
   * *Owner*: Empty
 +
-image::setup-rhdh/security-rbac-policy-name-desc.png[]
+image::setup-rhdh/security-rbac-policy-name-desc.png[link=self, window="image"]
 +
 [NOTE]
 ====
 You can verify that the `tssc` group exists by navigating to the Software Catalog and filtering by *Kind: Group*. Group entity references follow the format `group:[namespace]/[group-name]`, e.g `group:default/tssc`. The *tssc* group has one member: *user1*.
 
-image::setup-rhdh/security-tssc-group.png[]
+image::setup-rhdh/security-tssc-group.png[link=self, window="image"]
 ====
 . Click *Next*.
 . Select the `tssc` group to apply this policy to.
 +
-image::setup-rhdh/security-rbac-policy-group.png[]
+image::setup-rhdh/security-rbac-policy-group.png[link=self, window="image"]
 . Click *Next*.
 
 === Configure Policy Permissions
 . In the *Add permission policies*, select the *Catalog* plugin.
 + 
-image::setup-rhdh/security-rbac-policy-plugins.png[]
+image::setup-rhdh/security-rbac-policy-plugins.png[link=self, window="image"]
 . Expand
   * `catalog.entity.read` - Allows reading catalog entities
   * `catalog.entity.refresh` - Allows refreshing entity data  
   * `catalog.location.read` - Allows reading location information
 . Confirm that your selections match the following screenshot.
 +
-image::setup-rhdh/security-rbac-policy-plugin-settings.png[]
+image::setup-rhdh/security-rbac-policy-plugin-settings.png[link=self, window="image"]
 . Click *Next* to review your new policy.
 +
-image::setup-rhdh/security-rbac-policy-review.png[]
+image::setup-rhdh/security-rbac-policy-review.png[link=self, window="image"]
 . Click *Create* to save the policy.
 
 Nice work! You created your first RBAC policy - time to validate it's working as intended.
@@ -172,7 +172,7 @@ Test the newly created policy to ensure it grants the expected access while main
 . Select the *HTTP Sink Application* to confirm *{rhdh_user}* can view it.
 . Navigate to the *CD* tab - you should notice a permission error.
 + 
-image::setup-rhdh/security-restricted-user1.png[]
+image::setup-rhdh/security-restricted-user1.png[link=self, window="image"]
 . Additionally, click the three dots in the top-right to confirm you cannot click the *Unregister entity* action.
 
 You just witnessed RBAC in action. Access to Argo CD information is restricted separate to the entities themselves, enabling fine-grained access control.
@@ -288,7 +288,7 @@ application:
       - name: rbac-policies
 ----
 +
-image::setup-rhdh/security-casbin-cr.png[]
+image::setup-rhdh/security-casbin-cr.png[link=self, window="image"]
 . Click *Save*.
 . Navigate to *Workloads > Pods* in the OpenShift Web Console and wait for the new {product_rhdh_name} pod to report readiness.
 
@@ -298,10 +298,10 @@ image::setup-rhdh/security-casbin-cr.png[]
 . Visit the *Administration > RBAC* screen.
 . Your new roles should be listed, and reflect the values in the ConfigMap.
 +
-image::setup-rhdh/security-casbin-roles-list.png[]
+image::setup-rhdh/security-casbin-roles-list.png[link=self, window="image"]
 . Click on the `location_read` policy and confirm that the *Modified by* column states that it's managed by the policy file.
 +
-image::setup-rhdh/security-casbin-role.png[]
+image::setup-rhdh/security-casbin-role.png[link=self, window="image"]
 
 You're now equipped to apply RBAC policies to {product_rhdh_name} instances. This is a critical capability for organizations to ensure 
 only designated individuals can make changes to their internal developer portal, and developers only see what's relevant to their team and 

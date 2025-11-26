@@ -20,7 +20,7 @@ For the time being - what we can do is ask someone who is very good at correlati
 
 You can download a license report for any SBOM on the right hand menu (or via the "Actions" menu if you have the SBOM open)
 
-image::tssc-tpa/license-report.png[]
+image::tssc-tpa/license-report.png[link=self, window="image"]
 
 For the time being, after downloading and unzipping, we can feed that into an AI to answer the question our customers ask: "Am I compliant?"
 

@@ -34,7 +34,7 @@ With *Keyless Signing*, using https://developers.redhat.com/products/trusted-art
 * The signing event is stored in a write-only database ("rekor"), with the certificate tied to the OIDC identity
 * Verification can be done online by querying the rekor database, which also contains the public key issued by fulcio
 
-image::security-practices/sigstore_landscapelayout_overview.svg[]
+image::security-practices/sigstore_landscapelayout_overview.svg[link=self, window="image"]
 
 
 [cols="1,1"]

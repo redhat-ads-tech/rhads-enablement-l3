@@ -16,20 +16,20 @@ Depending on which exercises in the training you have already done, there might 
 
 You can find these in the dashboard (your default view when opening TPA) or in the {tpa_url}/sboms[SBOMs view^,window="tpa"]
 
-image::tssc-tpa/tpa-sboms-view.png[]
+image::tssc-tpa/tpa-sboms-view.png[link=self, window="image"]
 ====
 
 == Frontend
 
 As mentioned in the exercise prerequisites, our `user1` doesn't have the necessary access level up upload data, so please logout and login with our newly created `tpa-manager` and password `r3dh8t1!`
 
-image::tssc-tpa/logged-in-as-tpa-manager.png[]
+image::tssc-tpa/logged-in-as-tpa-manager.png[link=self, window="image"]
 
 Using the {tpa_url}/upload[upload menu^,window="tpa"] you can upload one or more SBOMs and Advisories at once.
 
 You can use any SBOMs (as long as they are in CycloneDX or SPDX format of the supported versions).
 
-image::tssc-tpa/tpa-upload-sbom-versions.png[]
+image::tssc-tpa/tpa-upload-sbom-versions.png[link=self, window="image"]
 
 We have prepared a few, you can download them to your machine to try it out:
 
@@ -56,23 +56,23 @@ NOTE: For SBOMs pushed to TPA from a CI (or some other automated means) we can d
 
 Open the SBOM (by clicking on its name) and click on the "Edit" or pencil icon in the "Labels" section:
 
-image::tssc-tpa/sbom-edit-label.png[]
+image::tssc-tpa/sbom-edit-label.png[link=self, window="image"]
 
 Assign it a new label `source=manual-upload` (Labels need to be in the form of `key=value`). *Click on the "Create new option dropdown" that appears*
 
-image::tssc-tpa/sbom-label-manual.png[]
+image::tssc-tpa/sbom-label-manual.png[link=self, window="image"]
 
-image::tssc-tpa/sbom-label-manual-assigned.png[]
+image::tssc-tpa/sbom-label-manual-assigned.png[link=self, window="image"]
 
 Save when you're satisfied with your label assignment.
 
 Do that for all three of the SBOMs that we just uploaded. Once you have a label in TPA, you don't have to type it in again, you can select it by clicking on the drop-down option or by typing the first few letters:
 
-image::tssc-tpa/sbom-label-manual-subsequent.png[]
+image::tssc-tpa/sbom-label-manual-subsequent.png[link=self, window="image"]
 
 It should look similar to this:
 
-image::tssc-tpa/sbom-view-labels.png[]
+image::tssc-tpa/sbom-view-labels.png[link=self, window="image"]
 
 
 
@@ -80,9 +80,9 @@ image::tssc-tpa/sbom-view-labels.png[]
 
 For a backend task (a script, a CI task), we would use the `cli` OIDC client - i.e. an OIDC client that creates a "service account" a.k.a. a "technical user" with a fixed password (the `client secret`):
 
-image::tssc-tpa/keycloak-cli-client-authentication.png[]
+image::tssc-tpa/keycloak-cli-client-authentication.png[link=self, window="image"]
 
-image::tssc-tpa/keycloak-cli-client-secret.png[]
+image::tssc-tpa/keycloak-cli-client-secret.png[link=self, window="image"]
 
 To access the client and get an authentication token from it, we need the client secret (the "client password") which we have stored in a k8s secret in our environment. +
 Depending on the script or CI setup that this will run in, a vault or otherwise secure credential storage would be advised.
@@ -130,7 +130,7 @@ cd ~/l3-enablement-helpers/tpa-tssc
 
 Going back to our {tpa_url}/sboms[SBOMs view^,window="tpa"], we should now see the SBOM we just uploaded, including its vulnerabilities:
 
-image::tssc-tpa/sbom-view-cli-upload.png[]
+image::tssc-tpa/sbom-view-cli-upload.png[link=self, window="image"]
 
 
 == CSAF VEX Files
@@ -141,7 +141,7 @@ We have provided a Red Hat VEX file detailing a specific vulnerability (CVE-2024
 
 When you {tpa_url}/upload[upload^,window="tpa"] it (go to the "Advisories" tab), you can see that the Advisory Identifier is displayed:
 
-image::tssc-tpa/csaf-vex-upload.png[]
+image::tssc-tpa/csaf-vex-upload.png[link=self, window="image"]
 
 
 [NOTE]
@@ -152,7 +152,7 @@ For Advisories of any kind, we would use the {tpa_url}/openapi/#post-/api/v2/adv
 
 If we go to the {tpa_url}/advisories[Advisories View^, window="tpa"] and search for "2024-12798" we will find two advisories mentioning this specific CVE, one CSAF (that we just uploaded, published by Red Hat Product Security) and one from the cve importer (published by the Swiss NCSC.ch):
 
-image::tssc-tpa/advisories.png[]
+image::tssc-tpa/advisories.png[link=self, window="image"]
 
 The Red Hat Advisory (being a vendor CSAF advisory) not only lists the CVE and affected dependencies, but also Red Hat products, versions and their "affectedness" by product. 
 

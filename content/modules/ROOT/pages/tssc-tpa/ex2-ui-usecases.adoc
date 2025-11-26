@@ -24,20 +24,20 @@ Assuming we know the vulnerability, open the {tpa_url}/vulnerabilities[Vulnerabi
 
 We get all vulnerabilities mentioning "CVE-2021-44228" (it had a big impact at the time so there are follow-up CVE mentioning it).
 
-image::tssc-tpa/vuln-search-log4j.png[]
+image::tssc-tpa/vuln-search-log4j.png[link=self, window="image"]
 
 We can immediately see that we have one SBOM affected - so let's click on the vulnerability title and see more details - the "Related SBOMs" view of the vulnerability opens and I can see that "home-banking" is in status _"affected"_. +
 Clicking on the number in "Dependencies" shows us the package and version inside the SBOM that is causing the problem:
 
-image::tssc-tpa/vuln-search-log4j-affected-sbom.png[]
+image::tssc-tpa/vuln-search-log4j-affected-sbom.png[link=self, window="image"]
 
 Clicking on the package name shows us that this package (`log4j-core` in Version 2.13.3) has actually more than one vulnerability listed (as if one wasn't enough 🙄)
 
-image::tssc-tpa/vuln-search-log4j-affected-sbom-package-view.png[]
+image::tssc-tpa/vuln-search-log4j-affected-sbom-package-view.png[link=self, window="image"]
 
 Clicking on "SBOMs using Package" brings us to the package-centric view (regardless of vulnerability) of all SBOMs using *this package in this version*
 
-image::tssc-tpa/sboms-using-package-and-version.png[]
+image::tssc-tpa/sboms-using-package-and-version.png[link=self, window="image"]
 
 == SBOM Vulnerabilities
 
@@ -47,11 +47,11 @@ Opening the Vulnerabilities Tab in the SBOM lists the oldest (and thus most like
 
 (I can also sort by CVSS score, number of affected dependencies, etc).
 
-image::tssc-tpa/pypa-setuptools.png[]
+image::tssc-tpa/pypa-setuptools.png[link=self, window="image"]
 
 Clicking on the first vulnerability (2022-40897) shows me that devspaces actually contains two versions of the same package, only vulnerable, one fixed - and that our demoimage contains an even older version. 
 
-image::tssc-tpa/pypa-setuptools-across-sboms.png[]
+image::tssc-tpa/pypa-setuptools-across-sboms.png[link=self, window="image"]
 
 
 == Full-Text
@@ -60,29 +60,29 @@ _"I heard there's a problem with the logback stack - what about it?"_
 
 Going to the {tpa_url}/search[TPA Search View^,window="tpa"] we can perform a full-text search and get a quick view (tagging the results by type, such as "Package", "Vulnerability", "Advisory",...) 
 
-image::tssc-tpa/generic-search.png[]
+image::tssc-tpa/generic-search.png[link=self, window="image"]
 
 Clicking on the "Packages view" I can see that different versions of logback have different levels of vulnerabilities. I'm interested if any of my SBOMs is using a vulnerable package.
 
 (Ok, we only have four in the database, so I could do that manually, but what if it was 4000?)
 
-image::tssc-tpa/generic-search-logback-results.png[]
+image::tssc-tpa/generic-search-logback-results.png[link=self, window="image"]
 
 NOTE: This is a fulltext search that doesn't traverse all packages in an SBOM. Instead, we check if any of your SBOMs is using a package with vulnerabilities or via the vulnerabilities view search for "SBOMs affected".
 
 Checking the Red Hat logback-core shows us...
 
-image::tssc-tpa/logback-core-package.png[]
+image::tssc-tpa/logback-core-package.png[link=self, window="image"]
 
 We have a hit, sadly... for *this package in this version*
 
-image::tssc-tpa/model-mesh-logback.png[]
+image::tssc-tpa/model-mesh-logback.png[link=self, window="image"]
 
 But, let's make sure we don't have some skeletons in the closet and check the vulnerabilities listed for this package, going to the "Vulnerabilities" tab:
 
-image::tssc-tpa/logback-core-package-vulnerabilities.png[]
+image::tssc-tpa/logback-core-package-vulnerabilities.png[link=self, window="image"]
 
 If we check the `CVE-2024-12798`, we can see that indeed there is more than one SBOM affected - since the CVE lists a version *range*, and on closer inspection of the dependencies, we can see that "devspaces" is using a newer, but also vulnerable version - according to the CVE:
 
-image::tssc-tpa/logback-core-package-vulnerabilities-also-devspaces.png[]
+image::tssc-tpa/logback-core-package-vulnerabilities-also-devspaces.png[link=self, window="image"]
 

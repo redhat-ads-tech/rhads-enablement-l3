@@ -155,12 +155,12 @@ https://github.com/redhat-ads-tech/orchestrator-self-service-templates/blob/main
 ----
 . You'll be asked to review the entities being imported, as shown:
 +
-image:orchestrator-overview/rhdh-register-template.png[Registering Software Templates]
+image:orchestrator-overview/rhdh-register-template.png[Registering Software Templates,link=self, window="image"]
 +
 . Click *Import* when prompted.
 . Select the self-service icon (the *+* plus) icon on the top navigation bar, then filter by setting the *Tags* to `orchestrator` to see the new template.
 +
-image:orchestrator-overview/rhdh-developer-self-service-templates.png[Developer Self Service Software Templates]
+image:orchestrator-overview/rhdh-developer-self-service-templates.png[Developer Self Service Software Templates,link=self, window="image"]
 
 The software template to create a namespace is not meant to be used directly, but rather through an Orchestrator Workflow. While it is visible (and usable) it should be hidden using RBAC rules in production.
 
@@ -211,7 +211,7 @@ The {product_rhdh_name} parameters are used by the workflow to send notification
 
 After the Helm install completes, a *create-ocp-namespace-swt* SonataFlow node will appear in the Topology View.
 
-image:orchestrator-overview/orchestrator-workflow-ns-deployed.png[]
+image:orchestrator-overview/orchestrator-workflow-ns-deployed.png[link=self, window="image"]
 
 === Execute the Serverless Workflow
 
@@ -222,10 +222,10 @@ Before proceeding, logout of {product_rhdh_name} as the *{openshift_admin_user}*
 + 
 NOTE: If the workflow isn't listed, delete the {product_rhdh_name} Pod to force a refresh of all workflows.
 +
-image:orchestrator-overview/orchestrator-select-workflow.png[]
+image:orchestrator-overview/orchestrator-select-workflow.png[link=self, window="image"]
 . The workflow definition is shown.
 +
-image:orchestrator-overview/orchestrator-workflow-overview.png[]
+image:orchestrator-overview/orchestrator-workflow-overview.png[link=self, window="image"]
 +
 The workflow itself is pretty simple. If the user requests a small or medium namespace, the workflow launches the relevant software template. It then checks the state of the software template execution and notifies the user of success or failure.
 +
@@ -241,25 +241,25 @@ If a large namespace is requested, the request needs to be approved. GitLab Issu
 +
 NOTE: If you are logged in to {product_rhdh_name} as the `admin` user, change `user:default/{rhdh_user}` to `user:default/admin`.
 +
-image:orchestrator-overview/orchestrator-workflow-form.png[]
+image:orchestrator-overview/orchestrator-workflow-form.png[link=self, window="image"]
 . Click on *Next* to review your request.
 . Click on *Run* to start the workflow execution.
 +
-image:orchestrator-overview/orchestrator-workflow-run-2.png[]
+image:orchestrator-overview/orchestrator-workflow-run-2.png[link=self, window="image"]
 . After a few seconds the status of the workflow moves to *Run completed*.
 +
-image:orchestrator-overview/orchestrator-workflow-run-completed.png[]
+image:orchestrator-overview/orchestrator-workflow-run-completed.png[link=self, window="image"]
 . Select the *Notifications* item in the left-hand menu.
 . Notice a notification that the namespace `dev1-small` has been created.
 +
-image:orchestrator-overview/orchestrator-notification-1.png[]
+image:orchestrator-overview/orchestrator-notification-1.png[link=self, window="image"]
 . If you click on the notification link, you will see the component that was created as a result of the execution of the software template.
 +
-image:orchestrator-overview/orchestrator-component-namespace-1.png[]
+image:orchestrator-overview/orchestrator-component-namespace-1.png[link=self, window="image"]
 . Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/cluster/projects/{rhdh_user}-small[namespace in the OpenShift Web Console^, window="console"] in your OpenShift cluster. If needed, login as `{openshift_admin_user}` / `{openshift_admin_password}`.
 . Click on *Administration/ResourceQuotas* and *Administration/LimitRanges* on the left-hand side menu to see the Resource Quota and Limit Ranges defined as part of the creation of the namespace.
 
-image:orchestrator-overview/orchestrator-workflow-small-ns-quota.png[]
+image:orchestrator-overview/orchestrator-workflow-small-ns-quota.png[link=self, window="image"]
 
 === Test the Workflow's Approval Process
 
@@ -278,10 +278,10 @@ NOTE: If you are logged in to {product_rhdh_name} as the `admin` user, change `u
 . Click on *Next* and *Run* to start the workflow.
 . Select the *Notifications* item in the left-hand menu. After a couple of seconds you will see a notification that an issue has been created in GitLab.
 +
-image:orchestrator-overview/orchestrator-issue-notification.png[]
+image:orchestrator-overview/orchestrator-issue-notification.png[link=self, window="image"]
 . Click on the link of the notification. This opens the issue in GitLab.
 +
-image:orchestrator-overview/gitlab-issue-1.png[]
+image:orchestrator-overview/gitlab-issue-1.png[link=self, window="image"]
 . GitLab is not a ticketing system. To mimic the behavior of a ticketing system, we use labels on the issue to mark the request as approved or denied.
 +
 .. Make sure you are logged in into GitLab as `root` / `{gitlab_user_password}`.
@@ -290,19 +290,19 @@ image:orchestrator-overview/gitlab-issue-1.png[]
 .. To actually add the label, you need to click on a different area of the page, outside of the *Labels* area.
 . Return to {product_rhdh_name}. After a while you should see a notification that the namespace `{rhdh_user}-large` has been created.
 +
-image:orchestrator-overview/notification-2.png[]
+image:orchestrator-overview/notification-2.png[link=self, window="image"]
 +
 The workflow instance checks the status of GitLab issue every 60 seconds. When the workflow detects the *approved* label on the issue, it proceeds to create the namespace using the software template, and closes the ticket afterwards.
 . You can check the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/cluster/projects/{rhdh_user}-large[namespace in the OpenShift console^, window="console"] in your OpenShift cluster. Also notice that the https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/orchestrator-approvals/-/issues/1[Issue in GitLab^, window="gitlab"] has been closed by the workflow.
 +
-image:orchestrator-overview/gitlab-issue-2.png[]
+image:orchestrator-overview/gitlab-issue-2.png[link=self, window="image"]
 
 
 Create another request for a large namespace, but this time label the issue as *denied*. In this case, you should see a notification in {product_rhdh_name} that the request was denied, and there should be no namespace created in OpenShift.
 
 Additionally, if you visit the https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}/create/tasks[template tasks list^] and select the *All* filter, you'll see the *OpenShift Namespace Request* template invocation from the Orchestrator.
 
-image:orchestrator-overview/template-invocation.png[]
+image:orchestrator-overview/template-invocation.png[link=self, window="image"]
 
 === Conclusion
 

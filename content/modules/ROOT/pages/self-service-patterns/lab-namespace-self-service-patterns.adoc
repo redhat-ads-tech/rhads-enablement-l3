@@ -38,11 +38,11 @@ Open the following files or folders to examine their contents:
 
 * Select the *plus icon* in the top navigation bar to Create a new component, or use the URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
 
-image:self-service-patterns/namespace-lab/rhdh-create-icon.png[Create UI] 
+image:self-service-patterns/namespace-lab/rhdh-create-icon.png[Create UI,link=self, window="image"] 
 
 * Click the *Import an existing Git repository* button.
 
-image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI] 
+image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI,link=self, window="image"] 
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -53,7 +53,7 @@ image:self-service-patterns/namespace-lab/rhdh-register-component.png[Create UI]
 
 * Click the *Import* button
 
-image:self-service-patterns/namespace-lab/rhdh-register-component-finish.png[width=90%] 
+image:self-service-patterns/namespace-lab/rhdh-register-component-finish.png[width=90%,link=self, window="image"] 
 
 *Congratulations!* You now have a new software template in Developer Hub. End users can now self-provision namespaces.
 
@@ -64,12 +64,12 @@ We'll explore the end-user experience by accessing the _Software Templates_ view
 * Navigate to Catalog -> Self-service
 * Look for the *OpenShift Project Medium Size* catalog
 
-image:self-service-patterns/namespace-lab/project-template.png[width=40%]
+image:self-service-patterns/namespace-lab/project-template.png[width=40%,link=self, window="image"]
 
 * Click on *Choose*
 * Review and fill out the form with sample data until you reach the review screen, **without creating the Namespace**. **DO NOT CLICK ON CREATE.** We'll do that later on after changing the template.
 
-image::self-service-patterns/namespace-lab/project-sample.png[]
+image::self-service-patterns/namespace-lab/project-sample.png[link=self, window="image"]
 
 == Implement changes in Software Templates
 
@@ -82,24 +82,24 @@ To do this, we will be updating the quotas definition in the `quota.yaml` file t
 * Click on *Catalog* on the Developer Hub menu
 * Next, select the filters: *Kind:Template* and *Tags: self-service*, as shown:
 
-image:self-service-patterns/namespace-lab/self-service-catalog.png[width=50%]
+image:self-service-patterns/namespace-lab/self-service-catalog.png[width=50%,link=self, window="image"]
 
 * Select the **OpenShift Project Medium Size**
 
 * Access the Source code by clicking on *View Source*
 
-image:self-service-patterns/namespace-lab/namespace-edit-catalog.png[width=50%]
+image:self-service-patterns/namespace-lab/namespace-edit-catalog.png[width=50%,link=self, window="image"]
 
 * Navigate to the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/blob/main/namespace-medium/manifests/helm/app/templates/quota.yaml[quota.yaml file^] (it's in the `manifests/helm/app/templates` folder). This file defines the quotas for the namespace and is applied to the namespace when it is created by OpenShift GitOps.
 
 * Edit the file by choosing *Edit -> Edit Single File*:
 
-image:self-service-patterns/namespace-lab/quota-file-edit.png[width=90%]
+image:self-service-patterns/namespace-lab/quota-file-edit.png[width=90%,link=self, window="image"]
 
 
 * Increase the quota limits by changing the value of `limits.cpu` to `"2"` and `limits.memory` to `2Gi` in the `quota.yaml` file, as shown:
 
-image:self-service-patterns/namespace-lab/project-file-changes.png[width=90%]
+image:self-service-patterns/namespace-lab/project-file-changes.png[width=90%,link=self, window="image"]
 
 * Review your file against the https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/project-lab/quota.yaml[quota.yaml solution file^] if necessary.
 
@@ -107,7 +107,7 @@ image:self-service-patterns/namespace-lab/project-file-changes.png[width=90%]
 
 * Back in the Developer Hub catalog, on the {rhdh_url}/catalog/default/template/rhel-vm-medium-template/[Template^], click on the *Schedule entity refresh* icon to sync the catalog with the latest changes.
 
-image:self-service-patterns/namespace-lab/rhdh-refresh-catalog.png[width=90%]
+image:self-service-patterns/namespace-lab/rhdh-refresh-catalog.png[width=90%,link=self, window="image"]
 
 == Test your changes: Explore the user experience as Developer
 
@@ -116,20 +116,20 @@ Now you will create a new Project by using your updated software template.
 * From *catalog*, select *Self-service*, then select *OpenShift Project Medium Size*
 * Click on *Choose*
 
-image:self-service-patterns/namespace-lab/project-template.png[width=50%]
+image:self-service-patterns/namespace-lab/project-template.png[width=50%,link=self, window="image"]
 
 * Create a new Project by following the flow. Feel free to use the default values or enter your own namespace name.
 * Review the information until you complete the flow and click *Create*. You should see a screen like this one:
 
-image:self-service-patterns/namespace-lab/namespace-updated.png[]
+image:self-service-patterns/namespace-lab/namespace-updated.png[link=self, window="image"]
 
 * Open the catalog from the component's creation page by clicking on the *Open Component in Catalog* button.
 
-image:self-service-patterns/namespace-lab/catalog-open.png[width=90%]
+image:self-service-patterns/namespace-lab/catalog-open.png[width=90%,link=self, window="image"]
 
 * A new component has been created and you should see a screen similar to this:
 
-image:self-service-patterns/namespace-lab/namespace-created.png[width=90%]
+image:self-service-patterns/namespace-lab/namespace-created.png[width=90%,link=self, window="image"]
 
 === Verify the namespace was created
 
@@ -144,16 +144,16 @@ image:self-service-patterns/namespace-lab/namespace-created.png[width=90%]
 * Enter `dev` in the search field
 * You should see the new namespace you created:
 
-image:self-service-patterns/namespace-lab/ns-list.png[width=90%]
+image:self-service-patterns/namespace-lab/ns-list.png[width=90%,link=self, window="image"]
 
 * Select the new namespace to view the details.
 * Scroll down to _Resource Quotas_, and click on the name of the quota to view the details:
 
-image:self-service-patterns/namespace-lab/rq1.png[width=90%]
+image:self-service-patterns/namespace-lab/rq1.png[width=90%,link=self, window="image"]
 
 * Scroll to the bottom to view the details of the quota and confirm your new limits are in place:
 
-image:self-service-patterns/namespace-lab/rq2.png[width=90%]
+image:self-service-patterns/namespace-lab/rq2.png[width=90%,link=self, window="image"]
 
 * Watch the following arcade, to explore a similar experience:
 ++++

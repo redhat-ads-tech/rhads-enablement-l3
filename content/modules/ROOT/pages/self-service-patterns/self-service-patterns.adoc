@@ -71,7 +71,7 @@ The following actions can be used to define the steps and actions in the `templa
 We will explore the use case where resources need to be created on the cluster, using the recommended GitOps approach. Helm will use variables from the Helm Charts received from the RHDH UI to build the chart.
 
 
-image::self-service-patterns/software_templates_flow.jpg[]
+image::self-service-patterns/software_templates_flow.jpg[link=self, window="image"]
 
 [#patterns]
 == Patterns for Third-Party Tool Integrations Using Software Templates for Self-Service
@@ -80,7 +80,7 @@ Different patterns can be created to accomplish business and technical needs acc
 
 Here are some potential integrations you will explore:
 
-image::self-service-patterns/pe_integrations.png[]
+image::self-service-patterns/pe_integrations.png[link=self, window="image"]
 
 
 == Building Patterns
@@ -101,9 +101,9 @@ When building different patterns, it is critical to understand these key conside
 
 Let's explore the configurations you will create during the hands-on lab, from building a database to providing namespace-as-a-service or virtual machines.
 
-image::self-service-patterns/database.png[]
-image::self-service-patterns/namespace_service.png[]
-image::self-service-patterns/vm.png[]
+image::self-service-patterns/database.png[link=self, window="image"]
+image::self-service-patterns/namespace_service.png[link=self, window="image"]
+image::self-service-patterns/vm.png[link=self, window="image"]
 
 == Building Virtual Machines (VMs)
 

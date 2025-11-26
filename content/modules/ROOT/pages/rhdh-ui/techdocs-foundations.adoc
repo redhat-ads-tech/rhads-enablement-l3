@@ -97,10 +97,10 @@ A new request for a document triggers TechDocs to check for updates in the docum
 
 When the source has changed, _techdocs-backend_ rebuilds the HTML representation and the page presents a banner. First, with a blue outline, the banner indicates the update is in progress.
 
-image::rhdh-ui/builddoc.png[]
+image::rhdh-ui/builddoc.png[link=self, window="image"]
 
 When generation is complete, the banner dons a green outline and asks the viewer to _please refresh_.
 
-image::rhdh-ui/plsrefr.png[]
+image::rhdh-ui/plsrefr.png[link=self, window="image"]
 
 Clicking the **Refresh** link reloads the page with the latest HTML.
