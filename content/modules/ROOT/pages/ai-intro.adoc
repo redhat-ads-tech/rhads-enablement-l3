@@ -7,20 +7,21 @@ include::partial$logout-links.adoc[]
 In this module, you will review AI concepts for Engineers, including frameworks, protocols, and tools to build AI applications.
 
 === Study Case
+
 In this module, you have the opportunity to explore a role with a fictional company. You are a Consultant working for a global bank called ACME, with many branches worldwide. Your role is to introduce AI capabilities to the bank, ensuring its adoption including best practices, security, and standardization. 
 Before making recommendations or choosing an approach, you must learn critical concepts for building AI applications. 
 
 == AI Overview
+
 The rise of AI has created new roles in the industry, such as AI Engineers. These personas are responsible for building AI solutions, such as a chatbot, AI assistants, fraud detection systems, AI Agents, and more. The challenge is to bring standardization in a consistent, secure, and transparent way to drive adoption of AI.
 
 The diagram below shows the key personas involved in the AI development lifecycle and how they interact. Understanding these roles will help you achieve your goal as a Consultant since it will help you engage with the appropriate teams and make recommendations for future projects.
 
 image::ai-intro/personas_ai.png[Personas]
 
-Platform Engineers build and maintain ACME's Application PLatform: OpenShift. An application platform that provides foundational technologies with the necessary tools to support MLOps and AIOps engineers efficiently deploy models to production while following best practices. Then, AI Engineers will build AI applications using the deployed large language models (LLMs) that the Data Scientists first trained and built. 
+Platform Engineers build and maintain ACME's Application Platform: OpenShift. An application platform that provides foundational technologies with the necessary tools to support MLOps and AIOps engineers efficiently deploy models to production while following best practices. Then, AI Engineers will build AI applications using the deployed large language models (LLMs) that the Data Scientists first trained and built. 
 
 In the next sections, you will explore core AI concepts around AI applications, including standards, frameworks and protocols.
-
 
 == Overview of Retrieval-Augmented Generation (RAG)
 
@@ -44,19 +45,18 @@ A potential use case is a RAG-enabled chatbot that can query information related
 
 image::ai-intro/rag_how_works.png[RAG flow]
 
-
 === Benefits
 
-** Up-to-date Information: RAG techniques enable LLMs to keep information updated with relevant sources.
+* **Up-to-date Information**: RAG techniques enable LLMs to keep information updated with relevant sources.
 
-** Reduced Hallucinations: RAG reduces hallucinations given the specific domain knowledge acquired from the different sources.
+* **Reduced Hallucinations**: RAG reduces hallucinations given the specific domain knowledge acquired from the different sources.
 
-** Enhanced Domain-Specific Knowledge: With RAG, organizations can customize the LLM with specific knowledge according to their business needs and goals.
+* **Enhanced Domain-Specific Knowledge**: With RAG, organizations can customize the LLM with specific knowledge according to their business needs and goals.
 
-** Transparency: Organizations control the model-specific knowledge domain based on the sources used during RAG.
-
+* **Transparency**: Organizations control the model-specific knowledge domain based on the sources used during RAG.
 
 == AI Agents 
+
 Agents are applications that, on behalf of the user and autonomously, execute actions according to specific prompts using LLMs and third-party tools such as websites, databases, and APIs.
 
 === AI Agents vs AI workflows
@@ -80,15 +80,16 @@ AI Agent Frameworks help developers to build AI agents by reducing boilerplate c
 * Retain context from previous interactions
 
 === Agent Protocols
+
 ==== Agent2Agent (A2A)
 
-https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/[Agent2Agent^] is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. The protocol supports standard security protocols, and enables agent discovery using Agent Cards to access detailed information about a available agents.
+link:https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/[Agent2Agent^] is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. The protocol supports standard security protocols, and enables agent discovery using Agent Cards to access detailed information about a available agents.
 
 This is one of the most well-known agent protocols within their respective domains. While there are other competing protocols, these represent the current leading standards. Red Hat is not backing a specific protocol, but watching the market and will continually evaluate each protocol for market efficacy.
 
 ==== Model Context Protocol (MCP) 
 
-https://modelcontextprotocol.io/docs/getting-started/intro[Model Context Protocol^] is an open protocol, created by https://www.anthropic.com/news/model-context-protocol[Anthropic^]. It provides a standardized way for AI agents to expose and interact with tools and data sources, making it easier to build AI agents, workflows, and applications. It defines how applications can call external tools, retrieve data, and interact with other systems to enhance their capabilities.
+link:https://modelcontextprotocol.io/docs/getting-started/intro[Model Context Protocol^] is an open protocol, created by link:https://www.anthropic.com/news/model-context-protocol[Anthropic^]. It provides a standardized way for AI agents to expose and interact with tools and data sources, making it easier to build AI agents, workflows, and applications. It defines how applications can call external tools, retrieve data, and interact with other systems to enhance their capabilities.
 MCP provides defines both MCP clients and MCP servers. Developers can use MCP servers to enhance their applications by building functionalities that later will serve MCP clients that any AI applications will consume. 
 
 ==== Benefits
@@ -98,10 +99,10 @@ MCP provides defines both MCP clients and MCP servers. Developers can use MCP se
 
 image::ai-intro/mcp_architecture.png[MCP architecture]
 
-link:https://www.anthropic.com/news/model-context-protocol[Model Context Protocol- Anthropic website,window='_blank']
-
+link:https://www.anthropic.com/news/model-context-protocol[Model Context Protocol - Anthropic website,window='_blank']
 
 == Llama Stack Overview
+
 To standardize and bring best practices. Llama Stack (an open-source framework developed by Meta) consists of a set of tools for creating generative AI applications using standardized APIs. 
 
 The following image, created by the link:https://llama-stack.readthedocs.io/en/latest/[Llama Stack community,window='_blank'], shows the key components of Llama Stack are:
@@ -122,8 +123,8 @@ image::ai-intro/llama_stack.png[Llama Stack]
 === Benefits
 
 * Flexibility to work with different models, plugins, and developer tools.
-* Easy integration with AI tooling
-* Interoperability and Standardization when building AI applications
+* Easy integration with AI tooling.
+* Interoperability and Standardization when building AI applications.
 
 == Conclusion
 
@@ -135,4 +136,3 @@ During this section, you have explored the core AI concepts. You will learn how 
 * link:https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Enterprise-Ready AI Agents Blog (Red Hat),window='_blank']
 * link:https://www.redhat.com/en/topics/ai/what-is-agentic-ai?intcmp=7013a000003Sq0iAAC[What is Agentic AI (Red Hat),window='_blank']
 * link:https://a2a-protocol.org/latest/specification/[A2A,window='_blank']
-
