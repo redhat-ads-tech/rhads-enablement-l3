@@ -122,7 +122,7 @@ stringData:
 
 Update your Backstage CR to include the Argo CD secret:
 
-. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{m2_rhdh_project}/clusterserviceversions/rhdh-operator.v1.7.1/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and switch to the *YAML* view.
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{m2_rhdh_project}/clusterserviceversions/rhdh-operator.v1.8.0/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage CR in the OpenShift Web Console^] and switch to the *YAML* view.
 . Update the `extraEnvs.secrets` section to reference the *argocd-secrets* Secret you created:
 +
 [source,yaml,role=execute,subs=attributes+]

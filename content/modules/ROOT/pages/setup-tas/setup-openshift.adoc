@@ -4,7 +4,7 @@
 
 == Overview
 
-This guide covers the installation and configuration of Trusted Application Scanner (TAS) on OpenShift Container Platform. TAS on OpenShift leverages container orchestration for deployment and scalability. 
+This guide covers the installation and configuration of Trusted Application Signer (TAS) on OpenShift Container Platform. TAS on OpenShift leverages container orchestration for deployment and scalability. 
 
 In essence, it deploys the full infrastructure required for Signing and Verification, both keyful and keyless on Openshift. The important point here is - the "Signing and Verification Infrastructure" (in other words: TAS) is running on OpenShift. 
 

@@ -118,7 +118,7 @@ image::orchestrator-overview/rhdh-workflow-list.png[]
 
 This is a high level architectural overview of the Orchestrator:
 
-image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[]
+image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[link=self, window=_blank]
 
 ## Conclusion
 
