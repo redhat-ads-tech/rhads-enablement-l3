@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Setup Trusted Artifact Signer on OpenShift :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/setup-tas/setup-openshift.html">
+    <link rel="prev" href="setup.html">
+    <link rel="next" href="setup-rhel.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+            <a class="navbar-item navbar-item-right-content" href="env.html" target="_blank">Lab</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup.html">Foundations</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-ui/foundations.html">Module 5: Red Hat Developer Hub User Interface</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/foundations.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/customize-rhdh.html">Hands-on Lab: Customize RHDH Appearance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/techdocs-foundations.html">TechDocs Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-ui/techdocs-lab-user.html">TechDocs Lab 1: Creating and Editing TechDocs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/overview.html">Module 7: Getting started with security best practices</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/overview.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/security-practices.html">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/understanding-keyless.html">Understanding Keyless Signing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex1-signing-images.html">Image Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex2-git-signing.html">Commit Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex3-provenance.html">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex4-sboms.html">SBOM Creation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tssc-tpa/correlation.html">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex1-uploading-sboms.html">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex2-ui-usecases.html">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex3-licenses.html">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex1-chains.html">Tekton Chains</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex2-enterprise-contract.html">Conforma and Rego policies</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/ex3-sigstore-controller.html">Sigstore Admission Controller</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.1-sigstore-prep.html">Preparation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.2-sigstore-install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.3-sigstore-config.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.4-sigstore-cip.html">ClusterImagePolicies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex4-acs-controller.html">RHACS Admission Controller</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex-controller-summary.html">Admission Controllers Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/introduction.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/lab.html">Full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 11: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 12: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 13: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Module 14: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.html">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 15: RHADS Complete: Summary and Next Steps</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../env.html">My lab environment details</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="setup.html">Module 4: Setup Trusted Artifact Signer</a></li>
+    <li><a href="setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Setup Trusted Artifact Signer on OpenShift</h1>
+<div class="sect1">
+<h2 id="_overview"><a class="anchor" href="#_overview"></a>Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide covers the installation and configuration of Trusted Application Signer (TAS) on OpenShift Container Platform. TAS on OpenShift leverages container orchestration for deployment and scalability.</p>
+</div>
+<div class="paragraph">
+<p>In essence, it deploys the full infrastructure required for Signing and Verification, both keyful and keyless on Openshift. The important point here is - the "Signing and Verification Infrastructure" (in other words: TAS) is running on OpenShift.</p>
+</div>
+<div class="paragraph">
+<p>You can <em>*use*</em> TAS anywhere you have access to the provided endpoints:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Developers signing their code commits on their workstations</p>
+</li>
+<li>
+<p>CI/CD tasks running somewhere else (e.g. a Jenkins server on a VM)</p>
+</li>
+<li>
+<p>An admission controller on EKS</p>
+</li>
+<li>
+<p>A Tekton task running on some other OpenShift cluster, not the one we deployed to</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The only requirement for usage is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Signing</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Keyless - If you want to use keyless signing, you need network connectivity to the TAS endpoints and your OIDC system</p>
+</li>
+<li>
+<p>Keyful - With a pre-shared certificate bundle, you can sign without access to OIDC, but you lose some additional functionality (mapping of identity to signature / signing event). To generate tamper-proof evidence of the signature and the signing event, you need access to the TAS endpoints during signing.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Signature Verification</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Online - For online verification, your signature and additional claims are validated against the TAS Transparency Database, therefore you need access to TAS</p>
+</li>
+<li>
+<p>Offline - Offline verification is also possible (you need to transport some root certificates to the location where you want to verify - once during a root certificate rotation cycle)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The components that provide this functionality are:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Luckily we don&#8217;t have to deploy, configure and manage all of these components individually, as there is an Operator for that. More on that a bit later.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>CTLog (Certificate Transparency Log)</strong></p>
+</div>
+<div class="paragraph">
+<p>A certificate transparency log is an immutable, append-only, cryptographically verifiable log that stores all certificates issued by Fulcio, making certificate issuance publicly auditable. The CT log returns a Signed Certificate Timestamp (SCT), which is a promise of inclusion in the log that can be verified without accessing the log itself. Note that the Certificate Transparency log is separate from the Rekor transparency log - Fulcio&#8217;s CT Log only stores issued certificates, while Rekor stores artifact signatures and attestations. The CT log is backed by Trillian and implements RFC6962.</p>
+</div>
+<div class="paragraph">
+<p><strong>Fulcio</strong></p>
+</div>
+<div class="paragraph">
+<p>Fulcio is a free root certification authority that issues short-lived, temporary certificates to an authorized identity and publishes them in a transparency log. Fulcio issues code signing certificates based on OpenID Connect email addresses or workload identities, with certificates valid for only 10 minutes. During issuance, Fulcio sets the certificate&#8217;s subject alternative name to match the subject from the OIDC ID token and includes the OIDC issuer in the certificate. It provides the option to use existing self-managed keys maintained in third-party key management systems.</p>
+</div>
+<div class="paragraph">
+<p><strong>Rekor</strong></p>
+</div>
+<div class="paragraph">
+<p>Rekor provides a transparent and auditable way to store and verify signatures and metadata about software artifacts such as images and provenance information using an immutable, tamper-evident record of metadata. Rekor provides a RESTful API-based server for validation and a transparency log for storage, with a CLI application available to make and verify entries, query the log for inclusion proof, and retrieve entries. Rekor is built on top of a verifiable data structure, allowing auditors to monitor the log for consistency to ensure it remains append-only and entries are never mutated or removed.</p>
+</div>
+<div class="paragraph">
+<p><strong>Trillian</strong></p>
+</div>
+<div class="paragraph">
+<p>Trillian uses a Merkle tree to implement a verifiable log where every record inserted becomes a new leaf in the tree, with the single tree head hash acting as a snapshot of all records in the log. Trillian is a transparent, highly scalable and cryptographically verifiable data store that implements an append-only log mode. Trillian implements the concepts from the Verifiable Data Structures white paper and serves data from a storage layer to allow scalability to extremely large trees. Trillian always signs tree head hashes with a private key creating a signed tree head that clients verify using a published public key.</p>
+</div>
+<div class="paragraph">
+<p><strong>TUF (The Update Framework)</strong></p>
+</div>
+<div class="paragraph">
+<p>TUF allows systems to automatically retrieve trusted keys and certificates used to verify artifacts. In an enterprise deployment of Trusted Artifact Signer, TUF serves as the mechanism for securely distributing and updating trust roots, including the Fulcio CA certificate, Rekor public key, and Certificate Transparency log public key. TUF protects against attacks by cryptographically signing metadata about these keys and certificates, allowing clients to verify they are receiving authentic, untampered updates. Unlike the public Sigstore instance with multiple keyholders, in an enterprise TAS deployment the TUF root key is managed by the organization itself, providing enterprises with full control over their trust root and the ability to customize which keys and certificates are distributed to their signing and verification clients.</p>
+</div>
+<div class="paragraph">
+<p><strong>Timestamp Authority (TSA)</strong></p>
+</div>
+<div class="paragraph">
+<p>Timestamp Authorities issue signed timestamps following the RFC 3161 specification, making timestamps immutable and verifiable. Time is critical for verifying that short-lived certificates issued by Fulcio were valid when artifacts were signed. Signed timestamps are associated with a signature through "countersigning," ensuring that the signature was created at a certain time, and verifiers use the TSA&#8217;s certificate chain to verify signed timestamps. Using signed timestamps from timestamp authorities mitigates the risk of manipulation and distributes trust, as anyone can operate a TSA.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For authentication, <code>Fulcio</code> needs an OIDC provider - in this environment, we have configured installed Keycloak, with the "Red Hat Trusted Artifact Signer" realm and an OIDC Client.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>We have chosen Keycloak, but from a purely technical perspective, any standards-compliant OIDC provider will do. From a <strong>product perspective</strong>, we <strong>support</strong> the following <a href="https://docs.redhat.com/en/documentation/red_hat_trusted_artifact_signer/1/html/deployment_guide/rhtas-ocp-deploy#configure-additional-oidc-providers-rhel">OIDC providers</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat build of Keycloak</p>
+</li>
+<li>
+<p>Red Hat Single Sign-on (SSO)</p>
+</li>
+<li>
+<p>Google</p>
+</li>
+<li>
+<p>Amazon Security Token Service (STS)</p>
+</li>
+<li>
+<p>Microsoft Entra ID</p>
+</li>
+<li>
+<p>GitHub</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you encounter an OIDC provider that is currently not supported at your customer, you can</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>inform the product team on Slack via <code>#forum-trusted-artifact-signer</code> to include support for your/your customer&#8217;s desired OIDC provider going forward (that takes some time, though)</p>
+</li>
+<li>
+<p>in the meantime use Keycloak as a proxy :</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-identity-providers.png" alt="keycloak identity providers"></span></p>
+</div>
+<div class="paragraph">
+<p>Keycloak&#8217;s Identity Provider (IdP) federation is designed exactly for this scenario. Here&#8217;s how it works:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>External users authenticate via your configured Identity Provider (e.g., Google, Azure AD, another Keycloak instance, SAML provider)</p>
+</li>
+<li>
+<p>Keycloak creates local user representations for these external identities (either on first login or through synchronization)</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For our Keycloak example, we&#8217;ll use a couple of helper scripts again, so (if you haven&#8217;t done already) please open the {openshift_console_url}/terminal[terminal^,window="terminal"], logging in as <code>{openshift_admin_user} / {openshift_admin_password}</code>.</p>
+</div>
+<div class="paragraph">
+<p>Then, clone the following repository:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It&#8217;s a linux terminal, so use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>V</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>V</kbd></span> on macOS) for pasting 🐧
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers
+prerequisites/get-keycloak-info.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, you can go to the <a href="https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients" target="keycloak">Keycloak Admin console</a> and login with the username and password provided by the <code>get-keycloak-info.sh</code> script that you just executed.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>Clients</em> view, there is a <code>trusted-artifact-signer</code> client (you may need to advance to the next page if there are more than 10 clients to see it). This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when Fulcio requests an authenticated identity.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-clients-view.png" alt="keycloak clients view"></span></p>
+</div>
+<div class="paragraph">
+<p>If you open that client, you will see that this is a regular OIDC public authentication client, using the Standard OIDC Authorisation flow:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-standard-flow.png" alt="keycloak client standard flow"></span>
+<span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-direct-access-grants.png" alt="keycloak client direct access grants"></span></p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+There are configuration properties that you need to take care of (that go beyond the default client definition), should you build or configure a TAS OIDC Client: The <strong>Redirect URLs</strong> and three <strong>Client Scopes</strong>. These have already been configured for you, but it&#8217;s good to know what they are and why they are configured this way. We&#8217;ll take a look at them in more detail below.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Redirect URLs</strong></p>
+</div>
+<div class="paragraph">
+<p>In the <em>Access Settings</em>, under <em>Valid redirect URIs</em> you will see two URIs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An asterisk (*) to allow any URL to be redirected to after authentication</p>
+</li>
+<li>
+<p>A special OAuth 2.0 redirect URI that stands for "out-of-band" authorization: <code>urn:ietf:wg:oauth:2.0:oob</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-redirect-uris.png" alt="keycloak client redirect uris"></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>urn:ietf:wg:oauth:2.0:oob</code> URI is used when an OAuth client cannot receive the authorization response through a standard HTTP redirect. This is used in</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Desktop applications that don&#8217;t run a local web server</p>
+</li>
+<li>
+<p>Command-line tools where there&#8217;s no browser redirect capability</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This basically enables "browser-based" authentication when there is no browser (such as a terminal, we&#8217;ll come to that later) - and the asterisk is required for the local <code>cosign</code> and <code>gitsign</code> signing clients to display a confirmation page that originates from the local client, not a webserver.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Client Scopes</strong></p>
+</div>
+<div class="paragraph">
+<p>In the client definition, visit the <em>Client Scopes</em> tab, then select the <code>trusted-artifact-signer-dedicated</code> Client scope, where we can define scope mappers for all users authenticating via this client:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-scope-mappers.png" alt="keycloak client scope mappers"></span></p>
+</div>
+<div class="paragraph">
+<p>Here, we have three client scopes that Fulcio expects to be part of an OAuth Token provided by the OAuth server:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>email-verified</code> which is mapped to the user profile <code>emailVerified</code> property</p>
+</li>
+<li>
+<p><code>email</code> which is mapped to the user profile <code>email</code> property</p>
+</li>
+<li>
+<p><code>aud</code> (Audience) which is hard-coded (yes!) to <code>trusted-artifact-signer</code>. <strong>This needs to be part of the access token</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So, all users authenticating via this client, will have their email and email status part of their ID token, as well as the Audience (<code>aud</code>) defined as <code>trusted-artifact-signer</code>.</p>
+</div>
+<div class="paragraph">
+<p>Fulcio will not allow authentication via an arbitrary client, it will validate the existence of the <code>aud</code> token - also will it not allow authentication by users who haven&#8217;t verified their email.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You could of course hardcode the <code>email-verified</code> value&#8230;&#8203; that is up to you, but since Keycloak provides this feature, we&#8217;ll use it.</p>
+</div>
+<div class="paragraph">
+<p>Should you want to experiment with the upstream <a href="https://www.sigstore.dev/">sigstore</a> deployment, make sure your client gives the <code>sigstore</code> string as <code>aud</code> (audience).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_operator_installation"><a class="anchor" href="#_operator_installation"></a>Operator Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Trusted Artifact Signer Operator has already been installed in this environment, as we have a fully functional instance already running. Therefore, we&#8217;ll focus on the second step - deploying and configuring an instance.</p>
+</div>
+<div class="paragraph">
+<p>For sake of completeness - the Operator can be found on {openshift_console_url}/operatorhub/all-namespaces?keyword=trusted+artifact[OperatorHub^,window="console"]</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operatorhub.png" alt="tas operatorhub"></span></p>
+</div>
+<div class="paragraph">
+<p>The typical installation would install the operator in <code>openshift-operators</code> and have a deployment in one (or more) namespaces. Our pre-installed and configured TAS installation in this environment is exactly that:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Operator in {openshift_console_url}/k8s/cluster/projects/openshift-operators[<code>openshift-operators</code>^,window="console"]</p>
+</li>
+<li>
+<p>Instance in {openshift_console_url}/k8s/cluster/projects/tssc-tas[<code>tssc-tas</code>^,window="console"]</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-installed.png" alt="tas installed"></span></p>
+</div>
+<div class="paragraph">
+<p>So, we&#8217;ll skip the installation of the operator itself, but will install (deploy) and configure a new instance in our own namespace: <code>student-tas</code></p>
+</div>
+<div class="paragraph">
+<p>So, either create a new namespace <code>student-tas</code> via the {openshift_console_url}[admin console^,window="console"], or if you have the {openshift_console_url}/terminal[terminal^,window="terminal"] still open, via</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc new-project student-tas</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Either way, all the following instructions will use this namespace (and URLs generated from this namespace). Make sure the namespace is selected in the namespace dropdown or otherwise designated as the target namespace when performing the following steps.</p>
+</div>
+<div class="paragraph">
+<p>Being an operator, you can install it manually via the console or by deploying the Custom Resource to your namespace.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>As outlined above, Trusted Artifact Signer consists of a number of components that all need to work together (the structure  is inherited from the sigstore project)- but the good news is, you don&#8217;t have to manage them manually.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-components.png" alt="tas operator components"></span></p>
+</div>
+<div class="paragraph">
+<p>All we need to do is instantiate a new <code>Securesign</code> entity, which in turn will spin up and configure all others.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>So, using the console, let&#8217;s go to the {openshift_console_url}/k8s/ns/student-tas/operators.coreos.com~v1alpha1~ClusterServiceVersion?cluster-service-version=trusted["Installed Operators" view^,window="console"] from within our namespace:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operatorhub-student-tas.png" alt="tas operatorhub student tas"></span></p>
+</div>
+<div class="paragraph">
+<p>Click on the Operator name and click on <code>+ Create instance</code> in the Securesign tile to create a new <em>Securesign</em> here in the <code>student-tas</code> namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>spec.fulcio.config.OIDCIssuers.Issuer</code> and <code>spec.fulcio.config.OIDCIssuers.IssuerURL</code> - these are the only <strong>mandatory</strong> changes. Actually, just the URL (which is where Fulcio will request authentication) - the <em>Issuer</em> is a string by which the OIDC Provider will be identified throughout the flow, so using the URL as a name is a way of uniquely identifying the provider, in case you have multiple.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You <strong>can have multiple</strong> OIDC providers configured - when signing, you tell Fulcio which one to use. Fulcio will then have you challenged by the appropriate provider.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>The certificate configuration - certificates issued by Fulcio will have this configuration, therefore, when inspecting signatures, you will see this information. Not a technical requirement to change it from the default values, but you will want to :-)</p>
+</li>
+<li>
+<p>The k8s <code>Securesign</code> name - you should change to a meaningful name for your deployment and change every occurrence of <code>securesign-sample</code> to a better name.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign.png" alt="tas operator securesign"></span></p>
+</div>
+</li>
+<li>
+<p><strong>Click &amp; Expand: Here&#8217;s a full <code>Securesign</code> for you</strong></p>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="paragraph">
+<p>Here we have a full example tailored to our environment - feel free to either change the default from the operator or copy &amp; paste this one.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: Securesign
+apiVersion: rhtas.redhat.com/v1alpha1
+metadata:
+  annotations:
+    rhtas.redhat.com/metrics: 'true'
+  labels:
+    app.kubernetes.io/instance: student-securesign
+    app.kubernetes.io/name: student-securesign
+    app.kubernetes.io/part-of: trusted-artifact-signer
+  name: student-securesign
+  namespace: student-tas
+spec:
+  ctlog: null
+  fulcio:
+    certificate:
+      commonName: student.tas.signature
+      organizationEmail: signing-authority@redhat.com
+      organizationName: rhads-learners
+    config:
+      OIDCIssuers:
+        - ClientID: trusted-artifact-signer
+          Issuer: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'
+          IssuerURL: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'
+          Type: email
+    externalAccess:
+      enabled: true
+    monitoring:
+      enabled: true
+  rekor:
+    externalAccess:
+      enabled: true
+    monitoring:
+      enabled: true
+  trillian:
+    database:
+      create: true
+  tsa:
+    externalAccess:
+      enabled: true
+    monitoring:
+      enabled: true
+    ntpMonitoring:
+      enabled: true
+    signer:
+      certificateChain:
+        intermediateCA:
+          - commonName: timestamps.tas
+            organizationEmail: signing-authority@redhat.com
+            organizationName: Red Hat
+        leafCA:
+          commonName: timestamps.tas
+          organizationEmail: signing-authority@redhat.com
+          organizationName: Red Hat
+        rootCA:
+          commonName: timestamps.tas
+          organizationEmail: signing-authority@redhat.com
+          organizationName: Red Hat
+  tuf:
+    externalAccess:
+      enabled: true
+    keys:
+      - name: rekor.pub
+      - name: ctfe.pub
+      - name: fulcio_v1.crt.pem
+      - name: tsa.certchain.pem
+    pvc:
+      accessModes:
+        - ReadWriteOnce
+      retain: true
+      size: 100Mi
+    rootKeySecretRef:
+      name: tuf-root-keys</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Create your instance, then click on it to open and wait a moment until all Conditions (especially the top "Ready") are <code>true</code></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign-created.png" alt="tas operator securesign created"></span></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign-created-ready.png" alt="tas operator securesign created ready"></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As you might have guessed, instead of installing via the Console, you also could&#8217;ve copied the <code>Securesign</code> from the collapsible section above, created a file via <code>vim</code> or <code>nano</code> and simply applied it via <code>oc apply -f mySecureSign.yaml</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verification"><a class="anchor" href="#_verification"></a>Verification</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>To verify that signing and verification capabilities are working as expected, especially with container images, we need to run <code>podman</code> in a container. This is a bit cumbersome with the standard OpenShift Terminal, which is managed by the DevWorkSpaces Operator.</p>
+</div>
+<div class="paragraph">
+<p>Therefore, we have created a terminal ("Podman Terminal") that can do that and also has the required tools preinstalled.</p>
+</div>
+<div class="paragraph">
+<p>If you haven&#8217;t already done so, please open your {openshift_console_url}/terminal[OpenShift Terminal^,window="terminal"] and clone the "helpers" repository:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers/tas-verification
+./deploy-podman-terminal.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Click &amp; Expand to see the terminal output</strong></p>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="paragraph">
+<p>Terminal deployment output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Setting up "Podman Terminal" with OAuth Configuration
+========================================================
+Extracting OAuth configuration from OpenShift cluster...
+OIDC Client ID: ocp4_workload_advanced_developer_suite_openshift_keycloak_client_id
+Client Secret Name: openid-client-secret-bb6zw
+OIDC Client Secret: [REDACTED]
+OIDC Issuer URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+Cluster Ingress Domain: apps.cluster-mdt2d.dynamic.redhatworkshops.io
+Generating cookie secret...
+Cookie Secret: [REDACTED]
+
+Creating podman-terminal.yaml from template-podman-terminal.yaml...
+Successfully created podman-terminal.yaml
+
+Summary:
+  - OIDC Client ID: ocp4_workload_advanced_developer_suite_openshift_keycloak_client_id
+  - OIDC Issuer URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  - Cluster Ingress Domain: apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  - Generated cookie secret
+
+Deploying podman-terminal.yaml to OpenShift cluster...
+namespace/ttyd created
+serviceaccount/terminal-admin created
+clusterrolebinding.rbac.authorization.k8s.io/terminal-admin-cluster-binding unchanged
+clusterrole.rbac.authorization.k8s.io/system:openshift:scc:privileged-terminal unchanged
+rolebinding.rbac.authorization.k8s.io/terminal-admin-privileged-scc created
+secret/keycloak-oauth-secret created
+configmap/oauth2-proxy-config created
+deployment.apps/ttyd-admin-terminal created
+service/ttyd-admin-service created
+route.route.openshift.io/admin-terminal created
+
+Waiting for route to be created...
+
+================================
+Deployment successful!
+================================
+Terminal URL: https://admin-terminal-ttyd.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+================================</code></pre>
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>The last command copies the Cluster&#8217;s OAuth Configuration and deploys the new terminal (our "Podman Terminal")</p>
+</div>
+<div class="paragraph">
+<p>You should now have a new terminal <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">here</a> that we will be using for the verification steps. It make take a minute or so for the terminal to be ready, so if you get an "Application not available" or other message, wait a moment and refresh the page.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/security-practices/attention-please.png" alt="attention please">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>In this Lab environment, <strong>Trusted Artifact Signer</strong> and <strong>OpenShift</strong> use the same Keycloak Realm (in case you were wondering why it says "TRUSTED-ARTIFACT-SIGNER" when you login to OpenShift).</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>PLEASE LOG OUT OF THE {openshift_console_url}[OPENSHIFT CONSOLE^,window="console"] NOW</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock">If you&#8217;re still logged in as <code>admin</code>, the image signing and code commit signing steps below will <strong><em>automatically use the <code>admin</code> user</em></strong> since you already have an open session (with the console).</p>
+<p class="tableblock">You won&#8217;t be able to sign with <code>user1</code> / <code>{rhdh_user_password}</code>.</p>
+<p class="tableblock">It&#8217;s ok to sign with <code>admin</code> but we want to avoid the impression that signing is an admin task - as long as you have an OIDC Identity, you can sign.</p>
+<p class="tableblock">Also, all the ready-made examples that you can copy &amp; paste use <code>user1</code>.</p></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the "Podman Terminal", you have the cli-tools available that are the foundation of signing and verification with Trusted Artifact Signer (sigstore), namely</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Tool</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cosign</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A tool for container signing, verification, and storage in an OCI registry. It allows you to sign and verify container images and other artifacts, storing signatures and signed attestations alongside the artifacts themselves. Cosign integrates with Trusted Artifact Signer&#8217;s/Sigstore&#8217;s keyless signing infrastructure.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gitsign</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A tool that enables keyless signing of Git commits using Trusted Artifact Signer/Sigstore. It replaces the traditional GPG-based commit signing workflow with a more automated approach using ephemeral keys and OIDC authentication, with signatures stored in Rekor&#8217;s transparency log.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rekor-cli</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A command-line client for interacting with Rekor, Trusted Artifact Signer&#8217;s/Sigstore&#8217;s transparency log service. It allows you to upload artifact signatures, query the log for existing entries, verify signatures, and search for specific artifacts or public keys in the transparency log.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A command-line tool for Conforma (formerly Enterprise Contract) that securely verifies supply chain artifacts and enforces policies about how they were built and tested. It provides a manageable, scalable, and declarative way to ensure container images and other artifacts meet security and compliance requirements.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>In order to use the clients, we need to tell them where the appropriate endpoints are, such as the Fulcio certificate service, the OIDC Server and the Rekor endpoint for logging signing events.</p>
+</div>
+<div class="paragraph">
+<p>There are two ways to do that</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>via command-line parameter</p>
+</li>
+<li>
+<p>via environment variables</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Since these tools will often be used in an automated fashion (e.g. in a CI/CD pipeline), using the commandline is discouraged, because that would add those parameters to the log. Furthermore, most CI/CD systems have ways to set environment variables for their tasks to consume. Going forward, we will use the environment variable option. For the commandline options, check the respective <code>--help</code> commands.</p>
+</div>
+<div class="sect2">
+<h3 id="_our_deployment_environment"><a class="anchor" href="#_our_deployment_environment"></a>Our deployment environment</h3>
+<div class="paragraph">
+<p>The "Podman Terminal" has the endpoint variables set to the pre-deployed TAS in the <code>tssc-tas</code> namespace. You can check the configuration by typing <code>help</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Click &amp; Expand to see the terminal output</strong></p>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ help
+=== Trusted Artifact Signer (TAS) Environment Variables ===
+
+TUF Configuration:
+  TUF_URL: https://tuf-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  COSIGN_MIRROR: https://tuf-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  COSIGN_ROOT: https://tuf-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io/root.json
+
+OIDC Configuration:
+  OIDC_ISSUER_URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  COSIGN_OIDC_CLIENT_ID: trusted-artifact-signer
+  COSIGN_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  COSIGN_CERTIFICATE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  SIGSTORE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+
+Fulcio Configuration:
+  COSIGN_FULCIO_URL: https://fulcio-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  SIGSTORE_FULCIO_URL: https://fulcio-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+
+Rekor Configuration:
+  COSIGN_REKOR_URL: https://rekor-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  SIGSTORE_REKOR_URL: https://rekor-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+  REKOR_REKOR_SERVER: https://rekor-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+
+Other Settings:
+  COSIGN_YES: true
+
+TIP:
+You can set these variables to endpoints from a different TAS installation
+by calling "source ~/setup-tas-environment.sh &lt;your namespace&gt;"
+i.e. "source ~/setup-tas-environment.sh student-tas"
+
+You can reset to the default TAS installation by either
+
+-- run "source ~/setup-tas-environment.sh tssc-tas"
+-- type 'exit' and reconnect to the terminal
+-- nuking the terminal pod using the 'terminal-reset' command
+
+podman-terminal:/workspace$</code></pre>
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>Since we want to verify our deployment to <code>student-tas</code>, we&#8217;ll use the command to temporarily reconfigure to our TAS installation:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">source ~/setup-tas-environment.sh student-tas</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ source ~/setup-tas-environment.sh student-tas
+[INFO] Initializing TAS (Trusted Artifact Signer) environment variables...
+[INFO] Using TAS namespace: student-tas
+[INFO] TAS namespaces found. Retrieving configuration...
+[INFO] Retrieving TUF URL...
+[INFO] Retrieving Keycloak route...
+[INFO] Retrieving Fulcio URL...
+[INFO] Retrieving Rekor URL...
+[INFO] Adding TAS environment variables to ~/.bashrc...
+[INFO] TAS environment variables already configured in .bashrc
+[INFO] TAS environment variables initialized successfully!
+[INFO] TUF URL: https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+[INFO] OIDC Issuer URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+[INFO] Fulcio URL: https://fulcio-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+[INFO] Rekor URL: https://rekor-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+[INFO] Setting up global git configuration...
+[INFO] Configuring user information...
+[INFO] Configuring credential helper... INSECURE, just for workshop convenience!
+[INFO] Configuring signing settings...
+[INFO] Configuring gitsign settings...
+[INFO] Git configuration completed successfully!
+[INFO] Configured settings:
+[INFO]   User: Wile E. Coyote &lt;boom@acme.com&gt;
+[INFO]   Fulcio URL: https://fulcio-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+[INFO]   OIDC Issuer: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+[INFO]   Rekor URL: https://rekor-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+[INFO]   Client ID: trusted-artifact-signer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you type <code>help</code> again, you should now see all environment variables set to their endpoints in the <code>student-tas</code> namespace (with the exception of the OIDC endpoints, since we&#8217;re using the same Keycloak, Realm and Client for all TAS installations here).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_signing_and_verifying_container_images"><a class="anchor" href="#_signing_and_verifying_container_images"></a>Signing and verifying container images</h3>
+<div class="paragraph">
+<p>As the first step, we need to "initialize" <code>cosign</code> - this downloads public trust root certificates from the TUF endpoint that our TAS instance provides:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign initialize</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign initialize
+WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
+Root status:
+ {
+        "local": "/home/student/.sigstore/root",
+        "remote": "https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io",
+        "metadata": {
+                "root.json": {
+                        "version": 1,
+                        "len": 4128,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                },
+                "snapshot.json": {
+                        "version": 1,
+                        "len": 994,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                },
+                "targets.json": {
+                        "version": 1,
+                        "len": 2416,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                },
+                "timestamp.json": {
+                        "version": 1,
+                        "len": 995,
+                        "expiration": "22 Oct 26 16:21 UTC",
+                        "error": ""
+                }
+        },
+        "targets": [
+                "fulcio_v1.crt.pem",
+                "trusted_root.json",
+                "tsa.certchain.pem",
+                "ctfe.pub",
+                "rekor.pub"
+        ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For testing, we&#8217;ll create an empty container image and push it to the <a href="https://ttl.sh/" target="_blank" rel="noopener">ttl.sh</a> ephemeral container registry.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+echo "FROM scratch" &gt; ./tmp.Dockerfile
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+echo "FROM scratch" &gt; ./tmp.Dockerfile
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME
+STEP 1/1: FROM scratch
+COMMIT ttl.sh/rhtas/test-image-4be1a048:1h
+--&gt; 555cca0b8910
+Successfully tagged ttl.sh/rhtas/test-image-4be1a048:1h
+555cca0b89106c0b78185f2091e7708384ee7694f555d100ee5c7ba50e44dbcd
+Getting image source signatures
+Copying config 555cca0b89 done   |
+Writing manifest to image destination</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we&#8217;ll sign it:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign sign -y $IMAGE_NAME</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since we are running in a terminal session with no browser, we are presented with a URL that we need to open, pointing to our SSO (Keycloak) server. If we ran this locally on our desktops, a browser window would open directly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign sign -y $IMAGE_NAME
+Generating ephemeral keys...
+Retrieving signed certificate...
+
+        The sigstore service, hosted by sigstore a Series of LF Projects, LLC, is provided pursuant to the Hosted Project Tools Terms of Use, available at https://lfprojects.org/policies/hosted-project-tools-terms-of-use/.
+        Note that if your submission includes personal data associated with this signed artifact, it will be part of an immutable record.
+        This may include the email address associated with the account with which you authenticate your contractual Agreement.
+        This information will be used for signing this artifact and will be stored in public transparency logs and cannot be removed later, and is subject to the Immutable Record notice at https://lfprojects.org/policies/hosted-project-tools-immutable-records/.
+
+By typing 'y', you attest that (1) you are not submitting the personal data of any other person; and (2) you understand and agree to the statement and the Agreement terms at the URLs listed above.
+error opening browser: exec: "xdg-open": executable file not found in $PATH
+Go to the following link in a browser:
+
+         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&amp;client_id=trusted-artifact-signer&amp;code_challenge=DxXBBX3iEO2fNVNRZ-oEftgt5FwLYX_vsDixiRJ1Tnc&amp;code_challenge_method=S256&amp;nonce=34fQJpS9CBW6stygUkIaHgOT6tM&amp;redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&amp;response_type=code&amp;scope=openid+email&amp;state=34fQJoeiPNVwNTDFcTOzfVROYdm
+Enter verification code:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Open the URL and login with either <code>{rhdh_user}</code> and <code>{rhdh_user_password}</code> or as <code>{openshift_admin_user}</code> with <code>{openshift_admin_password}</code> and copy the resulting code:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You might automatically be signed in and presented with a token immediately.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Make sure to copy the whole code, which is longer than the text box.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/cosign-successcode.png" alt="cosign successcode"></span></p>
+</div>
+<div class="paragraph">
+<p>Paste the code into your Podman Terminal. Cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (<code>tlog</code> = "Transparency Log" = Rekor):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Enter verification code: 77ca50a9-1427-469a-a496-0d62e54d4b94.2e7ce116-84a4-40a4-bd30-94ef56b5d000.22114fef-296a-47ad-9333-f37452ce1033
+
+Successfully verified SCT...
+WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:1h uses a tag, not a digest, to identify the image to sign.
+    This can lead you to sign a different image than the intended one. Please use a
+    digest (example.com/ubuntu@sha256:abc123...) rather than tag
+    (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
+    images by tag will be removed in a future release.
+
+tlog entry created with index: 18
+Pushing signature to: ttl.sh/rhtas/test-image-4be1a048</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>To test our deployment, signing an image via an image tag (<code>test-image:1h</code>) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their unique digest.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>With <code>cosign tree</code> we can quickly check what Supply Chain Security Artifacts (Signatures, Attestations, SBOMs,&#8230;&#8203;) have been attached to this image:..</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign tree $IMAGE_NAME</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign tree $IMAGE_NAME
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:1h
+└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-4be1a048:sha256-a07d920dbb3de8e69dff08c3e94fb4fe1df7e7f859da67941673ff7e0f3769f7.sig
+   └── 🍒 sha256:9937a84e9e6e5ddb9612521094563b78f398292431b8f137144c2ac142f13e1a</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With <code>cosign verify</code> we can verify that</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>we have a valid signature</p>
+</li>
+<li>
+<p>that it was signed by the OIDC identity in question</p>
+</li>
+<li>
+<p>that the identity came from the OIDC system in question (here, we don&#8217;t provide an OIDC system, cosign reads that from the environment if the command line parameter isn&#8217;t given)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>(we add a <code>| jq</code> for better readability of the output)</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity=user1@demo.redhat.com \
+       $IMAGE_NAME | jq</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> instead by pressing the <kbd>⬆️</kbd> key and editing the username in the command. You will need to do this for all subsequent commands that use the <code>user1@demo.redhat.com</code> identity.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If we want to explicitly verify that the identity <code>user1@demo.redhat.com</code> (or <code>admin@demo.redhat.com</code> if you logged in as <code>admin</code> while generating the signature) was verified against our OIDC server and realm <code><a href="https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer" class="bare">https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</a></code>, we can add the <code>--certificate-oidc-issuer</code> parameter:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+              --certificate-oidc-issuer \
+              https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>We can also use <code>regular expressions</code>, using <strong><code>--certificate-identity-regexp</code></strong> and <strong><code>--certificate-oidc-issuer-regexp</code></strong> if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the <code>redhatworkshops.io</code> domain:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
+              --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' \
+              $IMAGE_NAME | jq</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can also verify that our signing event and associated metadata has been recorded in the write-only transparency database (Rekor).</p>
+</div>
+<div class="paragraph">
+<p>In our TAS deployment in the <code>student-tas</code> namespace, we have the <a href="https://rekor-search-ui-student-tas.{openshift_cluster_ingress_domain}" target="rekor">Rekor Search UI</a> that we can use to search for emails, log indexes (note the <code>tlog index</code> when signing), hashes or UUIDs:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/m4-tas-openshift/rekor-ui.png" alt="rekor ui"></span></p>
+</div>
+<div class="paragraph">
+<p><em>(If you look closely, you can also see that this signature was issued by the organisation <code>O=rhads-learners</code> with the common name (CN) <code>CN=student.tas.signature</code> )</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_signing_and_verifying_git_commits"><a class="anchor" href="#_signing_and_verifying_git_commits"></a>Signing and verifying <code>git</code> commits</h3>
+<div class="paragraph">
+<p>For interacting with <code>git</code> we&#8217;re using the <code>gitsign</code> cli tool. However, to use it, we also need the "trust root" from the TUF endpoint (which is downloaded to the user home under <code>~/.sigstore</code> - also see the output from the <code>cosign initialize</code> command, which outputs the location of the local and remote trust root )</p>
+</div>
+<div class="paragraph">
+<p>If you have already done it in the previous step, you can skip it, but we need to issue <strong><code>cosign initialize</code></strong> at least once for the local environment to be initialized.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Going forward - if you work with multiple TAS/sigstore instances, especially if these are different versions - sometimes you get errors when signing or verifying artifacts that can&#8217;t be explained, since you&#8217;ve done everything by the book.</p>
+</div>
+<div class="paragraph">
+<p>In these cases, it&#8217;s a good idea to <strong>delete the <code>~/.sigstore</code> directory and its contents</strong> and re-initialize (<code>cosign initialize</code> creates a fresh, new one). Sometimes, the trust root gets corrupted when updating it from multiple TAS/sigstore instances.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To test <code>git</code> commit signing, we need a git repo first - we can use the <code>l3-enablement-helpers</code> we have already used - committing is fine, we&#8217;re not pushing 😇</p>
+</div>
+<div class="paragraph">
+<p>So, let&#8217;s open our  <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">Podman Terminal</a> again and clone it, then add a new file:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers
+touch this-is-an-empty-file.txt
+git add .
+git status</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers
+touch this-is-an-empty-file.txt
+git add .
+git status
+Cloning into 'l3-enablement-helpers'...
+remote: Enumerating objects: 109, done.
+remote: Counting objects: 100% (109/109), done.
+remote: Compressing objects: 100% (81/81), done.
+remote: Total 109 (delta 54), reused 77 (delta 28), pack-reused 0 (from 0)
+Receiving objects: 100% (109/109), 28.61 KiB | 14.30 MiB/s, done.
+Resolving deltas: 100% (54/54), done.
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged &lt;file&gt;..." to unstage)
+        new file:   this-is-an-empty-file.txt
+
+podman-terminal:/workspace/l3-enablement-helpers (main) [+]$</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Please make sure your TAS endpoints are still configured to point to your <code>student-tas</code> namespace deployment by typing <code>'help'</code> and looking for the <code>student-tas</code>-based endpoints. Otherwise you&#8217;ll verify that the pre-configured lab environment is working (which we sure hope it is&#8230;&#8203; 😉 ). To reset the environment variables (in case you closed the terminal and re-opened it), run the same command as before:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">source ~/setup-tas-environment.sh student-tas</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Before we commit our change, let&#8217;s take a look at our <code>git</code> configuration:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git config --global --list</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
+commit.gpgsign=true
+tag.gpgsign=true
+gpg.x509.program=gitsign
+gpg.format=x509
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This section tells <code>git</code> to use <code>gpg</code>-style signing (similar to the "traditional" private key based signing), the format (<code>x509</code>) and which program should provide the key/certificate. In our case, this is <code>gitsign</code> (that we pre-installed for your convenience).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
+gitsign.fulcio=https://fulcio-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+gitsign.issuer=https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+gitsign.rekor=https://rekor-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
+gitsign.clientid=trusted-artifact-signer
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This section tells <code>gitsign</code> where the various endpoints are, so it can request a signing certificate and where it can store the signing event metadata.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We have chosen this path for convenience - with this configuration, git will automatically sign every commit (and tag) we create. <strong>For sake of completeness</strong> - we could also just commit without signing and then sign the commit later, using the <code>gitsign</code> binary directly, using the commit hash.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now, let&#8217;s commit this change:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git commit -m "added an empty file to test commit signing"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Again, you&#8217;ll be asked to copy the URL to a browser, login and then copy the result to the terminal again (if you&#8217;re not asked to login, but directly see the code, that&#8217;s because your Keycloak login session is still active. )</p>
+</div>
+<div class="paragraph">
+<p><strong>If you&#8217;d run this from your workstation (as a regular developer would do), the browser window would open directly</strong> - and if your session was still valid, you would just see a success message.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Don&#8217;t worry if "nothing happens" when you paste the code to your terminal session - gitsign doesn&#8217;t echo the code. Just hit <strong>return</strong> after pasting. If it doesn&#8217;t work, the commit won&#8217;t happen and you can try again.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main) [+]$ git commit -m "added an empty file to test commit signing"
+error opening browser: exec: "xdg-open": executable file not found in $PATH
+Go to the following link in a browser:
+
+         https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&amp;client_id=trusted-artifact-signer&amp;code_challenge=4OvrJrKnGjzzU-ENJck2tzNLTEhdJ1JnLmP04YjR52M&amp;code_challenge_method=S256&amp;nonce=34ZBbWJBdMmpAa3RQwHuVxSZmNk&amp;redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&amp;response_type=code&amp;scope=openid+email&amp;state=34ZBbcXNytmleT7V3DxndgnbIdV
+Enter verification code:
+tlog entry created with index: 1
+[main d22de69] added an empty file to test commit signing
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 this-is-an-empty-file.txt
+podman-terminal:/workspace/l3-enablement-helpers (main)$</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To verify your commit signature, you&#8217;d use <code>gitsign verify</code> - however, the traditional git signature verification means also work (<code>git log --show-signature</code>, <code>git verify-commit</code>), but they don&#8217;t verify the inclusion of the OIDC Identity and OIDC Issuer for that identity (called "certificate claims"), therefore are less secure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main)$ git log --show-signature -1
+commit d22de699250b5112928298d844a93eab34452ef1 (HEAD -&gt; main)
+tlog index: 1
+gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+Validated Git signature: true
+Validated Rekor entry: true
+Validated Certificate claims: false
+WARNING: git verify-commit does not verify cert claims. Prefer using `gitsign verify` instead.
+Author: Wile E. Coyote &lt;boom@acme.com&gt;
+Date:   Sat Oct 25 16:54:44 2025 +0000
+
+    added an empty file to test commit signing</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main)$ git verify-commit HEAD
+tlog index: 1
+gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+Validated Git signature: true
+Validated Rekor entry: true
+Validated Certificate claims: false
+WARNING: git verify-commit does not verify cert claims. Prefer using `gitsign verify` instead.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, let&#8217;s do it securely</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitsign verify --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+               --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+               HEAD</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers (main)$ gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+tlog index: 1
+gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+Validated Git signature: true
+Validated Rekor entry: true
+Validated Certificate claims: true
+podman-terminal:/workspace/l3-enablement-helpers (main)$</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+With <code>gitsign verify</code>, you can also use the <code>--certificate-identity-regexp</code> and <code>--certificate-oidc-issuer-regexp</code> for use with regular expressions, but we&#8217;ll skip this step here.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_verifying_signatures_and_attestations"><a class="anchor" href="#_verifying_signatures_and_attestations"></a>Verifying signatures and attestations</h3>
+<div class="paragraph">
+<p>Using <a href="https://conforma.dev/" target="conforma">Conforma</a> (TPFKAEC - The Project Formerly Known As Enterprise Contract 😆), we can not only validate the image signature, but also apply policies to the image and its associated attestations (metadata about the image, its provenance, etc.)</p>
+</div>
+<div class="paragraph">
+<p>Here, we&#8217;ll use a simple example without external policies - the <code>ec</code> client has a minimal set of built-in policies that check the image signature, if any attached attestations have been signed and are syntactically correct.</p>
+</div>
+<div class="paragraph">
+<p>Since we don&#8217;t know if our ephemeral image is still there, let&#8217;s quickly create a new one in our <a href="https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}" target="terminal">Podman Terminal</a>.</p>
+</div>
+<div class="paragraph">
+<p>For convenience, we&#8217;ll include the commands for setting the environment to our TAS deployment in <code>student-tas</code> and the <code>cosign initialize</code> so we&#8217;re all set for the "real" exercise:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cd /workspace
+source ~/setup-tas-environment.sh student-tas
+cosign initialize
+echo "FROM scratch" &gt; ./tmp.Dockerfile
+UUID=$(uuidgen | cut -d'-' -f1)
+IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
+podman push $IMAGE_NAME
+cosign sign -y $IMAGE_NAME</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have successfully signed the image, let&#8217;s create a simple "Predicate File" that doesn&#8217;t contain much information about the build process but is at least syntactically correct (according to the <a href="https://slsa.dev/spec/v1.0/provenance" target="slsa">SLSA predicate specification</a>)</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &gt; predicate.json &lt;&lt; 'EOF'
+{
+  "builder": {
+    "id": "https://localhost/dummy-id"
+  },
+  "buildType": "https://example.com/tekton-pipeline",
+  "invocation": {},
+  "buildConfig": {},
+  "metadata": {
+    "completeness": {
+      "parameters": false,
+      "environment": false,
+      "materials": false
+    },
+    "reproducible": false
+  },
+  "materials": []
+}
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that we have a predicate file, we can attest that (sign and attach it to the image)</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Again, we will have to verify our identity (by logging into Keycloak and copying the success code - or, if run from a local workstation, just by logging into Keycloak).</p>
+</div>
+<div class="paragraph">
+<p>With <code>cosign tree</code>, this time we&#8217;ll not only see the image signature but also the attestation:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+cosign tree $IMAGE_NAME</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ cosign tree $IMAGE_NAME
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:1h
+└── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.att
+   └── 🍒 sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
+└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.sig
+   └── 🍒 sha256:f9266c99008d19ca8f82ef47ce654f9b1eb1ed840dfc2bf2286a89100a294abf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We will now verify the attestation as well as the image using <code>ec</code> - enterprise contract, which has an embedded <code>cosign</code> version for the image signature verification part:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec version</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ ec version
+Version            v0.6.223+redhat
+Source ID          acaa315ecfaffa3a8cae5818d666067c5b74c595
+Change date        2025-08-12 15:03:16 +0000 UTC (10 weeks ago)
+ECC                v0.1.79
+OPA                v0.70.0
+Conftest           v0.55.0
+Cosign             v2.4.1
+Sigstore           v1.8.9
+Rekor              v1.3.6
+Tekton Pipeline    v0.66.0
+Kubernetes Client  v0.31.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For a short report, showing the rules applied and successes or violations:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IMAGE_NAME="ttl.sh/rhtas/test-image-my-guid:1h"
+ec validate image --image $IMAGE_NAME \
+                  --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+                  --show-successes</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace$ ec validate image --image $IMAGE_NAME --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+Success: true
+Result: SUCCESS
+Violations: 0, Warnings: 0, Successes: 3
+Component: Unnamed
+ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+
+Results:
+✓ [Success] builtin.attestation.signature_check
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+
+✓ [Success] builtin.attestation.syntax_check
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+
+✓ [Success] builtin.image.signature_check
+  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, we can see that the built-in minimal policies have been applied and succeeded:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>builtin.attestation.signature_check</code> (Checking the attestation signature, not the attestation itself)</p>
+</li>
+<li>
+<p><code>builtin.attestation.syntax_check</code> (Checking the attestation syntax)</p>
+</li>
+<li>
+<p><code>builtin.image.signature_check</code> (Checking the image signature)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a more verbose report, use</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ec validate image --image $IMAGE_NAME \
+                  --certificate-identity=user1@demo.redhat.com \<i class="conum" data-value="1"></i><b>(1)</b>
+                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+                  --output json --show-successes | jq</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you signed with the admin user, you will get an error - use <code>admin@demo.redhat.com</code> here instead</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Click &amp; Expand to see a full JSON report</strong></p>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">{
+  "success": true,
+  "components": [
+    {
+      "name": "Unnamed",
+      "containerImage": "ttl.sh/rhtas/test-image@sha256:2b729297e54dde40b262b1569ac5327584b084ac2e25a1a0d5a1d7e173edc2fe",
+      "source": {},
+      "successes": [
+        {
+          "msg": "Pass",
+          "metadata": {
+            "code": "builtin.attestation.signature_check"
+          }
+        },
+        {
+          "msg": "Pass",
+          "metadata": {
+            "code": "builtin.attestation.syntax_check"
+          }
+        },
+        {
+          "msg": "Pass",
+          "metadata": {
+            "code": "builtin.image.signature_check"
+          }
+        }
+      ],
+      "success": true,
+      "signatures": [
+        {
+          "keyid": "bf71334a22a35e2eafaf5c75d0d2c4df36a4da5b",
+          "sig": "MEUCIQCVgpo7o1eNexaf/XhGxEpDmq05/wUnAkvG7PNj0zEy1wIgZnrPxTGYY3n5LASfexGVcDvo32gg+LqzUq3taxElqyU=",
+          "certificate": "-----BEGIN CERTIFICATE-----\nMIIDSjCCAtCgAwIBAgIUUGRwv7pYLo2eNmlzrtSt+c/9X1AwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjUxODI1MTJaFw0yNTEwMjUxODM1MTJaMAAwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAARBSXny1QX3oCts3Wq5K/64GXpqvZfZFZin\nvs/Z09MhztcCSR48QGhO7qxSTbt/v148t5JJhXSnCgyVLIuqRqp5o4IB7TCCAekw\nDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMDMB0GA1UdDgQWBBS/\ncTNKIqNeLq+vXHXQ0sTfNqTaWzAfBgNVHSMEGDAWgBTQtJ+85SHJhw7HpZ5m1kun\nXp9DOTAjBgNVHREBAf8EGTAXgRV1c2VyMUBkZW1vLnJlZGhhdC5jb20wZgYKKwYB\nBAGDvzABAQRYaHR0cHM6Ly9zc28uYXBwcy5jbHVzdGVyLW1kdDJkLmR5bmFtaWMu\ncmVkaGF0d29ya3Nob3BzLmlvL3JlYWxtcy90cnVzdGVkLWFydGlmYWN0LXNpZ25l\ncjBoBgorBgEEAYO/MAEIBFoMWGh0dHBzOi8vc3NvLmFwcHMuY2x1c3Rlci1tZHQy\nZC5keW5hbWljLnJlZGhhdHdvcmtzaG9wcy5pby9yZWFsbXMvdHJ1c3RlZC1hcnRp\nZmFjdC1zaWduZXIwgYoGCisGAQQB1nkCBAIEfAR6AHgAdgAntg9v0EXj9byDUYlK\nRjGJ7T6IgDOxI+gSY6kPQGLZPQAAAZocnhCgAAAEAwBHMEUCIBvR62yvz6fuvNoD\nKS2YDaEIVzDR4iPr9avgbMUr+ZQEAiEA8Zwr4vADLh4ToCUT0ciZw5kgbpyg/xcn\nXR48QaOuBkcwCgYIKoZIzj0EAwMDaAAwZQIxAOo/cQ8y6lfLjxpupkFP0Yc3hxg+\nVI3Bi+AQt0PGjfmZP7Sedeuh0vLmuUwwvrd6sQIwG5c9mNdtextX7BU8M1wKR1lZ\n+tNxOCVwpotUnV5QWWvnbifZ2cVuO4ui2rXUU6c5\n-----END CERTIFICATE-----\n",
+          "chain": [
+            "-----BEGIN CERTIFICATE-----\nMIICGzCCAaKgAwIBAgIUeQ9002+2r8EeXuUNYYQaiE0Rl1wwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjMxNjIwMThaFw0zNTEwMjExNjIwMThaMDkxFzAV\nBgNVBAoTDnJoYWRzLWxlYXJuZXJzMR4wHAYDVQQDExVzdHVkZW50LnRhcy5zaWdu\nYXR1cmUwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAASYPgxD66u0p+1gA8v/QYyaTBS2\nFoI5fUfom77eynF2+f/lo61ddiwYcXRzPQpbEPJlj+IqwdVw/1ILpQKMUXK+cmny\nxgRI1ngP5yS8iMbpXLxcIPxAj24rmMMou3eE8+2jazBpMA4GA1UdDwEB/wQEAwIB\nBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTQtJ+85SHJhw7HpZ5m1kunXp9D\nOTAnBgNVHREEIDAegRxzaWduaW5nLWF1dGhvcml0eUByZWRoYXQuY29tMAoGCCqG\nSM49BAMDA2cAMGQCMBfrVuUXCTAFqCeNDPscIXpwhfL9WZCAtPT1mjaxYay7nd9a\nAlPy2FLS6CQo8aPfoQIwcIco4IiFTuazS8uKx0ia7v1MvMulOr/IaK0Ilo085YgO\n+UpgwhK3d2ndd/X6NfcE\n-----END CERTIFICATE-----\n"
+          ],
+          "metadata": {
+            "Fulcio Issuer": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+            "Fulcio Issuer (V2)": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+            "Issuer": "CN=student.tas.signature,O=rhads-learners",
+            "Not After": "2025-10-25T18:35:12Z",
+            "Not Before": "2025-10-25T18:25:12Z",
+            "Serial Number": "506470bfba582e8d9e366973aed4adf9cffd5f50",
+            "Subject Alternative Name": "Email Addresses:user1@demo.redhat.com"
+          }
+        }
+      ],
+      "attestations": [
+        {
+          "type": "https://in-toto.io/Statement/v0.1",
+          "predicateType": "https://slsa.dev/provenance/v0.2",
+          "predicateBuildType": "https://example.com/tekton-pipeline",
+          "signatures": [
+            {
+              "keyid": "5bcac235a061db21436f6863df983b6e53a66800",
+              "sig": "MEUCID7O+Ib2jLHnr67scZS5J5WsukOqZTHgxK62EzAc1ZaFAiEA6TCM8PFXIMy3OXJcrCsg+ubpJVLf4YTTZrcty8CHCso=",
+              "certificate": "-----BEGIN CERTIFICATE-----\nMIIDSjCCAtCgAwIBAgIUNhVKgTJStJgPSJUaRPgkRqJZ8AcwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjUxODI2MzBaFw0yNTEwMjUxODM2MzBaMAAwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR23VODr/GdA4beOCJOWskKzxtchaoF4QS+\nmL5JzhVg4FyTHEDBNJG4bX2agks4tTQpKsr2mT/FowKbyzftm6FIo4IB7TCCAekw\nDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoGCCsGAQUFBwMDMB0GA1UdDgQWBBRb\nysI1oGHbIUNvaGPfmDtuU6ZoADAfBgNVHSMEGDAWgBTQtJ+85SHJhw7HpZ5m1kun\nXp9DOTAjBgNVHREBAf8EGTAXgRV1c2VyMUBkZW1vLnJlZGhhdC5jb20wZgYKKwYB\nBAGDvzABAQRYaHR0cHM6Ly9zc28uYXBwcy5jbHVzdGVyLW1kdDJkLmR5bmFtaWMu\ncmVkaGF0d29ya3Nob3BzLmlvL3JlYWxtcy90cnVzdGVkLWFydGlmYWN0LXNpZ25l\ncjBoBgorBgEEAYO/MAEIBFoMWGh0dHBzOi8vc3NvLmFwcHMuY2x1c3Rlci1tZHQy\nZC5keW5hbWljLnJlZGhhdHdvcmtzaG9wcy5pby9yZWFsbXMvdHJ1c3RlZC1hcnRp\nZmFjdC1zaWduZXIwgYoGCisGAQQB1nkCBAIEfAR6AHgAdgAntg9v0EXj9byDUYlK\nRjGJ7T6IgDOxI+gSY6kPQGLZPQAAAZocn0KDAAAEAwBHMEUCIQCz1ULYXSOjwnTg\n7gWRdqJ4Ilo6vrUACve0RCeCEhwQfgIgeJnKKoGxNH8tunJEZLD7CiDSJACfpMk2\nEdiJdyjaAmYwCgYIKoZIzj0EAwMDaAAwZQIxAIdOztqx8IElBbQeMrCNUg4YQ+2E\nTXGk8lFmS8HSJ8ZAQHZ/kuHKubzJ7QZDmQsGuQIweXsYLOTXUV9LMJZEMKmmzFa1\nmzWyypdnSF1Na+qOqLWCs8ajgRANB32SeIE+I3vK\n-----END CERTIFICATE-----\n",
+              "chain": [
+                "-----BEGIN CERTIFICATE-----\nMIICGzCCAaKgAwIBAgIUeQ9002+2r8EeXuUNYYQaiE0Rl1wwCgYIKoZIzj0EAwMw\nOTEXMBUGA1UEChMOcmhhZHMtbGVhcm5lcnMxHjAcBgNVBAMTFXN0dWRlbnQudGFz\nLnNpZ25hdHVyZTAeFw0yNTEwMjMxNjIwMThaFw0zNTEwMjExNjIwMThaMDkxFzAV\nBgNVBAoTDnJoYWRzLWxlYXJuZXJzMR4wHAYDVQQDExVzdHVkZW50LnRhcy5zaWdu\nYXR1cmUwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAASYPgxD66u0p+1gA8v/QYyaTBS2\nFoI5fUfom77eynF2+f/lo61ddiwYcXRzPQpbEPJlj+IqwdVw/1ILpQKMUXK+cmny\nxgRI1ngP5yS8iMbpXLxcIPxAj24rmMMou3eE8+2jazBpMA4GA1UdDwEB/wQEAwIB\nBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTQtJ+85SHJhw7HpZ5m1kunXp9D\nOTAnBgNVHREEIDAegRxzaWduaW5nLWF1dGhvcml0eUByZWRoYXQuY29tMAoGCCqG\nSM49BAMDA2cAMGQCMBfrVuUXCTAFqCeNDPscIXpwhfL9WZCAtPT1mjaxYay7nd9a\nAlPy2FLS6CQo8aPfoQIwcIco4IiFTuazS8uKx0ia7v1MvMulOr/IaK0Ilo085YgO\n+UpgwhK3d2ndd/X6NfcE\n-----END CERTIFICATE-----\n"
+              ],
+              "metadata": {
+                "Fulcio Issuer": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+                "Fulcio Issuer (V2)": "https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer",
+                "Issuer": "CN=student.tas.signature,O=rhads-learners",
+                "Not After": "2025-10-25T18:36:30Z",
+                "Not Before": "2025-10-25T18:26:30Z",
+                "Serial Number": "36154a813252b4980f48951a44f82446a259f007",
+                "Subject Alternative Name": "Email Addresses:user1@demo.redhat.com"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key": "",
+  "policy": {},
+  "ec-version": "v0.6.223+redhat",
+  "effective-time": "2025-10-25T18:47:21.407618703Z"
+}</code></pre>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_congratulations"><a class="anchor" href="#_congratulations"></a>Congratulations!</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You&#8217;ve successfully installed and configured Trusted Artifact Signer (TAS) on OpenShift! In this module, you accomplished:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Installed TAS using the Operator</strong> which deployed all the core infrastructure components (Fulcio, Rekor, CTLog, Trillian, and TUF)</p>
+</li>
+<li>
+<p><strong>Configured the signing and verification infrastructure</strong> running on your OpenShift cluster with all endpoints accessible</p>
+</li>
+<li>
+<p><strong>Successfully signed container images</strong> using keyless signing with OIDC authentication through Cosign</p>
+</li>
+<li>
+<p><strong>Verified signatures and attestations</strong> using both online verification against the TAS transparency database and Enterprise Contract (EC) policy validation</p>
+</li>
+<li>
+<p><strong>Demonstrated the full signing workflow</strong> from image creation through signing to verification with policy enforcement</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This knowledge is valuable for customer engagements because it demonstrates:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Enterprise signing infrastructure</strong>: You can show customers how to deploy a self-managed, enterprise-grade signing and verification infrastructure on OpenShift that gives them full control over their trust roots</p>
+</li>
+<li>
+<p><strong>Keyless signing workflows</strong>: The OIDC-based keyless signing approach eliminates key management complexity while providing strong cryptographic guarantees</p>
+</li>
+<li>
+<p><strong>Flexible deployment model</strong>: TAS infrastructure runs on OpenShift, but can be used from anywhere - workstations, CI/CD pipelines, other clusters, or cloud services - demonstrating true infrastructure-as-a-service capability</p>
+</li>
+<li>
+<p><strong>Policy enforcement capabilities</strong>: Enterprise Contract integration shows how customers can enforce security and compliance policies during verification, not just validate signatures</p>
+</li>
+<li>
+<p><strong>Production-ready patterns</strong>: The verification workflows demonstrate both online (against transparency logs) and offline verification scenarios that customers will need in various deployment contexts</p>
+</li>
+<li>
+<p><strong>Real-world application</strong>: Customers can immediately apply these installation and verification patterns to build secure software supply chains with artifact signing integrated into their development and deployment pipelines</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="setup.html" class="query-params-link">Module 4: Setup Trusted Artifact Signer</a></span>
+  <span class="next"><a href="setup-rhel.html" class="query-params-link">Setup Trusted Artifact Signer on RHEL</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
