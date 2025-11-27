@@ -16,7 +16,7 @@ Software templates provide the manifests to build, deploy, and promote any appli
 
 == About pre-defined software templates
 
-Pre-defined software templates are included with the RHADS installation. They provide recipes users can leverage to start bringing applications into OpenShift. These templates offer a starting point and reference for building applications using the Trusted Software Supply Chain (TSSC). They are not intended for production use; customers can add their own configurations on top of these templates by following the link:https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite$$_-$$_software_supply_chain/1.7/html/customizing_red_hat_advanced_developer_suite$$_-$$_software_supply_chain/index[Customizing Red Hat Advanced Developer Suite - Software supply chain documentation^].
+Pre-defined software templates are included with the RHADS installation. They provide recipes users can leverage to start bringing applications into OpenShift. These templates offer a starting point and reference for building applications using the Trusted Software Supply Chain (TSSC). They are not intended for production use; customers can add their own configurations on top of these templates by following the https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite$$_-$$_software_supply_chain/1.7/html/customizing_red_hat_advanced_developer_suite$$_-$$_software_supply_chain/index[Customizing Red Hat Advanced Developer Suite - Software supply chain documentation^].
 
 == Create the component
 
@@ -119,7 +119,7 @@ Two repositories were created, both required to build and deploy the application
 * *Source Repository*: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production). It also contains a sample app, which AI Engineers will use to add the AI Agent.
 
 * *GitOps Repository*: Represents the AI application deployment configuration, including all the necessary manifests to deploy the application in OpenShift.
-Learn more about these templates at link:https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite$$_-$$_software_supply_chain/1.7/html/customizing_red_hat_advanced_developer_suite$$_-$$_software_supply_chain/customizing-sample-pipelines_default[Customizing Sample Pipelines^].
+Learn more about these templates at https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite$$_-$$_software_supply_chain/1.7/html/customizing_red_hat_advanced_developer_suite$$_-$$_software_supply_chain/customizing-sample-pipelines_default[Customizing Sample Pipelines^].
 
 == Adding more configurations
 

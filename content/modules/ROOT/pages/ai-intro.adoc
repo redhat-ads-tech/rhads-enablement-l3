@@ -83,13 +83,13 @@ AI Agent Frameworks help developers to build AI agents by reducing boilerplate c
 
 ==== Agent2Agent (A2A)
 
-link:https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/[Agent2Agent^] is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. The protocol supports standard security protocols, and enables agent discovery using Agent Cards to access detailed information about a available agents.
+https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/[Agent2Agent^] is an open protocol designed to manage the communication between agents, providing standard synchronous communication with JSON-RPC 2.0 and asynchronous push notifications. The protocol supports standard security protocols, and enables agent discovery using Agent Cards to access detailed information about a available agents.
 
 This is one of the most well-known agent protocols within their respective domains. While there are other competing protocols, these represent the current leading standards. Red Hat is not backing a specific protocol, but watching the market and will continually evaluate each protocol for market efficacy.
 
 ==== Model Context Protocol (MCP) 
 
-link:https://modelcontextprotocol.io/docs/getting-started/intro[Model Context Protocol^] is an open protocol, created by link:https://www.anthropic.com/news/model-context-protocol[Anthropic^]. It provides a standardized way for AI agents to expose and interact with tools and data sources, making it easier to build AI agents, workflows, and applications. It defines how applications can call external tools, retrieve data, and interact with other systems to enhance their capabilities.
+https://modelcontextprotocol.io/docs/getting-started/intro[Model Context Protocol^] is an open protocol, created by https://www.anthropic.com/news/model-context-protocol[Anthropic^]. It provides a standardized way for AI agents to expose and interact with tools and data sources, making it easier to build AI agents, workflows, and applications. It defines how applications can call external tools, retrieve data, and interact with other systems to enhance their capabilities.
 MCP provides defines both MCP clients and MCP servers. Developers can use MCP servers to enhance their applications by building functionalities that later will serve MCP clients that any AI applications will consume. 
 
 ==== Benefits
@@ -99,13 +99,13 @@ MCP provides defines both MCP clients and MCP servers. Developers can use MCP se
 
 image::ai-intro/mcp_architecture.png[MCP architecture]
 
-link:https://www.anthropic.com/news/model-context-protocol[Model Context Protocol - Anthropic website,window='_blank']
+https://www.anthropic.com/news/model-context-protocol[Model Context Protocol - Anthropic website,window='_blank']
 
 == Llama Stack Overview
 
 To standardize and bring best practices. Llama Stack (an open-source framework developed by Meta) consists of a set of tools for creating generative AI applications using standardized APIs. 
 
-The following image, created by the link:https://llama-stack.readthedocs.io/en/latest/[Llama Stack community,window='_blank'], shows the key components of Llama Stack are:
+The following image, created by the https://llama-stack.readthedocs.io/en/latest/[Llama Stack community,window='_blank'], shows the key components of Llama Stack are:
 
 * Unified API layer supporting:
 * Plugin architecture that supports many APIs across various environments (mobile, cloud, on-premise). This architecture allows for rapid deployment of prepackaged and verified distributions.
@@ -132,7 +132,7 @@ During this section, you have explored the core AI concepts. You will learn how 
 
 == References
 
-* link:https://llama-stack.readthedocs.io/en/latest/[Llama Stack,window='_blank']
-* link:https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Enterprise-Ready AI Agents Blog (Red Hat),window='_blank']
-* link:https://www.redhat.com/en/topics/ai/what-is-agentic-ai?intcmp=7013a000003Sq0iAAC[What is Agentic AI (Red Hat),window='_blank']
-* link:https://a2a-protocol.org/latest/specification/[A2A,window='_blank']
+* https://llama-stack.readthedocs.io/en/latest/[Llama Stack,window='_blank']
+* https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Enterprise-Ready AI Agents Blog (Red Hat),window='_blank']
+* https://www.redhat.com/en/topics/ai/what-is-agentic-ai?intcmp=7013a000003Sq0iAAC[What is Agentic AI (Red Hat),window='_blank']
+* https://a2a-protocol.org/latest/specification/[A2A,window='_blank']

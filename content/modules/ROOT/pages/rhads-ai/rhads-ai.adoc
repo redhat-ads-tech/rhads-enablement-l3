@@ -9,7 +9,7 @@ Red Hat offers products to build, deploy, and consume models and AI applications
 
 image:rhads-ai/rh-ai.png[Podman AI Lab, link=self, window="image"]
 
-Learn more about link:https://www.redhat.com/en/products/ai[Red Hat AI,window='_blank']
+Learn more about https://www.redhat.com/en/products/ai[Red Hat AI,window='_blank']
 
 [#rhads-ai]
 == How RHADS enables AI tools for AI Engineers
@@ -41,13 +41,13 @@ image:rhads-ai/podman-ai-lab.png[Podman AI Lab, link=self, window="image"]
 
 Red Hat OpenShift Dev Spaces leverages extensions to connect Software and AI Engineers with diverse AI assistants. These assistants streamline software development by reducing repetitive code and accelerating troubleshooting. Furthermore, these AI assistants can integrate with MCP (Model Context Protocol) Servers, enabling them to interact intelligently with external systems, APIs, and third-party tools
 
-An example can be seen in the link:https://developers.redhat.com/articles/2024/08/12/integrate-private-ai-coding-assistant-ollama#the_devfile_and_how_it_works[Integrate a private AI coding assistant into your CDE using Ollama, Continue, and OpenShift Dev Spaces,window='_blank'] blog post.
+An example can be seen in the https://developers.redhat.com/articles/2024/08/12/integrate-private-ai-coding-assistant-ollama#the_devfile_and_how_it_works[Integrate a private AI coding assistant into your CDE using Ollama, Continue, and OpenShift Dev Spaces,window='_blank'] blog post.
 
 == Introduction to Llama Stack Operator
 
 The Llama Stack Operator enables access to Llama Stack functionality on a Kubernetes cluster - in our case, that's OpenShift. The team will be able to leverage Llama Stack to build their AI applications on OpenShift, simplifying the developer experience and standardizing AI application development.
 
-The Llama Stack is a community project responsible for creating and managing the llama-stack server. Learn more by viewing the link:https://github.com/llamastack/llama-stack-k8s-operator[Llama Stack Operator GitHub,window='_blank']
+The Llama Stack is a community project responsible for creating and managing the llama-stack server. Learn more by viewing the https://github.com/llamastack/llama-stack-k8s-operator[Llama Stack Operator GitHub,window='_blank']
 
 === Including MCP integrations
 
@@ -55,4 +55,4 @@ The Llama Stack Operator organizations can access many MCP servers through MCP c
 
 == References:
 
-* link:https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Building enterprise-ready AI agents: Streamlined development with Red Hat AI, window='_blank']
+* https://www.redhat.com/en/blog/building-enterprise-ready-ai-agents-streamlined-development-red-hat-openshift-ai[Building enterprise-ready AI agents: Streamlined development with Red Hat AI, window='_blank']

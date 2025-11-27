@@ -37,7 +37,7 @@ image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
 
 == Configure the AI Assistant in Red Hat OpenShift Dev Spaces
 
-We want to use an AI assistant within OpenShift Dev Spaces. For this lab, we'll use *link:https://www.continue.dev[Continue^]*. Organizations might use others, such as *Claude* or *Microsoft Copilot*.
+We want to use an AI assistant within OpenShift Dev Spaces. For this lab, we'll use *https://www.continue.dev[Continue^]*. Organizations might use others, such as *Claude* or *Microsoft Copilot*.
 In many organizations, developers use AI Assistants to increase productivity. Learning about these tools is key to understanding how AI can be leveraged within Red Hat products.
 
 * In *Red Hat OpenShift Dev Spaces*, click *Extensions*.
@@ -106,7 +106,7 @@ context:
   - provider: codebase
 ----
 
-**  If needed, verify the solution: link:https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml[config.yaml AI assistant config file^]
+**  If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml[config.yaml AI assistant config file^]
 
 * *Paste* it into the `config.yaml` file created by continue.
 
@@ -116,9 +116,9 @@ Next, you will add the Model's *apiBase* and *apiKey* from the *Internal MaaS De
 
 Configuring an AI assistant requires an LLM. Organizations might use their own self-hosted models or remote ones. For this lab, we will use the Model as a Service portal to access an LLM.
 
-* Access the URL and sign in with your Red Hat account: link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
+* Access the URL and sign in with your Red Hat account: https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website,window='_blank']
 
-*Note:* The link:https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website, window='_blank'] is not an official Red Hat service. It is for Red Hat associates' internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use.
+*Note:* The https://maas.apps.prod.rhoai.rh-aiservices-bu.com/[Maas website, window='_blank'] is not an official Red Hat service. It is for Red Hat associates' internal demo purposes only, provided 'as-is' without support or SLA. The intended purpose is to test the connectivity of Red Hat products to models that customers may use.
 
 * Click *Sign in*.
 
@@ -221,9 +221,9 @@ mcpServers:
 
 * We have provided a configuration to set up the *Tavily MCP server*:
 
-** If needed, verify the solution: link:https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml[tavily-mcp-server config file^]
+** If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/tavily-mcp-server.yaml[tavily-mcp-server config file^]
 
-*Note:* Other AI assistants might use JSON files instead of YAML. If you configure a different AI assistant, the MCP server web page will have configuration examples. Explore more at link:https://docs.tavily.com/documentation/mcp[Tavily MCP^]
+*Note:* Other AI assistants might use JSON files instead of YAML. If you configure a different AI assistant, the MCP server web page will have configuration examples. Explore more at https://docs.tavily.com/documentation/mcp[Tavily MCP^]
 
 * Copy the file content and *paste* it into the `new-mcp-server.yaml` file.
 
@@ -233,7 +233,7 @@ image:rhads-ai/rhdevspaces/mcp-server-config-new.png[width=100%]
 
 === Access your Tavily account
 
-* Access link:https://app.tavily.com[https://app.tavily.com^].
+* Access https://app.tavily.com[https://app.tavily.com^].
 
 * Click Login and choose your previously selected sign-up method (Google, GitHub, Email address).
 

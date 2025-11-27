@@ -4,8 +4,8 @@
 
 This lab requires Podman Desktop with the Podman AI Lab extension enabled.
 
-* *Podman Desktop*: Follow the official documentation: link:https://podman-desktop.io/downloads[Podman Download,window='_blank']
-* *Podman AI Lab*: Follow the installation guide: link:https://podman-desktop.io/docs/ai-lab/installing[Podman AI Lab extension,window='_blank']
+* *Podman Desktop*: Follow the official documentation: https://podman-desktop.io/downloads[Podman Download,window='_blank']
+* *Podman AI Lab*: Follow the installation guide: https://podman-desktop.io/docs/ai-lab/installing[Podman AI Lab extension,window='_blank']
 
 == Introduction
 
@@ -150,7 +150,7 @@ image:rhads-ai/local-lab/open-repository.png[width=80%]
 
 image:rhads-ai/local-lab/open-external-website.png[width=80%]
 
-* The GitHub repository includes all the recipes displayed in Podman AI Lab: link:https://github.com/containers/ai-lab-recipes[ai-lab-recipes,window='_blank'].
+* The GitHub repository includes all the recipes displayed in Podman AI Lab: https://github.com/containers/ai-lab-recipes[ai-lab-recipes,window='_blank'].
 
 image:rhads-ai/local-lab/ailab-recipes.png[width=80%]
 
@@ -164,5 +164,5 @@ Next, you will learn how to build AI applications like an AI agent in an enterpr
 
 == Resources
 
-* link:https://podman-desktop.io/docs/ai-lab[Podman AI Lab,window='_blank']
-* link:https://developers.redhat.com/learn/rhel/build-your-ai-application-ai-lab-extension-podman-desktop[Build your AI application with an AI Lab extension in Podman Desktop,window='_blank']
+* https://podman-desktop.io/docs/ai-lab[Podman AI Lab,window='_blank']
+* https://developers.redhat.com/learn/rhel/build-your-ai-application-ai-lab-extension-podman-desktop[Build your AI application with an AI Lab extension in Podman Desktop,window='_blank']
