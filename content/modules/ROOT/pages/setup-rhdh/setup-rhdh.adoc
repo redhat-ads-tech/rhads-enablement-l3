@@ -1,4 +1,3 @@
-
 = Install and Configure {product_rhdh_name}
 
 == Installation Requirements
