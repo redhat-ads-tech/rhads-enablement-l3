@@ -75,7 +75,7 @@ If you encounter an OIDC provider that is currently not supported at your custom
 . inform the product team on Slack via `#forum-trusted-artifact-signer` to include support for your/your customer's desired OIDC provider going forward (that takes some time, though)
 . in the meantime use Keycloak as a proxy :
 
-image:m3-tpa-openshift/keycloak-identity-providers.png[]
+image:m3-tpa-openshift/keycloak-identity-providers.png[link=self, window="image"]
 
 Keycloak's Identity Provider (IdP) federation is designed exactly for this scenario. Here's how it works:
 
@@ -101,12 +101,12 @@ So, you can go to the https://sso.{openshift_cluster_ingress_domain}/admin/maste
 
 In the _Clients_ view, there is a `trusted-artifact-signer` client (you may need to advance to the next page if there are more than 10 clients to see it). This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when Fulcio requests an authenticated identity.
 
-image:m4-tas-openshift/keycloak-clients-view.png[]
+image:m4-tas-openshift/keycloak-clients-view.png[link=self, window="image"]
 
 If you open that client, you will see that this is a regular OIDC public authentication client, using the Standard OIDC Authorisation flow:
 
-image:m4-tas-openshift/keycloak-client-standard-flow.png[]
-image:m4-tas-openshift/keycloak-client-direct-access-grants.png[]
+image:m4-tas-openshift/keycloak-client-standard-flow.png[link=self, window="image"]
+image:m4-tas-openshift/keycloak-client-direct-access-grants.png[link=self, window="image"]
 
 IMPORTANT: There are configuration properties that you need to take care of (that go beyond the default client definition), should you build or configure a TAS OIDC Client: The *Redirect URLs* and three *Client Scopes*. These have already been configured for you, but it's good to know what they are and why they are configured this way. We'll take a look at them in more detail below.
 
@@ -117,7 +117,7 @@ In the _Access Settings_, under _Valid redirect URIs_ you will see two URIs:
 * An asterisk (*) to allow any URL to be redirected to after authentication
 * A special OAuth 2.0 redirect URI that stands for "out-of-band" authorization: `urn:ietf:wg:oauth:2.0:oob`
 
-image:m4-tas-openshift/keycloak-client-redirect-uris.png[]
+image:m4-tas-openshift/keycloak-client-redirect-uris.png[link=self, window="image"]
 
 [NOTE]
 ====
@@ -134,7 +134,7 @@ This basically enables "browser-based" authentication when there is no browser (
 
 In the client definition, visit the _Client Scopes_ tab, then select the `trusted-artifact-signer-dedicated` Client scope, where we can define scope mappers for all users authenticating via this client:
 
-image:m4-tas-openshift/keycloak-client-scope-mappers.png[]
+image:m4-tas-openshift/keycloak-client-scope-mappers.png[link=self, window="image"]
 
 Here, we have three client scopes that Fulcio expects to be part of an OAuth Token provided by the OAuth server:
 
@@ -159,14 +159,14 @@ The Trusted Artifact Signer Operator has already been installed in this environm
 
 For sake of completeness - the Operator can be found on {openshift_console_url}/operatorhub/all-namespaces?keyword=trusted+artifact[OperatorHub^,window="console"]
 
-image:m4-tas-openshift/tas-operatorhub.png[]
+image:m4-tas-openshift/tas-operatorhub.png[link=self, window="image"]
 
 The typical installation would install the operator in `openshift-operators` and have a deployment in one (or more) namespaces. Our pre-installed and configured TAS installation in this environment is exactly that: 
 
 * Operator in {openshift_console_url}/k8s/cluster/projects/openshift-operators[`openshift-operators`^,window="console"]
 * Instance in {openshift_console_url}/k8s/cluster/projects/tssc-tas[`tssc-tas`^,window="console"]
 
-image:m4-tas-openshift/tas-installed.png[]
+image:m4-tas-openshift/tas-installed.png[link=self, window="image"]
 
 So, we'll skip the installation of the operator itself, but will install (deploy) and configure a new instance in our own namespace: `student-tas`
 
@@ -185,14 +185,14 @@ Being an operator, you can install it manually via the console or by deploying t
 ==== 
 As outlined above, Trusted Artifact Signer consists of a number of components that all need to work together (the structure  is inherited from the sigstore project)- but the good news is, you don't have to manage them manually. 
 
-image:m4-tas-openshift/tas-operator-components.png[]
+image:m4-tas-openshift/tas-operator-components.png[link=self, window="image"]
 
 All we need to do is instantiate a new `Securesign` entity, which in turn will spin up and configure all others.
 ====
 
 So, using the console, let's go to the {openshift_console_url}/k8s/ns/student-tas/operators.coreos.com\~v1alpha1~ClusterServiceVersion?cluster-service-version=trusted["Installed Operators" view^,window="console"] from within our namespace:
 
-image:m4-tas-openshift/tas-operatorhub-student-tas.png[]
+image:m4-tas-openshift/tas-operatorhub-student-tas.png[link=self, window="image"]
 
 Click on the Operator name and click on `+ Create instance` in the Securesign tile to create a new _Securesign_ here in the `student-tas` namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:
 
@@ -204,7 +204,7 @@ NOTE: You *can have multiple* OIDC providers configured - when signing, you tell
 
 . The k8s `Securesign` name - you should change to a meaningful name for your deployment and change every occurrence of `securesign-sample` to a better name. 
 +
-image:m4-tas-openshift/tas-operator-securesign.png[]
+image:m4-tas-openshift/tas-operator-securesign.png[link=self, window="image"]
 
 . *Click & Expand: Here's a full `Securesign` for you*
 +
@@ -215,9 +215,9 @@ include::./securesign-example.adoc[]
 
 Create your instance, then click on it to open and wait a moment until all Conditions (especially the top "Ready") are `true`
 
-image:m4-tas-openshift/tas-operator-securesign-created.png[]
+image:m4-tas-openshift/tas-operator-securesign-created.png[link=self, window="image"]
 
-image:m4-tas-openshift/tas-operator-securesign-created-ready.png[]
+image:m4-tas-openshift/tas-operator-securesign-created-ready.png[link=self, window="image"]
 
 
 NOTE: As you might have guessed, instead of installing via the Console, you also could've copied the `Securesign` from the collapsible section above, created a file via `vim` or `nano` and simply applied it via `oc apply -f mySecureSign.yaml`.
@@ -470,7 +470,7 @@ NOTE: You might automatically be signed in and presented with a token immediatel
 
 IMPORTANT: Make sure to copy the whole code, which is longer than the text box.
 
-image:m4-tas-openshift/cosign-successcode.png[]
+image:m4-tas-openshift/cosign-successcode.png[link=self, window="image"]
 
 Paste the code into your Podman Terminal. Cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (`tlog` = "Transparency Log" = Rekor):
 
@@ -553,7 +553,7 @@ We can also verify that our signing event and associated metadata has been recor
 
 In our TAS deployment in the `student-tas` namespace, we have the https://rekor-search-ui-student-tas.{openshift_cluster_ingress_domain}[Rekor Search UI^,window="rekor"] that we can use to search for emails, log indexes (note the `tlog index` when signing), hashes or UUIDs:
 
-image:m4-tas-openshift/rekor-ui.png[]
+image:m4-tas-openshift/rekor-ui.png[link=self, window="image"]
 
 _(If you look closely, you can also see that this signature was issued by the organisation `O=rhads-learners` with the common name (CN) `CN=student.tas.signature` )_
 

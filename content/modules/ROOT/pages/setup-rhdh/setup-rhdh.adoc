@@ -26,7 +26,7 @@ Your environment has been preconfigured with the {product_rhdh_name} Operator pr
     * Password: `{openshift_admin_password}`
 . Dismiss any popups that appear.
 +
-image::setup-rhdh/select-cluster.png[]
+image::setup-rhdh/select-cluster.png[link=self, window="image"]
 . If the *Developer* perspective is enabled, switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Expand *Operators* section in the side menu and click the *Installed Operators* link.
 
@@ -37,7 +37,7 @@ You're now viewing the operators that have been preinstalled in your environment
 . Ensure *All projects* is selected in the *Project* selector - https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/[cluster-scoped^] operators will be listed.
 . Select *{product_rhdh_name}* from the listed operators.
 +
-image::setup-rhdh/view-operator.png[]
+image::setup-rhdh/view-operator.png[link=self, window="image"]
 
 [WARNING]
 ====
@@ -81,7 +81,7 @@ Before creating a Backstage CR, we need to satisfy some prerequisites. So don't 
 . Switch to the *Administrator* perspective using the *Perspective Switcher* in the top-left of the UI.
 . Navigate to *Home > Projects*, then click the *Create project* button. 
 +
-image::setup-rhdh/create-project.png[]
+image::setup-rhdh/create-project.png[link=self, window="image"]
 . Enter the name `{m2_rhdh_project}` in the popup that appears, then click *Create*.
 
 You'll use this project throughout this module - it's essential that you use the name *{m2_rhdh_project}* or subsequent exercises won't work as expected.
@@ -96,7 +96,7 @@ In this section you'll create a basic Backstage configuration and store it as a 
 . Ensure that the *{m2_rhdh_project}* project is selected in the project selector.
 . Click the *Create ConfigMap* button on the *ConfigMaps* screen.
 +
-image::setup-rhdh/create-rhdh-configmap.png[]
+image::setup-rhdh/create-rhdh-configmap.png[link=self, window="image"]
 . Switch to the *YAML view*, delete the existing content, then paste the following into the editor:
 +
 [source,yaml,role=execute,subs=attributes+]
@@ -158,13 +158,13 @@ spec:
 ----
 . Click *Create*. You will be redirected to a screen showing your new Backstage CR.
 +
-image::setup-rhdh/backstage-cr.png[]
+image::setup-rhdh/backstage-cr.png[link=self, window="image"]
 
 This Backstage CR will be detected by the {product_rhdh_name} Operator. The Operator will deploy Postgres and Backstage Pods in the `{m2_rhdh_project}` namespace. Verify the status of the Pods by visiting *Workloads > Pods* and checking that both Pods are marked as running and ready - this will take a minute or two.
 
 NOTE: If you don't see the expected Pods, make sure to select the *{m2_rhdh_project}* in the *Project* dropdown.
 
-image::setup-rhdh/backstage-pods.png[]
+image::setup-rhdh/backstage-pods.png[link=self, window="image"]
 
 === Visit your {product_rhdh_name} Instance
 
@@ -176,10 +176,10 @@ You can access your instance of {product_rhdh_name} using a https://docs.redhat.
 +
 NOTE: If an *Application is not available* message is displayed when you click the Location, wait another minute. This simply means the Pod readiness check has not passed yet, but will soon.
 +
-image::setup-rhdh/backstage-route.png[]
+image::setup-rhdh/backstage-route.png[link=self, window="image"]
 . Select the *Guest* sign-in option. You'll automatically be logged in as a *Guest* user, and the home page will be displayed.
 +
-image::setup-rhdh/rhdh-homepage.png[]
+image::setup-rhdh/rhdh-homepage.png[link=self, window="image"]
 
 == Conclusion
 

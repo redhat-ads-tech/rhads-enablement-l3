@@ -15,7 +15,7 @@ RHADS combines platform engineering tools with enhanced security capabilities to
 
 RHADS is not just a set of tools; it's purpose-built for balancing speed and security, integrating into existing workflows. It combines platform engineering tools with enhanced security capabilities to accelerate and simplify application development.
 
-image::getting-started/rhads-architecture.png[alt="RHADS Architecture"]
+image::getting-started/rhads-architecture.png[alt="RHADS Architecture",link=self, window="image"]
 
 The main components of RHADS are:
 
@@ -45,7 +45,7 @@ The architecture aims to empower platform teams to define and curate trusted env
 
 RHADS is designed with a modular approach that allows it to be integrated seamlessly with a variety of supported tools and existing platforms and systems, including those already in use by customers. The following diagram shows a typical RHADS deployment, the components involved, and how they interact with each other. There are many icons, most of which are 3rd-party products already in use by customers, demonstrating the flexibility and extensibility of RHADS.
 
-image::getting-started/rhads-components.png[alt="RHADS Components"]
+image::getting-started/rhads-components.png[alt="RHADS Components",link=self, window="image"]
 
 Here is a summary of the components and their roles based on the diagram above.
 

@@ -53,7 +53,7 @@ Follow these steps to provision your RHTPA on RHEL workshop environment:
 +
 Navigate to the https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/openshift-cnv.rhads-rhel-lab.prod[Product Enablement: Red Hat Advanced Developer Suite on RHEL (TL3)^] catalog item and click the *Order* button:
 +
-image::setup-tpa/rhel-workshop-catalog.png[width=80%]
+image::setup-tpa/rhel-workshop-catalog.png[width=80%,link=self, window="image"]
 
 . **Fill out the Form**
 +
@@ -65,7 +65,7 @@ Once you click the *Order* button, you'll be presented with a provisioning form.
 * *Leave* all other values as-is.
 * Click the *Order* button.
 +
-image::setup-tpa/rhel-workshop-form.png[width=80%]
+image::setup-tpa/rhel-workshop-form.png[width=80%,link=self, window="image"]
 +
 [NOTE]
 ====
@@ -78,7 +78,7 @@ The workshop shouldn't take more than an hour to complete once provisioned. If y
 * You'll receive email notifications when provisioning starts and completes
 * Monitor the status in your Red Hat Demo Platform dashboard on the _Services_ tab:
 +
-image::setup-tpa/rhel-workshop-provisioning.png[width=80%]
+image::setup-tpa/rhel-workshop-provisioning.png[width=80%,link=self, window="image"]
 
 . **Access Workshop Instructions**
 +
@@ -86,15 +86,15 @@ Once provisioning is complete:
 +
 * From the _Services_ tab, click on the name of the service:
 +
-image::setup-tpa/rhel-workshop-service.png[width=80%]
+image::setup-tpa/rhel-workshop-service.png[width=80%,link=self, window="image"]
 +
 * Locate and click the **Showroom** link at the top (you won't need to use the other links presented, unless you want to explore the workshop environment in more detail):
 +
-image::setup-tpa/rhel-workshop-showroom.png[width=80%]
+image::setup-tpa/rhel-workshop-showroom.png[width=80%,link=self, window="image"]
 +   
 * Follow the step-by-step instructions provided in the workshop
 +
-image::setup-tpa/rhel-workshop-instructions.png[width=80%]
+image::setup-tpa/rhel-workshop-instructions.png[width=80%,link=self, window="image"]
 
 When you finish this TPA on RHEL workshop, feel free to use the same workshop environment to complete the xref:setup-tas/setup-rhel.adoc[TAS workshop on RHEL] (you don't need to re-order the same catalog item again, just re-use the existing environment.)
 

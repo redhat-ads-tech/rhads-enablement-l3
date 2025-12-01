@@ -8,7 +8,7 @@ The primary information source that tells us if a package (as part of an SBOM) i
 
 TPA imports this data from two sources
 
-image::tssc-tpa/tpa-importers.png[]
+image::tssc-tpa/tpa-importers.png[link=self, window="image"]
 
 1) The https://www.cve.org/[CVE Program^,window="info"] database 
 

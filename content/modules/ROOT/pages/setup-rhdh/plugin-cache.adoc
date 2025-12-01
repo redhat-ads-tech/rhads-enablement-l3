@@ -29,7 +29,7 @@ dynamic-plugins-root
 * *Size*: 5Gi
 * *Volume mode*: Filesystem
 +
-image::setup-rhdh/plugin-cache-pvc.png[]
+image::setup-rhdh/plugin-cache-pvc.png[link=self, window="image"]
 . Click *Create* to create the PersistentVolumeClaim.
 
 The 5GiB storage allocation provides sufficient space for caching multiple plugins while maintaining reasonable resource consumption. The `ReadWriteOnce` access mode is appropriate since the cache will be accessed by a single {product_rhdh_name} pod at a time.
@@ -77,7 +77,7 @@ After updating the Backstage CR, a new pod will be created with the persistent v
 . Verify that the `dynamic-plugins-root` volume shows a *PersistentVolumeClaim* source instead of *EmptyDir*.
 . Select the *Events* tab and you'll notice an event that references `AttachVolume.Attach` for your new volume.
 +
-image::setup-rhdh/plugin-cache-attached.png[]
+image::setup-rhdh/plugin-cache-attached.png[link=self, window="image"]
 
 Next, you'll observe just how much faster a new pod starts with plugin caching enabled.
 
@@ -85,10 +85,10 @@ Next, you'll observe just how much faster a new pod starts with plugin caching e
 . Wait for the new deployment to report a ready status, and for the old pod to be deleted.
 . Click the three dots to the right of the new pod and select *Delete Pod* - a new pod will immediately be created to replace the missing Backstage pod.
 +
-image::setup-rhdh/plugin-cache-delete-pod.png[]
+image::setup-rhdh/plugin-cache-delete-pod.png[link=self, window="image"]
 . Visit the logs for the new pod and you'll find that the *install-dynamic-plugins* container reports that it is `Skipping download of already installed dynamic plugin`.
 +
-image:setup-rhdh/plugin-cache-install-skip.png[]
+image::setup-rhdh/plugin-cache-install-skip.png[link=self, window="image"]
 
 Did you notice how much faster the plugin installation process has become?
 

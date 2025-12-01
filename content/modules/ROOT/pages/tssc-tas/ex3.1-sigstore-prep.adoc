@@ -96,5 +96,5 @@ cosign verify --certificate-identity=pipeline-auth@demo.redhat.com $IMAGE | jq
 
 We should now have our three repositories under the {quay_url}/organization/l3-students[`l3-students` organisation^,window="quay"]:
 
-image::tssc-tas/quay-org.png[]
+image::tssc-tas/quay-org.png[link=self, window="image"]
 
