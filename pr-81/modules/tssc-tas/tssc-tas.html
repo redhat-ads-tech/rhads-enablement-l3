@@ -642,7 +642,7 @@ Well, the signing step is the easiest - as shown in previous chapters (check <a 
 <div class="sect2">
 <h3 id="_the_sigstore_policy_controller"><a class="anchor" href="#_the_sigstore_policy_controller"></a>The Sigstore Policy Controller</h3>
 <div class="paragraph">
-<p>The Red Hat Trusted Artifact Signer (RHTAS) build of the Sigstore Policy Controller Operator is an Red Hat OpenShift Container Platform admission controller designed to enforce policies by using supply-chain metadata. Essentially, the RHTAS Policy Controller acts as a gatekeeper for OpenShift by making deployed workloads adhere to your security policies.</p>
+<p>The Red Hat Trusted Artifact Signer (RHTAS) build of the Sigstore Policy Controller Operator is a Red Hat OpenShift Container Platform admission controller designed to enforce policies by using supply-chain metadata. Essentially, the RHTAS Policy Controller acts as a gatekeeper for OpenShift by making deployed workloads adhere to your security policies.</p>
 </div>
 <div class="paragraph">
 <p>The RHTAS Policy Controller has these key features:</p>
@@ -651,19 +651,19 @@ Well, the signing step is the easiest - as shown in previous chapters (check <a 
 <p><strong>Easy integration with the RHTAS service</strong></p>
 </div>
 <div class="paragraph">
-<p>The Policy Controller Operator uses the established, trusted, and transparent services provided by RHTAS, such as Rekor’s transparency log, and Fulcio’s short-lived certificates for stronger signature validation. You can also take advantage of Trusted Artifact Signer’s secure Trust Root as a source of public keys and certificates used in artifact verification, along with auditing Rekor’s transparency log.</p>
+<p>The Policy Controller Operator uses the established, trusted, and transparent services provided by RHTAS, such as Rekor&#8217;s transparency log, and Fulcio&#8217;s short-lived certificates for stronger signature validation. You can also take advantage of Trusted Artifact Signer&#8217;s secure Trust Root as a source of public keys and certificates used in artifact verification, along with auditing Rekor&#8217;s transparency log.</p>
 </div>
 <div class="paragraph">
 <p><strong>Verification of container image signatures</strong></p>
 </div>
 <div class="paragraph">
-<p>The RHTAS Policy Controller resolves container image tags to validate that the container image being ran does not differ from what was signed by RHTAS service. You can automatically verify signatures and attestations for container images, these can be enforced on a per-namespace basis, and you can create multiple policies to fit your security needs. You can create custom resources, such as, ClusterImagePolicy to define the rules for validating container images.</p>
+<p>The RHTAS Policy Controller resolves container image tags to validate that the container image being run does not differ from what was signed by RHTAS service. You can automatically verify signatures and attestations for container images, these can be enforced on a per-namespace basis, and you can create multiple policies to fit your security needs. You can create custom resources like <code>ClusterImagePolicy</code> to define the rules for validating container images.</p>
 </div>
 <div class="paragraph">
 <p><strong>Defining and enforcing workload policies</strong></p>
 </div>
 <div class="paragraph">
-<p>You can define and enforce policies to restrict what container images can run in your Red Hat OpenShift cluster. One such requirement could be, to only allow specified images to run that match a certain signing key, and to verify attestations. You can chose to enforce strict policies, or use warning mode to better understand how a policy will impact your environment. You can also define and enforce policies based on other supply chain metadata.</p>
+<p>You can define and enforce policies to restrict what container images can run in your Red Hat OpenShift cluster. One such requirement could be to only allow specified images to run that match a certain signing key, and to verify attestations. You can choose to enforce strict policies, or use warning mode to better understand how a policy will impact your environment. You can also define and enforce policies based on other supply chain metadata.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -681,7 +681,7 @@ Red Hat&#8217;s build of the Sigstore Policy Controller is Tech Preview as of RH
 <div class="sect2">
 <h3 id="_the_acs_advanced_cluster_security_admission_controller"><a class="anchor" href="#_the_acs_advanced_cluster_security_admission_controller"></a>The ACS (Advanced Cluster Security) Admission Controller</h3>
 <div class="paragraph">
-<p>Red Hat Advanced Cluster Security for Kubernetes works with Kubernetes admission controllers and OpenShift Container Platform admission plugins that allow to enforce security policies before Kubernetes or OpenShift Container Platform creates workloads, for example, deployments, daemon sets or jobs.</p>
+<p><em>Red Hat Advanced Cluster Security for Kubernetes</em> (RHACS) works with Kubernetes admission controllers and OpenShift Container Platform admission plugins that can enforce security policies before Kubernetes or OpenShift Container Platform creates workloads, for example, deployments, daemon sets or jobs.</p>
 </div>
 <div class="paragraph">
 <p>The RHACS admission controller prevents users from creating or updating workloads that violate policies configured in RHACS.</p>

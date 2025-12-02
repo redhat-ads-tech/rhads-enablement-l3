@@ -726,7 +726,7 @@ We are using RHBK (Red Hat Build of Keycloak) here, but you can also use Amazon 
 <p>Using the same realm as other applications, we share the same user base.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-users.png" alt="keycloak users"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-users.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-users.png" alt="keycloak users"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Applications might have different requirements for authentication, though. Therefore, it is a good practice to define one or more clients for each application that allows the users of a given realm to authenticate.</p>
@@ -738,7 +738,7 @@ We are using RHBK (Red Hat Build of Keycloak) here, but you can also use Amazon 
 <p>We will add new clients for TPA later on (we&#8217;ll name them <code>tpa-frontend</code> and <code>tpa-cli</code>). We need to do some setup first. Once the clients are added, it will look like this:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-clients.png" alt="keycloak clients"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-clients.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-clients.png" alt="keycloak clients"></a></span></p>
 </div>
 <div class="paragraph">
 <p>In addition to <strong>Clients</strong>, TPA uses <strong>Client Scopes</strong> for authorization. In other words, depending on the client scopes associated with a user, it determines what a user can and cannot do.</p>
@@ -824,7 +824,7 @@ Password: 8bf84c6d862a4205aab02253c0f1b0a1 (Yours will be different)</code></pre
 <p>Using the credentials from the output of the <code>get-keycloak-info.sh</code> script, (1) visit the <a href="https://sso.{openshift_cluster_ingress_domain}" target="_blank" rel="noopener">Keycloak Admin Console</a> and login. Select the <em>Trusted Artifact Signer</em> realm (by clicking on the dropdown in the top left), then (2) click on <em>Realm Roles</em>, then (3) <em>Create role</em>:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-roles.png" alt="keycloak roles"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-roles.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-roles.png" alt="keycloak roles"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Create the roles:</p>
@@ -843,10 +843,10 @@ Password: 8bf84c6d862a4205aab02253c0f1b0a1 (Yours will be different)</code></pre
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-create-roles.png" alt="keycloak create roles"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-create-roles.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-create-roles.png" alt="keycloak create roles"></a></span></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-created-roles.png" alt="keycloak created roles"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-created-roles.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-created-roles.png" alt="keycloak created roles"></a></span></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -863,7 +863,7 @@ Password: 8bf84c6d862a4205aab02253c0f1b0a1 (Yours will be different)</code></pre
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-create-roles-associated-roles.png" alt="keycloak create roles associated roles"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-create-roles-associated-roles.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-create-roles-associated-roles.png" alt="keycloak create roles associated roles"></a></span></p>
 </div></div></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
 <p>With the "Actions" menu on the right upper hand, you can also define which roles should inherit assignments from other roles (so <code>tpa-manager</code> could inherit the <code>read:document</code> scope from <code>tpa-user</code>, etc - but we want to keep it simple &amp; straightforward here, see below).</p>
@@ -882,7 +882,7 @@ Password: 8bf84c6d862a4205aab02253c0f1b0a1 (Yours will be different)</code></pre
 <p>In the same (1) <em>Trusted Artifact Signer</em> realm, (2) click on <em>Client Scopes</em>, then (3) <em>Create client scope</em>:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-client-scopes.png" alt="keycloak client scopes"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-client-scopes.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-client-scopes.png" alt="keycloak client scopes"></a></span></p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -900,19 +900,19 @@ In the next step, make sure you toggle the <strong>Include in token scope</stron
 <p>Create the scopes <code>read:document</code> <code>create:document</code> <code>update:document</code> <code>delete:document</code> and give them a description, if you want.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-create-client-scopes.png" alt="keycloak create client scopes"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-create-client-scopes.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-create-client-scopes.png" alt="keycloak create client scopes"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Now, open each scope you created, and assign a role under the <em>Scope</em> tab:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-assign-roles.png" alt="keycloak assign roles"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-assign-roles.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-assign-roles.png" alt="keycloak assign roles"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Assign your <code>tpa-*</code> roles to the <code>read:document</code> scope</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-assign-roles-reader.png" alt="keycloak assign roles reader"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-assign-roles-reader.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-assign-roles-reader.png" alt="keycloak assign roles reader"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Continue assigning the roles to the client scopes as follows:</p>
@@ -957,26 +957,26 @@ In the next step, make sure you toggle the <strong>Include in token scope</stron
 <p>In the same realm (1) go to users (2) and click on <code>user1</code> (3):</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-users-edit.png" alt="keycloak users edit"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-users-edit.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-users-edit.png" alt="keycloak users edit"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Click on the <em>Role Mapping</em> tab (4) and then <em>Assign Role</em> (5) and assign the <code>tpa-user</code> role to <code>user1</code>:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assign-role.png" alt="keycloak users assign role"></span>
-<span class="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assign-role-tpa-user.png" alt="keycloak users assign role tpa user"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-users-assign-role.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assign-role.png" alt="keycloak users assign role"></a></span>
+<span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-users-assign-role-tpa-user.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assign-role-tpa-user.png" alt="keycloak users assign role tpa user"></a></span></p>
 </div>
 <div class="paragraph">
 <p>You should see the assigned role now:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assigned-role-tpa-user.png" alt="keycloak users assigned role tpa user"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-users-assigned-role-tpa-user.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assigned-role-tpa-user.png" alt="keycloak users assigned role tpa user"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Now do the same for the <code>admin</code> user and assign the <code>tpa-admin</code> role to that user:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assigned-role-tpa-admin.png" alt="keycloak users assigned role tpa admin"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-users-assigned-role-tpa-admin.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-users-assigned-role-tpa-admin.png" alt="keycloak users assigned role tpa admin"></a></span></p>
 </div>
 <div class="paragraph">
 <p><strong>Clients</strong></p>
@@ -988,7 +988,7 @@ In the next step, make sure you toggle the <strong>Include in token scope</stron
 <p>In the same realm (1), go to <em>Clients</em> (2). Here, you could create the clients manually and configure them (especially the client scopes that we need associated with this client) - but we have created import files for you, so you can instead use <em>Import Client</em> (3).</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-create-clients.png" alt="keycloak create clients"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-create-clients.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-create-clients.png" alt="keycloak create clients"></a></span></p>
 </div>
 <div class="paragraph">
 <p>We need a <em>frontend</em> client that will handle the authentication with the UI and a <em>cli</em> client that we will use as a <em>technical user</em>, or in Keycloak terminology, as a <em>Service Account</em> (not to be mistaken with a k8s ServiceAccount). Basically, it is a user with a set password to be used for service-to-service communication.</p>
@@ -1030,8 +1030,8 @@ In the next step, make sure you toggle the <strong>Include in token scope</stron
 <p>First import the <code>client_tpa-frontend.json</code> file (click <strong>Browse&#8230;&#8203;</strong> and select the file you downloaded) - it will populate all the fields and options that we need, then click "save".</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-import-frontend.png" alt="keycloak import frontend"></span>
-<span class="image"><img src="../_images/m3-tpa-openshift/keycloak-imported-frontend.png" alt="keycloak imported frontend"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-import-frontend.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-import-frontend.png" alt="keycloak import frontend"></a></span>
+<span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-imported-frontend.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-imported-frontend.png" alt="keycloak imported frontend"></a></span></p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -1068,19 +1068,19 @@ https://server-student-tpa-helm.{openshift_cluster_ingress_domain}/*</code></pre
 <p>Now, import the CLI client. When you do, you will notice that the <em>Client Authentication</em> is switched on (to access this client, the user will have to provide the client secret) and the <em>service account roles</em> box is ticked, meaning that this will generate a <em>technical user</em> that we can assign roles (remember, we need the roles for the client scopes that tell TPA what the user is allowed to do).</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli.png" alt="keycloak import cli"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-import-cli.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli.png" alt="keycloak import cli"></a></span></p>
 </div>
 <div class="paragraph">
 <p>After saving, you can see in the <em>Credentials</em> tab, that the client has a client secret assigned.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli-credentials.png" alt="keycloak import cli credentials"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-import-cli-credentials.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli-credentials.png" alt="keycloak import cli credentials"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Now, go to the <em>Service Accounts Roles</em> tab and assign the <code>tpa-admin</code> role to the service account (unless you want to restrict what can be done via the client).</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli-roles.png" alt="keycloak import cli roles"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-import-cli-roles.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli-roles.png" alt="keycloak import cli roles"></a></span></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1091,7 +1091,7 @@ https://server-student-tpa-helm.{openshift_cluster_ingress_domain}/*</code></pre
 <td class="content">
 <div class="paragraph">
 <p>Alternatively, you can also assign that role via the <em>Users</em> view, since the client has automatically created that <code>service-account-&lt;clientname&gt;</code> user:
-<span class="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli-sa-user.png" alt="keycloak import cli sa user"></span></p>
+<span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-import-cli-sa-user.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-import-cli-sa-user.png" alt="keycloak import cli sa user"></a></span></p>
 </div>
 </td>
 </tr>
@@ -1157,7 +1157,7 @@ secret/oidc-cli created</code></pre>
 </ol>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/welldone.gif" alt="welldone"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/welldone.gif" target="image"><img src="../_images/m3-tpa-openshift/welldone.gif" alt="welldone"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Now, let&#8217;s <strong>boldly go to the installation</strong> 🖖</p>
@@ -1173,7 +1173,7 @@ secret/oidc-cli created</code></pre>
 <p>Before we move on - Since TPA only supports Keycloak for authentication/authorization - if there is the need for integration with other providers:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-identity-providers.png" alt="keycloak identity providers"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-identity-providers.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-identity-providers.png" alt="keycloak identity providers"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Keycloak&#8217;s Identity Provider (IdP) federation is designed exactly for this scenario. Here&#8217;s how it works:</p>
@@ -1261,25 +1261,25 @@ The operator is currently in tech preview and has some issues handling multiple 
 <p>Go to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/ns/student-tpa-operator?keyword=trusted+profile&amp;details-item=rhtpa-operator-redhat-operators-openshift-marketplace&amp;channel=stable" target="console">Operator Hub</a> (just follow the link) and install the TPA Operator in our namespace (the Operator is namespace-scoped):</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-ohub.png" alt="operator ohub"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-ohub.png" target="image"><img src="../_images/m3-tpa-openshift/operator-ohub.png" alt="operator ohub"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Make sure to install it to the correct namespace (for this exercise, we created <code>student-tpa-operator</code> at the beginning of this chapter).</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-ohub-install.png" alt="operator ohub install"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-ohub-install.png" target="image"><img src="../_images/m3-tpa-openshift/operator-ohub-install.png" alt="operator ohub install"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Once the installation has finished, click <strong>View Operator</strong> (ensuring the <code>student-tpa-operator</code> namespace is selected at the top) and create a <code>TrustedProfileAnalyzer</code> instance.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-ohub-install-create-instance.png" alt="operator ohub install create instance"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-ohub-install-create-instance.png" target="image"><img src="../_images/m3-tpa-openshift/operator-ohub-install-create-instance.png" alt="operator ohub install create instance"></a></span></p>
 </div>
 <div class="paragraph">
 <p>In the instance, switch to the <code>YAML</code> view.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-yaml-view.png" alt="operator tpa yaml view"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-yaml-view.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-yaml-view.png" alt="operator tpa yaml view"></a></span></p>
 </div>
 <div class="paragraph">
 <p>We have prepared a <a href="https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-operator/trustedprofileanalyzer.yaml" target="_blank" rel="noopener"><code>TrustedProfileAnalyzer.yaml</code></a> file for you (right-click and download, or open the link and copy&amp;paste)</p>
@@ -1406,14 +1406,14 @@ Bucket Name:         trustify-c443fd04-cc20-4455-ac54-f02921669428 (Yours will b
 <p>Ok, changed the values? Then let&#8217;s hit "Create"!</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/duck-cover-watch.gif" alt="duck cover watch"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/duck-cover-watch.gif" target="image"><img src="../_images/m3-tpa-openshift/duck-cover-watch.gif" alt="duck cover watch"></a></span></p>
 </div>
 <div class="paragraph">
 <p>As expected (see the note in the beginning) the Operator install seemingly fails with helm error messages.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-failed.png" alt="operator tpa failed"></span>
-<span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-failed-detailed.png" alt="operator tpa failed detailed"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-failed.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-failed.png" alt="operator tpa failed"></a></span>
+<span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-failed-detailed.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-failed-detailed.png" alt="operator tpa failed detailed"></a></span></p>
 </div>
 <div class="paragraph">
 <p>However, if you go to the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments" target="console">Deployments Page</a>, you can see the importer and server deployments with 1/1 pods.</p>
@@ -1431,7 +1431,7 @@ This may take a while and they even might fail first, before they are healthily 
 </table>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-failed-deployment.png" alt="operator tpa failed deployment"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-failed-deployment.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-failed-deployment.png" alt="operator tpa failed deployment"></a></span></p>
 </div>
 <div class="paragraph">
 <p>So, let&#8217;s quickly check the pod logs for:</p>
@@ -1440,7 +1440,7 @@ This may take a while and they even might fail first, before they are healthily 
 <p>1) The <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/importer/pods" target="console">importer pod</a> (click on the name of the importer pod, then click <strong>Logs</strong>):</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-importer-logs.png" alt="operator tpa importer logs"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-importer-logs.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-importer-logs.png" alt="operator tpa importer logs"></a></span></p>
 </div>
 <div class="paragraph">
 <p>If configured correctly, the importer will start with cloning the cve repository and importing them into the graph database.</p>
@@ -1449,7 +1449,7 @@ This may take a while and they even might fail first, before they are healthily 
 <p>2) The <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments/server/pods" target="console">server pod</a> (click on the name of the server pod, then click <strong>Logs</strong>):</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-server-logs.png" alt="operator tpa server logs"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-server-logs.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-server-logs.png" alt="operator tpa server logs"></a></span></p>
 </div>
 <div class="paragraph">
 <p>If configured correctly, the server will start but there will not be much activity, aside from the health/readiness probes.</p>
@@ -1458,7 +1458,7 @@ This may take a while and they even might fail first, before they are healthily 
 <p>Lastly, we should check the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/route.openshift.io~v1~Route" target="console">Route</a> that has been created:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-route.png" alt="operator tpa route"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-route.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-route.png" alt="operator tpa route"></a></span></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1475,7 +1475,7 @@ This may take a while and they even might fail first, before they are healthily 
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-route-redirect-error.png" alt="operator tpa route redirect error"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-route-redirect-error.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-route-redirect-error.png" alt="operator tpa route redirect error"></a></span></p>
 </div></div></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
 <p>If you are seeing this error, check the URL for the parameters <code>client_id=</code> and <code>redirect_uri=</code> and go back to Keycloak and the client definition. Check if the client exists (typo?) and the pattern in the clients redirect URIs matches the one in the <code>redirect_uri=</code> parameter.</p>
@@ -1496,7 +1496,7 @@ This may take a while and they even might fail first, before they are healthily 
 <p>After opening the route URL, logging in as <code>{openshift_admin_user} / {openshift_admin_password}</code>, you should see the TPA UI ✅:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-dashboard.png" alt="operator tpa dashboard"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-dashboard.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-dashboard.png" alt="operator tpa dashboard"></a></span></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1509,7 +1509,7 @@ This may take a while and they even might fail first, before they are healthily 
 <p>Should you see network-related errors in the TPA UI, this is most likely due to some OIDC misconfiguration. Open the developer perspective of your browser of choice and check if you get <code>403</code> (forbidden) errors.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-dashboard-debug.png" alt="operator tpa dashboard debug"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-dashboard-debug.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-dashboard-debug.png" alt="operator tpa dashboard debug"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Then, copy the <code>Authorization: Bearer</code> token from any erroneous (403) request and run it through a JWT Debugger, such as <a href="https://www.jwt.io/" target="_blank" rel="noopener">jwt.io</a></p>
@@ -1592,7 +1592,7 @@ bash-5.1 ~/l3-enablement-helpers/tpa-operator $</code></pre>
 <p>You should see this now in your <a href="https://server-student-tpa-operator.{openshift_cluster_ingress_domain}/sboms" target="TPA">TPA instance</a> after a few moments, including the labels we assigned ✅.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/operator-tpa-sbom.png" alt="operator tpa sbom"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/operator-tpa-sbom.png" target="image"><img src="../_images/m3-tpa-openshift/operator-tpa-sbom.png" alt="operator tpa sbom"></a></span></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1785,7 +1785,7 @@ Console:
 <p>So, you can open your <code>helm</code>-based install of TPA now from <a href="https://server-student-tpa-helm.{openshift_cluster_ingress_domain}" target="TPA">here</a>, and logging in as <code>{openshift_admin_user} / {openshift_admin_password}</code>, you should see the TPA UI based off of the <code>student-tpa-helm</code> namespace ✅:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/helm-tpa-dashboard.png" alt="helm tpa dashboard"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/helm-tpa-dashboard.png" target="image"><img src="../_images/m3-tpa-openshift/helm-tpa-dashboard.png" alt="helm tpa dashboard"></a></span></p>
 </div>
 </div>
 <div class="sect3">
@@ -1804,7 +1804,7 @@ oc project student-tpa-helm
 <p>So, we should see the uploaded SBOM now in the <a href="https://server-student-tpa-helm.{openshift_cluster_ingress_domain}/sboms" target="TPA">TPA SBOM View</a> after a few moments, including the labels we assigned ✅.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/helm-tpa-sbom.png" alt="helm tpa sbom"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/helm-tpa-sbom.png" target="image"><img src="../_images/m3-tpa-openshift/helm-tpa-sbom.png" alt="helm tpa sbom"></a></span></p>
 </div>
 </div>
 </div>

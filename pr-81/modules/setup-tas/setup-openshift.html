@@ -601,7 +601,7 @@ Luckily we don&#8217;t have to deploy, configure and manage all of these compone
 </ol>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-identity-providers.png" alt="keycloak identity providers"></span></p>
+<p><span class="image"><a class="image" href="../_images/m3-tpa-openshift/keycloak-identity-providers.png" target="image"><img src="../_images/m3-tpa-openshift/keycloak-identity-providers.png" alt="keycloak identity providers"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Keycloak&#8217;s Identity Provider (IdP) federation is designed exactly for this scenario. Here&#8217;s how it works:</p>
@@ -652,14 +652,14 @@ prerequisites/get-keycloak-info.sh</code></pre>
 <p>In the <em>Clients</em> view, there is a <code>trusted-artifact-signer</code> client (you may need to advance to the next page if there are more than 10 clients to see it). This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when Fulcio requests an authenticated identity.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-clients-view.png" alt="keycloak clients view"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/keycloak-clients-view.png" target="image"><img src="../_images/m4-tas-openshift/keycloak-clients-view.png" alt="keycloak clients view"></a></span></p>
 </div>
 <div class="paragraph">
 <p>If you open that client, you will see that this is a regular OIDC public authentication client, using the Standard OIDC Authorisation flow:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-standard-flow.png" alt="keycloak client standard flow"></span>
-<span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-direct-access-grants.png" alt="keycloak client direct access grants"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/keycloak-client-standard-flow.png" target="image"><img src="../_images/m4-tas-openshift/keycloak-client-standard-flow.png" alt="keycloak client standard flow"></a></span>
+<span class="image"><a class="image" href="../_images/m4-tas-openshift/keycloak-client-direct-access-grants.png" target="image"><img src="../_images/m4-tas-openshift/keycloak-client-direct-access-grants.png" alt="keycloak client direct access grants"></a></span></p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -690,7 +690,7 @@ There are configuration properties that you need to take care of (that go beyond
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-redirect-uris.png" alt="keycloak client redirect uris"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/keycloak-client-redirect-uris.png" target="image"><img src="../_images/m4-tas-openshift/keycloak-client-redirect-uris.png" alt="keycloak client redirect uris"></a></span></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -726,7 +726,7 @@ There are configuration properties that you need to take care of (that go beyond
 <p>In the client definition, visit the <em>Client Scopes</em> tab, then select the <code>trusted-artifact-signer-dedicated</code> Client scope, where we can define scope mappers for all users authenticating via this client:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/keycloak-client-scope-mappers.png" alt="keycloak client scope mappers"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/keycloak-client-scope-mappers.png" target="image"><img src="../_images/m4-tas-openshift/keycloak-client-scope-mappers.png" alt="keycloak client scope mappers"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Here, we have three client scopes that Fulcio expects to be part of an OAuth Token provided by the OAuth server:</p>
@@ -779,7 +779,7 @@ There are configuration properties that you need to take care of (that go beyond
 <p>For sake of completeness - the Operator can be found on {openshift_console_url}/operatorhub/all-namespaces?keyword=trusted+artifact[OperatorHub^,window="console"]</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operatorhub.png" alt="tas operatorhub"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/tas-operatorhub.png" target="image"><img src="../_images/m4-tas-openshift/tas-operatorhub.png" alt="tas operatorhub"></a></span></p>
 </div>
 <div class="paragraph">
 <p>The typical installation would install the operator in <code>openshift-operators</code> and have a deployment in one (or more) namespaces. Our pre-installed and configured TAS installation in this environment is exactly that:</p>
@@ -795,7 +795,7 @@ There are configuration properties that you need to take care of (that go beyond
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/tas-installed.png" alt="tas installed"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/tas-installed.png" target="image"><img src="../_images/m4-tas-openshift/tas-installed.png" alt="tas installed"></a></span></p>
 </div>
 <div class="paragraph">
 <p>So, we&#8217;ll skip the installation of the operator itself, but will install (deploy) and configure a new instance in our own namespace: <code>student-tas</code></p>
@@ -825,7 +825,7 @@ There are configuration properties that you need to take care of (that go beyond
 <p>As outlined above, Trusted Artifact Signer consists of a number of components that all need to work together (the structure  is inherited from the sigstore project)- but the good news is, you don&#8217;t have to manage them manually.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-components.png" alt="tas operator components"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/tas-operator-components.png" target="image"><img src="../_images/m4-tas-openshift/tas-operator-components.png" alt="tas operator components"></a></span></p>
 </div>
 <div class="paragraph">
 <p>All we need to do is instantiate a new <code>Securesign</code> entity, which in turn will spin up and configure all others.</p>
@@ -838,7 +838,7 @@ There are configuration properties that you need to take care of (that go beyond
 <p>So, using the console, let&#8217;s go to the {openshift_console_url}/k8s/ns/student-tas/operators.coreos.com~v1alpha1~ClusterServiceVersion?cluster-service-version=trusted["Installed Operators" view^,window="console"] from within our namespace:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operatorhub-student-tas.png" alt="tas operatorhub student tas"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/tas-operatorhub-student-tas.png" target="image"><img src="../_images/m4-tas-openshift/tas-operatorhub-student-tas.png" alt="tas operatorhub student tas"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Click on the Operator name and click on <code>+ Create instance</code> in the Securesign tile to create a new <em>Securesign</em> here in the <code>student-tas</code> namespace. It should automatically switch to the YAML view, where we have to set a few parameters - in the order of importance:</p>
@@ -866,7 +866,7 @@ You <strong>can have multiple</strong> OIDC providers configured - when signing,
 <li>
 <p>The k8s <code>Securesign</code> name - you should change to a meaningful name for your deployment and change every occurrence of <code>securesign-sample</code> to a better name.</p>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign.png" alt="tas operator securesign"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/tas-operator-securesign.png" target="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign.png" alt="tas operator securesign"></a></span></p>
 </div>
 </li>
 <li>
@@ -962,10 +962,10 @@ spec:
 <p>Create your instance, then click on it to open and wait a moment until all Conditions (especially the top "Ready") are <code>true</code></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign-created.png" alt="tas operator securesign created"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/tas-operator-securesign-created.png" target="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign-created.png" alt="tas operator securesign created"></a></span></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign-created-ready.png" alt="tas operator securesign created ready"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/tas-operator-securesign-created-ready.png" target="image"><img src="../_images/m4-tas-openshift/tas-operator-securesign-created-ready.png" alt="tas operator securesign created ready"></a></span></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1404,7 +1404,7 @@ Make sure to copy the whole code, which is longer than the text box.
 </table>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/cosign-successcode.png" alt="cosign successcode"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/cosign-successcode.png" target="image"><img src="../_images/m4-tas-openshift/cosign-successcode.png" alt="cosign successcode"></a></span></p>
 </div>
 <div class="paragraph">
 <p>Paste the code into your Podman Terminal. Cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (<code>tlog</code> = "Transparency Log" = Rekor):</p>
@@ -1530,7 +1530,7 @@ cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
 <p>In our TAS deployment in the <code>student-tas</code> namespace, we have the <a href="https://rekor-search-ui-student-tas.{openshift_cluster_ingress_domain}" target="rekor">Rekor Search UI</a> that we can use to search for emails, log indexes (note the <code>tlog index</code> when signing), hashes or UUIDs:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../_images/m4-tas-openshift/rekor-ui.png" alt="rekor ui"></span></p>
+<p><span class="image"><a class="image" href="../_images/m4-tas-openshift/rekor-ui.png" target="image"><img src="../_images/m4-tas-openshift/rekor-ui.png" alt="rekor ui"></a></span></p>
 </div>
 <div class="paragraph">
 <p><em>(If you look closely, you can also see that this signature was issued by the organisation <code>O=rhads-learners</code> with the common name (CN) <code>CN=student.tas.signature</code> )</em></p>
