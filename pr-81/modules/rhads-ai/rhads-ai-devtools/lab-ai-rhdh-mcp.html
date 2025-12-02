@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Experiment with an AI application locally using Podman AI Lab :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
-    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">
-    <link rel="prev" href="lab-ai-rhdh-mcp.html">
-    <link rel="next" href="../../end-to-end.html">
+    <title>Enable Red Hat Developer Hub MCP features (Bonus Lab II) :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhads-ai/rhads-ai-devtools/lab-ai-rhdh-mcp.html">
+    <link rel="prev" href="lab-ai-devspaces-rhads-ai.html">
+    <link rel="next" href="lab-ai-podman-rhads-ai.html">
     <meta name="generator" content="Antora 3.1.14">
     <link rel="stylesheet" href="../../../_/css/site.css">
 <link rel="icon" href="../../../_/img/favicon.ico" type="image/x-icon">
@@ -382,10 +382,10 @@
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-ai-devspaces-rhads-ai.html">Build an Agent with RHDH from OpenShift Dev Spaces</a>
   </li>
-  <li class="nav-item" data-depth="3">
+  <li class="nav-item is-current-page" data-depth="3">
     <a class="nav-link" href="lab-ai-rhdh-mcp.html">Enable RHDH MCP</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="3">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-ai-podman-rhads-ai.html">Experiment with an AI application locally using Podman AI Lab</a>
   </li>
 </ul>
@@ -432,28 +432,23 @@
     <li><a href="../../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
     <li><a href="../rhads-ai.html">Module 14: RHADS for AI Engineers</a></li>
     <li><a href="lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a></li>
-    <li><a href="lab-ai-podman-rhads-ai.html">Experiment with an AI application locally using Podman AI Lab</a></li>
+    <li><a href="lab-ai-rhdh-mcp.html">Enable RHDH MCP</a></li>
   </ul>
 </nav>
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Experiment with an AI application locally using Podman AI Lab</h1>
-<div class="sect1">
-<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<h1 class="page">Enable Red Hat Developer Hub MCP features (Bonus Lab II)</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab requires Podman Desktop with the Podman AI Lab extension enabled.</p>
+<p>As an extension of how Red Hat Advance Developer Suite (RHADS) can integrates with other products and third-party tools
+to bring AI into developer&#8217;s activities, this lab explores how to use Red Hat Developer Hub MCP server and tools for that
+purposes.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Podman Desktop</strong>: Follow the official documentation: <a href="https://podman-desktop.io/downloads" target="_blank" rel="noopener">Podman Download</a></p>
-</li>
-<li>
-<p><strong>Podman AI Lab</strong>: Follow the installation guide: <a href="https://podman-desktop.io/docs/ai-lab/installing" target="_blank" rel="noopener">Podman AI Lab extension</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p>This lab showcases how to integrate your AI assistant and expand its capabilities by the
+<a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.8/html-single/interacting_with_model_context_protocol_tools_for_red_hat_developer_hub/index">Red Hat Developer Hub MCP feature</a>.</p>
 </div>
 </div>
 </div>
@@ -461,30 +456,183 @@
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this lab, you will experiment with AI applications using Podman AI Lab. You will explore various AI applications and integrations, including Llama Stack.</p>
+<p>Since Red Hat Developer Hub 1.8, there is a Developer Preview feature to integrate it with AI
+clients by Model Context Protocol (MCP) server. This feature provides a standardized method
+for AI applications to access Red Hat Developer Hub information and workflows through defined MCP tools.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://modelcontextprotocol.io/docs/getting-started/intro">MCP</a> is a standardized method for linking AI models
+and applications (MCP clients) with external systems (MCP servers). This connection facilitates access to information and
+workflows residing on those systems. MCP servers are responsive for defining the tools that MCP clients can interact with.</p>
+</div>
+<div class="paragraph">
+<p>Red Hat Developer Hub supports running MCP tools through the <code>mcp-actions-backend</code> plugin. This plugins will enable
+the Software Catalog MCP and TechDocs MCP tools.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>Software Catalog MCP</strong> lists catalog entities, such as <code>Components</code>, <code>Systems</code>, <code>Resources</code>,
+<code>APIs</code>, <code>Locations</code>, <code>Users</code>, and <code>Groups</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>TechDocs MCP</strong> tool enables MCP clients to search and retrieve documentation directly from TechDocs registered
+in Red Hat Developer Hub. The following TechDocs MCP tools are supported: <code>fetch-techdocs</code>, <code>analyze-techdocs-coverage</code>, <code>retrieve-techdocs-content</code>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_scenario"><a class="anchor" href="#_scenario"></a>Scenario</h2>
+<h2 id="_enable_mcp_plugins"><a class="anchor" href="#_enable_mcp_plugins"></a>Enable MCP Plugins</h2>
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <a href="../../setup-rhdh/foundations.html" class="xref page">Setup Red Hat Developer Hub</a> module provides an in-depth overview of Red Hat Developer Hub&#8217;s dynamic plugins feature. Visit that module if you&#8217;d like a deep-dive on deployment and configuration for Red Hat Developer Hub and the dynamic plugins feature.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-dh/core~v1~ConfigMap" target="_blank" rel="noopener">ConfigMaps screen</a> in the <strong>tssc-dh</strong> project. Login using:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Select and view the YAML for the <strong>tssc-developer-hub-dynamic-plugins</strong> ConfigMap.</p>
+</li>
+<li>
+<p>Add at the end the next configuration:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">    - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/backstage-plugin-mcp-actions-backend:bs_1.42.5__0.1.2!backstage-plugin-mcp-actions-backend
+      disabled: false
+    - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-software-catalog-mcp-tool:bs_1.42.5__0.2.3!red-hat-developer-hub-backstage-plugin-software-catalog-mcp-tool
+      disabled: false
+    - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-techdocs-mcp-tool:bs_1.42.5__0.3.0!red-hat-developer-hub-backstage-plugin-techdocs-mcp-tool
+      disabled: false</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Select and view the YAML for the <strong>tssc-developer-hub-app-config</strong> ConfigMap.</p>
+</li>
+<li>
+<p>Extend the <code>backend</code> block adding another external access and defining the actions:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">    backend:
+        auth:
+            keys:
+            -   secret: ${BACKEND_SECRET}
+            externalAccess:
+            -   type: static
+                options:
+                  token: ${BACKEND_SECRET}
+                  subject: Orchestrator
+            # Add new external access for MCP clients
+            -   type: static
+                options:
+                  token: ${MCP_TOKEN}
+                  subject: mcp-clients
+        # Enable actions and plugin sources
+        actions:
+          pluginSources:
+            - software-catalog-mcp-tool
+            - techdocs-mcp-tool
+        baseUrl: ${BACKEND_URL}
+        cors:
+            origin: ${BACKEND_URL}</code></pre>
+</div>
+</div>
 <div class="paragraph">
-<p>You are part of the Python AI Development team. Your responsibility is to experiment with AI applications using Podman AI Lab before building an AI agent in an enterprise environment.</p>
+<p>The <code>MCP_TOKEN</code> is a static token for authentication against the MCP server endpoint. MCP clients
+(such as Cursor, Continue, or Lightspeed Core) will use this token for authentication.</p>
+</div>
+</li>
+<li>
+<p>Visit the <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/tssc-dh/core~v1~Secret" target="_blank" rel="noopener">Secrets screen</a> in the <strong>tssc-dh</strong> project.</p>
+</li>
+<li>
+<p>Select and edit <strong>tssc-developer-hub-env</strong> Secret to add a new <strong>MCP_TOKEN</strong> entry. Add any value longer than 8 characters. For example: <code>sample-token-for-rhdh-mcp-server</code>.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_explore_podman"><a class="anchor" href="#_explore_podman"></a>Explore Podman</h2>
+<h2 id="_configure_rhdh_mcp_server_in_the_ai_assistant"><a class="anchor" href="#_configure_rhdh_mcp_server_in_the_ai_assistant"></a>Configure RHDH MCP server in the AI Assistant</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>Open <strong>Podman Desktop</strong>.</p>
+<p>Access Red Hat OpenShift Dev Spaces from the component already created in Red Hat Developer Hub. Go back to {rhdh_url}/catalog/default/component/ai-agent[Red Hat Developer Hub UI^] and log in with your user credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: {rhdh_user}</p>
 </li>
 <li>
-<p>Click <strong>Podman AI Lab</strong>. Your screen should look similar to this:</p>
+<p><strong>Password</strong>: {rhdh_user_password}</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Next, click the <strong>ai-agent</strong> component.</p>
+</li>
+<li>
+<p>From the component&#8217;s overview, click the <strong>Red Hat OpenShift Dev Spaces</strong> link.</p>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/podman-screen.png" target="image"><img src="../../_images/rhads-ai/local-lab/podman-screen.png" alt="podman screen" width="30%"></a></span></p>
+<p><span class="image"><img src="../../_images/rhads-ai/rhads/rhdh-devspaces-click.png" alt="rhdh devspaces click" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>Click the Continue icon:</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-continue-icon.png" alt="devspaces continue icon" width="40%"></span></p>
+</div>
+</li>
+<li>
+<p>Click the <strong>tools icon</strong>, in the tools window, click the plus icon to configure the MCP server.</p>
+<div class="paragraph">
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-configure-new.png" alt="mcp configure new" width="100%"></span></p>
+</div>
+</li>
+<li>
+<p>A <code>new-mcp-server-1.yaml</code> is create to add the definition of Red Hat Developer Hub MCP server. This
+configuration requires to use the <code>MCP_TOKEN</code> and the MCP server endpoint.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Complete the configuration using this content for this file:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">name: RHDH MCP server
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: RHDH MCP Server
+    type: streamable-http
+    url: {rhdh_url}/api/mcp-actions/v1
+    requestOptions:
+      headers:
+        Authorization: "Bearer sample-token-for-rhdh-mcp-server"</code></pre>
+</div>
+</div>
+</li>
+</ul>
 </div>
 </li>
 </ul>
@@ -492,322 +640,59 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_set_up_and_explore_ai_tools"><a class="anchor" href="#_set_up_and_explore_ai_tools"></a>Set up and explore AI tools</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_select_an_ai_model"><a class="anchor" href="#_select_an_ai_model"></a>Select an AI Model</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Click <strong>Models</strong> &#8594; <strong>Catalog</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/podman-model-catalog.png" target="image"><img src="../../_images/rhads-ai/local-lab/podman-model-catalog.png" alt="podman model catalog" width="30%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Select and <strong>download</strong> the model: <strong>ibm-granite/granite-3.3-8b-instruct-GGUF</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/podman-download-model.png" target="image"><img src="../../_images/rhads-ai/local-lab/podman-download-model.png" alt="podman download model" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Once finished, check the <strong>Downloads</strong> tab.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/model-downloaded.png" target="image"><img src="../../_images/rhads-ai/local-lab/model-downloaded.png" alt="model downloaded" width="100%"></a></span></p>
-</div>
-<div class="paragraph">
-<p>Now you can create a service to allow applications to consume the model easily.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_create_a_model_service"><a class="anchor" href="#_create_a_model_service"></a>Create a model service</h3>
-<div class="paragraph">
-<p>Podman AI Lab allows you to create model services and playgrounds to build AI applications.
-The model service is used for inference, allowing AI applications to consume it via HTTP.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/podman-serving-playgrounds.png" target="image"><img src="../../_images/rhads-ai/local-lab/podman-serving-playgrounds.png" alt="podman serving playgrounds" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click Models &#8594; Services</p>
-</li>
-<li>
-<p>Click <strong>New Model Service</strong></p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/new-model-service.png" target="image"><img src="../../_images/rhads-ai/local-lab/new-model-service.png" alt="new model service" width="100%"></a></span></p>
-</div>
-</li>
-<li>
-<p>Review the information,  then click <strong>Create Service</strong></p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/create-model-service.png" target="image"><img src="../../_images/rhads-ai/local-lab/create-model-service.png" alt="create model service" width="100%"></a></span></p>
-</div>
-</li>
-<li>
-<p>When the model service is ready, click the <strong>start</strong> icon.</p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/model-service-start.png" target="image"><img src="../../_images/rhads-ai/local-lab/model-service-start.png" alt="model service start" width="100%"></a></span></p>
-</div>
-</li>
-<li>
-<p>The service is now started and ready to be consumed:</p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/model-service-started.png" target="image"><img src="../../_images/rhads-ai/local-lab/model-service-started.png" alt="model service started" width="100%"></a></span></p>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_explore_llama_stack"><a class="anchor" href="#_explore_llama_stack"></a>Explore LLama Stack</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Select <strong>Llama Stack</strong> from <strong>Podman AI Lab</strong></p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/podman-llamastack.png" target="image"><img src="../../_images/rhads-ai/local-lab/podman-llamastack.png" alt="podman llamastack" width="40%"></a></span></p>
-</div>
-</li>
-<li>
-<p>Select <strong>Start Llama Stack container</strong>:</p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/llama-stack-start.png" target="image"><img src="../../_images/rhads-ai/local-lab/llama-stack-start.png" alt="llama stack start" width="100%"></a></span></p>
-</div>
-</li>
-<li>
-<p>Llama Stack will begin building the container. Once finished, all steps will appear in green.</p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/llama-stack-running-container.png" target="image"><img src="../../_images/rhads-ai/local-lab/llama-stack-running-container.png" alt="llama stack running container" width="100%"></a></span></p>
-</div>
-</li>
-<li>
-<p>Click <strong>Explore Llama-Stack Environment</strong></p>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/llama-stack-explore.png" target="image"><img src="../../_images/rhads-ai/local-lab/llama-stack-explore.png" alt="Podman LLama Stack Explore"></a></span></p>
-</div>
-</li>
-<li>
-<p>Explore the <strong>Llama Stack UI</strong> and enter the question, <strong>"What is an AI agent"</strong> in the chat box:</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/llama-stack-chat.png" target="image"><img src="../../_images/rhads-ai/local-lab/llama-stack-chat.png" alt="LLama Stack UI"></a></span></p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_use_the_podman_ai_lab_recipe_to_build_a_chatbot"><a class="anchor" href="#_use_the_podman_ai_lab_recipe_to_build_a_chatbot"></a>Use the Podman AI Lab recipe to build a chatbot</h2>
+<h2 id="_use_the_rhdh_mcp_from_your_ai_assistant"><a class="anchor" href="#_use_the_rhdh_mcp_from_your_ai_assistant"></a>Use the RHDH MCP from your AI Assistant</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Podman AI Lab provides many recipes you can use as a starting point to build your own applications, explore AI tools, or learn about AI Lab.</p>
+<p>Click the back icon to return to the Continue chat, and ensure <strong>agent</strong> is selected in the Continue terminal. This agent interacts
+with the MCP server tools.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/anatomy-recipe.png" target="image"><img src="../../_images/rhads-ai/local-lab/anatomy-recipe.png" alt="anatomy recipe" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click <strong>Recipe Catalog</strong>.</p>
-</li>
-</ul>
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-select-agent.png" alt="mcp server select agent" width="40%"></span></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/recipe-click.png" target="image"><img src="../../_images/rhads-ai/local-lab/recipe-click.png" alt="recipe click" width="30%"></a></span></p>
+<p>From the Continue chat, let&#8217;s try the next query:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Explore the different recipes available <strong>Recipe Catalog</strong> and select the <strong>ChatBot using Llama Stack</strong> by clicking on <strong>More Details</strong></p>
-</li>
-</ul>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Could you list the templates available in the Red Hat Developer Hub catalog?</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/podman-recipe-list.png" target="image"><img src="../../_images/rhads-ai/local-lab/podman-recipe-list.png" alt="podman recipe list" width="100%"></a></span></p>
+<p>The chat should be something similar to:</p>
 </div>
 <div class="paragraph">
-<p><strong>Take time to explore the recipe.</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click the <strong>start</strong> icon.</p>
-</li>
-</ul>
+<p><span class="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat-templates.png" alt="continue chat templates" width="100%"></span></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/chatbot-start.png" target="image"><img src="../../_images/rhads-ai/local-lab/chatbot-start.png" alt="chatbot start" width="100%"></a></span></p>
+<p>Let&#8217;s try other queries, such as:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Click <strong>Start chatbot recipe</strong> to build the chatbot.</p>
-</li>
-</ul>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Could you list the components of the Red Hat Developer Hub catalog where the owner is the `user1`?</code></pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">What is the coverage of techdocs in the default namespace?</code></pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Fetch page `index.html` from techdoc with reference `component:default/uq`</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/start-recipe.png" target="image"><img src="../../_images/rhads-ai/local-lab/start-recipe.png" alt="start recipe" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The process will take a few seconds:</p>
-</li>
-</ul>
+<p>Try your own queries.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/podman-recipe-starting.png" target="image"><img src="../../_images/rhads-ai/local-lab/podman-recipe-starting.png" alt="podman recipe starting" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Once the chatbot is ready, Click <strong>Open Details</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/chatbot-ready.png" target="image"><img src="../../_images/rhads-ai/local-lab/chatbot-ready.png" alt="chatbot ready" width="90%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>To explore the chatbot, click the <strong>Open AI App</strong> icon.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/open-chatbot.png" target="image"><img src="../../_images/rhads-ai/local-lab/open-chatbot.png" alt="open chatbot" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Next, explore and test the chatbot.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/chatbot-running.png" target="image"><img src="../../_images/rhads-ai/local-lab/chatbot-running.png" alt="chatbot running" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Congratulations, you have built an AI chatbot integrated with LLama Stack using Podman AI Lab.</strong></p>
-</li>
-<li>
-<p>Next, review the source code.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>In Podman AI Lab, click <strong>AI APPS</strong> &#8594; <strong>Running</strong></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/ailab-running.png" target="image"><img src="../../_images/rhads-ai/local-lab/ailab-running.png" alt="ailab running" width="40%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Then, click <strong>Open Recipe</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/chatbot-recipe.png" target="image"><img src="../../_images/rhads-ai/local-lab/chatbot-recipe.png" alt="chatbot recipe" width="90%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Review the <strong>Summary</strong> section.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/ailab-chatbot-summary.png" target="image"><img src="../../_images/rhads-ai/local-lab/ailab-chatbot-summary.png" alt="ailab chatbot summary" width="100%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>In the <strong>Repository</strong> section, click <strong>containers/ai-lab-recipe</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/open-repository.png" target="image"><img src="../../_images/rhads-ai/local-lab/open-repository.png" alt="open repository" width="80%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Confirm to <strong>open external website</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/open-external-website.png" target="image"><img src="../../_images/rhads-ai/local-lab/open-external-website.png" alt="open external website" width="80%"></a></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The GitHub repository includes all the recipes displayed in Podman AI Lab: <a href="https://github.com/containers/ai-lab-recipes" target="_blank" rel="noopener">ai-lab-recipes</a>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/rhads-ai/local-lab/ailab-recipes.png" target="image"><img src="../../_images/rhads-ai/local-lab/ailab-recipes.png" alt="ailab recipes" width="80%"></a></span></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Podman AI Lab</strong> is a great resource for experimenting with AI applications, from learning from recipes, testing locally and try different models.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_next"><a class="anchor" href="#_next"></a>Next</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Next, you will learn how to build AI applications like an AI agent in an enterprise environment. This environment must include best practices, starting with security and following organizational guidelines in OpenShift.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_resources"><a class="anchor" href="#_resources"></a>Resources</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://podman-desktop.io/docs/ai-lab" target="_blank" rel="noopener">Podman AI Lab</a></p>
-</li>
-<li>
-<p><a href="https://developers.redhat.com/learn/rhel/build-your-ai-application-ai-lab-extension-podman-desktop" target="_blank" rel="noopener">Build your AI application with an AI Lab extension in Podman Desktop</a></p>
-</li>
-</ul>
+<p><strong>Congratulations</strong>, you have successfully integrated the Red Hat Developer Hub MCP Server in Red Hat OpenShift Dev Spaces
+as part of the AI assistant and learned about the AI Agent&#8217;s tools.</p>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="lab-ai-rhdh-mcp.html" class="query-params-link">Enable RHDH MCP</a></span>
-  <span class="next"><a href="../../end-to-end.html" class="query-params-link">Module 15: RHADS Complete: Summary and Next Steps</a></span>
+  <span class="prev"><a href="lab-ai-devspaces-rhads-ai.html" class="query-params-link">Build an Agent with RHDH from OpenShift Dev Spaces</a></span>
+  <span class="next"><a href="lab-ai-podman-rhads-ai.html" class="query-params-link">Experiment with an AI application locally using Podman AI Lab</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
