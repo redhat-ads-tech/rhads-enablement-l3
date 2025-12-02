@@ -112,13 +112,13 @@ Additionally, long running workflows can integrate with the https://backstage.io
 
 The following screenshot shows the prior "greeting" workflow available in the {product_rhdh_name} UI.
 
-image::orchestrator-overview/rhdh-workflow-list.png[]
+image::orchestrator-overview/rhdh-workflow-list.png[link=self, window="image"]
 
 ## Architectural Overview
 
 This is a high level architectural overview of the Orchestrator:
 
-image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[link=self, window=_blank]
+image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[link=self, window="image"]
 
 ## Conclusion
 

@@ -21,7 +21,7 @@ This guide is divided into two labs, each focusing on a different stages from th
 . Visit the {rhdh_url}[{product_rhdh_name} UI^].
 . Sign in using OIDC authentication method.
 +
-image:rhads-ai/rhads/rhdh-login.png[width=60%]
+image:rhads-ai/rhads/rhdh-login.png[width=60%,link=self, window="image"]
 . Log in with the admin credentials:
     * Username: {openshift_admin_user}
     * Password: {openshift_admin_password}
@@ -29,6 +29,6 @@ image:rhads-ai/rhads/rhdh-login.png[width=60%]
 You will be greeted with a welcome screen.
 
 
-image:rhads-ai/rhads/rhdh-welcome.png[Create UI]
+image:rhads-ai/rhads/rhdh-welcome.png[Create UI,link=self, window="image"]
 
 *Note:* You are logging in as an administrator because you will need elevated privileges to build a secret as part of the lab steps.

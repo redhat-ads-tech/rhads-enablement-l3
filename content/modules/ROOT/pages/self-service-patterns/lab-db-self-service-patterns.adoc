@@ -9,7 +9,7 @@ This lab will create the instance using an existing template that is not yet com
 
 You will use the Data Grid Operator to create a new instance of Data Grid. The Data Grid Operator is a Kubernetes operator that manages the lifecycle of Data Grid clusters. The operator is pre-installed for you, and the Software Template you create will use it to create new Data Grid clusters, through OpenShift GitOps. This image shows the Data Grid Operator in action, where users create Custom Resources on the cluster, and the operator responds by creating the corresponding Data Grid clusters.
 
-image:self-service-patterns/db-lab/datagrid-cr.png[RH Data Grid Catalog]
+image:self-service-patterns/db-lab/datagrid-cr.png[RH Data Grid Catalog,link=self, window="image"]
 
 [#lab]
 == Scenario
@@ -41,12 +41,12 @@ Open the following files or folders to examine their contents:
 * Select the *plus icon* on the top navigation bar to access the Create option or from URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
 
 +
-image:self-service-patterns/db-lab/rhdh-create-icon.png[Create UI] 
+image:self-service-patterns/db-lab/rhdh-create-icon.png[Create UI,link=self, window="image"] 
 
 
 * Click the *Import an existing Git repository* button.
 
-image:self-service-patterns/db-lab/rhdh-register-component.png[Create UI] 
+image:self-service-patterns/db-lab/rhdh-register-component.png[Create UI,link=self, window="image"] 
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -58,7 +58,7 @@ image:self-service-patterns/db-lab/rhdh-register-component.png[Create UI]
 
 * Click the *Import* button
 
-image:self-service-patterns/db-lab/rhdh-register-component-finish.png[width=60%] 
+image:self-service-patterns/db-lab/rhdh-register-component-finish.png[width=60%,link=self, window="image"] 
 
 *Congratulations!* You now have a new Software template in Developer Hub. Now, end-users can *self-provision Data Grid*.
 
@@ -68,12 +68,12 @@ We'll explore the end-user experience by accessing the Software Templates view.
 * Navigate to Catalog -> Self-service
 * Look for the *RH Data Grid infinispan* catalog
 
-image:self-service-patterns/db-lab/datagrid-catalog.png[width=40%]
+image:self-service-patterns/db-lab/datagrid-catalog.png[width=40%,link=self, window="image"]
 
 * Click on *Choose*
 * Review and fill out the form with sample data until you reach the review screen, **without creating the RH Data Grid**. **DO NOT CLICK ON CREATE.** 
 
-image:self-service-patterns/db-lab/datagrid-sample.png[width=120%]
+image:self-service-patterns/db-lab/datagrid-sample.png[width=120%,link=self, window="image"]
 
 == Implement changes in Software Templates
 
@@ -87,20 +87,20 @@ The Java Team can then use Data Grid clusters by creating a new cluster from Dev
 ** Next, select the filters: *Kind:Template* and *Tags: self-service*
 As shown in the following picture:
 
-image:self-service-patterns/db-lab/self-service-catalog.png[width=40%]
+image:self-service-patterns/db-lab/self-service-catalog.png[width=40%,link=self, window="image"]
 
 ** Select the **Red Hat Data Grid infinispan**
 
 ** Access the Source code by clicking on *View Source*
 
-image:self-service-patterns/db-lab/db-edit-catalog.png[width=60%]
+image:self-service-patterns/db-lab/db-edit-catalog.png[width=60%,link=self, window="image"]
 
 
 * Navigate to the {gitlab_url}/rhdh/rhads-enablement-l3-st-self-service/-/tree/main/rhdatagrid_infinispan/manifests/helm/app/templates[templates folder^] (it's in the `manifests/helm/app` folder). This folder contains the Kubernetes objects required to build the component in a Kubernetes cluster.
 
 * Create a new file named `infinispan.yaml` by clicking the `+` button and selecting _New File_:
 
-image:self-service-patterns/db-lab/gitlab-newfile.png[width=100%]
+image:self-service-patterns/db-lab/gitlab-newfile.png[width=100%,link=self, window="image"]
 
 Review the https://docs.redhat.com/en/documentation/red_hat_data_grid/8.5/html/data_grid_operator_guide/creating-clusters#infinispan-cr_creating-clusters[official documentation^] on how to create a Data Grid instance. This example is very simple, but in the future you can add more options to the instance, such as different storage options, different authentication methods, etc.
 
@@ -134,7 +134,7 @@ spec:
 
 * Back in the Developer Hub catalog, on the {rhdh_url}/catalog/default/template/rhdatagrid-infinispan-instance/[Data Grid Template^], click on the *Schedule entity refresh* icon to sync the catalog with the latest changes.
 
-image:self-service-patterns/db-lab/rhdh-refresh-catalog.png[width=70%]
+image:self-service-patterns/db-lab/rhdh-refresh-catalog.png[width=70%,link=self, window="image"]
 
 == Test your changes: Explore the user experience as Developer
 
@@ -143,19 +143,19 @@ Now, you will create a new instance of the Data Grid cluster defined in the soft
 * From *catalog*, select *Self-service* and find the *Red Hat Data Grid infinispan*
 * Click on *Choose*
 
-image:self-service-patterns/db-lab/datagrid-catalog.png[width=50%]
+image:self-service-patterns/db-lab/datagrid-catalog.png[width=50%,link=self, window="image"]
 
 * Review the information until you complete the flow and click *Create* (Feel free to use the default values or enter your own Data Grid cluster name).
 
-image:self-service-patterns/db-lab/datagrid-created.png[width=100%]
+image:self-service-patterns/db-lab/datagrid-created.png[width=100%,link=self, window="image"]
 
 * Open the catalog from the component's creation page:
 
-image:self-service-patterns/db-lab/datagrid-open.png[width=100%]
+image:self-service-patterns/db-lab/datagrid-open.png[width=100%,link=self, window="image"]
 
 * The component has been created, and you should see a screen like this:
 
-image:self-service-patterns/db-lab/datagrid-component.png[width=100%]
+image:self-service-patterns/db-lab/datagrid-component.png[width=100%,link=self, window="image"]
 
 === Verify the Data Grid cluster was created
 
@@ -168,11 +168,11 @@ image:self-service-patterns/db-lab/datagrid-component.png[width=100%]
 
 * Click on *Proceed*, next click on *Open the console*
 
-image:self-service-patterns/db-lab/datagrid-open-console.png[width=100%]
+image:self-service-patterns/db-lab/datagrid-open-console.png[width=100%,link=self, window="image"]
 
 * You should see a screen like this:
 
-image:self-service-patterns/db-lab/datagrid-working.png[width=100%]
+image:self-service-patterns/db-lab/datagrid-working.png[width=100%,link=self, window="image"]
 
 [NOTE]
 ====

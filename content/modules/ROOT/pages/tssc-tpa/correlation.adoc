@@ -8,7 +8,7 @@ The primary information source that tells us if a package (as part of an SBOM) i
 
 TPA imports this data from two sources
 
-image::tssc-tpa/tpa-importers.png[]
+image::tssc-tpa/tpa-importers.png[link=self, window="image"]
 
 1) The https://www.cve.org/[CVE Program^,window="info"] database 
 
@@ -18,7 +18,7 @@ Red Hat has been appointed https://www.cve.org/PartnerInformation/ListofPartners
 
 * *CVE Numbering Authority (CNA)*: An authorized entity with specific scope and responsibility to regularly assign CVE IDs and publish corresponding CVE Records.
 
-* *CVE Numbering Authority of Last Resort (CNA-LR)*: A CNA authorized by a Root to assign CVE IDs and to publish corresponding CVE Records within that Root’s scope for vulnerabilities not covered by the Scope of another CNA.
+* *CVE Numbering Authority of Last Resort (CNA-LR)*: A CNA authorized by a Root to assign CVE IDs and to publish corresponding CVE Records within that Root's scope for vulnerabilities not covered by the Scope of another CNA.
 
 * *Root*: An organization authorized within the CVE Program that is responsible, within a specific Scope, for the recruitment, training, and governance of one or more entities that are a CNA, CNA-LR, or another Root.
 ====

@@ -16,7 +16,7 @@ oc get tektonconfig -n openshift-operators -o yaml | less
 ----
 *HINT:* Exit `less` with kbd:[q] or kbd:[Q]
 
-The operator turns the global `tektonconfig` into a `chains-config` ConfigMap in the "openshift-pipelines" namespace, that the Chains Controller reads.
+The operator turns the global `tektonconfig` into a `chains-config` ConfigMap in the `openshift-pipelines` namespace, that the Chains Controller reads. Look at it with:
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -122,11 +122,11 @@ a|Should you automatically be logged in as `admin`, please log out and log back 
 
 Click on the "Self-Service" button (the (+) icon) to get to the {rhdh_url}/create[Self-Service Page^,window="rhdh"]
 
-image::tssc-tas/rhdh-self-service-button.png[]
+image::tssc-tas/rhdh-self-service-button.png[link=self, window="image"]
 
 Scroll down to the template named "Securing a Quarkus Service Software Supply Chain (Tekton)" and click on {rhdh_url}/create/templates/default/quarkus-stssc-template["Choose"^,window="rhdh"]
 
-image::tssc-tas/rhdh-self-service-button-choose-template.png[]
+image::tssc-tas/rhdh-self-service-button-choose-template.png[link=self, window="image"]
 
 . Change the name to *`tekton-chains-test`* and leave the other fields at their default values
 . Click "Next"
@@ -167,7 +167,7 @@ When we go to the {rhdh_url}/catalog/default/component/tekton-chains-test/image-
 
 Both of which haven't been created by an explicit `sign and attest` pipeline task, but by *Tekton Chains*.
 
-image::tssc-tas/rhdh-tekton-chains-test-homepage-image-registry.png[]
+image::tssc-tas/rhdh-tekton-chains-test-homepage-image-registry.png[link=self, window="image"]
 
 If we open that in {quay_url}/repository/tssc/tekton-chains-test?tab=tags[Quay directly^, window="quay"] we can see that Quay also recognises the signature (which the Quay Plugin for Red Hat Developer Hub doesn't show in its current version):
 
@@ -412,3 +412,10 @@ This is a standardized format (the slsa.dev/provenance/v0.2 format) that Enterpr
 
 More on that in the next chapter.
 
+== Summary
+
+In this chapter, you learned how to configure Tekton Chains and how to use it to sign and attest images and pipelines.
+
+You also learned how to verify the attestations and signatures and how to download and inspect them.
+
+In the next chapter, you will learn how to use Enterprise Contract / Conforma to validate the attestations and signatures (and ultimately how RHADS and RHACS combined can enforce security policies for your images and pipelines through their respective admission controllers). On to the next chapter! 

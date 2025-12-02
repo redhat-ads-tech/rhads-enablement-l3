@@ -43,7 +43,7 @@ You can find the Keycloak URL by visiting the *Networking > Routes* screen in th
 ====
 . Click the `rhdh` client.
 +
-image::setup-rhdh/keycloak-client-list.png[]
+image::setup-rhdh/keycloak-client-list.png[link=self, window="image"]
 
 The *General settings* screen for the client will be displayed. You need to add your {product_rhdh_name} URL to the *Web origins* and *Valid redirect URIs*.
 
@@ -70,7 +70,7 @@ Do not delete the existing *Web origins* and *Valid redirect URIs*!
 ====
 . Your result should resemble this screenshot, albeit with different URL values.
 +
-image::setup-rhdh/keycloak-valid-urls.png[]
+image::setup-rhdh/keycloak-valid-urls.png[link=self, window="image"]
 . Click *Save*.
 
 The path for the redirect URL is `/api/auth/oidc/handler/frame` as documented in https://backstage.io/docs/auth/oidc/#the-api-reference[Backstage's OIDC reference^] and our https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.8/html-single/authentication_in_red_hat_developer_hub/index#assembly-authenticating-with-rhbk[{product_rhdh_name} documentation^].
@@ -161,11 +161,11 @@ A new Backstage pod was created after you updated the CR. Check the pod logs to 
 
 . Visit *Workloads > Pods* and select the latest Backstage pod - it will most likely be showing an `Init` status.
 +
-image::setup-rhdh/rhdh-pod-init.png[]
+image::setup-rhdh/rhdh-pod-init.png[link=self, window="image"]
 . Select the *Logs* tab and select the *install-dynamic-plugins* container.
 . Find log lines that state `Installing dynamic plugin` - these should match the plugins you enabled in your ConfigMap.
 +
-image::setup-rhdh/plugins-installing.png[]
+image::setup-rhdh/plugins-installing.png[link=self, window="image"]
 . Wait for the installation process to finish (`Removed lock file` will be printed in the logs)
 
 After the installation process is complete, you'll notice that the new pod crashes. Change the selected container in the *Logs* screen from `install-dynamic-plugins` to `backstage-backend`. You'll see an error stating that a required configuration for the Keycloak plugin is missing.
@@ -193,7 +193,7 @@ First, create a Secret to store Keycloak connection details:
 {m2_keycloak_secret_name}
 ----
 +
-image::setup-rhdh/keycloak-secret.png[]
+image::setup-rhdh/keycloak-secret.png[link=self, window="image"]
 . Add the following key-value pairs (enter the Key name in the `Key` field, then the value in the text box _below_ the "Value" box, and click "Add key/value" to add the next pair):)
 +
 [cols="1,1"]
@@ -314,14 +314,14 @@ A new {product_rhdh_name} pod will be created. Observe the rollout:
 
 You should find numerous references, including a line that mentions that users and groups will be ingested.
 
-image::setup-rhdh/keycloak-plugin-logs.png[]
+image::setup-rhdh/keycloak-plugin-logs.png[link=self, window="image"]
 
 Next, verify the new OpenID Connect login flow is working:
 
 . Visit your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}[{product_rhdh_name} instance^].
 . You should now see an OIDC sign-in option.
 +
-image::setup-rhdh/rhdh-oidc-signin.png[]
+image::setup-rhdh/rhdh-oidc-signin.png[link=self, window="image"]
 . Click *Sign In* and use the following credentials in the popup that appears:
   * Username: `{rhdh_user}`
   * Password: `{rhdh_user_password}`
@@ -333,5 +333,5 @@ Since OpenShift and {product_rhdh_name} share the same authentication realm, you
 
 . Once logged in, go to the *Catalog* set the *Kind* dropdown to *User* or *Group*. Imported User or Group entities will be displayed.
 + 
-image::setup-rhdh/users-in-catalog.png[]
+image::setup-rhdh/users-in-catalog.png[link=self, window="image"]
 

@@ -71,12 +71,12 @@ spec:
 ----
 . A new *SonataFlow* resource will appear in the Topology View. Click it and wait for the Pod to enter the *Running* status.
 +
-image::orchestrator-overview/sonataflow-pod-running.png[]
+image::orchestrator-overview/sonataflow-pod-running.png[link=self, window="image"]
 . Click the arrow next to the Pod on the Topology view, then visit the `/q/dev-ui` endpoint to view the https://quarkus.io/guides/dev-ui[Quarkus Dev UI^]. Alternatively, https://greeting-tssc-dh.{openshift_cluster_ingress_domain}/q/dev-ui[this link^] will take your directly to your Dev UI.
 +
 NOTE: Quarkus is the application framework that exposes REST endpoints, performs validation, and even provides extensions such as `sysout` in our sample workflow. The Serverless Logic Operator uses https://mvnrepository.com/artifact/org.kie.kogito/kogito-codegen[kogito-codegen^] to generate Java code from your workflow definition and JSON schemas.
 +
-image::orchestrator-overview/sonataflow-q-dev-ui.png[]
+image::orchestrator-overview/sonataflow-q-dev-ui.png[link=self, window="image"]
 
 An important part of the *SonataFlow* workflow CR you deployed is the `sonataflow.org/profile` annotation that's set to `dev`. This annotation instructs the Serverless Logic Operator to start the Quarkus application (that's hosting the workflow) in development mode. That's why the Quarkus Dev UI is available.
 
@@ -87,10 +87,10 @@ Use the Quarkus Dev UI to test a workflow.
 . Click the *Workflows* link inside the *Serverless Workflows Tools* box. 
 . Click the *Workflow Definitions* tab. Workflow definitions including the new _greeting_ workflow will be listed.
 +
-image::orchestrator-overview/quarkus-devui-workflows.png[]
+image::orchestrator-overview/quarkus-devui-workflows.png[link=self, window="image"]
 . Click the play button under the *Actions* column for the *greeting*.
 +
-image::orchestrator-overview/quarkus-devui-start-workflow.png[]
+image::orchestrator-overview/quarkus-devui-start-workflow.png[link=self, window="image"]
 . Enter the following JSON in the *Start Workflow Data*, then click *Start*:
 +
 [source,json,role=execute,subs=attributes+]
@@ -101,10 +101,10 @@ image::orchestrator-overview/quarkus-devui-start-workflow.png[]
 NOTE: You can expand the up arrow (this *^* icon) at the bottom of the Quarkus Dev UI to expand a pane showing the application logs. This provides additional insight into the workflow's execution.
 . Return to the _Workflow Instances_ tab. Your workflow run will be listed.
 +
-image::orchestrator-overview/quarkus-devui-workflow-run.png[]
+image::orchestrator-overview/quarkus-devui-workflow-run.png[link=self, window="image"]
 . Click the *greeting* link. The workflow run details are listed, showing that that the English branch was executed. 
 +
-image::orchestrator-overview/quarkus-devui-workflow-outline.png[]
+image::orchestrator-overview/quarkus-devui-workflow-outline.png[link=self, window="image"]
 . Scroll down and you'll see that "Hello from JSON Workflow" is in the `workflowdata` output.
 
 ### Edit the Workflow
@@ -112,17 +112,17 @@ image::orchestrator-overview/quarkus-devui-workflow-outline.png[]
 . Return to the OpenShift Web Console, and return to the {ns_tssc_rhdh} project's Topology view.
 . Edit the greeting *SonataFlow* by clicking the three dots on the *SF* item in the Topology view.
 +
-image::orchestrator-overview/quarkus-devui-edit-sf.png[]
+image::orchestrator-overview/quarkus-devui-edit-sf.png[link=self, window="image"]
 . Switch to the YAML editor.
 . Update the Spanish entry in `ChooseOnLanguage` conditions to check for "Irish" and change the `transition` to "GreetInIrish"
 . Find the corresponding `GreetInSpanish` state and change it to `GreetInIrish`.
 . Additionally, change the `data.greeting` to `Háigh ó JSON workflow,`
 + 
-image::orchestrator-overview/quarkus-devui-edit-workflow.png[]
+image::orchestrator-overview/quarkus-devui-edit-workflow.png[link=self, window="image"]
 . Scroll down and click *Save*.
 . Next, visit the Pod logs of the *greeting* Pod. Notice that it restarts Quarkus? You should see the Quarkus logo printed - indicating a restart of the framework.
 +
-image::orchestrator-overview/quarkus-devui-restarts.png[]
+image::orchestrator-overview/quarkus-devui-restarts.png[link=self, window="image"]
 
 Test the workflow again, but pass the "Irish" as the language and observe the results.
 
@@ -139,7 +139,7 @@ To start, delete the development version of the *greeting* workflow:
 . Open the OpenShift Web Console, and return to the *{ns_tssc_rhdh}* project's Topology view.
 . Delete the greeting *SonataFlow* by clicking the three dots on the *SF* item in the Topology view, then clicking *Delete SonataFlow*.
 +
-image::orchestrator-overview/sonataflow-greeting-delete.png[]
+image::orchestrator-overview/sonataflow-greeting-delete.png[link=self, window="image"]
 
 Next, use the OpenShift Web Terminal to deploy the production version of the greeting workflow:
 
@@ -166,11 +166,11 @@ helm install greeting-workflow workflows/greeting -n {ns_tssc_rhdh}
 ----
 . The new *greeting* service will appear in the Topology view.
 +
-image::orchestrator-overview/sonataflow-helm-install.png[]
+image::orchestrator-overview/sonataflow-helm-install.png[link=self, window="image"]
 +
 . Additionally, if you log into {rhdh_url}[Red Hat Developer Hub^] (using `{rhdh_user}` / `{rhdh_user_password}` ) you'll now see that *Greeting workflow* is listed.
 +
-image::orchestrator-overview/rhdh-workflow-list.png[]
+image::orchestrator-overview/rhdh-workflow-list.png[link=self, window="image"]
 
 [NOTE]
 ====
@@ -182,11 +182,11 @@ If the greeting workflow doesn't appear in the {product_rhdh_name} UI, delete th
 . Click the play button on the workflow in {product_rhdh_name}.
 . Select a language when prompted.
 +
-image::orchestrator-overview/sonataflow-rhdh-params.png[]
+image::orchestrator-overview/sonataflow-rhdh-params.png[link=self, window="image"]
 . Click *Next*, verify the parameters then click *Run*.
 . A page showing workflow details will be shown. This includes the resulting *Greeting Message* determined by your chosen language.
 +
-image::orchestrator-overview/sonataflow-rhdh-complete.png[]
+image::orchestrator-overview/sonataflow-rhdh-complete.png[link=self, window="image"]
 
 This is a very simple workflow example, but it demonstrates how SonataFlow-based workflows are integrated with {product_rhdh_name} using the Orchestrator feature. 
 

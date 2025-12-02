@@ -28,7 +28,7 @@ Your cluster has been pre-configured with an Argo CD instance that's managed by 
 . Navigate to *Operators > Installed Operators* and search for "gitops" to find the {product_gitops_name} operator.
 . Select the operator then the *Argo CD* tab.
 +
-image::setup-rhdh/argocd-operator.png[]
+image::setup-rhdh/argocd-operator.png[link=self, window="image"]
 . Select the *{ns_tssc_gitops}* instance, and then *Actions > Edit Argo CD*.
 . Add this line to the `extraConfig` section to add a *{m2_argocd_user}* user:
 +
@@ -47,7 +47,7 @@ policy: |
 ----
 . The resulting configuration will resemble the following screenshot.
 +
-image::setup-rhdh/argocd-operator-config.png[]
+image::setup-rhdh/argocd-operator-config.png[link=self, window="image"]
 . Scroll down and click *Save*.
 
 The operator will update the necessary Argo CD ConfigMaps to enable the new *{m2_argocd_user}* user account. 
@@ -70,7 +70,7 @@ accounts.{m2_argocd_user}.password
 {m2_argocd_passhash}
 ----
 +
-image::setup-rhdh/argocd-secret.png[]
+image::setup-rhdh/argocd-secret.png[link=self, window="image"]
 . Click *Save*.
 
 The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt generated using bcrypt. The hash and salt provided above were generated using `htpasswd` like so: `htpasswd -bnBC 10 "" '{m2_argocd_pass}'`.
@@ -82,7 +82,7 @@ The new password is `{m2_argocd_pass}`, but Argo CD expects a hash and salt gene
 . *Do not click* the *Log in via OpenShift* button.
 . Login using the username `{m2_argocd_user}` and password `{m2_argocd_pass}` - an empty application list will be displayed.
 
-image::setup-rhdh/argocd-dashboard.png[]
+image::setup-rhdh/argocd-dashboard.png[link=self, window="image"]
 
 [NOTE]
 ====
@@ -187,7 +187,7 @@ The `argocd` key should be at the same indentation level as the `catalog` and `i
 
 Wait for the new Backstage pod to start, and check the *backstage-backend* logs for the Argo CD plugin initializing messages.
 
-image::setup-rhdh/argocd-plugin-logs.png[]
+image::setup-rhdh/argocd-plugin-logs.png[link=self, window="image"]
 
 == Verify Argo CD Integration
 
@@ -229,7 +229,7 @@ metadata:
   * Password: `{m2_argocd_pass}`
 . Your new *httpsink* namespace should be listed in the *Namespaces* field.
 +
-image::setup-rhdh/argocd-cluster-details.png[]
+image::setup-rhdh/argocd-cluster-details.png[link=self, window="image"]
 
 === Create an Argo CD Application
 
@@ -283,7 +283,7 @@ First, perform a sanity check by viewing your new application in the Argo CD das
     * Password: `{m2_argocd_pass}`
 . Confirm that the application named *httpsink* is listed and marked as *Healthy* and *Synced* (it may take a minute or two for the initial sync to complete).
 +
-image::setup-rhdh/argocd-application.png[]
+image::setup-rhdh/argocd-application.png[link=self, window="image"]
 
 . Next, return to https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}[{product_rhdh_name}^].
 . Login as:
@@ -291,7 +291,7 @@ image::setup-rhdh/argocd-application.png[]
     * Password: `{rhdh_user_password}`
 . Visit the *Catalog* by clicking the link on the left menu, ensure *Kind* is set to *Component* and search for `httpsink`.
 +
-image::setup-rhdh/argocd-httpsink-search.png[]
+image::setup-rhdh/argocd-httpsink-search.png[link=self, window="image"]
 . Select the *HTTP Sink Application* from the list, then view the *CD* tab for the Component.
 +
 [NOTE]
@@ -299,10 +299,10 @@ image::setup-rhdh/argocd-httpsink-search.png[]
 It may take a minute or two for the *CD* tab to appear. Wait a few moments, and reload the page. If the *CD* tab doesn't appear after two minutes, verify the dynamic plugins configuration you updated in the prior section.
 ====
 +
-image::setup-rhdh/argocd-httpsink-cd.png[]
+image::setup-rhdh/argocd-httpsink-cd.png[link=self, window="image"]
 . Click on the listed application to view more information on the managed Kubernetes resources.
 +
-image::setup-rhdh/argocd-httpsink-app-info.png[]
+image::setup-rhdh/argocd-httpsink-app-info.png[link=self, window="image"]
 
 = Conclusion
 

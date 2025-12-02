@@ -7,7 +7,7 @@ include::partial$logout-links.adoc[]
 
 Red Hat offers products to build, deploy, and consume models and AI applications in Kubernetes and OpenShift. Red Hat AI allows organizations to standardize AI across their teams with best practices and industry standards, from AI ideation to prototyping to development to the production environment.
 
-image:rhads-ai/rh-ai.png[Podman AI Lab]
+image:rhads-ai/rh-ai.png[Podman AI Lab,link=self, window="image"]
 
 Learn more about link:https://www.redhat.com/en/products/ai[Red Hat AI,window='_blank']
 
@@ -30,14 +30,14 @@ Red Hat Developer Hub can integrate with OpenShift AI through Software Templates
 === Introduction to Podman Desktop
 When building an AI application, it's often helpful if developers can access their tools locally. Thanks to the *Podman AI Lab extension*, developers can leverage different models, try recipes, playgrounds, and more to learn, experiment, and develop AI applications.  
 
-image:rhads-ai/local-dev.png[Podman AI Lab]
+image:rhads-ai/local-dev.png[Podman AI Lab,link=self, window="image"]
 
 
 === Podman AI Lab Extension
 In the following image, you will explore some of the critical aspects of this:
 
 
-image:rhads-ai/podman-ai-lab.png[Podman AI Lab]
+image:rhads-ai/podman-ai-lab.png[Podman AI Lab,link=self, window="image"]
 
 
 === RH OpenShift Dev Spaces with AI assistant 

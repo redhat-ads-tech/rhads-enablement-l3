@@ -142,7 +142,7 @@ less ~/setup-acs-integration.sh
 
 This script creates a "Registry Integration" in ACS. It basically tells ACS which authentication method and credentials to use when accessing a specific registry. During the terminal pod startup, we're checking that the integration exists and if not, create it - all via the REST API. 
 
-image::security-practices/acs-integrations.png[]
+image::security-practices/acs-integrations.png[link=self, window="image"]
 
 But we're digressing from the topic at hand... 🤷
 ====
@@ -366,7 +366,7 @@ Just from the `cosign tree` we can just tell that we now have a new attestation,
 
 The same image in {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay^,window="quay"] just shows us *_one_* attestation tag (which contains all of them).
 
-image::security-practices/quay-signed-image-attestations.png[]
+image::security-practices/quay-signed-image-attestations.png[link=self, window="image"]
 
 Given the size of the attestation, you can guess that it contains considerable payload (instead of just a bit of text that we attested earlier) - but we can only see it when using `cosign download attestation` or `ec validate image` (when using policy rules with the latter)
 ====

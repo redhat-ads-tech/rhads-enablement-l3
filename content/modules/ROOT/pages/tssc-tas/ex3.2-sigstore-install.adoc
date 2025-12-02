@@ -8,21 +8,21 @@ The Red Hat build of the Sigstore Admission Controller is available as an Operat
 
 Login to the {openshift_console_url}/operatorhub/all-namespaces?keyword=policy+controller[Operator Hub on the OpenShift Console^,window="console"] as `{openshift_admin_user}` with password `{openshift_admin_password}` and search for `policy controller`:
 
-image::tssc-tas/operatorhub-policy-controller.png[]
+image::tssc-tas/operatorhub-policy-controller.png[link=self, window="image"]
 
 
 [NOTE]
 ====
 When selecting it, you will see that the Policy Controller (and the Operator that reconciles and installs the helm charts) is currently in Tech Preview, as also stated by the https://docs.redhat.com/en/documentation/red_hat_trusted_artifact_signer/1.3/html/administration_guide/rhtas-ocp-admin#the-policy-controller[Product Documentation^,window="docs"]
 
-image::tssc-tas/operatorhub-policy-controller-install-tp.png[]
+image::tssc-tas/operatorhub-policy-controller-install-tp.png[link=self, window="image"]
 
 However, given its versatile feature set (and the fact that it is part of the upstream https://docs.sigstore.dev/policy-controller/overview/[Sigstore project^,window="docs"]) we should discuss it here even before it graduates to GA (General Availability).
 ====
 
 Click on "*Install*" and accept all the defaults, then proceed with *Install* again.
 
-image::tssc-tas/operatorhub-policy-controller-install.png[]
+image::tssc-tas/operatorhub-policy-controller-install.png[link=self, window="image"]
 
 After the installation finishes, the Operator should be available. As we discussed earlier, it adds three CRDs (Custom Resource Definitions) to the cluster:
 
@@ -30,7 +30,7 @@ After the installation finishes, the Operator should be available. As we discuss
 * Trust Root
 * Cluster Image Policy
 
-image::tssc-tas/operatorhub-policy-controller-installed-crds.png[]
+image::tssc-tas/operatorhub-policy-controller-installed-crds.png[link=self, window="image"]
 
 
 

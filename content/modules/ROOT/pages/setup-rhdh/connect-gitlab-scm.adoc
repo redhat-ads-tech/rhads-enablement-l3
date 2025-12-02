@@ -38,11 +38,11 @@ You can find the GitLab instance deployment by accessing the {openshift_console_
   * *Token name*: `developer-hub-integration`
   * *Scopes*: `api`, `read_repository`, `write_repository`
 +
-image::setup-rhdh/gitlab-create-token.png[]
+image::setup-rhdh/gitlab-create-token.png[link=self, window="image"]
 . Scroll down and click *Create personal access token*.
 . Once the token is created, copy it someplace safe - you'll need it in the next section.
 +
-image::setup-rhdh/gitlab-token-created.png[]
+image::setup-rhdh/gitlab-token-created.png[link=self, window="image"]
 
 === Create the GitLab Secret
 
@@ -159,7 +159,7 @@ integrations:
 ----
 . The resulting configuration should resemble this screenshot.
 + 
-image::setup-rhdh/app-config-gitlab.png[]
+image::setup-rhdh/app-config-gitlab.png[link=self, window="image"]
 . Click *Save* to update the *app-config.yaml*.
 
 == Verify GitLab Integration
@@ -168,11 +168,11 @@ After the new Backstage pod has started:
 
 . Check the Backstage pod logs to confirm successful synchronization with GitLab.
 +
-image::setup-rhdh/gitlab-discovery-log.png[]
+image::setup-rhdh/gitlab-discovery-log.png[link=self, window="image"]
 . Next, log in to your https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}[{product_rhdh_name} instance^].
 . Navigate to the *Catalog* to see imported items of *Kind* Component from GitLab repositories - specifically a *HTTP Sink Application*.
 +
-image::setup-rhdh/gitlab-component-httpsink.png[]
+image::setup-rhdh/gitlab-component-httpsink.png[link=self, window="image"]
 +
 [NOTE]
 ====
@@ -182,7 +182,7 @@ If the HTTP Sink Application isn't listed in the Catalog, wait a minute or two a
 . A *Relations* pane shows that the API is provided by the *HTTP Sink Application*.
 . Click the *Definition* tab - an Swagger UI is rendered from the OpenAPI Spec.
 +
-image::setup-rhdh/gitlab-api-httpsink.png[]
+image::setup-rhdh/gitlab-api-httpsink.png[link=self, window="image"]
 . Return to the *Overview* tab and click *View Source*. You'll see the *catalog-info.yaml* and *opeanapi.yaml* that the GitLab plugin discovered to generate these entities.
 
 The system automatically discovers and imports `catalog-info.yaml` files from repositories in the configured GitLab group, so long as they match the https://backstage.io/docs/integrations/gitlab/discovery/#configuration[specified search parameters^].
