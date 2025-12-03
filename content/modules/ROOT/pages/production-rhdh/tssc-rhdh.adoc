@@ -8,4 +8,4 @@ This is designed to provide end users with a configurable and highly secure deve
 The module will explain the mechanisms used and integrated as part of Red Hat Advanced Developer Suite, and then provide a hands-on lab showing the whole
 system working end-to-end, along with tips on how to configure the components specifically for end customers/organizations.
 
-image::rhads-logo.png[RHADS Logo,align="center",width=200]
+image::rhads-logo.png[RHADS Logo,align="center",width=200,link=self, window="image"]

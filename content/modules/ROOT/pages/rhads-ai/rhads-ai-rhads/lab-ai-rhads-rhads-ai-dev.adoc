@@ -47,7 +47,7 @@ Our AI Agent is a Research Agent. It will search the internet and specific websi
 
 The following image describes the AI agent architecture, including the Red Hat products that interact with the application throughout the Software Development Lifecycle.
 
-image:rhads-ai/rhads/architecture.png[width=100%]
+image:rhads-ai/rhads/architecture.png[width=100%,link=self, window="image"]
 
 == Create the AI Research Agent
 
@@ -59,20 +59,20 @@ image:rhads-ai/rhads/architecture.png[width=100%]
 
 * From *catalog*, then click *AI Agent*.
 +
-image:rhads-ai/rhads/rhdh-ai-agent.png[width=100%]
+image:rhads-ai/rhads/rhdh-ai-agent.png[width=100%,link=self, window="image"]
 
 === Getting started with Red Hat OpenShift Dev Spaces
 
 * Click the *RH OpenShift Dev Spaces* link from the *component overview* screen.
 
-image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
+image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%,link=self, window="image"]
 
 * Log in using your current admin credentials. You might not be prompted for a username if you are already authenticated in OpenShift.
 
 ** Username: {openshift_admin_user}
 ** Password: {openshift_admin_password}
 
-image:rhads-ai/rhads/rhdh-devspaces-login.png[width=60%]
+image:rhads-ai/rhads/rhdh-devspaces-login.png[width=60%,link=self, window="image"]
 
 *Red Hat OpenShift Dev Spaces* will automatically analyze the repository. After reviewing it, Dev Spaces will select a suitable development environment. It will read the *devfile.yaml* and automatically configure the workspace with the specified container image, tools, and commands.
 
@@ -80,15 +80,15 @@ image:rhads-ai/rhads/rhdh-devspaces-login.png[width=60%]
 
 * Click *Trust Authors*.
 +
-image:rhads-ai/rhads/rhdh-devspaces-creating-continue.png[width=100%]
+image:rhads-ai/rhads/rhdh-devspaces-creating-continue.png[width=100%,link=self, window="image"]
 
 * Authorize *OpenShift Dev Spaces* to connect with GitLab.
 +
-image:rhads-ai/rhads/rhdh-devspaces-authorize.png[width=100%]
+image:rhads-ai/rhads/rhdh-devspaces-authorize.png[width=100%,link=self, window="image"]
 
 * *Welcome to Red Hat OpenShift Dev Spaces*. You should see a screen similar to this:
 +
-image:rhads-ai/rhads/rhdh-devspaces-welcome.png[width=100%]
+image:rhads-ai/rhads/rhdh-devspaces-welcome.png[width=100%,link=self, window="image"]
 
 === Implement the AI agent
 
@@ -108,11 +108,11 @@ The AI Research Agent will use *Tavily* for *tools*, such as Web Search. We want
 * Click *Sign up* to create a new account.
 * Choose your sign-up method: *Google*, *GitHub*, or *Email address*.
 +
-image:rhads-ai/rhads/tavily-web.png[width=100%]
+image:rhads-ai/rhads/tavily-web.png[width=100%,link=self, window="image"]
 
 * Click *Continue*, and once logged in, you will see a screen like this:
 +
-image:rhads-ai/rhads/tavily-main.png[width=100%]
+image:rhads-ai/rhads/tavily-main.png[width=100%,link=self, window="image"]
 
 * Select the provided API key, copy the *API KEY VALUE*
 
@@ -121,13 +121,13 @@ image:rhads-ai/rhads/tavily-main.png[width=100%]
 * Close the *Get started* pop-up.
 * Click *Add API Key*.
 +
-image:rhads-ai/rhads/tavily-appkey-add.png[width=30%]
+image:rhads-ai/rhads/tavily-appkey-add.png[width=30%,link=self, window="image"]
 
 * Create an API key named *agent*:
 +
 *Note:* The API key is *free*. The next screenshot shows additional information about limits.
 +
-image:rhads-ai/rhads/tavily-appkey-create.png[width=70%]
+image:rhads-ai/rhads/tavily-appkey-create.png[width=70%,link=self, window="image"]
 
 * After creating the API key, copy the *API KEY VALUE*
 
@@ -137,7 +137,7 @@ You will create a Kubernetes secret with the Tavily API key.
 
 * From RH OpenShift Dev Spaces, open a *Terminal* by clicking *New Terminal*.
 +
-image:rhads-ai/rhads/devspaces-terminal.png[width=70%]
+image:rhads-ai/rhads/devspaces-terminal.png[width=70%,link=self, window="image"]
 +
 *Note*: Ignore any message from Red Hat OpenShift Dev Spaces: `"Some keybindings don't go to the terminal by default and are handled by Red Hat OpenShift Dev Spaces with Microsoft Visual Studio Code - Open Source IDE instead."`
 
@@ -165,27 +165,27 @@ Now, set up your account on the https://maas.apps.prod.rhoai.rh-aiservices-bu.co
 
 * Click Sign in.
 +
-image:rhads-ai/rhads/maas-sign-in.png[width=60%]
+image:rhads-ai/rhads/maas-sign-in.png[width=60%,link=self, window="image"]
 
 * Click Authenticate with RH SSO.
 +
-image:rhads-ai/rhads/maas-authrh.png[width=80%]
+image:rhads-ai/rhads/maas-authrh.png[width=80%,link=self, window="image"]
 
 * Click Google to sign in to RHOAI with your account.
 +
-image:rhads-ai/rhads/maas-rhoai.png[width=60%]
+image:rhads-ai/rhads/maas-rhoai.png[width=60%,link=self, window="image"]
 
 * Click *Create an Application*
 +
-image:rhads-ai/rhads/mass-click-create.png[width=100%]
+image:rhads-ai/rhads/mass-click-create.png[width=100%,link=self, window="image"]
 
 * Click the llama-3-2-3b model.
 +
-image:rhads-ai/rhads/maas-model-select.png[width=100%]
+image:rhads-ai/rhads/maas-model-select.png[width=100%,link=self, window="image"]
 
 * Create an application named assistant to get the API Key.
 +
-image:rhads-ai/rhads/maas-app-assistant.png[width=80%]
+image:rhads-ai/rhads/maas-app-assistant.png[width=80%,link=self, window="image"]
 
 === Get your API key for the self-hosted Model (for partners only)
 
@@ -232,15 +232,15 @@ The *index.html file needs to be located in the templates folder*.
 
 * Create a new folder named: *templates*
 +
-image:rhads-ai/rhads/devspaces-newfolder.png[width=80%]
+image:rhads-ai/rhads/devspaces-newfolder.png[width=80%,link=self, window="image"]
 
 * Next, *inside this folder*, add a new file with the name *index.html* 
 +
-image:rhads-ai/rhads/devspaces-newfile.png[width=100%]
+image:rhads-ai/rhads/devspaces-newfile.png[width=100%,link=self, window="image"]
 
 * In the index.html file, copy the provided content by clicking on the icon:
 +
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 +
 [source,html,role=execute,subs=attributes+]
 ----
@@ -736,7 +736,7 @@ image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 
 * Click the project, then click *New file*. Ensure you create the new file at the project root.
 +
-image:rhads-ai/rhads/devspaces-newfile.png[width=100%]
+image:rhads-ai/rhads/devspaces-newfile.png[width=100%,link=self, window="image"]
 
 * Paste the following name and press Enter:
 +
@@ -747,7 +747,7 @@ search_agent.py
 
 * Copy the provided content, by clicking on the icon:
 +
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 +
 [source,python,role=execute,subs=attributes+]
 ----
@@ -938,11 +938,11 @@ if __name__ == "__main__":
 
 * Go to the app.py file and open it:
 +
-image:rhads-ai/rhads/devspaces-app.png[width=100%]
+image:rhads-ai/rhads/devspaces-app.png[width=100%,link=self, window="image"]
 
 * Copy the provided content by clicking the icon:
 +
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 +
 [source,python,role=execute,subs=attributes+]
 ----
@@ -1033,11 +1033,11 @@ if __name__ == '__main__':
 
 * In Red Hat Red Hat OpenShift Dev Spaces, click the Dockerfile file 
 +
-image:rhads-ai/rhads/devspaces-dockerfile.png[width=100%]
+image:rhads-ai/rhads/devspaces-dockerfile.png[width=100%,link=self, window="image"]
 
 * Copy the content provided, by clicking on the icon:
 +
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 +
 [source,text,role=execute,subs=attributes+]
 ----
@@ -1085,11 +1085,11 @@ CMD ["gunicorn", "--bind", "0.0.0.0:8081", "--workers", "2", "--threads", "4", "
 
 * In Red Hat Red Hat OpenShift Dev Spaces, click the requirements.txt file 
 +
-image:rhads-ai/rhads/devspaces-requirements.png[width=100%]
+image:rhads-ai/rhads/devspaces-requirements.png[width=100%,link=self, window="image"]
 
 * Copy the provided content by clicking on the icon:
 +
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 +
 [source,text,role=execute,subs=attributes+]
 ----
@@ -1127,11 +1127,11 @@ Now, we are ready to push the source code.
 
 * Verify your changes: Your directories and source code should look similar to this:
 +
-image:rhads-ai/rhads/devspaces-folders.png[width=60%]
+image:rhads-ai/rhads/devspaces-folders.png[width=60%,link=self, window="image"]
 
 * Next, push your changes to the GitLab repository. Click the *Source control* icon:
 +
-image:rhads-ai/rhads/devspaces-sourceicon.png[width=20%]
+image:rhads-ai/rhads/devspaces-sourceicon.png[width=20%,link=self, window="image"]
 
 * Add a commit message by copying the following description:
 +
@@ -1142,7 +1142,7 @@ add agent
 
 * Click the *Commit & Push* icon.
 +
-image:rhads-ai/rhads/devspaces-commit.png[width=100%]
+image:rhads-ai/rhads/devspaces-commit.png[width=100%,link=self, window="image"]
 +
 *Note:* If you face an authentication issue when pushing changes, restart the Red Hat Dev Spaces workspace. 
 
@@ -1158,7 +1158,7 @@ image:rhads-ai/rhads/devspaces-commit.png[width=100%]
 
 * Click the *CI* tab and review the running pipeline. Wait for all stages to finish and appear in green, as shown in the picture:
 +
-image:rhads-ai/rhads/rhads-tssc.png[width=100%]
+image:rhads-ai/rhads/rhads-tssc.png[width=100%,link=self, window="image"]
 
 As a developer, you are building an AI application with security guardrails already set up by the Platform Engineering team.
 Red Hat Advanced Developer Suite safeguards software artifacts (including AI applications) using digital signing, cryptographic integrity checks, and comprehensive provenance tracking. This capability automates building and deploying AI applications. Developers can focus on source code, while Software templates validate and package images, ensuring they adhere to Trusted Software Supply Chain for Software Artifacts (SLSA) standards and improving developer productivity.
@@ -1169,11 +1169,11 @@ Red Hat Advanced Developer Suite safeguards software artifacts (including AI app
 
 * Click the *arrow* on *ai-agent-development* to access the AI Agent.
 
-image:rhads-ai/rhads/ai-agent-topology.png[width=100%]
+image:rhads-ai/rhads/ai-agent-topology.png[width=100%,link=self, window="image"]
 
 * You should see a screen similar to this:
 
-image:rhads-ai/rhads/ai-agent-live.png[width=100%]
+image:rhads-ai/rhads/ai-agent-live.png[width=100%,link=self, window="image"]
 
 * *Note:* For this lab, we have only deployed to the Development environment. The other deployments use a "dummy" image.
 
@@ -1184,7 +1184,7 @@ image:rhads-ai/rhads/ai-agent-live.png[width=100%]
 Hi
 ----
 
-image:rhads-ai/rhads/ai-agent-hi.png[width=100%]
+image:rhads-ai/rhads/ai-agent-hi.png[width=100%,link=self, window="image"]
 
 * Let's try something else
 
@@ -1195,7 +1195,7 @@ image:rhads-ai/rhads/ai-agent-hi.png[width=100%]
 What are the latest developments in quantum computing from the past month?
 ----
 
-image:rhads-ai/rhads/ai-agent-quantum.png[width=100%]
+image:rhads-ai/rhads/ai-agent-quantum.png[width=100%,link=self, window="image"]
 
 === Test Tavily Extract by asking the agent to extract information from a specific web page
 
@@ -1204,7 +1204,7 @@ image:rhads-ai/rhads/ai-agent-quantum.png[width=100%]
 Extract information from https://commons.openshift.org/gatherings/ and tell me when is the next gathering
 ----
 
-image:rhads-ai/rhads/ai-agent-extract.png[width=100%]
+image:rhads-ai/rhads/ai-agent-extract.png[width=100%,link=self, window="image"]
 
 == Congratulations on building a Research AI Agent 
 

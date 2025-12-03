@@ -10,13 +10,13 @@ image::tssc-tas/acs-highlevel.png[link=self,window="images"]
 
 When you log into the {acs_url}[ACS Console^,window="acs"] (with user `{acs_admin_user}` and password `{acs_admin_password}`) you can find the "secured clusters" und "Central Control" and their configuration by going to "Platform Configuration" and "Clusters" (1)
 
-image::tssc-tas/acs-cluster-config.png[] 
+image::tssc-tas/acs-cluster-config.png[link=self, window="image"] 
 
 You can also {acs_url}/main/clusters[click here^,window="acs"]
 
 When you click on the Cluster Status, you can open a detailed view, which will also give you the status of the admission controller for this "Secured Cluster":
 
-image::tssc-tas/acs-cluster-config-detail.png[]
+image::tssc-tas/acs-cluster-config-detail.png[link=self, window="image"]
 
 
 === Admission Controller and Policies
@@ -29,11 +29,11 @@ For the Admission Controller, only the "Deploy" lifecycle stage is of relevance 
 
 * The "Runtime" Lifecycle continuously monitors running Pods, for example if we want to detect (and avoid) a container starting e.g. "curl" or "dnf" for possible side-loading attacks.
 
-image::tssc-tas/acs-policies.png[]
+image::tssc-tas/acs-policies.png[link=self, window="image"]
 
 If you filter by the {acs_url}/main/policy-management/policies?s%5BLifecycle%20Stage%5D=DEPLOY["DEPLOY lifecycle"^,window=acs], you can see all system policies that have been defined for the deployment (i.e. can be enforced by the ACS Admission Controller)
 
-image::tssc-tas/acs-policies-deploy.png[]
+image::tssc-tas/acs-policies-deploy.png[link=self, window="image"]
 
 As you can see, ACS focuses more on the vulnerability side of security, where the Sigstore Admission Controller focuses on the integrity and attestations.
 
@@ -54,11 +54,11 @@ Enforcement is on the policy level - if I combine too many rules in one policy, 
 
 Before we build a policy that verifies what a "good signature" is, we need to define an "Integration", namely a "Signature Integration":
 
-image::tssc-tas/acs-create-integration.png[]
+image::tssc-tas/acs-create-integration.png[link=self, window="image"]
 
 Go to "Platform Configuration" (1) - Integrations (2) - Signature Integrations (3), or {acs_url}/main/integrations/signatureIntegrations/signature[click here^,window="acs"] then click on "New Integration"
 
-image::tssc-tas/acs-create-integration-new-integration.png[]
+image::tssc-tas/acs-create-integration-new-integration.png[link=self, window="image"]
 
 === Key verification
 
@@ -71,12 +71,12 @@ image::tssc-tas/acs-create-signature-integration-pubkey.png[link=self,window="im
 
 Another option (can also be used in the same integration) is to verify "keylessly signed" images by providing the RHTAS endpoints.
 
-image::tssc-tas/acs-create-signature-integration-keyless.png[]
+image::tssc-tas/acs-create-signature-integration-keyless.png[link=self, window="image"]
 
 
 If we want to verify proof-of-inclusion with the Rekor transparency log (proof that the signing event has happened and has been recorded), we can configure that also - or disable, but that would be less secure.
 
-image::tssc-tas/acs-create-signature-integration-tlog.png[]
+image::tssc-tas/acs-create-signature-integration-tlog.png[link=self, window="image"]
 
 NOTE: For keyless signing/verification the Transparency log is typically part of the process - for "key-ful" signing, this is recommended, but not required. Therefore we have somewhat redundant fields here. One Rekor configuration tied to the "keyless" verification and one general one. This might change in the future.
 
@@ -150,11 +150,11 @@ MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEA5stoARjjvmULrZodK4a3aRYTnIA
 
 Now copy the values over - it will look similar to this *(your values will be different)* - then click "Save"
 
-image::tssc-tas/acs-create-signature-integration-filled.png[]
+image::tssc-tas/acs-create-signature-integration-filled.png[link=self, window="image"]
 
 When you {acs_url}/main/integrations/signatureIntegrations/signature[click here^,window="acs"], you should now have a new "Signature Integration" with our keys that Tekton Chains (and we) used to sign images.
 
-image::tssc-tas/acs-create-signature-integration-created.png[]
+image::tssc-tas/acs-create-signature-integration-created.png[link=self, window="image"]
 
 '''
 
@@ -174,45 +174,45 @@ Now let's go to the {acs_url}/main/policy-management/policies["Policy Management
 
 1) Click on "Create policy"
 
-image::tssc-tas/acs-create-policy.png[]
+image::tssc-tas/acs-create-policy.png[link=self, window="image"]
 
 2) Give it a name (*HINT:* Start the name with "0-" so it's easier to find later), severity and pick a category - if you want you can also provide a description, rationale and remediation guidance, which will be displayed on policy violation.
 
 Click "Next"
 
-image::tssc-tas/acs-create-policy-2.png[]
+image::tssc-tas/acs-create-policy-2.png[link=self, window="image"]
 
 3) Select "Deploy" as the lifecycle stage (as that is relevant for admission control) and click "next"
 
-image::tssc-tas/acs-create-policy-3.png[]
+image::tssc-tas/acs-create-policy-3.png[link=self, window="image"]
 
 4) Define the rules that make up this policy. You start by "dragging and dropping", then configure the policy field you "dropped" (*HINT:* Drop it in the _grey_ box, otherwise it won't work)
 
 Start with the "Image Signature"
 
-image::tssc-tas/acs-create-policy-4-dnd.png[]
+image::tssc-tas/acs-create-policy-4-dnd.png[link=self, window="image"]
 
 Then, configure your first rule by selecting an image signer (what we just created)
 
-image::tssc-tas/acs-create-policy-4-dnd-image-signer.png[]
+image::tssc-tas/acs-create-policy-4-dnd-image-signer.png[link=self, window="image"]
 
 Click next and define an "Inclusion Scope"
 
 WARNING: If you don't restrict your policies by defining inclusion or exclusion scopes, the will automatically apply to *all namespaces on all secured clusters*! 
 
-image::tssc-tas/acs-create-policy-5-add-inclusion.png[]
+image::tssc-tas/acs-create-policy-5-add-inclusion.png[link=self, window="image"]
 
 We'll add our "production" cluster (it's the only secured cluster we have in this environment) and our namespace `student-acs-test`
 
 We could add more inclusion scopes and also work with RegEx for namespaces and deployment labels, but we'll leave it at that.
 
-image::tssc-tas/acs-create-policy-5-inclusion.png[]
+image::tssc-tas/acs-create-policy-5-inclusion.png[link=self, window="image"]
 
 Click next.
 
 For "Actions", we'll leave it at "Enabled" and "Inform" (for now).
 
-image::tssc-tas/acs-create-policy-6-inform.png[]
+image::tssc-tas/acs-create-policy-6-inform.png[link=self, window="image"]
 
 "Inform" is comparable to "warn" with the Sigstore Admission controller. It will issue a warning when we try to deploy an image that violates the policy.
 ACS has a "violations" dashboard, where this will pop up - and also "Notifiers" that would inform via e.g. Slack, Jira, etc (we haven't defined any).
@@ -236,7 +236,7 @@ It should verify if a valid signature by our cosign key is available and will al
 In our {acs_url}/main/policy-management/policies["Policy Management" View^,window="acs"] we should now see our policy. +
 You can edit it via the menu on the right, or just by clicking on its name and picking "Edit Policy" from the actions menu on the right.
 
-image::tssc-tas/acs-create-policy-7-done.png[]
+image::tssc-tas/acs-create-policy-7-done.png[link=self, window="image"]
 
 === Testing our first policy
 
@@ -280,21 +280,21 @@ route.route.openshift.io/unsigned-image created
 
 It's in the {acs_url}/main/violations?violationState=ACTIVE&filteredWorkflowView=Applications%20view[Violations Dashboard^,window="acs"] and would have triggered a notification to our Notifier of choice (if we had defined any):
 
-image::tssc-tas/acs-violations-unsigned.png[]
+image::tssc-tas/acs-violations-unsigned.png[link=self, window="image"]
 
 So, let's see what happens if we set it to "enforce":
 
 From the {acs_url}/main/policy-management/policies["Policy Management" View^,window="acs"], use the menu on the right (as shown above) or open it and use the "Actions Menu"
 
-image::tssc-tas/acs-edit-policy.png[]
+image::tssc-tas/acs-edit-policy.png[link=self, window="image"]
 
 You can click through via "Next, Next, Next,..." or you can directly go to "Actions"
 
-image::tssc-tas/acs-edit-shortcut-actions.png[]
+image::tssc-tas/acs-edit-shortcut-actions.png[link=self, window="image"]
 
 When you switch to "Inform & Enforce", you can tailor on which lifecycle stages the enforcement will actually happen. Since we defined this policy to only support the "Deploy" lifecycle, we can only enable "Enforce on Deploy". If we had a policy applicable to multiple stages, we could fine-tune where enforcement should happen.
 
-image::tssc-tas/acs-edit-enforce.png[]
+image::tssc-tas/acs-edit-enforce.png[link=self, window="image"]
 
 Click "Next", then "Save"
 
@@ -362,7 +362,7 @@ In case of emergency, add the annotation {"admission.stackrox.io/break-glass": "
 
 In addition to that, we can also find the Violation in the {acs_url}/main/violations?violationState=ATTEMPTED&filteredWorkflowView=Applications%20view["Attempted"^,window="acs"] view in ACS. 
 
-image::tssc-tas/acs-violations-unsigned-attempted.png[]
+image::tssc-tas/acs-violations-unsigned-attempted.png[link=self, window="image"]
 
 === Control
 

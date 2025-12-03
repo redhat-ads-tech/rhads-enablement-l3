@@ -161,7 +161,7 @@ Open the URL and login with either `{rhdh_user}` and `{rhdh_user_password}` or a
 
 IMPORTANT: Make sure to copy the whole code, which is longer than the text box.
 
-image:m4-tas-openshift/cosign-successcode.png[]
+image:m4-tas-openshift/cosign-successcode.png[link=self, window="image"]
 
 After pasting it in, cosign signs the image, pushes the signature to the repository and creates an entry in the rekor transparency database (`tlog` = "Transparency Log" = Rekor):
 
@@ -324,7 +324,7 @@ Pushing signature to: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l
 ====
 If you go to the `l3-rhads-demoimage` repository on {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay,window="quay"], you can see that Quay recognises the `cosign` signature (login with `{quay_admin_user} / {quay_admin_password}`)
 
-image::security-practices/quay-signed-image.png[]
+image::security-practices/quay-signed-image.png[link=self, window="image"]
 
 That is a Quay feature - if or if not a customer's container registry will recognise signatures, depends.
 ====

@@ -11,13 +11,13 @@ Confirm the operator is installed by visiting the https://console-openshift-cons
 
 NOTE: You must login as *{openshift_admin_user}* using the password `{openshift_admin_password}` to manage operators.
 
-image:orchestrator-overview/install-operators.png[]
+image:orchestrator-overview/install-operators.png[link=self, window="image"]
 
 If the Operator is not installed, use Operator Hub to install it with *Automatic Approval* enabled:
 
 . Visit *Operator Hub* and view the Red Hat OpenShift Serverless Operators - https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/all-namespaces?keyword=openshift+serverless&source=%5B%22Red+Hat%22%5D[use this link to jump right there!^]
 +
-image::orchestrator-overview/serverless-operators.png[]
+image::orchestrator-overview/serverless-operators.png[link=self, window="image"]
 . Select the *OpenShift Serverless Logic Operator*, select version 1.36.0, and click *Install*.
 . On the install form, keep the default settings and click *Install* a final time.
 . Wait for the installation to complete.
@@ -66,11 +66,11 @@ You've confirmed that the Orchestrator plugins are configured correctly - now yo
 . Return to the https://console-openshift-console.{openshift_cluster_ingress_domain}/topology/ns/{ns_tssc_rhdh}?view=graph[Topology View^] for the *{ns_tssc_rhdh}* namespace and wait for the SonataFlowPlatform pods to become ready (dark blue circle). It might take a few minutes for both the {product_rhdh_name} and SonataFlowPlatform pods to become ready and stabilise, since the SonataFlow pods depend on the new instance of {product_rhdh_name} to initialise with the newly enabled plugins.
 . Once ready, you should see the *SonataFlowPlatform* (or *SFP* for short) - click the three dots next to its name (`sonataflow-platform`) and select *Edit SonataFlowPlatform* to view the CR created as a result of the `dependencies.ref` you saw earlier.
 +
-image::orchestrator-overview/sonataflow-platform-topology.png[]
+image::orchestrator-overview/sonataflow-platform-topology.png[link=self, window="image"]
 . Confirm that `ownerReferences` in the *YAML* view shows that the {product_rhdh_name} instance is managing this SonataFlowPlatform.
 . Additionally, you should notice that `spec.services` is connecting SonataFlow to the {product_rhdh_name} PostgreSQL database - this is to manage and track workflow state.
 +
-image:orchestrator-overview/sonataflow-db-connection.png[]
+image:orchestrator-overview/sonataflow-db-connection.png[link=self, window="image"]
 
 // TODO add note about Service URL to link back to the plugin config
 

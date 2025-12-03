@@ -15,7 +15,7 @@ For this section, we'll use an existing, predefined template and update the user
 
 You will create the VM template in RHDH. When users use the template, Developer Hub will leverage GitOps to build new virtual machines in OpenShift using OpenShift Virtualization. The following diagram describes the VM creation process using RHDH. As shown in this diagram, the OpenShift Virtualization operator is required to provision the VM in OpenShift (it has been preinstalled for you). The VM will run in the selected namespace.
 
-image:self-service-patterns/vm-lab/vm-architecture.jpg[Red Hat Developer Hub as part of the VM creation process.]
+image:self-service-patterns/vm-lab/vm-architecture.jpg[Red Hat Developer Hub as part of the VM creation process,link=self, window="image"]
 
 === Explore the VM Template in GitLab
 
@@ -45,11 +45,11 @@ Open the following files or folders to examine their contents:
 
 * Select the *plus icon* in the top navigation bar to Create a new component, or use the URL {rhdh_url}/create[Red Hat Developer Hub UI Create^]
 
-image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI] 
+image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI,link=self, window="image"] 
 
 * Click the *Import an existing Git repository* button.
 
-image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI] 
+image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI,link=self, window="image"] 
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -60,7 +60,7 @@ image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI]
 
 * Click the *Import* button
 
-image:self-service-patterns/vm-lab/rhdh-register-component-finish.png[width=60%] 
+image:self-service-patterns/vm-lab/rhdh-register-component-finish.png[width=60%,link=self, window="image"] 
 
 *Congratulations!* You now have a new software template in RHDH. End users can now self-provision virtual machines.
 
@@ -70,12 +70,12 @@ image:self-service-patterns/vm-lab/rhdh-register-component-finish.png[width=60%]
 
 *Let's explore the current catalog:*
 
-image:self-service-patterns/vm-lab/vm-catalog.png[width=60%]
+image:self-service-patterns/vm-lab/vm-catalog.png[width=60%,link=self, window="image"]
 
 * Click *Choose*
 * Review and fill out the information with dummy data until you reach the review screen, **without creating the VM**. **DO NOT CLICK CREATE.** You will do this later on after changing the template.
 
-image:self-service-patterns/vm-lab/vm-sample.png[width=100%]
+image:self-service-patterns/vm-lab/vm-sample.png[width=100%,link=self, window="image"]
 
 *Scenario:*
 
@@ -112,23 +112,23 @@ Let's explore what types of VMs you can create in OpenShift. Imagine that you ar
 
 You will see the welcome page.
 
-image:self-service-patterns/vm-lab/virt-welcome-page.png[width=100%]
+image:self-service-patterns/vm-lab/virt-welcome-page.png[width=100%,link=self, window="image"]
 
 You can optionally familiarize yourself with OpenShift Virtualization using the *Start Tour*. Click on *Virtual Tour* and follow the steps (or just click the `x` to close if your're already familiar with it).
 
-image:self-service-patterns/vm-lab/vm-finish-tour.png[width=80%]
+image:self-service-patterns/vm-lab/vm-finish-tour.png[width=80%,link=self, window="image"]
 
 * *Let's create a VM in OpenShift*
 ** On the *Create new VirtualMachine* screen, you will see all available VM configurations listed. Remember, you can also customize these to your needs.
 ** Select the *volume* *rhel10*
 
 
-image:self-service-patterns/vm-lab/virt-volumes-click.png[width=100%]
+image:self-service-patterns/vm-lab/virt-volumes-click.png[width=100%,link=self, window="image"]
 
 ** Scroll down to explore the available *Instance Types*
 ** Select *General Purpose* *U series* and *medium* *1 CPUs, 4 GiB memory*
 
-image:self-service-patterns/vm-lab/vm-instancetype-click.png[width=100%]
+image:self-service-patterns/vm-lab/vm-instancetype-click.png[width=100%,link=self, window="image"]
 
 ** Leave the rest of the defaults as-is.
 
@@ -136,11 +136,11 @@ image:self-service-patterns/vm-lab/vm-instancetype-click.png[width=100%]
 
 * Click the *View YAML & CLI* button to view what the VM manifest would look like if you created it.
 
-image:self-service-patterns/vm-lab/vm-explore-yaml.png[width=100%]
+image:self-service-patterns/vm-lab/vm-explore-yaml.png[width=100%,link=self, window="image"]
 
 * From that view, look for the *RHEL10* related values:
 
-image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%]
+image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%,link=self, window="image"]
 
 [NOTE]
 ====
@@ -156,7 +156,7 @@ Our current template is not supporting the new RHEL version (it's hard-coded for
 ** Click *Catalog* in the RHDH menu
 ** Next, select the filters: *Kind:Template* and *Tags: self-service* as shown in the following picture:
 
-image:self-service-patterns/vm-lab/self-service-catalog.png[width=40%]
+image:self-service-patterns/vm-lab/self-service-catalog.png[width=40%,link=self, window="image"]
 
 ** Select the *RHEL9 VM Medium Template*
 
@@ -165,11 +165,11 @@ image:self-service-patterns/vm-lab/self-service-catalog.png[width=40%]
 ** Click the *three dots* under Owner, then click *Unregister entity*
 
 
-image:self-service-patterns/vm-lab/template-unregister.png[width=60%]
+image:self-service-patterns/vm-lab/template-unregister.png[width=60%,link=self, window="image"]
 
 ** Confirm the action.
 
-image:self-service-patterns/vm-lab/confirm-unregister.png[width=60%]
+image:self-service-patterns/vm-lab/confirm-unregister.png[width=60%,link=self, window="image"]
 
 Now we'll update several files in the template to support the new RHEL version. These are the files you'll need to update:
 
@@ -183,13 +183,13 @@ Let's start with the `vm.yaml` file.
 
 ** Review the VM definition and compare it with the one provided by *OpenShift Virtualization*
 
-image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%]
+image:self-service-patterns/vm-lab/vm-yaml-updates.png[width=100%,link=self, window="image"]
 
 Remember the places where you saw `rhel.10`? We need to replace it with a variable that will allow the user to choose 9 or 10.
 
 Edit the file by choosing *Edit -> Edit Single File*:
 
-image:self-service-patterns/vm-lab/gitlab-edit-file.png[width=90%]
+image:self-service-patterns/vm-lab/gitlab-edit-file.png[width=90%,link=self, window="image"]
 
 Next, find the two comments with `UPDATE to parameterize the RHEL version` - we need to replace the hardcoded values with variables:
 
@@ -198,13 +198,13 @@ Next, find the two comments with `UPDATE to parameterize the RHEL version` - we 
 
 It should look like:
 
-image:self-service-patterns/vm-lab/gitlab-edit-file-updated.png[width=90%]
+image:self-service-patterns/vm-lab/gitlab-edit-file-updated.png[width=90%,link=self, window="image"]
 
 This will enable the user to choose the RHEL version when they create the VM, and the chosen values will be used in the VM manifest that you just edited to create the VM.
 
 Save your changes by scrolling down and clicking the *Commit Changes* button.
 
-image::self-service-patterns/software_templates_flow.jpg[]
+image::self-service-patterns/software_templates_flow.jpg[link=self, window="image"]
 
 If you are unsure you did it correctly, you can compare your file with the solution file provided here:
 
@@ -220,7 +220,7 @@ Under the `app` key, add a new key called `rhel` and under that, add a new key c
 
 It should look like:
 
-image:self-service-patterns/vm-lab/vm-valuesfile-changes.png[width=90%]
+image:self-service-patterns/vm-lab/vm-valuesfile-changes.png[width=90%,link=self, window="image"]
 
 If you are unsure you did it correctly, you can compare your file with the https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/values.yaml[values.yaml solution file^]:
 
@@ -235,11 +235,11 @@ Finally, let's update the `template.yaml` make edits to these areas to parameter
 
 * Remove the `9` from the name, title, and description since our template will support both RHEL 9 and RHEL 10 (and maybe others in the future):
 
-image:self-service-patterns/vm-lab/vm-template-changes1.png[width=90%]
+image:self-service-patterns/vm-lab/vm-template-changes1.png[width=90%,link=self, window="image"]
 
 * Add a new required parameter under the comment `# UPDATE: Add other required parameters here` called `rhel_version`:
 
-image:self-service-patterns/vm-lab/vm-template-changes1.1.png[width=90%]
+image:self-service-patterns/vm-lab/vm-template-changes1.1.png[width=90%,link=self, window="image"]
 
 * Below the `# UPDATE: Add new properties here` comment, add this snippet that defines the parameter's type as an enumerated type (which renders as a drop-down).
 
@@ -260,7 +260,7 @@ image:self-service-patterns/vm-lab/vm-template-changes1.1.png[width=90%]
 
 Be sure the indentation matches the rest of the file as shown:
 
-image:self-service-patterns/vm-lab/vm-template-changes2.png[width=90%]
+image:self-service-patterns/vm-lab/vm-template-changes2.png[width=90%,link=self, window="image"]
 
 Next, scroll down to the `templateSource` step. We need to include the new variable in the steps. If we do not, the Helm charts will not receive the data.
 
@@ -271,7 +271,7 @@ Add the new variable in the *templateSource step* at the `# UPDATE: Add new sour
 rhel_version: ${{parameters.rhel_version}}
 ----
 
-image:self-service-patterns/vm-lab/vm-template-step1.png[width=90%]
+image:self-service-patterns/vm-lab/vm-template-step1.png[width=90%,link=self, window="image"]
 
 ** Add the new variable in the *templateGitops step* at the `# UPDATE: Add new Gitops values here` comment as shown:
 
@@ -282,7 +282,7 @@ Add the new variable in the *templateSource step* at the `# UPDATE: Add new sour
 rhel_version: ${{parameters.rhel_version}}
 ----
 
-image:self-service-patterns/vm-lab/vm-template-step2.png[width=90%]
+image:self-service-patterns/vm-lab/vm-template-step2.png[width=90%,link=self, window="image"]
 
 * *Take time to review* your file against the https://github.com/redhat-ads-tech/rhads-enablement-l3/tree/main/content/modules/ROOT/solutions/self-service-patterns/vm-lab/template.yaml[template.yaml solution file^]
 
@@ -292,11 +292,11 @@ image:self-service-patterns/vm-lab/vm-template-step2.png[width=90%]
 
 Back in {rhdh_url}[Developer Hub^], select the *plus icon* in the top navigation bar to access the Create option.
 
-image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI] 
+image:self-service-patterns/vm-lab/rhdh-create-icon.png[Create UI,link=self, window="image"] 
 
 * Click the *Import an existing Git repository* button.
 
-image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI]
+image:self-service-patterns/vm-lab/rhdh-register-component.png[Create UI,link=self, window="image"]
 
 * Enter the following URL in the *Select URL* field and click *Analyze*:
 
@@ -315,23 +315,23 @@ Let's create an instance of the new VM defined in the software templates.
 * Click *Choose*
 
 
-image:self-service-patterns/vm-lab/vm-catalog-new.png[width=80%]
+image:self-service-patterns/vm-lab/vm-catalog-new.png[width=80%,link=self, window="image"]
 
 * You should see a screen like this one:
 
 
-image:self-service-patterns/vm-lab/vm-rhel-updated.png[width=100%]
+image:self-service-patterns/vm-lab/vm-rhel-updated.png[width=100%,link=self, window="image"]
 
 * Select the new version using the drop-down: *RHEL10*
 * Leave the rest of the defaults as-is, click *Review*, and then click *Create* to finish the template flow.
 
 * Once the VM is created, click *Open Component in Catalog* to view the newly created VM inside Developer Hub:
 
-image:self-service-patterns/vm-lab/vm-created.png[width=100%]
+image:self-service-patterns/vm-lab/vm-created.png[width=100%,link=self, window="image"]
 
 * Click *Virtual Machine* to view the VM inside OpenShift Virtualization. It may take a few moments for the VM to finish booting, but you'll see the status:
 
-image:self-service-patterns/vm-lab/vm-created2.png[width=100%]
+image:self-service-patterns/vm-lab/vm-created2.png[width=100%,link=self, window="image"]
 
 * Feel free to explore this VM - logging in via the VNC console, or other activities.
 

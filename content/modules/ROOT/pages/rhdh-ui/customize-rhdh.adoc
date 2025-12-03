@@ -26,7 +26,7 @@ The default theme mode is Auto, which sets {product_rhdh_name}'s Light or Dark m
 
 In any {product_rhdh_name} instance, including the one you're about to create, you can select a theme mode by clicking your user name at the top right and selecting *Settings* from the displayed menu to open the Settings screen. Select the desired mode from the _Appearance_ section.
 
-image::rhdh-ui/uset-appearance.png[]
+image::rhdh-ui/uset-appearance.png[link=self, window="image"]
 
 === Save Screen Space
 
@@ -60,7 +60,7 @@ First, you'll create a _Project_ (a namespace) for your custom RHDH instance. In
 . Navigate to *Home > Projects*, then click the *Create project* button.
 . Enter the name `brand-rhdh` in the displayed dialog, then click *Create*.
 +
-image::rhdh-ui/create-proj.png[]
+image::rhdh-ui/create-proj.png[link=self, window="image"]
 
 === The app-config ConfigMap
 
@@ -74,7 +74,7 @@ The `app.title` key accepts a quoted string value to set the visible `<title>` e
 
 The `fullLogo` key accepts a base64-encoded SVG, PNG, or JPEG image to be shown at the top left corner of {product_rhdh_name} pages.
 
-image::rhdh-ui/fullLogo-default.png[]
+image::rhdh-ui/fullLogo-default.png[link=self, window="image"]
 
 {product_rhdh_name} uses encoded images for visual elements so they can be embedded in app-config rather than referencing an external file or URL.
 
@@ -202,7 +202,7 @@ NOTE: If *Application is not available* is displayed when you click the Location
 +
 . Select *Guest* to log in with just enough privilege to see the results of your title and logo customizations. The custom logo appears in the top left corner of the page. The custom title appears in the label of your browser tab or window.
 
-image::rhdh-ui/brand-rhdh-logo.png[]
+image::rhdh-ui/brand-rhdh-logo.png[link=self, window="image"]
 
 [NOTE]
 ====

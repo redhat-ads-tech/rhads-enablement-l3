@@ -24,17 +24,17 @@ Let's create a new component from the pre-existing Software Template in Red Hat 
 
 * Click on *catalog*:
 
-image:rhads-ai/rhads/rhdh-catalogicon.png[width=30%]
+image:rhads-ai/rhads/rhdh-catalogicon.png[width=30%,link=self, window="image"]
 
 * Next, click on *Self-service*:
 
-image:rhads-ai/rhads/rhdh-selfservice.png[width=30%]
+image:rhads-ai/rhads/rhdh-selfservice.png[width=30%,link=self, window="image"]
 
 Then select the software template: *Python - Trusted Application Pipeline*
 
 * Click on *Choose*:
 
-image:rhads-ai/rhads/rhdh-catalog-python.png[width=60%]
+image:rhads-ai/rhads/rhdh-catalog-python.png[width=60%,link=self, window="image"]
 
 Follow the steps to create the component in Red Hat Developer Hub, adding the following input data for each section.
 
@@ -46,11 +46,11 @@ Enter the following data:
 
 * *Owner: Select the user: user1 from the dropdown:*
 
-image:rhads-ai/rhads/rhdh-python-user.png[width=60%]
+image:rhads-ai/rhads/rhdh-python-user.png[width=60%,link=self, window="image"]
 
 Click on *Next*:
 
-image:rhads-ai/rhads/rhdh-python.png[width=100%]
+image:rhads-ai/rhads/rhdh-python.png[width=100%,link=self, window="image"]
 
 === Application Repository Information
 
@@ -58,7 +58,7 @@ Change only the following fields:
 
 * *Host Type: GitLab*
 
-image:rhads-ai/rhads/rhdh-gitselection.png[width=30%]
+image:rhads-ai/rhads/rhdh-gitselection.png[width=30%,link=self, window="image"]
 
 * *Repository Name: ai-agent*
 
@@ -68,7 +68,7 @@ image:rhads-ai/rhads/rhdh-gitselection.png[width=30%]
 
 Your screen should look similar to this:
 
-image:rhads-ai/rhads/rhdh-python2.png[width=100%]
+image:rhads-ai/rhads/rhdh-python2.png[width=100%,link=self, window="image"]
 
 Keep Repository Default Branch and CI Provider with the default values.
 
@@ -88,7 +88,7 @@ Change only the following inputs:
 
 Your screen should look similar to this:
 
-image:rhads-ai/rhads/rhdh-python3.png[width=100%]
+image:rhads-ai/rhads/rhdh-python3.png[width=100%,link=self, window="image"]
 
 Keep Deployment Namespace with the default value.
 
@@ -96,7 +96,7 @@ Click on *Review*:
 
 Your screen should look similar to this:
 
-image:rhads-ai/rhads/rhdh-python4.png[width=100%]
+image:rhads-ai/rhads/rhdh-python4.png[width=100%,link=self, window="image"]
 
 Ensure your information matches the image, except for the cluster domain.
 
@@ -104,7 +104,7 @@ Click on the *Create button*.
 
 Red Hat Developer Hub will run the tasks defined in the *template.yaml* file and other manifests. Once finished, all steps will appear in green.
 
-image:rhads-ai/rhads/rhdh-python5.png[width=100%]
+image:rhads-ai/rhads/rhdh-python5.png[width=100%,link=self, window="image"]
 
 Next, you will explore the application source code.
 
@@ -146,7 +146,7 @@ In this section, you will replace the *whole content* of the `devfile.yaml` file
 
 * Log in to GitLab using your credentials by clicking on *Sign in*:
 +
-image:rhads-ai/rhads/gitlab-sign-in.png[width=100%]
+image:rhads-ai/rhads/gitlab-sign-in.png[width=100%,link=self, window="image"]
 +
 ** *Username*: {gitlab_user}
 ** *Password*: {gitlab_user_password}
@@ -155,11 +155,11 @@ image:rhads-ai/rhads/gitlab-sign-in.png[width=100%]
 
 * Click on *Edit*, then *Edit Single File*:
 +
-image:rhads-ai/rhads/gitlab-open.png[width=100%]
+image:rhads-ai/rhads/gitlab-open.png[width=100%,link=self, window="image"]
 
 * Copy the content provided by clicking the icon:
 +
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -227,7 +227,7 @@ commands:
 
 * Commit your changes:
 +
-image:rhads-ai/rhads/gitlab-commit.png[width=60%]
+image:rhads-ai/rhads/gitlab-commit.png[width=60%,link=self, window="image"]
 
 === 2.- Integrating Red Hat OpenShift Dev Spaces
 
@@ -235,15 +235,15 @@ Next, you will integrate Red Hat OpenShift Dev Spaces. You will add a link to th
 
 * Go back to the project's root folder and find the *catalog-info.yaml file*:
 +
-image:rhads-ai/rhads/gitlab-catalog.png[width=60%]
+image:rhads-ai/rhads/gitlab-catalog.png[width=60%,link=self, window="image"]
 
 * Click *Edit*, then *Edit Single File*
 +
-image:rhads-ai/rhads/gitlab-open.png[width=100%]
+image:rhads-ai/rhads/gitlab-open.png[width=100%,link=self, window="image"]
 
 * Copy the following code:
 +
-image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
+image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -256,11 +256,11 @@ image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%]
 * Paste it at line 11 to add it to the current content, *without replacing the existing content*.
 Your file should look similar to this, although the cluster domain will be different:
 +
-image:rhads-ai/rhads/ai-agent-catalog-info.png[width=100%]
+image:rhads-ai/rhads/ai-agent-catalog-info.png[width=100%,link=self, window="image"]
 
 * Commit your changes:
 +
-image:rhads-ai/rhads/gitlab-commit.png[width=60%]
+image:rhads-ai/rhads/gitlab-commit.png[width=60%,link=self, window="image"]
 
 ==== Verify the link was added to the component:
 
@@ -268,11 +268,11 @@ image:rhads-ai/rhads/gitlab-commit.png[width=60%]
 +
 *Note:* It might take some minutes to show the new link. To speed it up access the template can refresh the entity using the refresh icon in the entity's About box, then refresh the full RHDH UI webpage.
 +
-image:rhads-ai/rhads/rhdh-refresh-component.png[width=60%]
+image:rhads-ai/rhads/rhdh-refresh-component.png[width=60%,link=self, window="image"]
 
 * You should see a new link in the component's overview:
 
-image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
+image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%,link=self, window="image"]
 
 *Note:*  Do not click the link. You will use Red Hat OpenShift Dev Spaces in the next lab as an AI Engineer.
 
@@ -284,11 +284,11 @@ Webhooks are not part of the pre-defined software templates, but they are requir
 
 * Click *Settings > Webhooks*
 
-image:rhads-ai/rhads/gitlab-webhook.png[width=80%]
+image:rhads-ai/rhads/gitlab-webhook.png[width=80%,link=self, window="image"]
 
 * Click *Add new webhook* 
 
-image:rhads-ai/rhads/gitlab-webhook-new.png[width=100%]
+image:rhads-ai/rhads/gitlab-webhook-new.png[width=100%,link=self, window="image"]
 
 * Copy the OpenShift Pipelines controller URL and paste it in the URL field.
 +
@@ -302,11 +302,11 @@ https://pipelines-as-code-controller-openshift-pipelines.{openshift_cluster_ingr
 ** Tag Push events
 ** Comments
 +
-image:rhads-ai/rhads/gitlab-webhook-config.png[width=100%]
+image:rhads-ai/rhads/gitlab-webhook-config.png[width=100%,link=self, window="image"]
 
 * Scroll to the bottom and click *Add webhook*.
 +
-image:rhads-ai/rhads/gitlab-add-webhook.png[width=100%]
+image:rhads-ai/rhads/gitlab-add-webhook.png[width=100%,link=self, window="image"]
 
 Next, you will test the webhook from this screen to ensure it works.
 
@@ -314,7 +314,7 @@ Next, you will test the webhook from this screen to ensure it works.
 
 * On the *Webhooks* screen, click *Test* and select *Push events*.
 +
-image:rhads-ai/rhads/gitlab-webhook-test.png[width=100%]
+image:rhads-ai/rhads/gitlab-webhook-test.png[width=100%,link=self, window="image"]
 
 * This will trigger the pipeline.
 
@@ -324,7 +324,7 @@ image:rhads-ai/rhads/gitlab-webhook-test.png[width=100%]
 
 ** Click the *CI* tab.
 +
-image:rhads-ai/rhads/rhads-tssc.png[width=100%]
+image:rhads-ai/rhads/rhads-tssc.png[width=100%,link=self, window="image"]
 
 *Note:* The pipeline will take a few minutes to complete all steps. Wait for the pipeline to finish before continuing with step 3. 
 
@@ -347,7 +347,7 @@ To learn more, review the xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS E
 
 * Click *Edit*, then *Edit Single File*.
 +
-image:rhads-ai/rhads/gitlab-open.png[width=100%]
+image:rhads-ai/rhads/gitlab-open.png[width=100%,link=self, window="image"]
 
 * At line 52, paste the new code. Ensure you are adding your source *before the imagePullSecrets*. This adds integrations for LLM models (name, URL, API key) and the Tavily API, which will be used as an AI Agent tool. *Ensure you are not replacing the current content.*
 +
@@ -377,11 +377,11 @@ image:rhads-ai/rhads/gitlab-open.png[width=100%]
 +
 Your file should look like this. *Ensure the indentation is correct*:
 +
-image:rhads-ai/rhads/ai-agent-deployment.png[width=100%]
+image:rhads-ai/rhads/ai-agent-deployment.png[width=100%,link=self, window="image"]
 
 * Commit your changes:
 +
-image:rhads-ai/rhads/gitlab-commit.png[width=60%]
+image:rhads-ai/rhads/gitlab-commit.png[width=60%,link=self, window="image"]
 
 *Note:* In the next lab, the developer will create the secret with the keys. This is not a recommended practice, but it is done for this lab to avoid sharing private keys in a public repository.
 

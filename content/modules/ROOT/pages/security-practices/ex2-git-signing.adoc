@@ -202,7 +202,7 @@ To https://gitlab-gitlab.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-studen
 
 On GitLab, the repository will now look like this:
 
-image::security-practices/gitlab-project-signature.png[]
+image::security-practices/gitlab-project-signature.png[link=self, window="image"]
 
 GitLab recognises the signature, and we can check the details (we see the trust root / certificate issuer configuration that was added during TAS installation).
 

@@ -35,10 +35,10 @@ Verify that the necessary credentials and TSSC component endpoints have been con
     * Password: `{rhdh_user_password}`
 . Expand the *Jenkins Admin* menu and select *Credentials*.
 +
-image::third-party-ci/rhdh-jenkins-admin-menu.png[The Jenkins Admin Menu]
+image::third-party-ci/rhdh-jenkins-admin-menu.png[The Jenkins Admin Menu,link=self, window="image"]
 . Verify that the listed credentials match those shown.
 +
-image::third-party-ci/rhdh-jenkins-credentials.png[Credentials Store in Jenkins]
+image::third-party-ci/rhdh-jenkins-credentials.png[Credentials Store in Jenkins,link=self, window="image"]
 
 These credentials will be used in your pipeline to verify commit signatures, sign builds, and more.
 
@@ -81,12 +81,12 @@ The template is already loaded into your environment. Find it and view the backi
 
 . Click on the _Show template entity details_ icon.
 +
-image::third-party-ci/rhdh-view-template.png[Show template entity details]
+image::third-party-ci/rhdh-view-template.png[Show template entity details,link=self, window="image"]
 . Click the *View Source* link on the template entity's overview screen. 
 +
 You'll be directed to a repository that contains the `template.yaml` that defines the parameters collected, and actions performed by the template. Additionally it contains a `skeleton` directory with source files that will be used to generate a new application when a developer uses the template in {product_rhdh_name}.
 +
-image::third-party-ci/rhdh-jenkins-tpl-repo.png[Jenkins Template GitLab Repository]
+image::third-party-ci/rhdh-jenkins-tpl-repo.png[Jenkins Template GitLab Repository,link=self, window="image"]
 +
 [NOTE]
 ====
@@ -135,7 +135,7 @@ stage('print commit details') {
 +
 The end result will resemble this image.
 +
-image:third-party-ci/rhdh-jenkins-tpl-modified.png[Modified Jenkinsfile.push]
+image:third-party-ci/rhdh-jenkins-tpl-modified.png[Modified Jenkinsfile.push,link=self, window="image"]
 . Commit the changes by clicking the *Commit changes* button.
 
 == Create Signed Commits and Verify the Jenkins Pipeline
@@ -157,10 +157,10 @@ And click *Next*.
 . Enable commit verification on the *Application repository Information* screen. Click *Review*.
 . Confirm that your parameters match those displayed in the following image.
 +
-image:third-party-ci/rhdh-jenkins-params.png[Jenkins Template Parameters]
+image:third-party-ci/rhdh-jenkins-params.png[Jenkins Template Parameters,link=self, window="image"]
 . Click *Create* and wait for the template to finish processing.
 +
-image:third-party-ci/rhdh-jenkins-ssc-created.png[Jenkins Template Run]
+image:third-party-ci/rhdh-jenkins-ssc-created.png[Jenkins Template Run,link=self, window="image"]
 
 === Test & Verify the Secure Jenkins Pipeline
 
@@ -176,7 +176,7 @@ WARNING: Prior to following these steps, make sure you're not signed into the Op
 . Once the workspace is loaded, accept the popups asking to trust and load plugins and publishers.
 . Click on the _README.md_ file and make a small change, then use the menu icon in the top-left to launch a terminal as shown.
 +
-image:third-party-ci/rhdh-jenkins-launch-term.png[Launch a Terminal in VSCode]
+image:third-party-ci/rhdh-jenkins-launch-term.png[Launch a Terminal in VSCode,link=self, window="image"]
 . In the terminal run the following commands to set your Git identity and commit your change:
 +
 [source,bash,role=execute, subs=attributes+]
@@ -192,7 +192,7 @@ git commit -m "doc: update the readme"
 WARNING: If your browser requests access to copy/paste functionality make sure to click allow.
 . Press [kbd:[ENTER] or kbd:[RETURN]] to sign the commit.
 +
-image:third-party-ci/rhdh-jenkins-sign-commit.png[Commit Signing Link]
+image:third-party-ci/rhdh-jenkins-sign-commit.png[Commit Signing Link,link=self, window="image"]
 . Push the commit using the `git push` command. This will trigger the Jenkins pipeline.
 
 === Inspect the Jenkins Build
@@ -202,11 +202,11 @@ Time to verify that your platform engineering efforts are reflected in the resul
 . Return to the {rhdh_url}/catalog/default/component/ssc-jenkins-sample/ci[CI tab for your *ssc-jenkins-sample* application^] in {product_rhdh_name}.
 . A new *maven-build-ci* should be in progress. Click the *View build* (eye) icon.
 + 
-image:third-party-ci/rhdh-jenkins-view-build.png[View Build Icon for Jenkins]
+image:third-party-ci/rhdh-jenkins-view-build.png[View Build Icon for Jenkins,link=self, window="image"]
 . Click the *Open Blue Ocean* link in the Jenkins UI - this displays a visual representation of each step of the build.
 . Select the *print-commit-details* node, and then click the arrow next to the displayed command to view the output.
 +
-image:third-party-ci/rhdh-jenkins-blue-ocean.png[Jenkins Blue Ocean View]
+image:third-party-ci/rhdh-jenkins-blue-ocean.png[Jenkins Blue Ocean View,link=self, window="image"]
 
 And just like that, you've learned how to modify and use the Jenkins-based secure software supply chain template so all developers can benefit from it.
 
