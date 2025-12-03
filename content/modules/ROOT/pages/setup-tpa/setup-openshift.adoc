@@ -490,15 +490,7 @@ We have prepared a https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enableme
 
 [IMPORTANT]
 ====
-Don't paste & save just yet, there are some fields that you need to change - either locally before pasting into the `YAML` view, or in the `YAML` view itself! 
-
-Before you replace everything with the provided `yaml` file make sure to compare the `spec.image.fullName` with the default that the "empty" operator provides you with. 
-
-At the time of this writing, the Operator Version `1.0.2` with this image was current:
-
-`fullName: 'registry.redhat.io/rhtpa/rhtpa-trustification-service-rhel9@sha256:d5cf4a5bff94b59197f668a63d29591e3bc92ee89402edc70039e592d75cb84e'`
-
-This will change over time, so please compare (or copy & paste to your local file before you paste it back to the operator `yaml` view)
+Don't paste & save just yet, there are some fields that you need to change - either locally before pasting into the `YAML` view, or in the `YAML` view itself! Please see below for details:
 ====
 
 
@@ -580,7 +572,7 @@ image:m3-tpa-openshift/operator-tpa-failed-detailed.png[link=self, window="image
 
 However, if you go to the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/student-tpa-operator/deployments[Deployments Page^,window="console"], you can see the importer and server deployments with 1/1 pods.
 
-NOTE: This may take a while and they even might fail first, before they are healthily up and running as shown below.
+NOTE: This may take a while and they even might fail first, before they are healthily up and running as shown below. In some instances, we have seen 10-15mins before the Operator "calms down" and the deployments are available and stable, so please give it some time. 
 
 
 image:m3-tpa-openshift/operator-tpa-failed-deployment.png[link=self, window="image"]
