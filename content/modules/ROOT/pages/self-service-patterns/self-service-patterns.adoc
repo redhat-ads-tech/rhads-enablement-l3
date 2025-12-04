@@ -12,8 +12,8 @@ For this module, you are a Platform Architect working for an online marketplace.
 
 == Related Articles
 
-* link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps,window='_blank']
-* link:https://www.redhat.com/en/topics/devops/what-is-helm[What is Helm,window='_blank']
+* https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps,window='_blank']
+* https://www.redhat.com/en/topics/devops/what-is-helm[What is Helm,window='_blank']
 
 [#architecting-software-templates]
 == Architecting Software Templates
@@ -194,7 +194,7 @@ action: argocd:create-resources
 Understanding the potential of RHDH and how it can be used to scale operations and implement platform engineering practices provides powerful capabilities that will benefit any organization. In the next labs, you will explore how to put these concepts into practice.
 
 === Resources
-* link:https://developers.redhat.com/articles/2025/03/17/10-tips-better-backstage-software-templates[10 tips for better Backstage Software Templates,window='_blank']
-* link:https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how[Building virtual machines with Red Hat Developer Hub: The what, why, and how,window='_blank']
+* https://developers.redhat.com/articles/2025/03/17/10-tips-better-backstage-software-templates[10 tips for better Backstage Software Templates,window='_blank']
+* https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how[Building virtual machines with Red Hat Developer Hub: The what, why, and how,window='_blank']
 
 
