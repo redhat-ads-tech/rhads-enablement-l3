@@ -224,7 +224,7 @@ You will add new files and update existing content.
 . *Update `Dockerfile`*: this file defines the container specification.
 . *Update the `requirements.txt`* file: this file holds the required libraries for the Python AI app.
 
-=== 1.- Create the index.html file
+=== 1- Create the index.html file
 
 The *index.html file needs to be located in the templates folder*.
 
@@ -732,7 +732,7 @@ image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
 
 * If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/index.html[index.html solution file^] 
 
-=== 2.- Add the search_agent.py file
+=== 2- Add the search_agent.py file
 
 * Click the project, then click *New file*. Ensure you create the new file at the project root.
 +
@@ -934,7 +934,7 @@ if __name__ == "__main__":
 
 * If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/search_agent.py[search_agent.py solution file^] 
 
-=== 3.- Update the app.py file
+=== 3- Update the app.py file
 
 * Go to the app.py file and open it:
 +
@@ -1029,7 +1029,7 @@ if __name__ == '__main__':
 
 * If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/app.py[app.py solution file^] 
 
-=== 4.- Update Dockerfile
+=== 4- Update Dockerfile
 
 * In Red Hat Red Hat OpenShift Dev Spaces, click the Dockerfile file 
 +
@@ -1081,7 +1081,7 @@ CMD ["gunicorn", "--bind", "0.0.0.0:8081", "--workers", "2", "--threads", "4", "
 
 * If needed, verify the solution: https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhads-ai-rhads-app/Dockerfile[Dockerfile solution file^] 
 
-=== 5.- Update requirements.txt
+=== 5- Update requirements.txt
 
 * In Red Hat Red Hat OpenShift Dev Spaces, click the requirements.txt file 
 +
@@ -1123,7 +1123,7 @@ gunicorn==23.0.0
 
 Now, we are ready to push the source code.
 
-=== 6.- Push the source code
+=== 6- Push the source code
 
 * Verify your changes: Your directories and source code should look similar to this:
 +
