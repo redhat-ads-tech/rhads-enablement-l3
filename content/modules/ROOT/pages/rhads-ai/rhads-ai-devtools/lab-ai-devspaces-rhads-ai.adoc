@@ -249,7 +249,7 @@ image:rhads-ai/rhdevspaces/tavily-apikey-view.png[width=100%,link=self, window="
 
 **NOTE: KEEP THE API KEY SECRET. Keep it safe. DO NOT PUBLISH IT, SHARE IT, OR COMMIT IT TO ANY PUBLIC GIT REPOSITORY. THIS IS YOUR PERSONAL API KEY.**
 
-* Paste your key after *?tavilyApiKey=*:
+* Paste your key after *?tavilyApiKey=*
 
 image:rhads-ai/rhdevspaces/mcp-server-config-apikey.png[width=100%,link=self, window="image"]
 
