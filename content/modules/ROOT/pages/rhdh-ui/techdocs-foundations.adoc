@@ -28,7 +28,7 @@ TechDocs assumes documentation is a part of nearly every _Component_ in a {produ
 
 The default installation of {product_rhdh_name} simplifies TechDocs processing with a lightweight local TechDocs instance. This provides complete TechDocs documentation editing, automatic rendering, and centralized discovery and reading without immediately setting up external requirements such as storage and pipelines. In this configuration TechDocs writes rendered documentation to ephemeral storage. This means generated HTML will not survive restarts of the Developer Hub Pod without further arrangement. In practice, for most introductory use this is not a problem, because documents are rendered again from their Markdown source and the cache of static HTML rebuilt on demand.
 
-Note, however, that {product_rhdh_name} documentation clearly states that the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.7/html/techdocs_for_red_hat_developer_hub/configuring-techdocs[included lightweight TechDocs configuration is not intended for production^] use. The second TechDocs lab constructs an example production deployment.
+Note, however, that {product_rhdh_name} documentation clearly states that the https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.8/html/techdocs_for_red_hat_developer_hub/configuring-techdocs[included lightweight TechDocs configuration is not intended for production^] use. The second TechDocs lab constructs an example production deployment.
 
 //Rebuild would be expensive if walking src repos of many components. BUT
 //constrained 1st by freq of RHDH restarts, 2nd by trigger tied to page req.
