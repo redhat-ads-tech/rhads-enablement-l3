@@ -1,0 +1,179 @@
+= TechDocs Lab 2: Production TechDocs
+
+What is different from the default {product_rhdh_name} TechDocs deployment:
+
+- Storage backend: Often Amazon s3, or, as shown in this lab, with local policy and control, OpenShift Data Foundation emulation of S3 storage.
+- `Build: external` vs `build: local`: Arrange a pipeline that builds docs for each repository, rather than using the builtin RHDH builder.
+- RHDH will always serve the latest prepared HTML from the storage backend. It doesn't have to poll repositories and potentially pause for re-generation when loading each TechDoc view.
+
+The TechDocs Basic deployment mode generates and stores documentation artifacts on the RHDH instance. The Recommended deployment mode uses continuous integration in each repository to generate documentation, storing the result in external cloud storage. In this configuration, TechDocs is basically read-only, fetching prepared documentation and presenting it in the Developer Hub interface.
+
+== Migration
+
+Migrating from the default lightweight TechDocs to a recommended deployment involves 3 high level tasks:
+
+1. STORAGE - ODF S3 Emulation
+   * Create a ODF storage claim for an emulated S3 bucket and configure TechDocs to retrieve HTML from it.
+2. DEPLOY VIA CI/CD
+   * Integrate documentation site generation and storage publication into the CI/CD pipeline for each source repository.
+3. READ-ONLY TechDocs
+   * Modify app-config.yaml in the RHDH configMap, setting `techdocs.builder`` from `local` to `external`. This disables the local generator.
+
+== Entity Annotation
+
+The `backstage.io/techdocs-ref` annotation in an entity's `catalog-info.yaml` dictates the source file location for TechDocs preparation.
+
+== Standard Location
+
+Most entities should specify `dir:.` That is, their catalog-info's `dir:` parameter should be set to _dot_ (`.`), the current directory of `catalog-info.yaml`. With this configuration, Source files and mkdocs.yml live in the same directory as catalog-info.yaml. The entire directory is downloaded during the _Prepare_ step.
+
+=== Docs in a sub-directory
+
+A sub-directory may be specified, e.g., `dir:./name/`.
+
+== [Plaform] Engineering Production TechDocs
+
+//Using tssc-dh RHDH
+
+Check RHDH deploy
+
+=== External Storage
+
+//TODO intro ODF/refer module 
+Visit ODF, check deploy
+
+**Storage** > **Data Foundation**
+  ODF existing storage: example: 
+  Create CR
+
+eg, something like
+
+[source,yaml]
+----
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: rhdh_td
+spec:
+  generateBucketName: td
+  storageClassName: openshift-storage.noobaa.io
+----
+
+In OpenShift, ODF configured and deployed so we have
+
+**Storage** > **Object Storage** > **ObjectBucketClaims**
+
+==== Create ObjectBucketClaim
+
+[source,yaml]
+----
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: rhdh-bucket-claim
+spec:
+  generateBucketName: techdocs
+  storageClassName: openshift-storage.noobaa.io
+----
+
+Claim created. Retrieve the s3 creds from ODF. Open the web terminal accessible from the `>_` icon near the top right, copy and paste the following script into the OpenShift web terminal, then press `Enter`.
+
+[source,bash]
+----
+#!/bin/bash
+
+CLAIM="rhdh-bucket-claim"
+
+echo -n "Access Key ID:       "
+oc get secret $CLAIM -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 -d
+echo ""
+
+echo -n "Secret Access Key:   "
+oc get secret $CLAIM -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 -d
+echo ""
+
+echo -n "Endpoint:            "
+oc get route s3 -n openshift-storage -o jsonpath='https://{.spec.host}'
+echo ""
+
+echo -n "Bucket Name:         "
+oc get configmap $CLAIM -o jsonpath='{.data.BUCKET_NAME}'
+echo ""
+----
+
+You can see the values that will be populated from the ODF Bucket. You don't need to reproduce the values from this view.
+
+==== ConfigMap configures storage to ObjectBucket via OBClaim
+
+RHDH CR, ConfigMap
+
+Creating the ObjectBucketClaim creates the ConfigMap and Secret. Those will be mounted into {product_rhdh_name} Pods, available as environment variables or beneath the file paths.
+
+Edit ConfigMaps -> tssc-developer-hub-app-config
+
+[source,yaml]
+----
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: tssc-developer-hub-app-config
+  namespace: tssc-dh
+data:
+  app-config.tssc.yaml: |
+    app:
+        baseUrl: ${BACKEND_URL}
+        title: Red Hat Developer Hub
+    [ ... ]
+    techdocs:
+        builder: external
+        generator:
+            runIn: local
+        publisher:
+          awsS3:
+            bucketName: '${BUCKET_NAME}'
+            credentials:
+              accessKeyId: '${AWS_ACCESS_KEY_ID}'
+              secretAccessKey: '${AWS_SECRET_ACCESS_KEY}'
+            endpoint: 'https://${BUCKET_HOST}'
+            region: 'https://${BUCKET_HOST}:443'
+            s3ForcePathStyle: true
+          type: awsS3
+----
+
+Called _region_ here, in ODF it is the OpenShift Storage s3 endpoint, including the TLS port :443.
+
+image::rhdh-ui/claim-secret.png[link=self, window="image"]
+
+==== RHDH CR to point to configmap, secret
+
+Go to Operators -> Installed Operators -> Red Hat Developer Hub Operator -> Red Hat Developer Hub
+
+`developer-hub` CR. It has a letter `B` icon because it is a Custom Resource of Kind _Backstage_.
+
+[source,yaml]
+----
+apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+ name: rhdh //TODO reconciliation of names
+spec:
+ application:
+  appConfig:
+    configMaps:
+      - name: tssc-developer-hub-app-config
+    mountPath: /opt/app-root/src
+  dynamicPluginsConfigMapName: tssc-developer-hub-dynamic-plugins
+  extraEnvs:
+    configMaps:
+      - name: rhdh-bucket-claim
+    secrets:
+      - name: tssc-developer-hub-env
+      - name: rhdh-bucket-claim
+    replicas: 1
+    route:
+      enabled: true
+[ ... ]
+----
+
+At this point, a visit to any Entity's Docs will result in a 404 error from the TechDocs producer trying to find it in a currently empty storage bucket. While you have wired up storage, you've disabled the _local_ generator. Next, the Pipeline configuration for building HTML from docs source and pushing it into your storage bucket.
+
