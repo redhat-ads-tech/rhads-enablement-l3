@@ -1,6 +1,6 @@
 = TechDocs Lab 1: Creating and Editing TechDocs
 
-The steps that follow employ the pre-installed Developer Hub instance running in the OpenShift Project `tssc-dh` to illustrate the intended user experience for developers reading and writing TechDocs and to demonstrate the operation of the default _local_-context TechDocs process included with RHDH and detailed in the preceding xref:techdocs-foundations.adoc[TechDocs Foundations].
+The steps that follow employ the pre-installed Developer Hub instance running in the OpenShift Project `tssc-dh` to illustrate the intended user experience for developers reading and writing TechDocs and to demonstrate the operation of the default _local_-context TechDocs process included with RHDH and detailed in the preceding xref:rhdh-ui/techdocs-foundations.adoc[TechDocs Foundations].
 
 == Create
 
