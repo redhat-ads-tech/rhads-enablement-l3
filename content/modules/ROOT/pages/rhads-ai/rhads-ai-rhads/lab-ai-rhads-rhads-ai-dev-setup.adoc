@@ -1,10 +1,12 @@
 = AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates
 
 == Objectives 
+
 Using a pre-existing software template, you will create a new resource in Red Hat Developer Hub. This resource will serve as a blank template for your team to build an AI agent. You are leveraging the templates already setup with all necessary Kubernetes manifests, including the trusted software supply chain, deployments, and application promotion. In the next lab, your team will add their application source code to this new resource, integrating it into the software development lifecycle.
 
 == Scenario 
-You are part of the AI Engineering team, and you will leverage the tools set up by the AI Platform Engineering team. These tools are setup with best practices aligned with your organization's guidelines.
+
+You are part of the AI Engineering team, and you will leverage the tools set up by the AI Platform Engineering team. These tools are setup with best practices aligned with your organization’s guidelines.
 
 Let's get started.
 
@@ -14,7 +16,7 @@ Software templates provide the manifests to build, deploy, and promote any appli
 
 == About pre-defined software templates
 
-Pre-defined software templates are included with the RHADS installation. They provide recipes users can leverage to start bringing applications into OpenShift. These templates offer a starting point and reference for building applications using the Trusted Software Supply Chain (TSSC). They are not intended for production use; customers can add their own configurations on top of these templates by following the https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/index[Customizing Red Hat Trusted Application Pipeline documentation^].
+Pre-defined software templates are included with the RHADS installation. They provide recipes users can leverage to start bringing applications into OpenShift. These templates offer a starting point and reference for building applications using the Trusted Software Supply Chain (TSSC). They are not intended for production use; customers can add their own configurations on top of these templates by following the https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite$$_-$$_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite$$_-$$_software_supply_chain/index[Customizing Red Hat Advanced Developer Suite - Software supply chain documentation^].
 
 == Create the component
 
@@ -28,9 +30,9 @@ image:rhads-ai/rhads/rhdh-catalogicon.png[width=30%,link=self, window="image"]
 
 image:rhads-ai/rhads/rhdh-selfservice.png[width=30%,link=self, window="image"]
 
-Then select the software template: Python - Trusted Application Pipeline
+Then select the software template: *Python - Trusted Application Pipeline*
 
-* Click on *Choose*
+* Click on *Choose*:
 
 image:rhads-ai/rhads/rhdh-catalog-python.png[width=60%,link=self, window="image"]
 
@@ -46,7 +48,7 @@ Enter the following data:
 
 image:rhads-ai/rhads/rhdh-python-user.png[width=60%,link=self, window="image"]
 
-Click on *Next*
+Click on *Next*:
 
 image:rhads-ai/rhads/rhdh-python.png[width=100%,link=self, window="image"]
 
@@ -72,7 +74,7 @@ Keep Repository Default Branch and CI Provider with the default values.
 
 *Note:* The GitLab URL may differ, as the cluster domain will vary.
 
-Click on *Next*
+Click on *Next*:
 
 === Deployment Information
 
@@ -90,7 +92,7 @@ image:rhads-ai/rhads/rhdh-python3.png[width=100%,link=self, window="image"]
 
 Keep Deployment Namespace with the default value.
 
-Click on *Review*
+Click on *Review*:
 
 Your screen should look similar to this:
 
@@ -98,7 +100,7 @@ image:rhads-ai/rhads/rhdh-python4.png[width=100%,link=self, window="image"]
 
 Ensure your information matches the image, except for the cluster domain.
 
-Click on the *Create button*
+Click on the *Create button*.
 
 Red Hat Developer Hub will run the tasks defined in the *template.yaml* file and other manifests. Once finished, all steps will appear in green.
 
@@ -117,13 +119,13 @@ Two repositories were created, both required to build and deploy the application
 * *Source Repository*: Contains pipelines that validate pull requests, ensuring image updates are safe before promoting applications to the next environment (e.g., from staging to production). It also contains a sample app, which AI Engineers will use to add the AI Agent.
 
 * *GitOps Repository*: Represents the AI application deployment configuration, including all the necessary manifests to deploy the application in OpenShift.
-Learn more about these templates at https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/customizing-sample-pipelines_default[Customizing Sample Pipelines^].
+Learn more about these templates at https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite$$_-$$_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite$$_-$$_software_supply_chain/customizing-sample-pipelines_default[Customizing Sample Pipelines^].
 
 == Adding more configurations
 
 You have received new requests from the AI Engineering team:
 
-. Update the *dev.yaml* file with application configurations. 
+. Update the *devfile.yaml* file with application configurations. 
 . Integrate Red Hat Developer Hub with *Red Hat OpenShift Dev Spaces*. 
 . Configure the application to use *environment variables* to connect to an AI model and an API. 
 . Create a *GitLab webhook* to trigger the OpenShift Pipelines.
@@ -134,7 +136,7 @@ Let's work on these requests!
 
 === 1- Update the devfile.yaml
 
-In this section, you will replace the *whole content* of the devfile.yaml file. Review the updates, a few of the major changes involves both the application's name and description, as well as the commands for running the application.
+In this section, you will replace the *whole content* of the `devfile.yaml` file. Review the updates, a few of the major changes involves both the application's name and description, as well as the commands for running the application.
 
 * Go to the *GitLab source code* repository:
 
@@ -142,30 +144,24 @@ In this section, you will replace the *whole content* of the devfile.yaml file. 
 
 ** Or  use the following URL, link:{gitlab_url}/rhdh/ai-agent[GitLab AI Agent,window='_blank'].
 
-* Log in to GitLab using your credentials:
-
-** Click on *Sign in*:
-
+* Log in to GitLab using your credentials by clicking on *Sign in*:
++
 image:rhads-ai/rhads/gitlab-sign-in.png[width=100%,link=self, window="image"]
-
-
++
 ** *Username*: {gitlab_user}
 ** *Password*: {gitlab_user_password}
 
 * Click the *devfile.yaml* file in the project's root directory.
 
-* Click on *Edit*, then *Edit Single File*
-
+* Click on *Edit*, then *Edit Single File*:
 +
 image:rhads-ai/rhads/gitlab-open.png[width=100%,link=self, window="image"]
 
 * Copy the content provided by clicking the icon:
-
 +
 image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
-
-
-[source,bash,role=execute,subs=attributes+]
++
+[source,yaml,role=execute,subs=attributes+]
 ----
 schemaVersion: 2.2.2
 metadata:
@@ -227,69 +223,60 @@ commands:
         kind: test
 ----
 
-* Paste it into the file *REPLACING THE WHOLE CONTENT*
+* Paste it into the file *REPLACING THE WHOLE CONTENT*.
 
 * Commit your changes:
-
++
 image:rhads-ai/rhads/gitlab-commit.png[width=60%,link=self, window="image"]
-
 
 === 2- Integrating Red Hat OpenShift Dev Spaces
 
 Next, you will integrate Red Hat OpenShift Dev Spaces. You will add a link to the component's overview UI. To accomplish this task, you will add the information to the the *catalog-info.yaml* file.
 
-
 * Go back to the project's root folder and find the *catalog-info.yaml file*:
-
 +
 image:rhads-ai/rhads/gitlab-catalog.png[width=60%,link=self, window="image"]
 
-* Click the file
 * Click *Edit*, then *Edit Single File*
-
 +
 image:rhads-ai/rhads/gitlab-open.png[width=100%,link=self, window="image"]
 
 * Copy the following code:
-
 +
 image:rhads-ai/rhads/rhdh-copy-icon.png[width=20%,link=self, window="image"]
-
-[source,bash,role=execute,subs=attributes+]
++
+[source,yaml,role=execute,subs=attributes+]
 ----
-    - url: https://devspaces.{openshift_cluster_ingress_domain}/dashboard/#https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/ai-agent
+    - url: https://devspaces.{openshift_cluster_ingress_domain}#https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/ai-agent
       title: RH OpenShift Dev Spaces
       icon: dashboard
       type: admin-dashboard
 ----
 
 * Paste it at line 11 to add it to the current content, *without replacing the existing content*.
-
 Your file should look similar to this, although the cluster domain will be different:
-
++
 image:rhads-ai/rhads/ai-agent-catalog-info.png[width=100%,link=self, window="image"]
 
 * Commit your changes:
-
++
 image:rhads-ai/rhads/gitlab-commit.png[width=60%,link=self, window="image"]
 
-=== Verify the link was added to the component:
+==== Verify the link was added to the component:
 
 * Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]
-
++
 *Note:* It might take some minutes to show the new link. To speed it up access the template can refresh the entity using the refresh icon in the entity's About box, then refresh the full RHDH UI webpage.
-
-
++
 image:rhads-ai/rhads/rhdh-refresh-component.png[width=60%,link=self, window="image"]
 
 * You should see a new link in the component's overview:
 
 image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%,link=self, window="image"]
 
-
 *Note:*  Do not click the link. You will use Red Hat OpenShift Dev Spaces in the next lab as an AI Engineer.
 
-=== Create the webhook 
+==== Create the webhook 
 
 Webhooks are not part of the pre-defined software templates, but they are required to trigger pipelines when the source code changes. Now, create a webhook in the source code repository in GitLab.
 
@@ -304,7 +291,6 @@ image:rhads-ai/rhads/gitlab-webhook.png[width=80%,link=self, window="image"]
 image:rhads-ai/rhads/gitlab-webhook-new.png[width=100%,link=self, window="image"]
 
 * Copy the OpenShift Pipelines controller URL and paste it in the URL field.
-
 +
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -312,43 +298,44 @@ https://pipelines-as-code-controller-openshift-pipelines.{openshift_cluster_ingr
 ----
 
 * In the *Trigger* section, select the following:
-* Push events
-* Tag Push events
-* Comments
-
+** Push events
+** Tag Push events
+** Comments
++
 image:rhads-ai/rhads/gitlab-webhook-config.png[width=100%,link=self, window="image"]
 
 * Scroll to the bottom and click *Add webhook*.
-
 +
 image:rhads-ai/rhads/gitlab-add-webhook.png[width=100%,link=self, window="image"]
 
 Next, you will test the webhook from this screen to ensure it works.
 
-=== Test the webhook
+==== Test the webhook
 
 * On the *Webhooks* screen, click *Test* and select *Push events*.
-
 +
 image:rhads-ai/rhads/gitlab-webhook-test.png[width=100%,link=self, window="image"]
 
 * This will trigger the pipeline.
 
-=== Explore the Pipeline
+==== Explore the Pipeline
 
 ** Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]
 
 ** Click the *CI* tab.
-
 +
 image:rhads-ai/rhads/rhads-tssc.png[width=100%,link=self, window="image"]
 
 *Note:* The pipeline will take a few minutes to complete all steps. Wait for the pipeline to finish before continuing with step 3. 
 
-
 The AI agent will be built using the Trusted Software Supply Chain (TSSC) provided by Red Hat Advanced Developer Suite. This ensures all security best practices and organizational guardrails are in place *before* development begins. As a best practice, this applies a shift-left security approach to all development.
 
-The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) *roxctl* CLI: *acs-image-check* verifies the image signature against security policies, and *acs-image-scan* identifies vulnerabilities. Red Hat Quay acts as the secure image registry, storing the signed images, SBOMs, and metadata. The deployment object will be updated with the new image tag, this make take ~5 minutes to get synchronize by Argo CD.
+The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) *roxctl* CLI:
+
+* *acs-image-check* task verifies the image signature against security policies, and
+* *acs-image-scan* task identifies vulnerabilities.
+
+Red Hat Quay acts as the secure image registry, storing the signed images, SBOMs, and metadata. The deployment object will be updated with the new image tag, this make take ~5 minutes to get synchronize by Argo CD.
 
 To learn more, review the xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS End-to-End: Production-Ready Development Lifecycle] module.
 
@@ -359,13 +346,12 @@ To learn more, review the xref:production-rhdh/tssc-rhdh.adoc[Module 10: RHADS E
 * Go to the AI Agent GitOps repository's *deployment.yaml*: link:{gitlab_url}/rhdh/ai-agent-gitops/-/blob/main/components/ai-agent/base/deployment.yaml[ai-agent-gitops deployment.yaml,window='_blank'].
 
 * Click *Edit*, then *Edit Single File*.
-
 +
 image:rhads-ai/rhads/gitlab-open.png[width=100%,link=self, window="image"]
 
 * At line 52, paste the new code. Ensure you are adding your source *before the imagePullSecrets*. This adds integrations for LLM models (name, URL, API key) and the Tavily API, which will be used as an AI Agent tool. *Ensure you are not replacing the current content.*
-
-[source,bash,role=execute,subs=attributes+]
++
+[source,yaml,role=execute,subs=attributes+]
 ----
         - name: MODEL_NAME
           valueFrom:
@@ -387,16 +373,13 @@ image:rhads-ai/rhads/gitlab-open.png[width=100%,link=self, window="image"]
             secretKeyRef:
               name: ai-agent-secrets-llm
               key: LLM_API_KEY
-
 ----
-
++
 Your file should look like this. *Ensure the indentation is correct*:
-
-
++
 image:rhads-ai/rhads/ai-agent-deployment.png[width=100%,link=self, window="image"]
 
 * Commit your changes:
-
 +
 image:rhads-ai/rhads/gitlab-commit.png[width=60%,link=self, window="image"]
 

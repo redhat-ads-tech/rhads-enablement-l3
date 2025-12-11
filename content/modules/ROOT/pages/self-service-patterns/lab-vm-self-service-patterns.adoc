@@ -363,7 +363,7 @@ You have successfully updated a virtual machine software template with the lates
 
 ==== Further Reading
 
-* link:https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[Red Hat OpenShift Virtualization^]
+* https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[Red Hat OpenShift Virtualization^]
 
-* link:https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how#[Building virtual machines with Red Hat Developer Hub: The what, why, and how^]
+* https://developers.redhat.com/articles/2024/08/09/building-virtual-machines-red-hat-developer-hub-what-why-and-how#[Building virtual machines with Red Hat Developer Hub: The what, why, and how^]
 
