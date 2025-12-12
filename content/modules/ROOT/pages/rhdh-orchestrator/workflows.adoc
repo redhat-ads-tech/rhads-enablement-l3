@@ -93,7 +93,7 @@ image::orchestrator-overview/quarkus-devui-workflows.png[link=self, window="imag
 image::orchestrator-overview/quarkus-devui-start-workflow.png[link=self, window="image"]
 . Enter the following JSON in the *Start Workflow Data*, then click *Start*:
 +
-[source,bash,role=execute,subs=attributes+]
+[source,json,role=execute,subs=attributes+]
 ----
 { "language": "English"}
 ----
