@@ -167,7 +167,9 @@
     "SPIFFE",
     "SVID",
     "keyfully",
-    "parameterises"
+    "parameterises",
+    "Agentic",
+    "Ollama"
 
   ],
   "ignoreWords": [
