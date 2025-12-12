@@ -139,7 +139,7 @@
     <a class="nav-link" href="../rhdh-ui/techdocs-foundations.html">TechDocs Foundations</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../rhdh-ui/techdocs-lab-user.html">Hands-on Lab: Creating and Editing TechDocs</a>
+    <a class="nav-link" href="../rhdh-ui/techdocs-lab-user.html">TechDocs Lab 1: Creating and Editing TechDocs</a>
   </li>
 </ul>
   </li>
@@ -1295,19 +1295,7 @@ The operator is currently in tech preview and has some issues handling multiple 
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Don&#8217;t paste &amp; save just yet, there are some fields that you need to change - either locally before pasting into the <code>YAML</code> view, or in the <code>YAML</code> view itself!</p>
-</div>
-<div class="paragraph">
-<p>Before you replace everything with the provided <code>yaml</code> file make sure to compare the <code>spec.image.fullName</code> with the default that the "empty" operator provides you with.</p>
-</div>
-<div class="paragraph">
-<p>At the time of this writing, the Operator Version <code>1.0.2</code> with this image was current:</p>
-</div>
-<div class="paragraph">
-<p><code>fullName: 'registry.redhat.io/rhtpa/rhtpa-trustification-service-rhel9@sha256:d5cf4a5bff94b59197f668a63d29591e3bc92ee89402edc70039e592d75cb84e'</code></p>
-</div>
-<div class="paragraph">
-<p>This will change over time, so please compare (or copy &amp; paste to your local file before you paste it back to the operator <code>yaml</code> view)</p>
+<p>Don&#8217;t paste &amp; save just yet, there are some fields that you need to change - either locally before pasting into the <code>YAML</code> view, or in the <code>YAML</code> view itself! Please see below for details:</p>
 </div>
 </td>
 </tr>
@@ -1428,7 +1416,7 @@ Bucket Name:         trustify-c443fd04-cc20-4455-ac54-f02921669428 (Yours will b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This may take a while and they even might fail first, before they are healthily up and running as shown below.
+This may take a while and they even might fail first, before they are healthily up and running as shown below. In some instances, we have seen 10-15mins before the Operator "calms down" and the deployments are available and stable, so please give it some time.
 </td>
 </tr>
 </table>
