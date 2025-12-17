@@ -14,6 +14,8 @@ In this module you'll learn how to install and bootstrap an instance of {product
 
 Before that though, you'll learn about the fundamentals of Backstage and {product_rhdh_name}.
 
+IMPORTANT: Throughtout this module you'll work in the `setup-rhdh` namespace to provision and configure an instance of Red Hat Developer Hub. Another namespace named `tssc-dh` has a preconfigured instance of Red Hat Developer Hub for use in other modules. Do not modify the latter instance - only make changes in the `setup-rhdh` namespace for the exercises in this module.
+
 == Core Features
 
 {product_rhdh_name}, and internal developer portals in general, can be thought of as a modular system where you aggregate and display data related to the software within an organization.

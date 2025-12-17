@@ -8,6 +8,8 @@ This hands-on comprehensive workshop provides **deep technical understanding** o
 
 It is a follow-on to the Technical Overview & Positioning enablement courses available in the https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkbrowseXLR8AMPERSANDin_keyword%3DRHADS[Red Hat Learning Portal^] (login required).
 
+NOTE: This workshop consists of a number of comprehensive modules covering everything from initial setup to advanced production implementations. Each module includes hands-on exercises, real-world scenarios, and practical configuration examples. Feel free to do each module in the order presented, or skip around to the modules that interest you most.
+
 == About Red Hat Advanced Developer Suite
 
 Red Hat Advanced Developer Suite brings together an enterprise-grade developer portal, enhanced software supply chain security, and components that empower platform engineers to enhance developer productivity and streamline the software development lifecycle.
