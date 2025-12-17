@@ -551,9 +551,15 @@ In many organizations, developers use AI Assistants to increase productivity. Le
 <div class="ulist">
 <ul>
 <li>
-<p>Click the <strong>Trust the Publisher and Install</strong> button.
-<span class="image"><a class="image" href="../../_images/rhads-ai/rhdevspaces/devspaces-trust.png" target="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-trust.png" alt="devspaces trust" width="60%"></a></span></p>
+<p>Click the <strong>Trust the Publisher and Install</strong> button.</p>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/rhads-ai/rhdevspaces/devspaces-trust.png" target="image"><img src="../../_images/rhads-ai/rhdevspaces/devspaces-trust.png" alt="devspaces trust" width="60%"></a></span></p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>After a successful installation, you will see a screen similar to this:</p>
 </li>
@@ -605,14 +611,8 @@ In many organizations, developers use AI Assistants to increase productivity. Le
 <ul>
 <li>
 <p>Copy the provided content by clicking the icon:</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></a></span></p>
-</div>
-</li>
-</ul>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -644,17 +644,15 @@ context:
   - provider: codebase</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>If needed, verify the solution: <a href="https://github.com/redhat-ads-tech/rhads-enablement-l3/blob/main/content/modules/ROOT/solutions/rhads-ai/rhdevspaces/config.yaml" target="_blank" rel="noopener">config.yaml AI assistant config file</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Paste</strong> it into the config.yaml file created by continue.</p>
 </li>
 </ul>
 </div>
+</li>
+<li>
+<p><strong>Paste</strong> it into the <code>config.yaml</code> file created by continue.</p>
 </li>
 </ul>
 </div>
@@ -679,7 +677,7 @@ context:
 <div class="ulist">
 <ul>
 <li>
-<p>Click <strong>Sign in</strong></p>
+<p>Click <strong>Sign in</strong>.</p>
 </li>
 </ul>
 </div>
@@ -689,7 +687,7 @@ context:
 <div class="ulist">
 <ul>
 <li>
-<p>Click <strong>Authenticate with RH SSO</strong></p>
+<p>Click <strong>Authenticate with RH SSO</strong>.</p>
 </li>
 </ul>
 </div>
@@ -709,10 +707,10 @@ context:
 <div class="ulist">
 <ul>
 <li>
-<p>Click applications</p>
+<p>Click applications.</p>
 </li>
 <li>
-<p>Click the <strong>llama-3-2-3b</strong> model</p>
+<p>Click the <strong>llama-3-2-3b</strong> model.</p>
 </li>
 </ul>
 </div>
@@ -722,7 +720,7 @@ context:
 <div class="ulist">
 <ul>
 <li>
-<p>Copy the <strong>API Key</strong> and paste it into the <strong>config.yaml</strong> file&#8217;s <strong>apiKey:"  "</strong>.</p>
+<p>Copy the <strong>API Key</strong> and paste it into the <strong>config.yaml</strong> file&#8217;s <strong>apiKey: ""</strong>.</p>
 </li>
 </ul>
 </div>
@@ -733,13 +731,9 @@ context:
 <ul>
 <li>
 <p>Copy the <strong>Endpoint URL</strong> and paste it into the <strong>config.yaml</strong> file&#8217;s <strong>apiBase:</strong> and add <strong>/v1</strong> to the end of the URL.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Save the file and close the  <strong>Config update</strong> message</p>
 </li>
-</ul>
-</div>
+<li>
+<p>Save the file and close the  <strong>Config update</strong> message.</p>
 </li>
 </ul>
 </div>
@@ -771,15 +765,15 @@ context:
 <div class="sect2">
 <h3 id="_learn_about_the_search_agent_py_file"><a class="anchor" href="#_learn_about_the_search_agent_py_file"></a>Learn about the <strong>search_agent.py</strong> file</h3>
 <div class="paragraph">
-<p>Learn about the implementation. Let&#8217;s start with the search_agent.py file.</p>
+<p>Learn about the implementation. Let&#8217;s start with the <strong>search_agent.py</strong> file.</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@search_agent.py  tell me about this file</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@search_agent.py tell me about this file</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Note:</strong> ensure you add @search_agent.py at the beginning of the prompt</p>
+<p><strong>Note:</strong> ensure you add <code>@search_agent.py</code> at the beginning of the prompt:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhdevspaces/continue-chat2.png" target="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat2.png" alt="continue chat2" width="100%"></a></span></p>
@@ -789,11 +783,11 @@ context:
 <h3 id="_learn_about_the_requirements_txt_file"><a class="anchor" href="#_learn_about_the_requirements_txt_file"></a>Learn about the requirements.txt file</h3>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@requirements.txt  tell me about this file</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@requirements.txt tell me about this file</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Note:</strong> ensure you add @requirements.txt *at the beginning of the prompt</p>
+<p><strong>Note:</strong> ensure you add <code>@requirements.txt</code> at the beginning of the prompt:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhdevspaces/continue-chat3.png" target="image"><img src="../../_images/rhads-ai/rhdevspaces/continue-chat3.png" alt="continue chat3" width="100%"></a></span></p>
@@ -841,14 +835,8 @@ context:
 <ul>
 <li>
 <p>Copy the provided content by clicking on the icon:</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></a></span></p>
-</div>
-</li>
-</ul>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -865,8 +853,10 @@ mcpServers:
     env: {}</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>We have provided a configuration to set up the <strong>Tavily MCP server</strong>:</p>
 <div class="ulist">
@@ -885,7 +875,7 @@ mcpServers:
 <div class="ulist">
 <ul>
 <li>
-<p>Copy the file content and <strong>paste</strong> it into the new-mcp-server.yaml file.</p>
+<p>Copy the file content and <strong>paste</strong> it into the <code>new-mcp-server.yaml</code> file.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -904,7 +894,7 @@ mcpServers:
 <div class="ulist">
 <ul>
 <li>
-<p>Access <a href="https://app.tavily.com" target="_blank" rel="noopener">https://app.tavily.com</a></p>
+<p>Access <a href="https://app.tavily.com" target="_blank" rel="noopener">https://app.tavily.com</a>.</p>
 </li>
 <li>
 <p>Click Login and choose your previously selected sign-up method (Google, GitHub, Email address).</p>
@@ -958,8 +948,10 @@ mcpServers:
 </ul>
 </div>
 <div class="paragraph">
-<p>If the server is not ready, click the <strong>refresh</strong> icon:
-<span class="image"><a class="image" href="../../_images/rhads-ai/rhdevspaces/mcp-server-refresh.png" target="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-refresh.png" alt="mcp server refresh" width="70%"></a></span></p>
+<p>If the server is not ready, click the <strong>refresh</strong> icon:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/rhads-ai/rhdevspaces/mcp-server-refresh.png" target="image"><img src="../../_images/rhads-ai/rhdevspaces/mcp-server-refresh.png" alt="mcp server refresh" width="70%"></a></span></p>
 </div>
 </div>
 </div>
@@ -983,7 +975,7 @@ mcpServers:
 <div class="ulist">
 <ul>
 <li>
-<p>Ensure <strong>agent</strong> is selected in the Continue terminal. This agent interacts with the MCP server tools..</p>
+<p>Ensure <strong>agent</strong> is selected in the Continue terminal. This agent interacts with the MCP server tools.</p>
 </li>
 </ul>
 </div>

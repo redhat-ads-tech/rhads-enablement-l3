@@ -448,7 +448,7 @@
 <h2 id="_scenario"><a class="anchor" href="#_scenario"></a>Scenario</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are part of the AI Engineering team, and you will leverage the tools set up by the AI Platform Engineering team. These tools are setup with best practices aligned with your organization&#8217;s guidelines.</p>
+<p>You are part of the AI Engineering team, and you will leverage the tools set up by the AI Platform Engineering team. These tools are setup with best practices aligned with your organization’s guidelines.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s get started.</p>
@@ -467,7 +467,7 @@
 <h2 id="_about_pre_defined_software_templates"><a class="anchor" href="#_about_pre_defined_software_templates"></a>About pre-defined software templates</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Pre-defined software templates are included with the RHADS installation. They provide recipes users can leverage to start bringing applications into OpenShift. These templates offer a starting point and reference for building applications using the Trusted Software Supply Chain (TSSC). They are not intended for production use; customers can add their own configurations on top of these templates by following the <a href="https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/index" target="_blank" rel="noopener">Customizing Red Hat Trusted Application Pipeline documentation</a>.</p>
+<p>Pre-defined software templates are included with the RHADS installation. They provide recipes users can leverage to start bringing applications into OpenShift. These templates offer a starting point and reference for building applications using the Trusted Software Supply Chain (TSSC). They are not intended for production use; customers can add their own configurations on top of these templates by following the <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite_-_software_supply_chain/index" target="_blank" rel="noopener">Customizing Red Hat Advanced Developer Suite - Software supply chain documentation</a>.</p>
 </div>
 </div>
 </div>
@@ -498,12 +498,12 @@
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-selfservice.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-selfservice.png" alt="rhdh selfservice" width="30%"></a></span></p>
 </div>
 <div class="paragraph">
-<p>Then select the software template: Python - Trusted Application Pipeline</p>
+<p>Then select the software template: <strong>Python - Trusted Application Pipeline</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Click on <strong>Choose</strong></p>
+<p>Click on <strong>Choose</strong>:</p>
 </li>
 </ul>
 </div>
@@ -532,7 +532,7 @@
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-python-user.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-python-user.png" alt="rhdh python user" width="60%"></a></span></p>
 </div>
 <div class="paragraph">
-<p>Click on <strong>Next</strong></p>
+<p>Click on <strong>Next</strong>:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-python.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-python.png" alt="rhdh python" width="100%"></a></span></p>
@@ -579,7 +579,7 @@
 <p><strong>Note:</strong> The GitLab URL may differ, as the cluster domain will vary.</p>
 </div>
 <div class="paragraph">
-<p>Click on <strong>Next</strong></p>
+<p>Click on <strong>Next</strong>:</p>
 </div>
 </div>
 <div class="sect2">
@@ -610,7 +610,7 @@
 <p>Keep Deployment Namespace with the default value.</p>
 </div>
 <div class="paragraph">
-<p>Click on <strong>Review</strong></p>
+<p>Click on <strong>Review</strong>:</p>
 </div>
 <div class="paragraph">
 <p>Your screen should look similar to this:</p>
@@ -622,7 +622,7 @@
 <p>Ensure your information matches the image, except for the cluster domain.</p>
 </div>
 <div class="paragraph">
-<p>Click on the <strong>Create button</strong></p>
+<p>Click on the <strong>Create button</strong>.</p>
 </div>
 <div class="paragraph">
 <p>Red Hat Developer Hub will run the tasks defined in the <strong>template.yaml</strong> file and other manifests. Once finished, all steps will appear in green.</p>
@@ -655,7 +655,7 @@
 </li>
 <li>
 <p><strong>GitOps Repository</strong>: Represents the AI application deployment configuration, including all the necessary manifests to deploy the application in OpenShift.
-Learn more about these templates at <a href="https://docs.redhat.com/en/documentation/red_hat_trusted_application_pipeline/latest/html/customizing_red_hat_trusted_application_pipeline/customizing-sample-pipelines_default" target="_blank" rel="noopener">Customizing Sample Pipelines</a>.</p>
+Learn more about these templates at <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_developer_suite_-_software_supply_chain/latest/html/customizing_red_hat_advanced_developer_suite_-_software_supply_chain/customizing-sample-pipelines_default" target="_blank" rel="noopener">Customizing Sample Pipelines</a>.</p>
 </li>
 </ul>
 </div>
@@ -670,7 +670,7 @@ Learn more about these templates at <a href="https://docs.redhat.com/en/document
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Update the <strong>dev.yaml</strong> file with application configurations.</p>
+<p>Update the <strong>devfile.yaml</strong> file with application configurations.</p>
 </li>
 <li>
 <p>Integrate Red Hat Developer Hub with <strong>Red Hat OpenShift Dev Spaces</strong>.</p>
@@ -692,7 +692,7 @@ Learn more about these templates at <a href="https://docs.redhat.com/en/document
 <div class="sect2">
 <h3 id="_1_update_the_devfile_yaml"><a class="anchor" href="#_1_update_the_devfile_yaml"></a>1- Update the devfile.yaml</h3>
 <div class="paragraph">
-<p>In this section, you will replace the <strong>whole content</strong> of the devfile.yaml file. Review the updates, a few of the major changes involves both the application&#8217;s name and description, as well as the commands for running the application.</p>
+<p>In this section, you will replace the <strong>whole content</strong> of the <code>devfile.yaml</code> file. Review the updates, a few of the major changes involves both the application&#8217;s name and description, as well as the commands for running the application.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -710,17 +710,7 @@ Learn more about these templates at <a href="https://docs.redhat.com/en/document
 </div>
 </li>
 <li>
-<p>Log in to GitLab using your credentials:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Click on <strong>Sign in</strong>:</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
+<p>Log in to GitLab using your credentials by clicking on <strong>Sign in</strong>:</p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/gitlab-sign-in.png" target="image"><img src="../../_images/rhads-ai/rhads/gitlab-sign-in.png" alt="gitlab sign in" width="100%"></a></span></p>
 </div>
@@ -731,31 +721,27 @@ Learn more about these templates at <a href="https://docs.redhat.com/en/document
 </li>
 <li>
 <p><strong>Password</strong>: {gitlab_user_password}</p>
-<div class="ulist">
-<ul>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Click the <strong>devfile.yaml</strong> file in the project&#8217;s root directory.</p>
 </li>
 <li>
-<p>Click on <strong>Edit</strong>, then <strong>Edit Single File</strong></p>
+<p>Click on <strong>Edit</strong>, then <strong>Edit Single File</strong>:</p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/gitlab-open.png" target="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></a></span></p>
 </div>
 </li>
 <li>
 <p>Copy the content provided by clicking the icon:</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></a></span></p>
 </div>
-</li>
-</ul>
-</div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">schemaVersion: 2.2.2
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">schemaVersion: 2.2.2
 metadata:
   name: ai-agent
   displayName: "AI Research Agent"
@@ -815,18 +801,17 @@ commands:
         kind: test</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
-<p>Paste it into the file <strong>REPLACING THE WHOLE CONTENT</strong></p>
+<p>Paste it into the file <strong>REPLACING THE WHOLE CONTENT</strong>.</p>
 </li>
 <li>
 <p>Commit your changes:</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/gitlab-commit.png" target="image"><img src="../../_images/rhads-ai/rhads/gitlab-commit.png" alt="gitlab commit" width="60%"></a></span></p>
+</div>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -843,9 +828,6 @@ commands:
 </div>
 </li>
 <li>
-<p>Click the file</p>
-</li>
-<li>
 <p>Click <strong>Edit</strong>, then <strong>Edit Single File</strong></p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/gitlab-open.png" target="image"><img src="../../_images/rhads-ai/rhads/gitlab-open.png" alt="gitlab open" width="100%"></a></span></p>
@@ -856,58 +838,43 @@ commands:
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-copy-icon.png" alt="rhdh copy icon" width="20%"></a></span></p>
 </div>
-</li>
-</ul>
-</div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">    - url: https://devspaces.{openshift_cluster_ingress_domain}/dashboard/#https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/ai-agent
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">    - url: https://devspaces.{openshift_cluster_ingress_domain}#https://gitlab-gitlab.{openshift_cluster_ingress_domain}/rhdh/ai-agent
       title: RH OpenShift Dev Spaces
       icon: dashboard
       type: admin-dashboard</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Paste it at line 11 to add it to the current content, <strong>without replacing the existing content</strong>.</p>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Your file should look similar to this, although the cluster domain will be different:</p>
-</div>
+<li>
+<p>Paste it at line 11 to add it to the current content, <strong>without replacing the existing content</strong>.
+Your file should look similar to this, although the cluster domain will be different:</p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/ai-agent-catalog-info.png" target="image"><img src="../../_images/rhads-ai/rhads/ai-agent-catalog-info.png" alt="ai agent catalog info" width="100%"></a></span></p>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Commit your changes:</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/gitlab-commit.png" target="image"><img src="../../_images/rhads-ai/rhads/gitlab-commit.png" alt="gitlab commit" width="60%"></a></span></p>
 </div>
+</li>
+</ul>
 </div>
-<div class="sect2">
-<h3 id="_verify_the_link_was_added_to_the_component"><a class="anchor" href="#_verify_the_link_was_added_to_the_component"></a>Verify the link was added to the component:</h3>
+<div class="sect3">
+<h4 id="_verify_the_link_was_added_to_the_component"><a class="anchor" href="#_verify_the_link_was_added_to_the_component"></a>Verify the link was added to the component:</h4>
 <div class="ulist">
 <ul>
 <li>
 <p>Go back to {rhdh_url}/catalog/default/component/ai-agent/[Red Hat Developer Hub UI - AI Agent^]</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><strong>Note:</strong> It might take some minutes to show the new link. To speed it up access the template can refresh the entity using the refresh icon in the entity&#8217;s About box, then refresh the full RHDH UI webpage.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/rhdh-refresh-component.png" target="image"><img src="../../_images/rhads-ai/rhads/rhdh-refresh-component.png" alt="rhdh refresh component" width="60%"></a></span></p>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>You should see a new link in the component&#8217;s overview:</p>
 </li>
@@ -920,8 +887,8 @@ commands:
 <p><strong>Note:</strong>  Do not click the link. You will use Red Hat OpenShift Dev Spaces in the next lab as an AI Engineer.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_create_the_webhook"><a class="anchor" href="#_create_the_webhook"></a>Create the webhook</h3>
+<div class="sect3">
+<h4 id="_create_the_webhook"><a class="anchor" href="#_create_the_webhook"></a>Create the webhook</h4>
 <div class="paragraph">
 <p>Webhooks are not part of the pre-defined software templates, but they are required to trigger pipelines when the source code changes. Now, create a webhook in the source code repository in GitLab.</p>
 </div>
@@ -960,7 +927,8 @@ commands:
 </li>
 <li>
 <p>In the <strong>Trigger</strong> section, select the following:</p>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p>Push events</p>
 </li>
@@ -969,14 +937,13 @@ commands:
 </li>
 <li>
 <p>Comments</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/gitlab-webhook-config.png" target="image"><img src="../../_images/rhads-ai/rhads/gitlab-webhook-config.png" alt="gitlab webhook config" width="100%"></a></span></p>
 </div>
-<div class="ulist">
-<ul>
+</li>
+</ul>
+</div>
+</li>
 <li>
 <p>Scroll to the bottom and click <strong>Add webhook</strong>.</p>
 <div class="paragraph">
@@ -989,8 +956,8 @@ commands:
 <p>Next, you will test the webhook from this screen to ensure it works.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_test_the_webhook"><a class="anchor" href="#_test_the_webhook"></a>Test the webhook</h3>
+<div class="sect3">
+<h4 id="_test_the_webhook"><a class="anchor" href="#_test_the_webhook"></a>Test the webhook</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1005,8 +972,8 @@ commands:
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_explore_the_pipeline"><a class="anchor" href="#_explore_the_pipeline"></a>Explore the Pipeline</h3>
+<div class="sect3">
+<h4 id="_explore_the_pipeline"><a class="anchor" href="#_explore_the_pipeline"></a>Explore the Pipeline</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1027,13 +994,27 @@ commands:
 <p>The AI agent will be built using the Trusted Software Supply Chain (TSSC) provided by Red Hat Advanced Developer Suite. This ensures all security best practices and organizational guardrails are in place <strong>before</strong> development begins. As a best practice, this applies a shift-left security approach to all development.</p>
 </div>
 <div class="paragraph">
-<p>The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) <strong>roxctl</strong> CLI: <strong>acs-image-check</strong> verifies the image signature against security policies, and <strong>acs-image-scan</strong> identifies vulnerabilities. Red Hat Quay acts as the secure image registry, storing the signed images, SBOMs, and metadata. The deployment object will be updated with the new image tag, this make take ~5 minutes to get synchronize by Argo CD.</p>
+<p>The TSSC pipeline uses OpenShift Pipelines to build a container image, generate an SBOM, and push both to Red Hat Quay. Subsequent tasks use the Red Hat Advanced Cluster Security (ACS) <strong>roxctl</strong> CLI:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>acs-image-check</strong> task verifies the image signature against security policies, and</p>
+</li>
+<li>
+<p><strong>acs-image-scan</strong> task identifies vulnerabilities.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Red Hat Quay acts as the secure image registry, storing the signed images, SBOMs, and metadata. The deployment object will be updated with the new image tag, this make take ~5 minutes to get synchronize by Argo CD.</p>
 </div>
 <div class="paragraph">
 <p>To learn more, review the <a href="../../production-rhdh/tssc-rhdh.html" class="xref page">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a> module.</p>
 </div>
 <div class="paragraph">
 <p><strong>Note:</strong> If you face a 500 error during the build container image step, restart the <strong>quay-quay-app.</strong> pods (2 pods) in the <strong>quay-enterprise</strong> namespace.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1051,12 +1032,9 @@ commands:
 </li>
 <li>
 <p>At line 52, paste the new code. Ensure you are adding your source <strong>before the imagePullSecrets</strong>. This adds integrations for LLM models (name, URL, API key) and the Tavily API, which will be used as an AI Agent tool. <strong>Ensure you are not replacing the current content.</strong></p>
-</li>
-</ul>
-</div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">        - name: MODEL_NAME
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">        - name: MODEL_NAME
           valueFrom:
             secretKeyRef:
               name: ai-agent-secrets-llm
@@ -1084,8 +1062,7 @@ commands:
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/rhads-ai/rhads/ai-agent-deployment.png" target="image"><img src="../../_images/rhads-ai/rhads/ai-agent-deployment.png" alt="ai agent deployment" width="100%"></a></span></p>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Commit your changes:</p>
 <div class="paragraph">
