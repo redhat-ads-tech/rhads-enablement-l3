@@ -1,0 +1,40 @@
+= AI Safety
+
+## Introduction
+
+This module provides a **foundational understanding** of how to implement a Model Development Lifecycle, including security best practices. Through a case study as a Security Consultant for a global retail company, the module highlights the **critical role of AI Safety** in productizing AI solutions. Key topics covered include the evolving landscape of **trustyAI** for guardrails, bias and evaluation, as well as the importance of **Model Signing** for integrity and authenticity.
+
+In this module, you can explore a role with a fictional company. You are a **Security Consultant** working for an ACME global retail company with many branches worldwide. The company has been experimenting and prototyping AI solutions. Now, they are looking to productize these POCs (Proof of Concepts). The next step is moving these initial solutions into an **established and trusted development lifecycle**. This is where Trustworthy AI is a critical aspect of AI adoption. Your role is to ensure **security best practices** are in place before AI applications are shipped into production, and best practices are followed in every step and stage during the development cycle. Before making recommendations or choosing an approach, you must learn critical security concepts for building AI applications.
+
+## AI Safety
+I safety in Red Hat OpenShift AI encompasses a comprehensive set of capabilities designed to ensure AI systems remain fair, and transparent throughout their lifecycle. This includes generative AI guardrails for real-time monitoring of model inputs and outputs to detect toxic, biased, or insecure content; model transparency features that probe for vulnerabilities like prompt injection; and predictive AI validation through TrustyAI for continuous monitoring of fairness, explainability, and robustness. These safety mechanisms work together to provide defense-in-depth protection for both traditional ML models and large language models in production environments.
+
+## AI Model Supply Chain Security Model
+The AI Model Supply Chain Security Model provides a comprehensive framework for securing the entire lifecycle of an AI model, from model training to deployment and continuous monitoring. In this model, security considerations are integrated at every stage, addressing vulnerabilities that could arise from bad training data, source tampering or injecting vulnerabilities and compromised storage. Key elements include secure model provenance, verifiable training processes, secure model packaging, and continuous vulnerability scanning. The goal is to establish a chain of trust that ensures the integrity and reliability of AI systems from development, training, deployment, including inference.
+
+
+### Model signing and Model validation
+Model signing is a crucial security measure designed to ensure the integrity, provenance, and authenticity of AI models throughout their lifecycle. In this process, cryptographic signatures are applied to AI models, allowing consumers to verify that the model has not been tampered with and originated from a trusted source before the model is transformed into an OCI component. This is particularly vital in mitigating risks associated with model poisoning, unauthorized modifications, and the deployment of malicious models. Implementing model signing involves secure key management and integration into automation tools to ensure that every version of an AI model is properly signed and verifiable.
+
+image:ai-safety/introduction/mdl.png[MDL,link=self, window="image"]
+
+
+However, model signing faces many challenges given that the models are usually large files composed of different data types including metadata, tokenizers, pre-scripts and fine tuning. How can a model be signed efficiently, consisting of various data types? How can this process be effective during the whole model development lifecycle?
+
+image:ai-safety/introduction/sigstore-bundle.png[MDL,link=self, window="image"]
+
+
+https://docs.google.com/presentation/d/1YFC389KLMwPbHNDikwF-lugxAHv8EzsCBJv-EGnET58/edit?slide=id.g3580bc6b36b_0_217#slide=id.g3580bc6b36b_0_217[Source,window='_blank']
+
+The Sigstore community built a new model signing project to resolve these challenges. As the following image shows, each part of this model (weights, tokenizers) will be added to a Model manifest, including the content's hash and path. Each time one of the components changes, only the content's hash will be updated. This information, including the signature, will be part of the https://github.com/secure-systems-lab/dsse[DSSE: Dead Simple Signing Envelope] in an https://github.com/in-toto/attestation[In-Toto Statement] format. Once this information is part of the DSSE Envelope, another signature verification is added. With these two main components, we now have a Sigstore Bundle.
+
+### Model validation
+Next, it is critical that the model signed can be verified through the entire model development lifecycle, including inference process. Model validation, ensures that the model is trusted and not tampered through the entire process, including once the model is deployed Model Hub and a Kubernetes Cluster.
+
+
+image:ai-safety/introduction/mdl-validation.png[MDL Validation,link=self, window="image"]
+
+---
+
+
+

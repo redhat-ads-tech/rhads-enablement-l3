@@ -1,0 +1,18 @@
+= Hands-on Lab: AI Safety
+
+[#introduction]
+== Introduction
+
+In this lab we will be gain hands-on experience to work with OpenShift AI, RHTAS, TrustyAI, including:
+
+* Use TrustyAI for Bias and Monitoring
+* Sign & verify a model deployed with OpenShift AI
+
+== Getting started
+
+* Access the OpenShift cluster, {openshift_console_url}[OpenShift Console URL^]
+
+** Login with your user credentials:
+
+    ** *Username*: {openshift_admin_user}
+    ** *Password*: {openshift_admin_password}

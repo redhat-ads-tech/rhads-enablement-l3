@@ -1,0 +1,335 @@
+= Model Signing and Model Validation
+:toc: left
+:toclevels: 3
+:experimental:
+:source-highlighter: highlight.js
+
+== Introduction
+
+Welcome to this hands-on lab where you'll learn how to implement model signing and validation as part of a secure Model Development Lifecycle. This lab demonstrates how to cryptographically sign AI models and enforce signature verification before deployment, ensuring model integrity and authenticity throughout the ML supply chain.
+
+=== What You'll Learn
+
+By the end of this lab, you'll be able to:
+
+* Understand the importance of model signing in ML supply chain security
+* Sign a model using Red Hat Trusted Artifact Signer (RHTAS) and Sigstore
+* Deploy and configure the Model Validation Operator
+* Configure validation policies to verify model signatures before deployment
+* Test validation enforcement with both failure and success scenarios
+
+
+During this lab, you'll work directly on an *OpenShift cluster* using the *Web Console* and *Web Terminal*.
+
+
+== Sign the Model
+
+In this section, you'll create the infrastructure for model storage and signing. The YAML below creates four resources:
+
+* *Namespace (model-signing)*: During this lab, you will be using the *model-signing* namespace. 
+* *PersistentVolumeClaim (model-storage-pvc)*: Requests 5Gi of storage for the model files.
+* *Job (download-model)*: Downloads a sample ONNX model from the ONNX Model.
+* *Pod (model-signing)*: Runs the RHTAS model-transparency container with the model-signing CLI tool.
+
+=== Deploy Storage and Signing Infrastructure
+
+. Copy the following content:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: model-signing
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-storage-pvc
+  namespace: model-signing
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: pvc-8af02176-3d32-4bf3-8793-249453eeee57
+  storageClassName: gp3-csi
+  volumeMode: Filesystem
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-model
+  namespace: model-signing
+spec:
+  template:
+    spec:
+      containers:
+        - name: download-model
+          image: alpine:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              wget -O /models/model.onnx https://github.com/onnx/models/raw/main/validated/vision/classification/mnist/model/mnist-8.onnx
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
+      restartPolicy: Never
+      volumes:
+        - name: model-storage
+          persistentVolumeClaim:
+            claimName: model-storage-pvc
+  backoffLimit: 3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-signing
+  namespace: model-signing
+spec:
+  securityContext:
+    fsGroup: 1001190000
+    runAsUser: 1001
+    runAsGroup: 1001
+    runAsNonRoot: true
+  containers:
+  - command: ["sleep", "infinity"]
+    image: registry.redhat.io/rhtas/model-transparency-rhel9@sha256:6db7fa2b956875a6f507811166b47b164d463dea78ab4403c6d7648d838b8acb
+    name: sign
+    volumeMounts:
+      - name: model-storage
+        mountPath: /models
+  restartPolicy: Never
+  volumes:
+    - name: model-storage
+      persistentVolumeClaim:
+        claimName: model-storage-pvc
+----
+
+. Click on the *plus icon* and next, click *Import YAML* 
+image:ai-safety/openshift-import-yaml.png[OpenShift Import YAML, link=self, window="image"]
+
+. Paste the content and click *Create*.
+
+. You should see a similar screen like this one, showing all resources has been successfully created:
+
+image:ai-safety/msv-import-ok.png[OpenShift Import YAML, link=self, window="image"]
+
+
+=== Sign the Model
+
+Now you'll use the model-signing CLI tool to cryptographically sign the model. RHTAS uses Sigstore's keyless signing approach, which leverages OIDC identity providers (Google, GitHub, Microsoft) instead of managing private keys.
+
+. Navigate to the model-signing pod terminal in OpenShift: https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/model-signing/pods/model-signing/terminal[Pod Terminal^]
+
+. Run the following command inside the pod's terminal:
++
+[source,bash,role=execute,subs=attributes+]
+----
+model_signing sign /models/ --signature /models/model.sig
+----
++
+Review the output. You should see output similar to:
++
+image:ai-safety/msv-terminal.png[Pod Terminal, link=self, window="image"]
++
+Copy the URL provided by sigstore *model-signing* and open it in your web browser. Choose *Google* from the list of identity providers: Google, GitHub, Microsoft.
++
+image:ai-safety/msv-sigstore-auth.png[Pod Terminal, link=self, window="image"]
+
+. After authentication, you'll see a verification code displayed in the browser:
++
+image:ai-safety/msv-sigstore-code.png[Pod Terminal, link=self, window="image"]
+
+. Copy the verification code and paste it into the pod's terminal, then press Enter
++
+image:ai-safety/msv-terminal-ok.png[Pod Terminal, link=self, window="image"]
+
+. After successful authentication, you should see:
++
+[source,console]
+----
+// Sample output (abbreviated)
+Signing succeeded
+----
+
+[NOTE]
+====
+The signing process creates a signature file:
+* *model.sig*: Model signing bundle, containing the model manifest hash, attestation, and signature linking your OIDC identity
+
+This file will be used by the Model Validation Operator to verify the model hasn't been tampered with and the model that will run on the cluster is actually signed.
+====
+
+== Configure Model Validation in OpenShift
+
+=== Install the Model Validation Operator
+
+The Model Validation Operator uses a Mutation Webhook to inject an init container on the pod that will run the model. This allows the Model Validation Controller to know what pod/model needs to be verified.
+
+. Visit * Operators -> Operator Hub* and search for the Model Validation Operator:
++
+https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/all-namespaces?keyword=Model+Validation+Operator&source=%5B%22Red+Hat%22%5D[Operator Hub^]
++
+image::ai-safety/operators-modelvaloperator.png[link=self, window="image"]
+
+. Select the *Model Validation Operator*, select *version 0.0.2*, and click *Install*
+
+. On the install form, keep the default settings and click *Install*
+
+. Wait for the installation to complete
++
+image::ai-safety/operators-modelvaloperator-installed.png[link=self, window="image"]
+
+Next, click *View Operator* to configure the CRD.
+
+=== Create ModelValidation Custom Resource Definition
+
+The ModelValidation CRD tells the operator which models to validate and which OIDC identity is authorized to sign them. Let's review the key fields:
+
+* *certificateIdentity*: The email address from your OIDC provider that signed the model
+* *certificateOidcIssuer*: The OIDC provider URL (Google: `https://accounts.google.com`, GitHub: `https://github.com/login/oauth`)
+* *path*: The directory path where the model files are mounted in the pod
+* *signaturePath*: The path to the model.sig signature file
+
+. Navigate to the Model Validation Operator instance creation page:
++
+https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/model-signing/operators.coreos.com~v1alpha1~ClusterServiceVersion/model-validation-operator.v0.0.2[Create Instance^]
+
+. Click on *Create instance* to create a new ModelValidation in the *model-signing* namespace
++
+image::ai-safety/mvo-instance.png[link=self, window="image"]
+
+. Select *YAML* as the configure via. 
+. Copy the following content and replace *REPLACE_WITH_YOUR_EMAIL* with the email you used during model signing:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: ml.sigstore.dev/v1alpha1
+kind: ModelValidation
+metadata:
+  name: workshop-rhads
+  namespace: model-signing
+spec:
+  config:
+    sigstoreConfig:
+      certificateIdentity: REPLACE_WITH_YOUR_EMAIL
+      certificateOidcIssuer: 'https://accounts.google.com'
+  model:
+    path: /models
+    signaturePath: /models/model.sig
+----
++
+[NOTE]
+====
+If you used GitHub as your identity provider, change `certificateOidcIssuer` to `'https://github.com/login/oauth'`
+====
+
+image::ai-safety/msv-mv.png[link=self, window="image"]
+
+. Paste the content in the YAML editor and click *Create*
+
+== Test Model Validation
+
+=== Deploy a Test Model Server
+
+To test the validation, you'll deploy a simple model server pod that attempts to load the signed model. The Model Validation Operator will inject an init container that verifies the signature before the main container starts.
+
+. Copy the following InferenceService definition:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-server
+  namespace: model-signing
+  labels:
+    validation.ml.sigstore.dev/ml: workshop-rhads
+spec:
+  containers:
+  - name: server
+    image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+    command: ["sleep", "infinity"]
+    volumeMounts:
+      - name: model-storage
+        mountPath: /models
+  volumes:
+    - name: model-storage
+      persistentVolumeClaim:
+        claimName: model-storage-pvc
+----
+
+. Click *Import YAML* and paste the content
+
+. Click *Create*
+
+=== Verify Validation Success
+
+. Navigate to the pods view in your cluster:
++
+https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/model-signing/pods[Pods^]
+
+. Click on the *model-server* pod
+
+. Check the pod's *Logs -> Init Containers*. You should see a container named `model-validation`.
+
+. Click on the *model-validator* init container and view its logs. You should see:
+
++
+image::ai-safety/msv-pod-running.png[link=self, window="image"]
+
+. Verify the main container started successfully by checking the pod status shows *Running*
+
+[NOTE]
+====
+The model-validator init container runs before the server container. If validation fails, the init container exits with an error and the main container never starts, preventing unsigned or tampered models from being deployed.
+====
+
+=== Test Validation Failure
+
+To see validation in action, you can use another folder where it is empty, you will create a new pod with a new *mountPath:/path*:
+
+. Copy the following InferenceService definition:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-server-failure
+  namespace: model-signing
+  labels:
+    validation.ml.sigstore.dev/ml: workshop-rhads
+spec:
+  containers:
+  - name: server
+    image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+    command: ["sleep", "infinity"]
+    volumeMounts:
+      - name: model-storage
+        mountPath: /path
+  volumes:
+    - name: model-storage
+      persistentVolumeClaim:
+        claimName: model-storage-pvc
+----
+
+. Click *Import YAML* and paste the content
+
+. Click *Create*
+
+. Check the pod status - it should be stuck in *Init:Error* state
+
+. View the model-validator init container logs:
++
+image::ai-safety/msv-pod-failure.png[link=self, window="image"]
+
+
+The pod will never reach Running state, demonstrating how the operator prevents tampered models from executing.
+
+== Conclusion
+
+Model signing and validation represent critical security controls in the AI supply chain. By cryptographically signing models with RHTAS and enforcing signature verification through the Model Validation Operator, organizations can ensure that only authorized, untampered models run in production environments.
