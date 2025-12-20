@@ -6,7 +6,7 @@
     <title>Getting started with RHADS :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/getting-started.html">
     <link rel="prev" href="index.html">
-    <link rel="next" href="#setup-rhdh/foundations.adoc">
+    <link rel="next" href="setup-rhdh/foundations.html">
     <meta name="generator" content="Antora 3.1.14">
     <link rel="stylesheet" href="../_/css/site.css">
 <link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
@@ -27,6 +27,7 @@
           <a class="navbar-link" href="#">Links</a>
           <div class="navbar-dropdown navbar-dropdown-right">
             <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+            <a class="navbar-item navbar-item-right-content" href="env.html" target="_blank">Lab</a>
           </div>
         </div>
       </div>
@@ -48,119 +49,47 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#setup-rhdh/foundations.adoc">Module 2: Setup Red Hat Developer Hub</a>
+    <a class="nav-link" href="setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#setup-rhdh/foundations.adoc">Foundations</a>
+    <a class="nav-link" href="setup-rhdh/foundations.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_core_features">Core Features</a>
+    <a class="nav-link" href="setup-rhdh/foundations.html#_core_features">Core Features</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+    <a class="nav-link" href="setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_plugins">Plugins</a>
+    <a class="nav-link" href="setup-rhdh/foundations.html#_plugins">Plugins</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+    <a class="nav-link" href="setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#setup-rhdh/setup-rhdh.adoc">Hands-on Lab</a>
+    <a class="nav-link" href="setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/setup-rhdh.adoc">Installation &amp; Base Configuration</a>
+    <a class="nav-link" href="setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/configure-your-first-plugin.adoc">Configure your First Plugin (Authentication)</a>
+    <a class="nav-link" href="setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/plugin-cache.adoc">Plugin Caching</a>
+    <a class="nav-link" href="setup-rhdh/plugin-cache.html">Plugin Caching</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/connect-gitlab-scm.adoc">GitLab Integration</a>
+    <a class="nav-link" href="setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/connect-argocd.adoc">Argo CD Integration</a>
+    <a class="nav-link" href="setup-rhdh/connect-argocd.html">Argo CD Integration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#setup-rhdh/security.adoc">Enable Role-Based Access Control</a>
-  </li>
-</ul>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#setup-tpa/setup.adoc">Module 3: Setup Trusted Profile Analyzer</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#setup-tpa/setup.adoc">Foundations</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#setup-tpa/setup-openshift.adoc">Setup Trusted Profile Analyzer on OpenShift</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#setup-tpa/setup-rhel.adoc">Setup Trusted Profile Analyzer on RHEL</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#setup-tas/setup.adoc">Module 4: Setup Trusted Artifact Signer</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#setup-tas/setup.adoc">Foundations</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#setup-tas/setup-openshift.adoc">Setup Trusted Artifact Signer on OpenShift</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#setup-tas/setup-rhel.adoc">Setup Trusted Artifact Signer on RHEL</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rhdh-ui/foundations.adoc">Module 5: Red Hat Developer Hub User Interface</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#rhdh-ui/foundations.adoc">Foundations</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#rhdh-ui/customize-rhdh.adoc">Hands-on Lab: Customize RHDH Appearance</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#rhdh-ui/techdocs-foundations.adoc">TechDocs Foundations</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#rhdh-ui/techdocs-lab-user.adoc">TechDocs Lab 1: Creating and Editing TechDocs</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rhdh-orchestrator/overview.adoc">Module 6: Orchestrator for Red Hat Developer Hub</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#rhdh-orchestrator/overview.adoc">Foundations</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rhdh-orchestrator/install.adoc">Hands-on Lab</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhdh-orchestrator/install.adoc">Install &amp; Setup</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhdh-orchestrator/workflows.adoc">Managing and Running Workflows</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhdh-orchestrator/advanced-workflow.adoc">Workflows with State and Integrations</a>
+    <a class="nav-link" href="setup-rhdh/security.html">Enable Role-Based Access Control</a>
   </li>
 </ul>
   </li>
@@ -168,32 +97,71 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#security-practices/overview.adoc">Module 7: Getting started with security best practices</a>
+    <a class="nav-link" href="setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#security-practices/overview.adoc">Overview</a>
+    <a class="nav-link" href="setup-tpa/setup.html">Foundations</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#security-practices/security-practices.adoc">Foundations and Frameworks</a>
+    <a class="nav-link" href="setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#security-practices/understanding-keyless.adoc">Understanding Keyless Signing</a>
+    <a class="nav-link" href="setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup-tas/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhdh-ui/foundations.html">Module 5: Red Hat Developer Hub User Interface</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhdh-ui/foundations.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhdh-ui/customize-rhdh.html">Hands-on Lab: Customize RHDH Appearance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhdh-ui/techdocs-foundations.html">TechDocs Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhdh-ui/techdocs-lab-user.html">TechDocs Lab 1: Creating and Editing TechDocs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhdh-orchestrator/overview.html">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhdh-orchestrator/overview.html">Foundations</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#security-practices/exercises.adoc">Exercises</a>
+    <a class="nav-link" href="rhdh-orchestrator/install.html">Hands-on Lab</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#security-practices/ex1-signing-images.adoc">Image Signing &amp; Verification</a>
+    <a class="nav-link" href="rhdh-orchestrator/install.html">Install &amp; Setup</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#security-practices/ex2-git-signing.adoc">Commit Signing &amp; Verification</a>
+    <a class="nav-link" href="rhdh-orchestrator/workflows.html">Managing and Running Workflows</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#security-practices/ex3-provenance.adoc">Provenance &amp; Attestations</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#security-practices/ex4-sboms.adoc">SBOM Creation</a>
+    <a class="nav-link" href="rhdh-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
   </li>
 </ul>
   </li>
@@ -201,23 +169,32 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#tssc-tpa/tssc-tpa.adoc">Module 8: Trusted Software Supply Chain with TPA</a>
+    <a class="nav-link" href="security-practices/overview.html">Module 7: Getting started with security best practices</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#tssc-tpa/correlation.adoc">Data Types &amp; Correlation</a>
+    <a class="nav-link" href="security-practices/overview.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security-practices/security-practices.html">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="security-practices/understanding-keyless.html">Understanding Keyless Signing</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#tssc-tpa/exercises.adoc">Exercises</a>
+    <a class="nav-link" href="security-practices/exercises.html">Exercises</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#tssc-tpa/ex1-uploading-sboms.adoc">Exercise: Uploading Data</a>
+    <a class="nav-link" href="security-practices/ex1-signing-images.html">Image Signing &amp; Verification</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#tssc-tpa/ex2-ui-usecases.adoc">Exercise: Exploring the Security Posture</a>
+    <a class="nav-link" href="security-practices/ex2-git-signing.html">Commit Signing &amp; Verification</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#tssc-tpa/ex3-licenses.adoc">Exercise: (Open Source) License Compliance</a>
+    <a class="nav-link" href="security-practices/ex3-provenance.html">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="security-practices/ex4-sboms.html">SBOM Creation</a>
   </li>
 </ul>
   </li>
@@ -225,41 +202,65 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#tssc-tas/tssc-tas.adoc">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+    <a class="nav-link" href="tssc-tpa/tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="tssc-tpa/correlation.html">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="tssc-tpa/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="tssc-tpa/ex1-uploading-sboms.html">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="tssc-tpa/ex2-ui-usecases.html">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="tssc-tpa/ex3-licenses.html">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="tssc-tas/tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#tssc-tas/exercises.adoc">Exercises</a>
+    <a class="nav-link" href="tssc-tas/exercises.html">Exercises</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#tssc-tas/ex1-chains.adoc">Tekton Chains</a>
+    <a class="nav-link" href="tssc-tas/ex1-chains.html">Tekton Chains</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#tssc-tas/ex2-enterprise-contract.adoc">Conforma and Rego policies</a>
+    <a class="nav-link" href="tssc-tas/ex2-enterprise-contract.html">Conforma and Rego policies</a>
   </li>
   <li class="nav-item" data-depth="3">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#tssc-tas/ex3-sigstore-controller.adoc">Sigstore Admission Controller</a>
+    <a class="nav-link" href="tssc-tas/ex3-sigstore-controller.html">Sigstore Admission Controller</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="4">
-    <a class="nav-link" href="#tssc-tas/ex3.1-sigstore-prep.adoc">Preparation</a>
+    <a class="nav-link" href="tssc-tas/ex3.1-sigstore-prep.html">Preparation</a>
   </li>
   <li class="nav-item" data-depth="4">
-    <a class="nav-link" href="#tssc-tas/ex3.2-sigstore-install.adoc">Installation</a>
+    <a class="nav-link" href="tssc-tas/ex3.2-sigstore-install.html">Installation</a>
   </li>
   <li class="nav-item" data-depth="4">
-    <a class="nav-link" href="#tssc-tas/ex3.3-sigstore-config.adoc">Configuration</a>
+    <a class="nav-link" href="tssc-tas/ex3.3-sigstore-config.html">Configuration</a>
   </li>
   <li class="nav-item" data-depth="4">
-    <a class="nav-link" href="#tssc-tas/ex3.4-sigstore-cip.adoc">ClusterImagePolicies</a>
+    <a class="nav-link" href="tssc-tas/ex3.4-sigstore-cip.html">ClusterImagePolicies</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#tssc-tas/ex4-acs-controller.adoc">RHACS Admission Controller</a>
+    <a class="nav-link" href="tssc-tas/ex4-acs-controller.html">RHACS Admission Controller</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#tssc-tas/ex-controller-summary.adoc">Admission Controllers Summary</a>
+    <a class="nav-link" href="tssc-tas/ex-controller-summary.html">Admission Controllers Summary</a>
   </li>
 </ul>
   </li>
@@ -267,23 +268,23 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#production-rhdh/tssc-rhdh.adoc">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+    <a class="nav-link" href="production-rhdh/tssc-rhdh.html">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#production-rhdh/introduction.adoc">Foundations</a>
+    <a class="nav-link" href="production-rhdh/introduction.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#production-rhdh/introduction.adoc">An overview of the composite product set (RHADS)</a>
+    <a class="nav-link" href="production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#production-rhdh/lab.adoc">Hands on Lab</a>
+    <a class="nav-link" href="production-rhdh/lab.html">Hands on Lab</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#production-rhdh/lab.adoc">Full lifecycle of product usage</a>
+    <a class="nav-link" href="production-rhdh/lab.html">Full lifecycle of product usage</a>
   </li>
 </ul>
   </li>
@@ -294,38 +295,38 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc">Module 12: Patterns for third-party tools integrations</a>
+    <a class="nav-link" href="self-service-patterns/self-service-patterns.html">Module 12: Patterns for third-party tools integrations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc">Foundations</a>
+    <a class="nav-link" href="self-service-patterns/self-service-patterns.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc#introduction">Introduction</a>
+    <a class="nav-link" href="self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc#architecting-software-templates">Architecting Software Templates</a>
+    <a class="nav-link" href="self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+    <a class="nav-link" href="self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#self-service-patterns/lab-intro-self-service-patterns.adoc">Hands-on Lab</a>
+    <a class="nav-link" href="self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#self-service-patterns/lab-intro-self-service-patterns.adoc#introduction">Hands-on Lab Overview</a>
+    <a class="nav-link" href="self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#self-service-patterns/lab-vm-self-service-patterns.adoc">Hands-on Lab: VM as a Service</a>
+    <a class="nav-link" href="self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#self-service-patterns/lab-namespace-self-service-patterns.adoc">Hands-on Lab: Namespace as a Service</a>
+    <a class="nav-link" href="self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#self-service-patterns/lab-db-self-service-patterns.adoc">Hands-on Lab: DB as a Service</a>
+    <a class="nav-link" href="self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
   </li>
 </ul>
   </li>
@@ -336,53 +337,53 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc">Module 14: RHADS for AI Engineers</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai.html">Module 14: RHADS for AI Engineers</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc">Foundations</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai.html">Foundations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#introduction">Introduction</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai.html#introduction">Introduction</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#rhai">RH AI</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai.html#rhai">RH AI</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#other-devtools">Other Developer tools</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai.html#other-devtools">Other Developer tools</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.adoc">Hands-on Lab</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.adoc#introduction">Hands-on Lab Overview</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.adoc">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.html">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.adoc">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.adoc">Hands-on Lab on other developer tools</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.adoc#introduction">Hands-on Lab Overview</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.adoc">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.adoc">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+    <a class="nav-link" href="rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
   </li>
 </ul>
   </li>
@@ -428,58 +429,7 @@
     <a class="nav-link" href="end-to-end.html">Module 16: RHADS Complete: Summary and Next Steps</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="#env.adoc">My lab environment details</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-    <button class="nav-item-toggle"></button>
-    <span class="nav-text">Dev Mode</span>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="customer-configurations.html">Customer Configurations and Third-party Integrations</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="customizing-rhdh.html">Customizing RHDH</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="orchestrator-overview.html">Orchestrator Overview</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="rhads-ai.html">RHADS for AI Engineers</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="rhads-datascience.html">RHADS for Data Science</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="security-practices.html">Security Best Practices</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="self-service-patterns.html">Integration Patterns</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="setup-rhdh.html">Setup RHDH</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="setup-tas.html">Setup TAS</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="setup-tpa.html">Setup TPA</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="tssc-overview.html">Trusted Software Supply Chain</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="tssc-rhdh.html">Trusted Software Supply Chain with RHDH for Production</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="tssc-tas.html">Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="tssc-tpa.html">Trusted Software Supply Chain with TPA</a>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="attrs-page.html">Attributes Page</a>
+    <a class="nav-link" href="env.html">My lab environment details</a>
   </li>
 </ul>
   </li>
@@ -520,7 +470,7 @@
 <h2 id="_why_red_hat_advanced_developer_suite"><a class="anchor" href="#_why_red_hat_advanced_developer_suite"></a>Why Red Hat Advanced Developer Suite?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Organizations developing software face a critical dual challenge: the urgent need to move fast by integrating AI and boosting developer productivity, coupled with the imperative to stay safe amidst rising software supply chain threats. Top software engineering priorities include integrating AI and increasing developer productivity, yet organizations struggle with long onboarding times, inconsistent development environments, and a lack of automation, which impede their ability to accelerate innovation and reduce the average 7-day software development cycle time. Simultaneously, despite open-source components comprising around 90% of modern applications, the ecosystem has seen a 156% year-on-year increase in malicious packages, leading to an estimated $60 billion in damages in 2025 and demanding effective risk remediation. This complex environment, where speed cannot compromise security, necessitates an integrated and comprehensive platform engineering solution like <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-developer-suite">Red Hat Advanced Developer Suite (RHADS)</a> to balance these competing demands.</p>
+<p>Organizations face a critical challenge: accelerating development with AI while securing against rising software supply chain threats. Despite open-source components comprising 90% of modern applications, malicious packages increased 156% year-on-year, causing an estimated $60 billion in damages in 2025. This environment demands an integrated platform engineering solution like <a href="https://www.redhat.com/en/products/advanced-developer-suite" target="_blank" rel="noopener">Red Hat Advanced Developer Suite (RHADS)</a> to balance speed and security.</p>
 </div>
 <div class="paragraph">
 <p>RHADS combines platform engineering tools with enhanced security capabilities to help accelerate and simplify application development with new enhancements to speed the adoption of AI:</p>
@@ -531,13 +481,13 @@
 <p>Modular design allows it to be integrated with existing platforms and systems including Red Hat&#8217;s platforms</p>
 </li>
 <li>
-<p>Integrates with existing security capabilities found in <strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes">Red Hat Advanced Cluster Security</a></strong></p>
+<p>Integrates with existing security capabilities found in <strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes" target="_blank" rel="noopener">Red Hat Advanced Cluster Security</a></strong></p>
 </li>
 <li>
-<p>Complements existing developer tools from Red Hat including <strong><a href="https://developers.redhat.com/products/openshift-dev-spaces/overview">OpenShift Dev Spaces</a></strong></p>
+<p>Complements existing developer tools from Red Hat including <strong><a href="https://developers.redhat.com/products/openshift-dev-spaces/overview" target="_blank" rel="noopener">OpenShift Dev Spaces</a></strong></p>
 </li>
 <li>
-<p>Built on leading open source projects like <strong><a href="https://backstage.io">Backstage</a></strong> and <strong><a href="https://www.sigstore.dev">Sigstore</a></strong></p>
+<p>Built on leading open source projects like <strong><a href="https://backstage.io" target="_blank" rel="noopener">Backstage</a></strong> and <strong><a href="https://www.sigstore.dev" target="_blank" rel="noopener">Sigstore</a></strong></p>
 </li>
 </ul>
 </div>
@@ -551,7 +501,7 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/getting-started/rhads-architecture.png" alt="RHADS Architecture">
+<a class="image" href="_images/getting-started/rhads-architecture.png" target="image"><img src="_images/getting-started/rhads-architecture.png" alt="RHADS Architecture"></a>
 </div>
 </div>
 <div class="paragraph">
@@ -560,13 +510,13 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong><a href="https://developers.redhat.com/products/developer-hub">Red Hat Developer Hub (RHDH)</a></strong>: An <strong>enterprise-grade, self-managed, and customizable internal developer portal</strong> built on <a href="https://backstage.io">Backstage.io</a>. It acts as a central portal for templates, documentation, and tools, reducing cognitive load and setup time. It streamlines development workflows with automated software templates and self-service capabilities. RHDH&#8217;s plugin architecture allows for customized software templates and integrates with various tools and services.</p>
+<p><strong><a href="https://developers.redhat.com/products/developer-hub" target="_blank" rel="noopener">Red Hat Developer Hub (RHDH)</a></strong>: An <strong>enterprise-grade, self-managed, and customizable internal developer portal</strong> built on <a href="https://backstage.io" target="_blank" rel="noopener">Backstage.io</a>. It acts as a central portal for templates, documentation, and tools, reducing cognitive load and setup time. It streamlines development workflows with automated software templates and self-service capabilities. RHDH&#8217;s plugin architecture allows for customized software templates and integrates with various tools and services.</p>
 </li>
 <li>
-<p><strong><a href="https://developers.redhat.com/products/trusted-artifact-signer/overview">Red Hat Trusted Artifact Signer (RHTAS)</a></strong>: Provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail. It&#8217;s an enterprise-ready deployment of the <a href="https://www.sigstore.dev">Sigstore project</a>. RHTAS also extends its signing and verification capabilities to AI models, improving security during the AI model development lifecycle.</p>
+<p><strong><a href="https://developers.redhat.com/products/trusted-artifact-signer/overview" target="_blank" rel="noopener">Red Hat Trusted Artifact Signer (RHTAS)</a></strong>: Provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail. It&#8217;s an enterprise-ready deployment of the <a href="https://www.sigstore.dev" target="_blank" rel="noopener">Sigstore project</a>. RHTAS also extends its signing and verification capabilities to AI models, improving security during the AI model development lifecycle.</p>
 </li>
 <li>
-<p><strong><a href="https://developers.redhat.com/products/trusted-profile-analyzer/overview">Red Hat Trusted Profile Analyzer (RHTPA)</a></strong>: Provides platform engineers, developers, and security teams with <strong>visibility and actionable insights into the risk profile</strong> (vulnerabilities, licenses) of their software supply chain across the entire SDLC. It leverages Software Bill of Materials (SBOM) management, open-source dependency risk analysis, and license tracking to detect vulnerabilities, malicious code, and compliance risks.</p>
+<p><strong><a href="https://developers.redhat.com/products/trusted-profile-analyzer/overview" target="_blank" rel="noopener">Red Hat Trusted Profile Analyzer (RHTPA)</a></strong>: Provides platform engineers, developers, and security teams with <strong>visibility and actionable insights into the risk profile</strong> (vulnerabilities, licenses) of their software supply chain across the entire SDLC. It leverages Software Bill of Materials (SBOM) management, open-source dependency risk analysis, and license tracking to detect vulnerabilities, malicious code, and compliance risks.</p>
 </li>
 </ul>
 </div>
@@ -576,13 +526,13 @@
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://podman-desktop.io/">Podman Desktop</a>: This free, open-source tool provides a GUI for local container and Kubernetes management, helping developers build, run, and deploy applications on their desktop and reducing "works on my machine" issues. It supports air-gapped installation and includes an AI Lab extension for AI experimentation. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on ARO and ROSA.</p>
+<p><a href="https://podman-desktop.io/" target="_blank" rel="noopener">Podman Desktop</a>: This free, open-source tool provides a GUI for local container and Kubernetes management, helping developers build, run, and deploy applications on their desktop and reducing "works on my machine" issues. It supports air-gapped installation and includes an AI Lab extension for AI experimentation. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on ARO and ROSA.</p>
 </li>
 <li>
-<p><a href="https://developers.redhat.com/products/mta/overview">Red Hat Migration Toolkit for Applications (MTA)</a>: This toolkit aids in modernizing legacy Java applications for container and cloud-native platforms, enabling assessment, refactoring, and migration with minimal disruption. It accelerates replatforming to OpenShift and will feature future AI integration with Developer Lightspeed for code generation to speed modernization based on static analysis.</p>
+<p><a href="https://developers.redhat.com/products/mta/overview" target="_blank" rel="noopener">Red Hat Migration Toolkit for Applications (MTA)</a>: This toolkit aids in modernizing legacy Java applications for container and cloud-native platforms, enabling assessment, refactoring, and migration with minimal disruption. It accelerates replatforming to OpenShift and will feature future AI integration with Developer Lightspeed for code generation to speed modernization based on static analysis.</p>
 </li>
 <li>
-<p><a href="https://developers.redhat.com/products/openshift-ide-extensions/overview">Red Hat IDE Plugins</a>: These plugins facilitate local coding by integrating Red Hat ecosystem technologies directly into popular Integrated Development Environments (IDEs), and connect IDEs to OpenShift clusters for direct access to resources.</p>
+<p><a href="https://developers.redhat.com/products/openshift-ide-extensions/overview" target="_blank" rel="noopener">Red Hat IDE Plugins</a>: These plugins facilitate local coding by integrating Red Hat ecosystem technologies directly into popular Integrated Development Environments (IDEs), and connect IDEs to OpenShift clusters for direct access to resources.</p>
 </li>
 </ul>
 </div>
@@ -598,20 +548,20 @@
 <p>It extends OpenShift&#8217;s capabilities "to the left of the SDLC".</p>
 </li>
 <li>
-<p>It integrates seamlessly with various supported tools and offerings, including <strong><a href="https://developers.redhat.com/products/openshift-dev-spaces/overview">OpenShift Dev Spaces</a></strong>, <strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines">OpenShift Pipelines</a></strong>, and <strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops">OpenShift GitOps</a></strong>. This allows development teams to:</p>
+<p>It integrates seamlessly with various supported tools and offerings, including <strong><a href="https://developers.redhat.com/products/openshift-dev-spaces/overview" target="_blank" rel="noopener">OpenShift Dev Spaces</a></strong>, <strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines" target="_blank" rel="noopener">OpenShift Pipelines</a></strong>, and <strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops" target="_blank" rel="noopener">OpenShift GitOps</a></strong>. This allows development teams to:</p>
 <div class="ulist">
 <ul>
 <li>
 <p>Code, build, test, and debug directly from their browser, mirroring production environments without requiring local setup.</p>
 </li>
 <li>
-<p>Release more quickly and test features, also enabling automated testing for earlier bug detection and improved Mean Time To Resolution (MTTR). Customers can also integrate existing CI/CD solutions into <a href="https://developers.redhat.com/products/developer-hub">Red Hat Developer Hub</a>.</p>
+<p>Release more quickly and test features, also enabling automated testing for earlier bug detection and improved Mean Time To Resolution (MTTR). Customers can also integrate existing CI/CD solutions into <a href="https://developers.redhat.com/products/developer-hub" target="_blank" rel="noopener">Red Hat Developer Hub</a>.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>It also complements <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes">Red Hat Advanced Cluster Security for Kubernetes (ACS)</a>, which enforces security policies for containerized applications, ensuring only trusted artifacts run in the cluster.</p>
+<p>It also complements <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes" target="_blank" rel="noopener">Red Hat Advanced Cluster Security for Kubernetes (ACS)</a>, which enforces security policies for containerized applications, ensuring only trusted artifacts run in the cluster.</p>
 </li>
 </ul>
 </div>
@@ -624,11 +574,11 @@
 <h2 id="_typical_rhads_deployment"><a class="anchor" href="#_typical_rhads_deployment"></a>Typical RHADS deployment</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>RHADS is designed with a modular approach that allows it to be integrated seamlessly with a variety of supported tools and existing platforms and systems, including those already in use by customers. The following diagram shows a typical RHADS deployment, the components involved, and how they interact with each other.</p>
+<p>RHADS is designed with a modular approach that allows it to be integrated seamlessly with a variety of supported tools and existing platforms and systems, including those already in use by customers. The following diagram shows a typical RHADS deployment, the components involved, and how they interact with each other. There are many icons, most of which are 3rd-party products already in use by customers, demonstrating the flexibility and extensibility of RHADS.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/getting-started/rhads-components.png" alt="RHADS Components">
+<a class="image" href="_images/getting-started/rhads-components.png" target="image"><img src="_images/getting-started/rhads-components.png" alt="RHADS Components"></a>
 </div>
 </div>
 <div class="paragraph">
@@ -731,7 +681,7 @@
 <div class="sect3">
 <h4 id="_authentication_authorization_signing"><a class="anchor" href="#_authentication_authorization_signing"></a>Authentication / Authorization / Signing</h4>
 <div class="paragraph">
-<p>Uses OpenID Connect providers like Red Hat build of <a href="https://www.keycloak.org">Keycloak</a> for secure identity and access management. Digital signing ensures trust across all pipeline stages. RHADS supports both keyless and key-based signing, using existing user identities like GitHub, Google, or SSO, and maintains an immutable audit trail for maximum transparency and trust.</p>
+<p>Uses OpenID Connect providers like Red Hat build of <a href="https://www.keycloak.org" target="_blank" rel="noopener">Keycloak</a> for secure identity and access management. Digital signing ensures trust across all pipeline stages. RHADS supports both keyless and key-based signing, using existing user identities like GitHub, Google, or SSO, and maintains an immutable audit trail for maximum transparency and trust.</p>
 </div>
 </div>
 <div class="sect3">
@@ -766,12 +716,12 @@
 <h2 id="_rhads_install_options"><a class="anchor" href="#_rhads_install_options"></a>RHADS Install Options</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>RHADS is designed as an <strong>add-on offering for <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift">Red Hat OpenShift</a> and <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus">Red Hat OpenShift Platform Plus</a></strong>. Additionally, using <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer">Red Hat Trusted Artifact Signer</a> to sign artifacts on Red Hat Enterprise Linux (RHEL) is supported.</p>
+<p>RHADS is designed as an <strong>add-on offering for <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift" target="_blank" rel="noopener">Red Hat OpenShift</a> and <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus" target="_blank" rel="noopener">Red Hat OpenShift Platform Plus</a></strong>. Additionally, using <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer" target="_blank" rel="noopener">Red Hat Trusted Artifact Signer</a> to sign/verify artifacts and <a href="https://developers.redhat.com/products/trusted-profile-analyzer/overview" target="_blank" rel="noopener">Red Hat Trusted Profile Analyzer</a> to analyze software profiles on Red Hat Enterprise Linux (RHEL) is supported.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Deployment Locations</strong>: RHADS components can be deployed wherever OpenShift is deployed, including on <a href="https://azure.microsoft.com/en-us/products/openshift">Azure Red Hat OpenShift (ARO)</a> and <a href="https://aws.amazon.com/rosa/">Red Hat OpenShift Service on AWS (ROSA)</a>. Crucially, <strong>RHADS can also be deployed on non-OpenShift Kubernetes platforms</strong>.</p>
+<p><strong>Deployment Locations</strong>: RHADS components can be deployed wherever OpenShift is deployed, including on <a href="https://azure.microsoft.com/en-us/products/openshift" target="_blank" rel="noopener">Azure Red Hat OpenShift (ARO)</a> and <a href="https://aws.amazon.com/rosa/" target="_blank" rel="noopener">Red Hat OpenShift Service on AWS (ROSA)</a>. Crucially, <strong>RHADS can also be deployed on non-OpenShift Kubernetes platforms</strong>.</p>
 </li>
 <li>
 <p><strong>Managed Offering</strong>: It is <strong>not available as a managed offering</strong>; RHADS components are self-managed by the customer.</p>
@@ -803,13 +753,13 @@
 <td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
 <ul>
 <li>
-<p><strong><a href="https://developers.redhat.com/products/developer-hub">Red Hat Developer Hub Local</a></strong> is a complementary feature of RHADS designed for local development and testing of Red Hat Developer Hub components, such as plugins and templates. It enables platform engineers to run RHDH directly on their local machines without the need for a full Kubernetes setup, simplifying development by allowing direct installation with Docker or Podman. Whether you need to validate the configuration of software catalogs, write and test TechDocs, or build RHDH dynamic plugins, RHDH Local simplifies the process, allowing you to iterate quickly and troubleshoot locally before deploying changes to a production system. <a href="https://developers.redhat.com/blog/2025/03/31/rhdh-local-test-develop-locally-red-hat-developer-hub-using-containers">Learn more</a></p>
+<p><strong><a href="https://developers.redhat.com/products/developer-hub" target="_blank" rel="noopener">Red Hat Developer Hub Local</a></strong> is a complementary feature of RHADS designed for local development and testing of Red Hat Developer Hub components, such as plugins and templates. It enables platform engineers to run RHDH directly on their local machines without the need for a full Kubernetes setup, simplifying development by allowing direct installation with Docker or Podman. Whether you need to validate the configuration of software catalogs, write and test TechDocs, or build RHDH dynamic plugins, RHDH Local simplifies the process, allowing you to iterate quickly and troubleshoot locally before deploying changes to a production system. <a href="https://developers.redhat.com/blog/2025/03/31/rhdh-local-test-develop-locally-red-hat-developer-hub-using-containers" target="_blank" rel="noopener">Learn more</a></p>
 </li>
 <li>
-<p><strong><a href="https://podman-desktop.io/">Podman Desktop</a></strong> is designed for local development and explicitly supports air-gapped installation. It provides a graphical user interface (GUI) for managing containers and Kubernetes directly on a developer&#8217;s machine, allowing for building, running, and deploying containerized applications locally, thereby reducing "works on my machine" issues by ensuring consistent environments. Podman Desktop also includes an AI Lab extension for experimenting with AI locally. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on managed OpenShift services like ARO and ROSA.</p>
+<p><strong><a href="https://podman-desktop.io/" target="_blank" rel="noopener">Podman Desktop</a></strong> is designed for local development and explicitly supports air-gapped installation. It provides a graphical user interface (GUI) for managing containers and Kubernetes directly on a developer&#8217;s machine, allowing for building, running, and deploying containerized applications locally, thereby reducing "works on my machine" issues by ensuring consistent environments. Podman Desktop also includes an AI Lab extension for experimenting with AI locally. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on managed OpenShift services like ARO and ROSA.</p>
 </li>
 <li>
-<p><strong><a href="https://developers.redhat.com/products/redhat-support/overview">Red Hat IDE Plugins</a></strong> enable local coding and integrate Red Hat ecosystem technologies directly into popular Integrated Development Environments.</p>
+<p><strong><a href="https://developers.redhat.com/products/redhat-support/overview" target="_blank" rel="noopener">Red Hat IDE Plugins</a></strong> enable local coding and integrate Red Hat ecosystem technologies directly into popular Integrated Development Environments.</p>
 </li>
 </ul>
 </div></div></td>
@@ -817,7 +767,7 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disconnected/Air-Gapped Environment deployments</p></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p><strong><a href="https://developers.redhat.com/products/developer-hub">Red Hat Developer Hub</a></strong></p>
+<p><strong><a href="https://developers.redhat.com/products/developer-hub" target="_blank" rel="noopener">Red Hat Developer Hub</a></strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -852,7 +802,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p><strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer">Red Hat Trusted Artifact Signer</a></strong></p>
+<p><strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer" target="_blank" rel="noopener">Red Hat Trusted Artifact Signer</a></strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -868,7 +818,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p><strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-profile-analyzer">Red Hat Trusted Profile Analyzer</a></strong></p>
+<p><strong><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-profile-analyzer" target="_blank" rel="noopener">Red Hat Trusted Profile Analyzer</a></strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -889,13 +839,13 @@
 <td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
 <ul>
 <li>
-<p>RHADS is designed as an add-on offering for <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift">Red Hat OpenShift</a> and <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus">OpenShift Platform Plus</a> and can be deployed wherever OpenShift is deployed, including on-premises, private cloud, and public cloud environments.</p>
+<p>RHADS is designed as an add-on offering for <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift" target="_blank" rel="noopener">Red Hat OpenShift</a> and <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus" target="_blank" rel="noopener">OpenShift Platform Plus</a> and can be deployed wherever OpenShift is deployed, including on-premises, private cloud, and public cloud environments.</p>
 </li>
 <li>
 <p>RHADS can also be sold and deployed on bare metal OpenShift clusters exclusively.</p>
 </li>
 <li>
-<p>Furthermore, <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-developer-suite">Red Hat Advanced Developer Suite</a> can be deployed on non-OpenShift Kubernetes platforms, and customers can purchase it on a per-core or per-user basis for these environments.</p>
+<p>Furthermore, <a href="https://www.redhat.com/en/products/advanced-developer-suite" target="_blank" rel="noopener">Red Hat Advanced Developer Suite</a> can be deployed on non-OpenShift Kubernetes platforms, and customers can purchase it on a per-core or per-user basis for these environments.</p>
 </li>
 </ul>
 </div></div></td>
@@ -910,7 +860,7 @@
 </div>
 <nav class="pagination">
   <span class="prev"><a href="index.html" class="query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></span>
-  <span class="next"><a href="#setup-rhdh/foundations.adoc" class="query-params-link">Module 2: Setup Red Hat Developer Hub</a></span>
+  <span class="next"><a href="setup-rhdh/foundations.html" class="query-params-link">Module 2: Setup Red Hat Developer Hub</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
