@@ -1,0 +1,18 @@
+# AI Agent Core - let pip resolve compatible versions
+langchain-openai>=0.2.0,<0.3.0
+langchain-tavily>=0.1.0,<0.3.0
+langgraph>=0.2.0,<0.3.0
+langchain>=0.3.0,<0.4.0
+langchain-core>=0.3.0,<0.4.0
+
+# Direct Tavily Client
+tavily-python>=0.4.0,<1.0.0
+
+# Web Framework
+Flask==3.0.3
+
+# Configuration
+python-dotenv==1.0.1
+
+# Production Server
+gunicorn==23.0.0

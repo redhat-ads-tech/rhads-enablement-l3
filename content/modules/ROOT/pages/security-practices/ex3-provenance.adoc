@@ -1,0 +1,388 @@
+:imagesdir: ../../assets/images
+
+= Provenance and attestations
+
+In our introduction, we explained that recording provenance information, capturing details of the build process is a requirement for SLSA compliance, but in general an important component of any supply chain.
+
+With `cosign` and `ec` (Enterprise Contract / Conforma) we can *attest* (= sign & attach) and verify _many_ types of metadata, even our own custom types.
+
+So, while often used to attest provenance information (especially in the SLSA context), an *attestation* and *provenance* cannot be used interchangeably. 
+
+We *attest* (meta-)data relating to the artifact, *provenance* being just one type of attestation.
+
+The "_metadata_" (regardless of what it is) is called a "*predicate*".
+
+With that said, `cosign attest` supports the following predicate/attestation types via the `--type` flag:
+
+== Built-in Predicate Types
+
+The pre-defined predicate types are:
+
+* *slsaprovenance* - SLSA Provenance v0.1
+* *slsaprovenance02* - SLSA Provenance v0.2  
+* *slsaprovenance1* - SLSA Provenance v1.0
+* *link* - in-toto link attestation
+* *spdx* - SPDX SBOM format
+* *spdxjson* - SPDX SBOM in JSON format
+* *cyclonedx* - CycloneDX SBOM format
+* *vuln* - Vulnerability scan attestation
+* *openvex* - OpenVEX attestation
+* *custom* - Custom attestation (default)
+
+=== Custom URIs
+
+In addition to these pre-defined types, you can also specify a custom URI as the predicate type, such as `https://example.com/MyCustomAttestation/v1`.
+
+=== Examples
+
+[source,bash]
+----
+# Using a built-in type
+cosign attest --predicate sbom.json --type spdx <image>
+
+# Using a custom URI
+cosign attest --predicate custom.json --type https://example.com/CodeReview/v1 <image>
+----
+
+The attestations follow the in-toto specification and are signed using the DSSE (Dead Simple Signing Envelope) format.
+
+So, let's take a look at a simple, minimum predicate file:
+
+Based on the in-toto attestation specification, here's a minimal predicate file that would pass syntax validation but is otherwise empty:
+
+Note the `_type` and `predicateType` fields:
+
+* `_type` defines the "envelope" - the *in-toto statement*
+* `predicateType` defines the type of predicate that is wrapped into this "envelope"
+
+If we wanted to attest the below empty envelope (`"predicate": {}`), we would have to use `--type https://example.com/CodeReview/v1` in the `cosign attest` command.
+
+
+[source,json]
+----
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "example",
+      "digest": {
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    }
+  ],
+  "predicateType": "https://example.com/CodeReview/v1",
+  "predicate": {}
+}
+----
+
+=== Required fields:
+
+1. `_type`: Must be `"https://in-toto.io/Statement/v1"` (or "v0.1" for older versions)
+2. `subject`: Array of at least one object with a `name` and `digest` field. Each digest must contain at least one algorithm/value pair
+3. `predicateType`: A URI identifying the type of predicate
+4. `predicate`: Can be an empty object `{}`
+
+This minimal structure satisfies the in-toto Statement syntax requirements. The subject binds the attestation to a set of software artifacts, with each artifact having a name and digest, while the predicate can contain any metadata (or be empty) in a predicate-specific schema.
+
+You can use any valid SHA256 hash in the digest field, and any URI for the predicateType. The example above uses placeholder values that would pass syntax validation.
+
+
+=== Attesting
+
+The same `cosign` authentication principles from the other exercises apply, so 
+
+* If you want the OIDC authentication to be interactive, make sure you remove the `SIGSTORE_ID_TOKEN` environment variable: `unset SIGSTORE_ID_TOKEN` - otherwise `cosign` will use it.
+
+[source,bash,role=execute,subs=attributes+]
+----
+unset SIGSTORE_ID_TOKEN
+----
+
+* If you want it "CI/CD style" (non-interactive), make sure the OIDC token is still valid (it only has a 5 minute lifetime) and re-run: `source ./get-access-token.sh`
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+source ./get-access-token.sh
+----
+
+Also check if the `$IMAGE` for our demo-image is still available. If not, re-run the `source ./copy-image-to-quay.sh` script:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+if [ -z "${IMAGE}" ]; then
+    source ./copy-image-to-quay.sh
+fi
+echo "\$IMAGE is: $IMAGE"
+----
+
+We have already provided the empty envelope in the `/security-concepts` directory:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+cat empty-in-toto.json
+----
+
+So, attesting this simple (yet meaningless) example would work like this:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+cosign attest --predicate empty-in-toto.json --type https://example.com/predicate/v1 $IMAGE
+----
+
+Using `cosign tree` after attesting, you should see the signed attestation (`*.att`) alongside the signature from the previous exercise:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign tree $IMAGE
+----
+
+[source,console]
+----
+cosign tree $IMAGE
+📦 Supply Chain Security Related artifacts for an image: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 💾 Attestations for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.att
+   └── 🍒 sha256:6e1bd0b49e31237c28d14b0e90f69c532defd47685a7ea1e5920e63924adf378
+└── 🔐 Signatures for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
+   └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5
+----
+
+=== Verifying & Downloading Attestations
+
+
+Since it satisfies the minimum requirements, we can verify it using *Enterprise Contract / Conforma* 
+
+Without any additional policies applied, `ec` will verify the attestation against its three built-in policies:
+
+* `builtin.image.signature_check` - Verifies the image signature
+* `builtin.attestation.signature_check` - Verifies attestation signatures
+* `builtin.attestation.syntax_check` - Validates attestation syntax
+
+[NOTE]
+====
+If you attested interactively, replace the user email in `--certificate-identity=pipeline-auth@demo.redhat.com` with the user you have logged in with.
+
+Or, alternatively, use `--certificate-identity-regexp='.*@.*redhat\.com$'` with a regular expression matching all email addresses ending with `redhat.com`
+====
+
+[source,bash,role=execute,subs=attributes+]
+----
+ec validate image --image $IMAGE --certificate-identity=pipeline-auth@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+----
+
+[source,console]
+----
+ec validate image --image $IMAGE --certificate-identity=pipeline-auth@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+Success: true
+Result: SUCCESS
+Violations: 0, Warnings: 0, Successes: 3
+Component: Unnamed
+ImageRef: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee
+
+Results:
+✓ [Success] builtin.attestation.signature_check
+  ImageRef: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee
+
+✓ [Success] builtin.attestation.syntax_check
+  ImageRef: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee
+
+✓ [Success] builtin.image.signature_check
+  ImageRef: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee
+
+----
+
+So, *Enterprise Contract / Conforma* just verified its integrity and syntax, we can also take a look at what we attested, using `cosign download attestation`:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation $IMAGE | jq
+---- 
+
+This gives us the outer structure (stored in the OCI Registry under the `application/vnd.in-toto+json` mimetype) and the attestation signature. The actual "empty envelope" that we attested is stored in the payload:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq .
+----
+
+
+As we can see below, our in-toto envelope (in-toto statement) has been wrapped in another in-toto statement, whose *`subject`* refers to the image we attached it to.
+
+In other words, going forward we can focus on supplying the _actual_ predicate and don't have to worry about the _in-toto statement_ . 
+
+[source,json]
+----
+cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq .
+{
+  "_type": "https://in-toto.io/Statement/v0.1",
+  "predicateType": "https://example.com/predicate/v1",
+  "subject": [
+    {
+      "name": "quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage",
+      "digest": {
+        "sha256": "5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee"
+      }
+    }
+  ],
+  "predicate": {
+    "_type": "https://in-toto.io/Statement/v1",
+    "predicate": {},
+    "predicateType": "https://example.com/predicate/v1",
+    "subject": [
+      {
+        "digest": {
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "name": "example"
+      }
+    ]
+  }
+}
+----
+
+Let's put that to a test and attest a minimum SLSA provenance as a predicate (and this time, we'll let `cosign` do the wrapping).
+
+We have a minimum SLSA provenance file here:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+cat minimum-slsa-provenance.json
+----
+
+This is the predicate only (of type `slsaprovenance`, so we don't have to provide a URI):
+
+[source,json]
+----
+{
+  "builder": {
+    "id": "https://localhost/dummy-id"
+  },
+  "buildType": "https://example.com/tekton-pipeline",
+  "invocation": {},
+  "buildConfig": {},
+  "metadata": {
+    "completeness": {
+      "parameters": false,
+      "environment": false,
+      "materials": false
+    },
+    "reproducible": false
+  },
+  "materials": []
+}
+----
+
+Attesting this follows the exact same approach, but we'll use the `cosign` built-in predicate type (note the `--type slsaprovenance`)
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/security-concepts
+source ./get-access-token.sh #has probably expired, so refresh
+cosign attest --predicate minimum-slsa-provenance.json --type slsaprovenance $IMAGE
+----
+
+A `cosign tree` will now show us two attestations associated with this image:..
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign tree $IMAGE
+----
+
+[source,console]
+----
+cosign tree $IMAGE
+📦 Supply Chain Security Related artifacts for an image: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 💾 Attestations for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.att
+   ├── 🍒 sha256:6e1bd0b49e31237c28d14b0e90f69c532defd47685a7ea1e5920e63924adf378
+   └── 🍒 sha256:2c9aaacbdcad589845dfd37f830e878673e41aaa79a5623d23ff152c69fdb5b9
+└── 🔐 Signatures for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
+   └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5
+----
+
+Using `cosign download attestation` will give us both (all), but we can filter by type using `--predicate-type`:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation $IMAGE --predicate-type slsaprovenance | jq -r '.payload' | base64 -d | jq .
+----
+
+or, more explicitly
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation $IMAGE --predicate-type "https://slsa.dev/provenance/v0.2" | jq -r '.payload' | base64 -d | jq .
+----
+
+So, the predicate we provided (starting with `"builder": {` ) has been wrapped in an `in-toto` statement, linking it to the image:
+
+[source,json]
+----
+{
+  "_type": "https://in-toto.io/Statement/v0.1",
+  "predicateType": "https://slsa.dev/provenance/v0.2",
+  "subject": [
+    {
+      "name": "quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage",
+      "digest": {
+        "sha256": "5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee"
+      }
+    }
+  ],
+  "predicate": {
+    "builder": {
+      "id": "https://localhost/dummy-id"
+    },
+    "buildType": "https://example.com/tekton-pipeline",
+    "invocation": {
+      "configSource": {}
+    },
+    "buildConfig": {},
+    "metadata": {
+      "completeness": {
+        "parameters": false,
+        "environment": false,
+        "materials": false
+      },
+      "reproducible": false
+    }
+  }
+}
+----
+
+It should come as no surprise that we can validate the attestation syntax (not the predicate's validity or contents), its signature and the image signature with `ec` again:
+
+
+[source,bash,role=execute,subs=attributes+]
+----
+ec validate image --image $IMAGE --certificate-identity=pipeline-auth@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER --show-successes
+----
+
+[IMPORTANT]
+====
+When running `ec validate`, all attestations are made available through `input.attestations`, and the *built-in checks* (signature verification and syntax validation) are performed *on all of them*.
+
+However, policy rules can filter specific attestations by their predicateType within the Rego code, for example
+
+[source,rego]
+----
+# Filter to only "bacon" attestations
+_bacon_attestations := [attestation | 
+    some attestation in input.attestations 
+    attestation.statement.predicateType == "https://bacon/v42" 
+]
+
+# Then only evaluate rules against those filtered attestations
+_errors contains error if {
+    some attestation in _bacon_attestations
+    # crispy validation logic here
+}
+----
+
+Using and building policies is part of xref:tssc-tas/tssc-tas.adoc[Module 9: Attestations, Tekton Chains & Enterprise Contract with TAS]
+
+
+====

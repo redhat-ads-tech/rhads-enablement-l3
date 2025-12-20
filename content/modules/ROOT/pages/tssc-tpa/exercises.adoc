@@ -1,0 +1,71 @@
+:imagesdir: ../../assets/images
+
+= Exercises
+
+== Note about TPA data and demo environments
+
+[IMPORTANT]
+====
+[cols="1,3"]
+|===
+
+a|image::tssc-tpa/important.svg[width=144]
+
+a|To successfully correlate SBOMs with vulnerability information (CVE data, and also VEX, CSAF if desired) TPA needs to ingest that data. 
+
+On startup, and right after installation, importer jobs will start - but depending on the environment you are running, this can take hours. 
+
+So, *when planning to demo TPA* (for example off of a freshly provisioned https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/enterprise.redhat-ads-demo.prod&utm_source=webapp&utm_medium=share-link[ADS demo^,window="rhdp"]) *give it some time to ingest the data*.
+|===
+
+To make sure you have enough vulnerability data to actually match some vulnerabilities to your SBOMs, here are a few locations you can check:
+
+_(Login with `{tpa_user}` and `{tpa_user_password}`)_
+
+1) The {tpa_url}/search[Search View^,window="tpa"] provides the numbers for currently ingested CVEs and Advisories
+
+image::tssc-tpa/tpa-search-results-view.png[link=self, window="image"]
+
+2) The {tpa_url}/importers[importers view^, window="tpa"] gives you the status of the last importer runs.
+
+image::tssc-tpa/tpa-search-importers-view.png[link=self, window="image]
+
+You need to have a user with `document:create` rights to start the importers manually - refer to the module xref:setup-tpa/setup-openshift.adoc[Setup Trusted Profile Analyzer on OpenShift] for a deep dive on TPA access levels.
+====
+
+
+== Prerequisite: Setup TPA Manager user
+
+The TPA default setup (inherited from the ADS demo for consistency) comes with a `user1` with read-only access level and an admin.
+
+This is completely fine or a demo, highlighting the typical use cases. For some of our exercises later, we need a user with some more access - and we have a script that will create one.
+
+[TIP]
+====
+You can use the same scripts with the ADS demo, should the need arise - feel free to check them out and re-use as you like. +
+The namespaces and realms used in the ADS demo are the same as here, so you can re-use the scripts verbatim - however, it doesn't hurt to check, either 😉 
+====
+
+To quickly configure our `tpa-manager` user, first open a {openshift_console_url}/terminal[terminal^,window="terminal"].
+
+If asked, login as `{openshift_admin_user}` with `{openshift_admin_password}`
+
+[NOTE] 
+==== 
+If you have done previous modules, you're probably aware of shared user sessions between the admin console and other Lab content. In our setup, TPA uses a different realm ("Trusted Content") so there is no problem here. +
+You can also re-use the https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"] if you still have that open from previous exercises.
+
+For the following exercises, it doesn't matter which one you're using.
+====
+
+In our terminal, clone the "helpers" repository (if you already have, go to the ``)
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd #to start from "home"
+git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd l3-enablement-helpers/tpa-tssc
+./create-tpa-manager.sh
+----
+
+We have created a user `tpa-manager` with password `r3dh8t1!` that we can use for exercises that require more than `read:document` access. 

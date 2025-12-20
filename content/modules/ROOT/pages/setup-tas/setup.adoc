@@ -1,0 +1,49 @@
+= Setup TAS
+
+include::partial$logout-links.adoc[]
+
+== Overview
+
+https://developers.redhat.com/products/trusted-artifact-signer/overview[Red Hat Trusted Artifact Signer (RHTAS or TAS)] is an essential component for artifact signing & verification, provenance attestation & verification and transparency in secure supply chains. It provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail. 
+
+[cols="1,3", frame=none, grid=none]
+|===
+.2+| image:m4-tas-openshift/sigstore-logo.svg[]
+| It's an enterprise-ready deployment of the https://www.sigstore.dev[Sigstore project]. RHTAS also extends its signing and verification capabilities to AI models, improving security during the AI model development lifecycle.
+| _"Sign. Verify. Protect. Making sure your software is what it claims to be."_
+|===
+
+This module provides comprehensive guidance for installing and configuring TAS in different environments to meet your organization's security and compliance requirements. Later modules will cover how to use TAS to build a trusted software supply chain in the context of RHADS.
+
+== Installation Options
+
+TAS can be deployed in multiple environments depending on your infrastructure and requirements. You are welcome to do one or both of these exercises in any order to familiarize yourself with the different installation options.
+
+=== xref:setup-tas/setup-openshift.adoc[Setup TAS on OpenShift]
+
+Install and configure TAS on OpenShift Container Platform for containerized environments. This option provides:
+
+* Scalable deployment using Kubernetes operators
+* Integration with OpenShift security features
+* Container-based scanning workflows
+* Integration with OpenShift monitoring and logging
+
+=== xref:setup-tas/setup-rhel.adoc[Setup TAS on RHEL]
+
+Install and configure TAS directly on Red Hat Enterprise Linux systems for traditional server deployments. This option provides:
+
+* Direct installation on RHEL 9 or 10
+* System-level integration
+* Traditional service management
+* Bare-metal or VM deployment options
+
+Deploying on RHEL enables TAS to support non-Openshift Kubernetes platforms.
+
+== Next Steps
+
+Select the appropriate installation guide based on your target environment:
+
+1. **For container-based deployments**: Follow the xref:setup-tas/setup-openshift.adoc[OpenShift installation guide]
+2. **For traditional server deployments**: Follow the xref:setup-tas/setup-rhel.adoc[RHEL installation guide]
+
+Both installation methods will result in a fully functional TAS deployment that can be integrated into your trusted software supply chain workflows. 

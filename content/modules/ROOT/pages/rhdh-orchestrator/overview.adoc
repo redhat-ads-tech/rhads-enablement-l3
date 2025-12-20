@@ -1,0 +1,125 @@
+= Orchestrator for {product_rhdh_name}
+
+include::partial$logout-links.adoc[]
+
+Other modules demonstrate how to use Software Templates as a means for developers to scaffold new codebases that follow organisational standards, and self-service certain aspects of their daily activities. 
+
+However, developer self-service requests might require more than what a Software Template can provide natively. For example, certain requests might require an approval, while others might involve *long-running, stateful processes* - this is where the Orchestrator for {product_rhdh_name} can help. It addresses the fact that regular Software Templates are stateless "run and done" processes. 
+
+The Orchestrator feature extends {product_rhdh_name} with support for workflows created using https://sonataflow.org/[SonataFlow^]. The Orchestrator project website and documentation is available at https://www.rhdhorchestrator.io/[rhdhorchestrator.io^].
+
+## SonataFlow and Serverless Workflow
+
+_SonataFlow is a tool for building cloud-native workflow applications. You can use it to do the services and events orchestration and choreography_ - https://kie.apache.org/docs/components/sonataflow/[Apache KIE^]
+
+SonataFlow is part of a broader ecosystem of projects within Apache KIE, including Drools, jBPM, and Kogito. Specifically, SonataFlow is an implementation of the https://serverlessworkflow.io/[Serverless Workflow^] model. 
+
+Serverless Workflow is a cloud-native workflow engine that allows teams to design, deploy and execute arbitrarily complex workflows that integrate with external systems through several mechanisms. Teams define workflows in the Serverless Workflow format, and SonataFlow will take care of the build, state management, and serverless deployment aspects for you.
+
+The following workflow definition demonstrates functions, input validation using schema(s), and behavior modeling using https://en.wikipedia.org/wiki/Finite-state_machine[state machine^] semantics. A workflow like this can be built and deployed on OpenShift as a Quarkus-based application container using the SonataFlow Operator.
+
+[source,yaml]
+----
+id: greeting
+version: '1.0'
+specVersion: '1.0'
+name: Greeting workflow
+description: YAML based greeting workflow
+annotations:
+  - "workflow-type/infrastructure"
+
+# Workflows use schemas, in JSON Schema format, to validate inputs
+dataInputSchema:
+  # Schemas are stored relative to the workflow source. Find all files at:
+  # github.com/rhdhorchestrator/serverless-workflows/blob/main/workflows/greeting/
+  schema: schemas/greeting.sw.input-schema.json
+  failOnValidationErrors: true
+
+# Reusable logic can be defined using functions
+functions:
+  - name: greetFunction
+    # Can be "rest", "rpc", "expression", or "custom"
+    type: custom
+    # If type is "rest" this would be a URL, but we're using a
+    # custom "sysout" functionality provided by SonataFlow
+    operation: sysout
+
+  - name: successResult
+    # Here we evaluate an expression
+    type: expression
+    # Expressions are following JSONata spec (https://jsonata.org/)
+    operation: '{ "result": { "message": "Greeting workflow completed successfully", "outputs":[ { "key":"Selected language", "value": .language }, { "key":"Greeting message", "value": .greeting } ] } }'
+start:
+  stateName: ChooseOnLanguage
+states:
+  - dataConditions:
+      # The language variable is part of the workflow inputs
+      # defined in the input schema
+      - condition: .language  == "English"
+        transition:
+          nextState: GreetInEnglish
+      - condition: .language  == "Spanish"
+        transition:
+          nextState: GreetInSpanish
+    defaultCondition:
+      transition:
+        nextState: GreetInEnglish
+    name: ChooseOnLanguage
+    type: switch
+  - data:
+      greeting: Hello from YAML Workflow
+    name: GreetInEnglish
+    transition:
+      nextState: GreetPerson
+    type: inject
+  - data:
+      greeting: Saludos desde YAML Workflow
+    name: GreetInSpanish
+    transition:
+      nextState: GreetPerson
+    type: inject
+  - actionMode: sequential
+    actions:
+      - actionDataFilter:
+          useResults: true
+        functionRef:
+          arguments:
+            message: .greeting
+          invoke: sync
+          refName: greetFunction
+        name: greetAction
+      - actionDataFilter:
+          useResults: true
+        functionRef:
+          invoke: sync
+          refName: successResult
+        name: setOutput
+    end:
+      terminate: true
+    name: GreetPerson
+    type: operation
+----
+
+NOTE: To learn more about the workflow YAML/JSON, you can view https://serverlessworkflow.io/schemas/1.0.0/workflow.json[workflow.json schema on serverlessworkflow.io^].
+
+A https://sonataflow.org/serverlessworkflow/latest/tooling/serverless-workflow-editor/swf-editor-vscode-extension.html[VSCode Extension to assist workflow development^] is supported by the SonataFlow project. This extension renders a visual representation of the workflow. 
+
+## SonataFlow and Orchestrator
+
+The Orchestrator feature effectively acts as an interface between {product_rhdh_name} and SonataFlow-powered workflows, providing a listing and the ability view and run workflows directly from {product_rhdh_name}.
+
+Additionally, long running workflows can integrate with the https://backstage.io/docs/notifications/[Backstage Notifications^] plugin, to allow users or groups to be notified of milestones in the workflow execution. This is particularly useful for long running workflows where it's impractical for a user to wait for completion. 
+
+The following screenshot shows the prior "greeting" workflow available in the {product_rhdh_name} UI.
+
+image::orchestrator-overview/rhdh-workflow-list.png[link=self, window="image"]
+
+## Architectural Overview
+
+This is a high level architectural overview of the Orchestrator:
+
+image:orchestrator-overview/orchestrator-architecture-container-diagram.jpg[link=self, window="image"]
+
+## Conclusion
+
+In summary the Orchestrator feature for {product_rhdh_name} enables teams to create stateful workflows using open standards, and provide them in a self-service manner through their internal developer portal.

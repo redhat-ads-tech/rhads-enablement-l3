@@ -1,0 +1,127 @@
+:imagesdir: ../../assets/images
+
+= Configuration
+
+The Policy Controller works cluster-wide and watches namespaces as per the controller configuration. +
+To enable that, we need to create a namespace that holds its configuration, namely the `PolicyController` and `TrustRoot` CRs (custom resources) that the operator install registered with the cluster.
+
+In our https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}[terminal^,window="terminal"], create a new namespace `policy-controller-operator`
+
+[source,bash,role=execute,subs=attributes+]
+----
+oc new-project policy-controller-operator
+----
+
+== Policy Controller
+
+We have prepared a basic Policy Controller for you, but before we install it, let's look at the most important configuration setting here - the `namespaceSelector`:
+
+[source,yaml]
+----
+apiVersion: rhtas.charts.redhat.com/v1alpha1
+kind: PolicyController
+metadata:
+  name: l3-students-policycontroller
+spec:
+  policy-controller:
+    cosign:
+      webhookName: "policy.rhtas.com"
+    webhook:
+      name: webhook
+      extraArgs:
+        webhook-name: policy.rhtas.com
+        mutating-webhook-name: defaulting.clusterimagepolicy.rhtas.com
+        validating-webhook-name: validating.clusterimagepolicy.rhtas.com
+      failurePolicy: Fail
+      namespaceSelector: <1>
+        matchExpressions:
+          - key: policy.rhtas.com/include <2>
+            operator: In
+            values: ["true"]
+      webhookNames:
+        defaulting: "defaulting.clusterimagepolicy.rhtas.com"
+        validating: "validating.clusterimagepolicy.rhtas.com"
+
+----
+<1> The namespace selector determines which namespaces the Policy Controller will monitor
+<2> Only namespaces labeled with `policy.rhtas.com/include=true` will be enforced
+
+
+So, let's apply it:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd /workspace/l3-enablement-helpers/tas-tssc/controllers/sigstore/config
+oc project policy-controller-operator
+oc apply -f policyController.yaml
+----
+
+[NOTE]
+====
+If you're wondering why we created this `policy-controller-operator` namespace for the configuration - this is why (if you try to create it in an arbitrary namespace) 
+
+`Error from server (Forbidden): error when creating "policyController.yaml": admission webhook "validation.policycontrollers.rhtas.charts.redhat.com" denied the request: PolicyController objects may only be created in the "policy-controller-operator" namespace` 
+====
+
+
+== Trust Root
+
+Similar to manual verification of signed images or attestations, we need to obtain a `Trust Root` that contains the public keys of RHTAS endpoints - and typically also the "TUF" (The Update Framework) endpoint that will serve updated keys after a CA certificate rotation.
+
+If we provide the TUF endpoint, the Policy Controller will update the Trust Root automatically.
+
+[IMPORTANT]
+====
+For air-gapped deployments (the TUF Endpoint isn't accessible to the Policy Controller) you need to create a `TrustRoot` CR that contains
+
+* a "serialised" TUF root, using the `tuftool` cli, as outlined in the Product Documentation under https://docs.redhat.com/en/documentation/red_hat_trusted_artifact_signer/1.3/html/administration_guide/rhtas-ocp-admin#the-policy-controller["Option 3. Create a Trust Root for a serialized TUF root."^,window="docs"] + 
+or + 
+* a `TrustRoot` that contains the key data (https://docs.redhat.com/en/documentation/red_hat_trusted_artifact_signer/1.3/html/administration_guide/rhtas-ocp-admin#the-policy-controller["Option 2. Create a Trust Root with your own keys."^,window="docs"])
+
+*Either way, it's important to note that RHTAS certificates and keys should (and will) be rotated after a while.* (default lifetime is 12 months) +
+TUF in conjunction with `cosign`, or here, the `PolicyController` usually manages the publishing and distribution of updated keys - if the TUF endpoint is not accessible, you need to make sure this is noted in general procedures and processes at the customer, as this needs to be done manually.
+
+====
+
+To create a `TrustRoot` CR that the Policy Controller can use, we'll use the below template, replacing the values for the TUF endpoint (`$TUF_URL`) and the TUF root (in base64 encoded format, `$BASE64_TUF_ROOT`).
+
+[source,yaml]
+----
+apiVersion: policy.sigstore.dev/v1alpha1
+kind: TrustRoot
+metadata:
+  name: trust-root
+spec:
+  remote:
+    mirror: $TUF_URL
+    root: |
+      $BASE64_TUF_ROOT
+----
+
+As part of the learning environment, we have setup the "Podman Terminal" pod to automatically point to the preinstalled RHTAS environment (if you went through some of the other RHTAS modules, you already know that).
+
+So, we already have a `TUF_URL` variable set and we can pull the `root.json` from there.
+
+[source,bash,role=execute,subs=attributes+]
+----
+
+oc project policy-controller-operator
+echo "TUF_URL: ${TUF_URL}"
+BASE64_TUF_ROOT="$(curl -fsSL "$TUF_URL/root.json" | base64 -w0)"
+
+cat <<EOF | oc apply -f -
+apiVersion: policy.sigstore.dev/v1alpha1
+kind: TrustRoot
+metadata:
+  name: trust-root
+spec:
+  remote:
+    mirror: $TUF_URL
+    root: |
+      $BASE64_TUF_ROOT
+EOF
+
+----
+
+So, we're good to go to configure our first `ClusterImagePolicy` now that we have to necessary configuration in place.
+

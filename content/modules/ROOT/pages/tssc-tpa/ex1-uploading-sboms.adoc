@@ -1,0 +1,199 @@
+:imagesdir: ../../assets/images
+
+= Uploading SBOMs
+
+Depending on their access levels, users can upload (and update existing) SBOMs, VEX and CSAF-VEX files, either via the frontend or via the API (typically from a CI task that generates an SBOM or a script that pulls vendor VEX files).
+
+The _typical_ user, however will only have _read-only_ access, giving them access to all the reports, search functionality - in short: All the TPA functionality minus changing any data within.
+
+You can take a look around using the pre-configured "default user" `{tpa_user}`:
+
+Login to Trusted Profile Analyzer {tpa_url}[here^,window="tpa"] using `{tpa_user}` and `{tpa_user_password}`
+
+[NOTE]
+====
+Depending on which exercises in the training you have already done, there might be some SBOMs in TPA already, resulting from pipeline runs that automatically uploaded SBOM data to TPA. 
+
+You can find these in the dashboard (your default view when opening TPA) or in the {tpa_url}/sboms[SBOMs view^,window="tpa"]
+
+image::tssc-tpa/tpa-sboms-view.png[link=self, window="image"]
+====
+
+== Frontend
+
+As mentioned in the exercise prerequisites, our `user1` doesn't have the necessary access level up upload data, so please logout and login with our newly created `tpa-manager` and password `r3dh8t1!`
+
+image::tssc-tpa/logged-in-as-tpa-manager.png[link=self, window="image"]
+
+Using the {tpa_url}/upload[upload menu^,window="tpa"] you can upload one or more SBOMs and Advisories at once.
+
+You can use any SBOMs (as long as they are in CycloneDX or SPDX format of the supported versions).
+
+image::tssc-tpa/tpa-upload-sbom-versions.png[link=self, window="image"]
+
+We have prepared a few, you can download them to your machine to try it out:
+
+* https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-tssc/sboms-vex/devspaces-sbom.json[devspaces-sbom.json^,window="download"] (Right-click and "Save link as..." or "save as")
+
+* https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-tssc/sboms-vex/home-banking-sbom.json[home-banking-sbom.json^,window="download"] (Right-click and "Save link as..." or "save as")
+
+* https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-tssc/sboms-vex/model-mesh-sbom.json[model-mesh-sbom.json^,window="download"] (Right-click and "Save link as..." or "save as")
+
+You can see that they are processed immediately in the upload dialogue and when changing to the {tpa_url}/sboms[SBOMs view^,window="tpa"], you can see their vulnerabilities, dependency count and when they were created (not uploaded). 
+
+image::tssc-tpa/sboms-processed.png[link=self, window="image"]
+
+The names are generated from the SBOM attributes - if no attributes are given (some are not mandatory as per the respective standards), the `sha` value will be used.
+
+=== Assigning Labels
+
+When uploading SBOMs manually, as a matter of good practice, you should label them with commonalities or some other data that will make management easier. +
+For example, all SBOMs belonging to a larger application (e.g. all Microservice-SBOMs belonging to an app) could share the same tag, to make it easier to manage an overall application security posture.
+
+NOTE: For SBOMs pushed to TPA from a CI (or some other automated means) we can do that via the API, showing which application they belong to, what CI they came from, etc - depending on requirements.
+
+*Example:* 
+
+Open the SBOM (by clicking on its name) and click on the "Edit" or pencil icon in the "Labels" section:
+
+image::tssc-tpa/sbom-edit-label.png[link=self, window="image"]
+
+Assign it a new label `source=manual-upload` (Labels need to be in the form of `key=value`). *Click on the "Create new option dropdown" that appears*
+
+image::tssc-tpa/sbom-label-manual.png[link=self, window="image"]
+
+image::tssc-tpa/sbom-label-manual-assigned.png[link=self, window="image"]
+
+Save when you're satisfied with your label assignment.
+
+Do that for all three of the SBOMs that we just uploaded. Once you have a label in TPA, you don't have to type it in again, you can select it by clicking on the drop-down option or by typing the first few letters:
+
+image::tssc-tpa/sbom-label-manual-subsequent.png[link=self, window="image"]
+
+It should look similar to this:
+
+image::tssc-tpa/sbom-view-labels.png[link=self, window="image"]
+
+
+
+== Backend (API, from a CI Task)
+
+For a backend task (a script, a CI task), we would use the `cli` OIDC client - i.e. an OIDC client that creates a "service account" a.k.a. a "technical user" with a fixed password (the `client secret`):
+
+image::tssc-tpa/keycloak-cli-client-authentication.png[link=self, window="image"]
+
+image::tssc-tpa/keycloak-cli-client-secret.png[link=self, window="image"]
+
+To access the client and get an authentication token from it, we need the client secret (the "client password") which we have stored in a k8s secret in our environment. +
+Depending on the script or CI setup that this will run in, a vault or otherwise secure credential storage would be advised.
+
+Going back to our {openshift_console_url}/terminal[terminal^,window="terminal"], take a look at the following script, which gives us the access token that we will use to authenticate subsequent API calls with:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd ~/l3-enablement-helpers/tpa-tssc
+./get-auth-token-example.sh
+cat get-auth-token-example.sh
+----
+
+To upload an SBOM to TPA, we will use this endpoint:
+
+{tpa_url}/openapi/#post-/api/v2/sbom[`/api/v2/sbom`, window="openapi"] (Click to check out the OpenAPI definition)
+
+and we will add some labels to make analysis and management easier:
+
+* `environment=verification`
+* `ci=preprod` 
+* `application=superapp`
+* `source=ci-upload`
+
+The labels need to be attached in the form of `labels.key=value`, so we can apply any label that might make sense in our specific customer / CI context.
+
+[source,console]
+----
+# upload the SBOM with additional labels
+curl -X POST "${TPA_URL}/api/v2/sbom?labels.environment=verification&labels.ci=preprod&labels.application=superapp&labels.source=ci-upload" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H "Content-Type: application/json" \
+    --data-binary @sboms-vex/quarkus-app.json
+
+----
+
+In our `sboms-vex` directory, we have prepared an sbom generated during a pipelinerun. The script below (`api-sbom-upload.sh`) is just the extension of the previous script with the `curl -X POST` to the `/api/v2/sbom` endpoint, but please feel free to examine it!
+
+[source,bash,role=execute,subs=attributes+]
+----
+cd ~/l3-enablement-helpers/tpa-tssc
+./api-sbom-upload.sh
+----
+
+
+Going back to our {tpa_url}/sboms[SBOMs view^,window="tpa"], we should now see the SBOM we just uploaded, including its vulnerabilities:
+
+image::tssc-tpa/sbom-view-cli-upload.png[link=self, window="image"]
+
+
+== CSAF VEX Files
+
+Similar to SBOMs, we can also upload CSAF VEX files (or other advisories) that we might get from a vendor or other sources (or, in larger enterprises, development teams might build to acknowledge vulnerabilities for audit / transparency reasons).
+
+We have provided a Red Hat VEX file detailing a specific vulnerability (CVE-2024-12798) that you can download https://raw.githubusercontent.com/redhat-tssc-tmm/l3-enablement-helpers/refs/heads/main/tpa-tssc/sboms-vex/csaf-vex-cve-2024-12798.json[here^,window="download"] (Right-click and "Save link as..." or "save as").
+
+When you {tpa_url}/upload[upload^,window="tpa"] it (go to the "Advisories" tab), you can see that the Advisory Identifier is displayed:
+
+image::tssc-tpa/csaf-vex-upload.png[link=self, window="image"]
+
+
+[NOTE]
+====
+If we wanted to upload from the backend, we would do the same as in the previous backend example, but use a different endpoint: +
+For Advisories of any kind, we would use the {tpa_url}/openapi/#post-/api/v2/advisory[`/api/v2/advisory`, window="openapi"] endpoint
+====
+
+If we go to the {tpa_url}/advisories[Advisories View^, window="tpa"] and search for "2024-12798" we will find two advisories mentioning this specific CVE, one CSAF (that we just uploaded, published by Red Hat Product Security) and one from the cve importer (published by the Swiss NCSC.ch):
+
+image::tssc-tpa/advisories.png[link=self, window="image"]
+
+The Red Hat Advisory (being a vendor CSAF advisory) not only lists the CVE and affected dependencies, but also Red Hat products, versions and their "affectedness" by product. 
+
+Excerpt:
+
+[source,json]
+----
+ "product_status": {
+        "fixed": [
+          "Red Hat build of Apache Camel 4.8.3 for Spring Boot"
+        ],
+        "known_affected": [
+          "a-mq_clients_2:ch.qos.logback/logback-core",
+          "amq_clients:ch.qos.logback/logback-core",
+          "logging_subsystem_for_red_hat_openshift:ch.qos.logback/logback-core",
+          "red_hat_amq_broker_7:ch.qos.logback/logback-core",
+          "red_hat_build_of_apache_camel_-_hawtio:ch.qos.logback/logback-core",
+          "red_hat_build_of_debezium:ch.qos.logback/logback-core",
+          "red_hat_build_of_keycloak:ch.qos.logback/logback-core",
+          "red_hat_build_of_optaplanner_8:ch.qos.logback/logback-core",
+          "red_hat_data_grid_8:ch.qos.logback/logback-core",
+          "red_hat_fuse_7:ch.qos.logback/logback-core",
+          "red_hat_integration_camel_k:ch.qos.logback/logback-core",
+          "red_hat_jboss_data_grid_7:ch.qos.logback/logback-core",
+          "red_hat_process_automation_7:ch.qos.logback/logback-core",
+          "red_hat_single_sign-on_7:ch.qos.logback/logback-core",
+          "streams_for_apache_kafka:ch.qos.logback/logback-core"
+        ],
+        "known_not_affected": [
+          "red_hat_jboss_enterprise_application_platform_7:ch.qos.logback/logback-core",
+          "red_hat_jboss_enterprise_application_platform_8:ch.qos.logback/logback-core",
+          "red_hat_jboss_enterprise_application_platform_expansion_pack:ch.qos.logback/logback-core",
+          "red_hat_jboss_web_server_6:ch.qos.logback/logback-core"
+        ]
+      }
+----
+
+Since we don't have any Red Hat product SBOMs in our TPA, this doesn't affect us here, but the general principle should be clear: +
+*Vendors (or development departments) issue CSAF VEX files to reduce the number of "false positives":*
+
+With the examples from above: EAP7 (`red_hat_jboss_enterprise_application_platform_7`) contains this dependency - but Red Hat says it is not affected but this vulnerability (`known_not_affected`)
+
+As a consequence, it wouldn't appear as "affected" by this CVE if we opened the EAP7 SBOM (or searched for affected SBOMs by vulnerability).
+

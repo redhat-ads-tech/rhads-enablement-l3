@@ -1,0 +1,78 @@
+Here we have a full example tailored to our environment - feel free to either change the default from the operator or copy & paste this one. 
+
+[source,yaml,role=execute,subs=attributes+]
+----
+kind: Securesign
+apiVersion: rhtas.redhat.com/v1alpha1
+metadata:
+  annotations:
+    rhtas.redhat.com/metrics: 'true'
+  labels:
+    app.kubernetes.io/instance: student-securesign
+    app.kubernetes.io/name: student-securesign
+    app.kubernetes.io/part-of: trusted-artifact-signer
+  name: student-securesign
+  namespace: student-tas
+spec:
+  ctlog: null
+  fulcio:
+    certificate:
+      commonName: student.tas.signature
+      organizationEmail: signing-authority@redhat.com
+      organizationName: rhads-learners
+    config:
+      OIDCIssuers:
+        - ClientID: trusted-artifact-signer
+          Issuer: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'
+          IssuerURL: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'
+          Type: email
+    externalAccess:
+      enabled: true
+    monitoring:
+      enabled: true
+  rekor:
+    externalAccess:
+      enabled: true
+    monitoring:
+      enabled: true
+  trillian:
+    database:
+      create: true
+  tsa:
+    externalAccess:
+      enabled: true
+    monitoring:
+      enabled: true
+    ntpMonitoring:
+      enabled: true
+    signer:
+      certificateChain:
+        intermediateCA:
+          - commonName: timestamps.tas
+            organizationEmail: signing-authority@redhat.com
+            organizationName: Red Hat
+        leafCA:
+          commonName: timestamps.tas
+          organizationEmail: signing-authority@redhat.com
+          organizationName: Red Hat
+        rootCA:
+          commonName: timestamps.tas
+          organizationEmail: signing-authority@redhat.com
+          organizationName: Red Hat
+  tuf:
+    externalAccess:
+      enabled: true
+    keys:
+      - name: rekor.pub
+      - name: ctfe.pub
+      - name: fulcio_v1.crt.pem
+      - name: tsa.certchain.pem
+    pvc:
+      accessModes:
+        - ReadWriteOnce
+      retain: true
+      size: 100Mi
+    rootKeySecretRef:
+      name: tuf-root-keys
+
+----

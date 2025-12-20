@@ -1,0 +1,171 @@
+:imagesdir: ../../assets/images
+
+= Attestations, Tekton Chains & Enterprise Contract with TAS
+
+== Attestations with TAS
+
+In a previous chapter: xref:security-practices/security-practices.adoc[Foundations and Frameworks] and the corresponding exercise xref:security-practices/ex3-provenance.adoc[Provenance & Attestations] we already covered the basic principles of:
+
+* What is an attestation
+** Signed and attached metadata of any kind
+* What format are attestations "wrapped in"
+** The `in-toto` attestation format
+* What is a "predicate"
+** Basically the attestation "payload"
+* What predicates types are there
+** You can define your own, but common predicate types include SBOMs and SLSA provenance information
+* What is provenance
+** Metadata describing the build process, build sources, etc - describing how an artifact was generated and the data that was used to build it
+
+If you are new to this topic (i.e. you haven't followed any of the previous topics discussing Supply Chain Security) then please follow the two lessons above - otherwise many of the topics discussed here may not make much sense to you.
+
+== Tekton Chains
+
+What is Tekton Chains?
+
+[cols="1,3",frame=none,grid=none]
+|===
+a|
+image::tssc-tas/tekton_chains-color.png[width=80]
+a|
+When we talk about "provenance" (gathering data about the artifact's build process), "attestations" (signing and attaching that data) - and even signing the generated artifact, there is the question - how do we implement it in a CI? 
+{sp} +
+ +
+Well, the signing step is the easiest - as shown in previous chapters (check xref:security-practices/ex1-signing-images.adoc[Image Signing & Verification] for example).
+
+|===
+
+It's as easy as adding a signing step to your CI. ✅
+
+Similarly, we can collect pipeline and task data, generate a provenance predicate from it and attest it in a task in our CI, as shown in xref:security-practices/ex3-provenance.adoc[Provenance & Attestations] ✅
+
+Easy? Easy! ✌️
+
+image::tssc-tas/yes-but.png[]
+
+To achieve xref:security-practices/security-practices.adoc#_slsa_build_level_2_provenance_is_signed[SLSA Level 2] or higher,  
+
+____
+* The build service must be *service-generated* (provenance is created by the build platform itself, not build steps)
+____
+
+In other words: *A CI pipeline cannot attest its own tasks or itself.* 
+
+Which makes sense - you still have transparency and even signed attestations (nobody can tamper with the provenance data after it has been created & signed) - but the CI pipeline could decide not to collect all data, or falsify data - since it is basically vouching for itself.
+
+So, we need a "3rd party" or a "controller" to watch the build process. Rings a bell? Exactly - because that's what Tekton Chains is for Tekton: A *Kubernetes Controller* watching, logging and attesting the build process - without intervention from the attested objects (the pipeline and its tasks). A "3rd party" watching from "outside". 
+
+Tekton Chains works by deploying a controller that runs in the background and monitors TaskRuns. While Tekton Pipelines executes your Tasks, Tekton Chains watches the operation, once the operation is successfully completed, the Chains controller generates the provenance for the artifacts produced.
+
+The provenance records the inputs of your Tasks: source repositories, branches, other artifacts; and the outputs: container images, packages, etc. This information is recorded as `in-toto` metadata and signed, along with the artifacts themselves. 
+
+image::tssc-tas/tekton-chains.png[link=self, window="images"]
+
+
+== Enterprise Contract (Conforma)
+
+[cols="1,3",frame=none,grid=none]
+|===
+a|
+image::tssc-tas/conforma-logo.svg[width=120]
+a|Verifying attestations and metadata is a multi-step process:
+
+* Verify the attestation signatures
+* Download attestations 
+* Sort the different predicate types
+* then go into the predicate(s), sift through the data and verify that it says what we expect... 
+
+|===
+
+In theory, we could do that via some fancy shell scripts, combining `cosign verify-attestation`, `cosign download` and then `jq`, `jq` and even more `jq` with some `bash` on the side.
+
+Enter the spotlight: *Conforma*. Purpose-built for exactly this use case (verification), it can do that with one command `ec validate image`. 
+
+Avoiding building custom scripts, Conforma uses the "Rego" language - since it inherits its validation capabilities from https://www.openpolicyagent.org/[OPA (Open Policy Agent)^, window="opa"] - which it has embedded at its core (try running `ec opa help` and `ec opa version`)
+
+== Admission Controllers and ImagePolicies
+
+In previous chapters and modules we talked about validating image signatures and images attestations in a CI pipeline (or via shell commands, which would mostly be applicable to said pipeline tasks).
+
+It is important to do that, but even if our build and deployment process is secure, our build system locked down - with access to OpenShift, I could still deploy images directly to the cluster.
+
+This is where Admission Controllers fit into the bigger picture. Admission controllers allow us to deny creation or deployment of Kubernetes resources that the respective controller deems unacceptable.
+
+In our TSSC (Trusted Software Supply Chain) context, there are two Admission Controllers (and one OpenShift-native feature) of interest:
+
+=== The Sigstore Policy Controller
+
+The Red Hat Trusted Artifact Signer (RHTAS) build of the Sigstore Policy Controller Operator is a Red Hat OpenShift Container Platform admission controller designed to enforce policies by using supply-chain metadata. Essentially, the RHTAS Policy Controller acts as a gatekeeper for OpenShift by making deployed workloads adhere to your security policies.
+
+The RHTAS Policy Controller has these key features:
+
+*Easy integration with the RHTAS service*
+
+The Policy Controller Operator uses the established, trusted, and transparent services provided by RHTAS, such as Rekor's transparency log, and Fulcio's short-lived certificates for stronger signature validation. You can also take advantage of Trusted Artifact Signer's secure Trust Root as a source of public keys and certificates used in artifact verification, along with auditing Rekor's transparency log. 
+
+*Verification of container image signatures*
+
+The RHTAS Policy Controller resolves container image tags to validate that the container image being run does not differ from what was signed by RHTAS service. You can automatically verify signatures and attestations for container images, these can be enforced on a per-namespace basis, and you can create multiple policies to fit your security needs. You can create custom resources like `ClusterImagePolicy` to define the rules for validating container images. 
+
+*Defining and enforcing workload policies*
+
+You can define and enforce policies to restrict what container images can run in your Red Hat OpenShift cluster. One such requirement could be to only allow specified images to run that match a certain signing key, and to verify attestations. You can choose to enforce strict policies, or use warning mode to better understand how a policy will impact your environment. You can also define and enforce policies based on other supply chain metadata. 
+
+NOTE: Red Hat's build of the Sigstore Policy Controller is Tech Preview as of RHTAS 1.3
+
+
+=== The ACS (Advanced Cluster Security) Admission Controller
+
+_Red Hat Advanced Cluster Security for Kubernetes_ (RHACS) works with Kubernetes admission controllers and OpenShift Container Platform admission plugins that can enforce security policies before Kubernetes or OpenShift Container Platform creates workloads, for example, deployments, daemon sets or jobs.
+
+The RHACS admission controller prevents users from creating or updating workloads that violate policies configured in RHACS. 
+
+*ACS Policies and the Software Supply Chain*
+
+ACS policies cover a slightly different aspect of the workload lifecycle:
+
+* ACS can verify that an admissible image has been signed via `cosign` / Trusted Artifact Signer and verify that against the TAS Rekor database
+
+But that is where the overlap with Enterprise Contract or the Sigstore Admission Controller ends and the workload security focus of ACS starts:
+
+* ACS policies can scan and verify that an image doesn't contain specific Vulnerabilities or in general no CVEs above a certain CVSS score, or no fixable CVEs, etc etc.
+
+* Furthermore, ACS policies can stop images from being deployed that contain certain packages, such as yum, dnf, microdnf, apt, apt-get, curl, wget, etc - to avoid a side-loading attack.
+
+In general, the ACS admission controller can be used to enforce policies detailing
+
+* Options in the pod `securityContext`
+* Deployment configurations
+* Image components and vulnerabilities (as outlined above)
+
+ACS runtime enforcement policies can do much more, for example watch for network connectivity and traffic (e.g. disable a pod if a certain IP range is contacted), processes (issue a warning to administrators or kill a pod if a certain process is started) - but obviously these *runtime policies* do not apply to deploy-time and therefore are out of scope for an Admission Controller.
+
+
+=== ImagePolicies 
+
+OpenShift also has a built-in capability to verify sigstore image signatures and block images that don't adhere to signature requirements as set out by `ImagePolicies` and `ClusterImagePolicies`.
+
+[IMPORTANT]
+====
+In the context of *Red Hat's build of the Sigstore Admission Controller* we'll also talk about `ClusterImagePolicies`, but these are from a different API scope:
+
+The Admission Controller `ClusterImagePolicies` are of type `clusterimagepolicies.policy.sigstore.dev`, whereas the `ImagePolicies` and `ClusterImagePolicies` mentioned here are of type `config.openshift.io`
+
+====
+
+
+However, only the image signature is checked and validity of the `rekor` public signature included in the image signature, but there is no online verification of inclusion proof, so it only provides a subset of the verification options that the Admission Controllers offer.
+
+In addition, if this feature is used with Trusted Artifact Signer, it doesn't recognise or use "TUF" (The Update Framework), so there is no automatic refresh of `rekor` public keys after a certificate rotation.
+
+NOTE: This feature has been Tech Preview from OCP 4.16 to 4.19 - it has turned GA with 4.20
+
+You can read more about this https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/nodes/nodes-sigstore-using[here^,window="docs"]
+
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+= {product_rhdh_name} User Interface
+
+Organizations can customize {product_rhdh_name} (RHDH) in many different ways to align with their specific needs and deliver a tailored developer experience. Customization options include:
+
+* **Visual customizations**: Modify appearance elements like title, logo, fonts, colors, headers, and themes to reflect your organization's branding
+* **Functional customizations**: Set up access control, configure plugins, backing storage for TechDocs and other processes, and adjust other settings to meet your requirements
+
+This module focuses on adjusting the interface {product_rhdh_name} presents to users in the form of elements of its appearance and in how its _TechDocs_ features publish project, product, and portal documentation in one central, searchable place.
+
+First, you'll customize Developer Hub's appearance, employing the fundamental method for configuring a {product_rhdh_name} instance.
+
+In the module's second half, you'll explore the {product_rhdh_name} TechDocs facility for automating the publication of technical documentation for the entities and components in an instance's Catalog. In two subsequent labs, you'll learn how to create a Component from a Template including technical documentation, edit the documentation, and see it how it is automatically rebuilt and published in TechDocs. With that understanding of the TechDocs architecture and end user experience in place, you'll undertake an administrative role to renovate the default TechDocs machinery for production operation at larger volume.
+
+[NOTE]
+====
+The same techniques apply to much of the Backstage and, in turn, Developer Hub configuration. For example, in the xref:setup-rhdh/foundations.adoc[Setup {product_rhdh_name}] module you can see how to configure core functional aspects of {product_rhdh_name}, such as access control and integration with external services.
+====
+

@@ -1,0 +1,34 @@
+= Building an AI Agent with Red Hat Advanced Developer Suite (RHADS)
+
+== Introduction
+
+These labs will guide you through building and deploying a secure AI agent using the Red Hat Advanced Developer Suite (RHADS). You will learn how to establish a strong framework for AI application development that incorporates security best practices from the start, all while using self-service tools on OpenShift.
+
+== Objectives
+
+This lab demonstrates how to use a pre-built software template in RHADS to deploy an AI Agent to OpenShift. This approach helps organizations ensure that developers have the tools and security standards they need right from the beginning. We will use the software templates already integrated into {product_rhdh_name}.
+
+This guide is divided into two labs, each focusing on a different stages from the AI Engineer perspective.
+
+== AI Engineer
+
+. You will access pre-built templates from the AI Platform Engineering team, which include security guidelines for building AI applications on OpenShift.
+
+. You will implement an AI agent that adheres to the established guidelines and best practices of the AI Platform Engineering team.
+
+== Getting Started
+
+. Visit the {rhdh_url}[{product_rhdh_name} UI^].
+. Sign in using OIDC authentication method.
++
+image:rhads-ai/rhads/rhdh-login.png[width=60%,link=self, window="image"]
+. Log in with the admin credentials:
+    * Username: {openshift_admin_user}
+    * Password: {openshift_admin_password}
+
+You will be greeted with a welcome screen.
+
+
+image:rhads-ai/rhads/rhdh-welcome.png[Create UI,link=self, window="image"]
+
+*Note:* You are logging in as an administrator because you will need elevated privileges to build a secret as part of the lab steps.

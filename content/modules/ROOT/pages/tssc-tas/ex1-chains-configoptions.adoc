@@ -1,0 +1,282 @@
+*TaskRun Configuration*
+
+*`artifacts.taskrun.format`*
+
+- `in-toto` - Stores TaskRun payloads in the in-toto attestation format
+- `slsa/v1` - Alias of in-toto for backwards compatibility
+- `slsa/v2alpha3` - Corresponds to SLSA v1.0 spec, uses latest v1 Tekton Objects (recommended for new users wanting SLSA v1.0)
+- `slsa/v2alpha4` - Corresponds to SLSA v1.0 spec, uses latest v1 Tekton Objects, reads type-hinted results from StepActions (recommended)
+- *Default*: `in-toto`
+
+
+*`artifacts.taskrun.storage`*
+
+- `tekton` - Store signatures in TaskRun annotations
+- `oci` - Store signatures in OCI registries
+- `gcs` - Store signatures in Google Cloud Storage
+- `docdb` - Store signatures in document database (Firestore, DynamoDB, MongoDB)
+- `grafeas` - Store signatures in Grafeas (Container Analysis)
+- `archivista` - Store signatures in Archivista
+- Multiple backends can be specified with comma-separated list (e.g., `"tekton,oci"`)
+- Empty string `""` disables TaskRun artifact storage
+- *Default*: `tekton`
+
+
+*`artifacts.taskrun.signer`*
+
+- `x509` - Key-based signing using x509 certificates
+- `kms` - Signing using Key Management Service (AWS KMS, GCP KMS, Azure Key Vault, HashiCorp Vault)
+- `none` - Disable signing while still storing provenance
+- *Default*: `x509`
+
+---
+
+
+*PipelineRun Configuration*
+
+*`artifacts.pipelinerun.format`*
+
+- `in-toto` - Stores PipelineRun payloads in the in-toto attestation format
+- `slsa/v1` - Alias of in-toto for backwards compatibility
+- `slsa/v2alpha3` - Corresponds to SLSA v1.0 spec, uses latest v1 Tekton Objects (recommended)
+- `slsa/v2alpha4` - Corresponds to SLSA v1.0 spec, uses latest v1 Tekton Objects, reads type-hinted results from StepActions (recommended)
+- *Default*: `in-toto`
+
+
+*`artifacts.pipelinerun.storage`*
+
+Same options as TaskRun storage: `tekton`, `oci`, `gcs`, `docdb`, `grafeas`, `archivista`
+- Can use comma-separated list for multiple backends
+- Empty string disables PipelineRun artifact storage
+- *Default*: `tekton`
+
+
+*`artifacts.pipelinerun.signer`*
+
+Same options as TaskRun signer: `x509`, `kms`, `none`
+- *Default*: `x509`
+
+
+*`artifacts.pipelinerun.enable-deep-inspection`*
+
+- `"true"` - Chains inspects both pipeline level and task level results (captures inputs/outputs from child TaskRuns)
+- `"false"` - Chains only checks pipeline level results
+- *Default*: `"false"`
+
+---
+
+*OCI Configuration (for the OCI Artifacts, aka Images)*
+
+*`artifacts.oci.format`*
+
+- `simplesigning` - The only currently supported format for OCI payloads
+- *Default*: `simplesigning`
+
+
+*`artifacts.oci.storage`*
+
+- `tekton` - Store in TaskRun/PipelineRun annotations
+- `oci` - Store in OCI registries alongside images
+- `gcs` - Store in Google Cloud Storage
+- `docdb` - Store in document database
+- `grafeas` - Store in Grafeas
+- Can use comma-separated list for multiple backends
+- Empty string disables OCI artifact storage
+- *Default*: `oci`
+
+
+*`artifacts.oci.signer`*
+
+- `x509` - Sign using x509 certificates
+- `kms` - Sign using Key Management Service
+- `none` - Skip signing OCI artifacts (but attestations are still generated and pushed if storage is configured)
+- *Default*: `x509`
+
+---
+
+*Storage Configuration*
+
+*`storage.oci.repository`*
+
+- Specifies the OCI repository to store signatures and attestations
+- If undefined and OCI storage is enabled, attestations are stored alongside the OCI artifact itself
+- Example: `gcr.io/my-project/my-repo`
+
+
+*`storage.gcs.bucket`*
+
+- The Google Cloud Storage bucket name for storing artifacts
+- Example: `my-tekton-chains-bucket`
+
+
+*`storage.docdb.url`*
+
+* The URI reference to a docstore collection
+* Examples:
+** Firestore: `firestore://projects/[PROJECT]/databases/(default)/documents/[COLLECTION]?name_field=name`
+** DynamoDB: `dynamodb://[TABLE_NAME]?partition_key=[KEY]`
+** MongoDB: `mongo://[DATABASE]/[COLLECTION]?id_field=_id`
+
+
+*MongoDB Connection Options* (for docdb):
+
+- `storage.docdb.mongo-server-url` - Direct MongoDB connection URI (not recommended, stores in ConfigMap)
+- `storage.docdb.mongo-server-url-dir` - Path to directory containing file named `MONGO_SERVER_URL` with connection string (recommended, uses Secret)
+- `storage.docdb.mongo-server-url-path` - Direct path to file containing MongoDB connection URI (recommended, uses Secret)
+- These options override each other in order: path > dir > url > `MONGO_SERVER_URL` environment variable
+
+
+*`storage.grafeas.projectid`*
+
+- The GCP project ID where Grafeas server is located
+- Required for Grafeas storage backend
+
+
+*`storage.grafeas.noteid`*
+
+- Prefix for Grafeas note names (no spaces allowed)
+- Chains appends `-simplesigning` for ATTESTATION notes and `-intoto` for BUILD notes
+- If not configured, defaults to `tekton-<NAMESPACE>`
+
+
+*`storage.grafeas.notehint`*
+
+- Human-readable name for the Grafeas ATTESTATION note
+- Default: `"This attestation note was generated by Tekton Chains"`
+
+
+*`storage.archivista.url`*
+
+- URL of the Archivista server for storing attestations
+- Example: `https://archivista.testifysec.io`
+
+---
+
+*In-toto/SLSA Configuration*
+
+*`builder.id`*
+
+- The builder ID to set for in-toto attestations
+- *Default*: `https://tekton.dev/chains/v2`
+
+
+*`builddefinition.buildtype`*
+
+Only valid for `slsa/v2alpha3` and `slsa/v2alpha4` formats:
+
+* `https://tekton.dev/chains/v2/slsa` - Strictly conforms to SLSA v1.0 spec
+* `https://tekton.dev/chains/v2/slsa-tekton` - Conforms to SLSA v1.0 but adds Tekton-specific information (PipelineRun/TaskRun labels, annotations as internalParameters, captures each pipeline task under resolvedDependencies)
+* *Default*: `https://tekton.dev/chains/v2/slsa`
+
+---
+
+*Transparency Log (Rekor) Configuration*
+
+*`transparency.enabled`*
+
+- `true` - Automatically upload all signatures and attestations to transparency log
+- `false` - Disable transparency log uploads
+- `manual` - Only upload TaskRuns/PipelineRuns with annotation `chains.tekton.dev/transparency-upload: "true"`
+- *Default*: `false`
+
+
+*`transparency.url`*
+
+- The URL of the transparency log server (Rekor)
+- *Default*: `https://rekor.sigstore.dev`
+- Example (custom): `https://rekor-server.mycompany.com`
+
+---
+
+*Keyless Signing (Fulcio) Configuration*
+
+*`signers.x509.fulcio.enabled`*
+
+- `true` - Enable keyless signing with Fulcio (obtain short-lived certificates via OIDC)
+- `false` - Use traditional key-based signing
+- *Default*: `false`
+
+
+*`signers.x509.fulcio.address`*
+
+- The Fulcio server URL to request certificates from
+- *Default*: `https://fulcio.sigstore.dev`
+- Example (custom): `http://fulcio.fulcio-system.svc` (for internal Kubernetes service)
+
+
+*`signers.x509.fulcio.issuer`*
+
+- The expected OIDC issuer URL
+- *Default*: `https://oauth2.sigstore.dev/auth`
+- Example (Keycloak): `https://keycloak.example.com/auth/realms/myrealm`
+
+
+*`signers.x509.fulcio.provider`*
+
+- `google` - Use Google OIDC provider
+- `spiffe` - Use SPIFFE for workload identity
+- `github` - Use GitHub Actions OIDC tokens
+- `filesystem` - Read token from file specified in `signers.x509.identity.token.file`
+- If unset, each provider will be attempted automatically
+- *Default*: Unset (tries all providers)
+
+
+*`signers.x509.identity.token.file`*
+
+- Path to file containing OIDC ID token
+- Used when `signers.x509.fulcio.provider` is set to `filesystem`
+- Example: `/var/run/secrets/tokens/oidc-token`
+
+
+*`signers.x509.tuf.mirror.url`*
+
+- TUF server URL for distributing Sigstore's root of trust
+- The URL `$TUF_URL/root.json` must be accessible
+- *Default*: `https://sigstore-tuf-root.storage.googleapis.com`
+
+---
+
+*KMS Configuration*
+
+*`signers.kms.kmsref`*
+
+The URI reference to a KMS service. Supported schemes:
+
+- `gcpkms://projects/[PROJECT]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]/versions/[VERSION]` - Google Cloud KMS
+- `awskms://[ENDPOINT]/[ID/ALIAS/ARN]` - AWS KMS
+- `azurekms://[VAULT_NAME][VAULT_URI]/[KEY]` - Azure Key Vault
+- `hashivault://[KEY]` - HashiCorp Vault
+
+
+*KMS Authentication:*
+
+- `signers.kms.auth.address` - URI of KMS server (e.g., VAULT_ADDR for HashiCorp Vault)
+- `signers.kms.auth.token` - Auth token for KMS server (e.g., VAULT_TOKEN)
+- `signers.kms.auth.token-path` - Path to file containing KMS auth token (recommended over direct token)
+- `signers.kms.auth.oidc.path` - Path used for OIDC authentication (e.g., `jwt` for Vault)
+- `signers.kms.auth.oidc.role` - Role used for OIDC authentication with KMS
+- `signers.kms.auth.spire.sock` - URI of SPIRE socket for KMS token (e.g., `unix:///tmp/spire-agent/public/api.sock`)
+- `signers.kms.auth.spire.audience` - Audience for requesting SVID from SPIRE
+
+---
+
+*OpenShift-specific Configuration*
+
+*`generateSigningSecret`* (TektonChain CR parameter)
+
+- `true` - Operator generates a cosign key pair and stores in `signing-secrets` secret
+- `false` - Operator does not generate keys (use when providing your own keys or using keyless signing)
+- *Default*: `false`
+- Note: When set to true, creates `cosign.key` (private key), `cosign.password` (decryption password), and `cosign.pub` (public key)
+
+
+*`disabled`* (TektonChain CR parameter)
+
+- `true` - Disable Chains feature completely
+- `false` - Enable Chains
+- *Default*: `false`
+
+
+*`performance.disable-ha`*
+Your config shows this parameter set to `false`. This controls whether high-availability mode is disabled for the Chains controller.
+

@@ -2,50 +2,50 @@
 
 == Why Red Hat Advanced Developer Suite?
 
-Organizations developing software face a critical dual challenge: the urgent need to move fast by integrating AI and boosting developer productivity, coupled with the imperative to stay safe amidst rising software supply chain threats. Top software engineering priorities include integrating AI and increasing developer productivity, yet organizations struggle with long onboarding times, inconsistent development environments, and a lack of automation, which impede their ability to accelerate innovation and reduce the average 7-day software development cycle time. Simultaneously, despite open-source components comprising around 90% of modern applications, the ecosystem has seen a 156% year-on-year increase in malicious packages, leading to an estimated $60 billion in damages in 2025 and demanding effective risk remediation. This complex environment, where speed cannot compromise security, necessitates an integrated and comprehensive platform engineering solution like https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-developer-suite[Red Hat Advanced Developer Suite (RHADS)] to balance these competing demands.
+Organizations face a critical challenge: accelerating development with AI while securing against rising software supply chain threats. Despite open-source components comprising 90% of modern applications, malicious packages increased 156% year-on-year, causing an estimated $60 billion in damages in 2025. This environment demands an integrated platform engineering solution like https://www.redhat.com/en/products/advanced-developer-suite[Red Hat Advanced Developer Suite (RHADS)^] to balance speed and security.
 
 RHADS combines platform engineering tools with enhanced security capabilities to help accelerate and simplify application development with new enhancements to speed the adoption of AI:
 
 * Modular design allows it to be integrated with existing platforms and systems including Red Hat's platforms
-* Integrates with existing security capabilities found in **https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes[Red Hat Advanced Cluster Security]**
-* Complements existing developer tools from Red Hat including **https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift Dev Spaces]**
-* Built on leading open source projects like **https://backstage.io[Backstage]** and **https://www.sigstore.dev[Sigstore]**
+* Integrates with existing security capabilities found in **https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes[Red Hat Advanced Cluster Security^]**
+* Complements existing developer tools from Red Hat including **https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift Dev Spaces^]**
+* Built on leading open source projects like **https://backstage.io[Backstage^]** and **https://www.sigstore.dev[Sigstore^]**
 
 == Architecture Overview
 
 RHADS is not just a set of tools; it's purpose-built for balancing speed and security, integrating into existing workflows. It combines platform engineering tools with enhanced security capabilities to accelerate and simplify application development.
 
-image::getting-started/rhads-architecture.png[alt="RHADS Architecture"]
+image::getting-started/rhads-architecture.png[alt="RHADS Architecture",link=self, window="image"]
 
 The main components of RHADS are:
 
-* **https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub (RHDH)]**: An **enterprise-grade, self-managed, and customizable internal developer portal** built on https://backstage.io[Backstage.io]. It acts as a central portal for templates, documentation, and tools, reducing cognitive load and setup time. It streamlines development workflows with automated software templates and self-service capabilities. RHDH's plugin architecture allows for customized software templates and integrates with various tools and services.
-* **https://developers.redhat.com/products/trusted-artifact-signer/overview[Red Hat Trusted Artifact Signer (RHTAS)]**: Provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail. It's an enterprise-ready deployment of the https://www.sigstore.dev[Sigstore project]. RHTAS also extends its signing and verification capabilities to AI models, improving security during the AI model development lifecycle.
-* **https://developers.redhat.com/products/trusted-profile-analyzer/overview[Red Hat Trusted Profile Analyzer (RHTPA)]**: Provides platform engineers, developers, and security teams with **visibility and actionable insights into the risk profile** (vulnerabilities, licenses) of their software supply chain across the entire SDLC. It leverages Software Bill of Materials (SBOM) management, open-source dependency risk analysis, and license tracking to detect vulnerabilities, malicious code, and compliance risks.
+* **https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub (RHDH)^]**: An **enterprise-grade, self-managed, and customizable internal developer portal** built on https://backstage.io[Backstage.io^]. It acts as a central portal for templates, documentation, and tools, reducing cognitive load and setup time. It streamlines development workflows with automated software templates and self-service capabilities. RHDH's plugin architecture allows for customized software templates and integrates with various tools and services.
+* **https://developers.redhat.com/products/trusted-artifact-signer/overview[Red Hat Trusted Artifact Signer (RHTAS)^]**: Provides a secure, transparent, and fully auditable signing and verification system. It ensures the integrity, authenticity, and provenance of software artifacts throughout the development and deployment lifecycle. RHTAS supports both keyless and key-based signing, simplifies signing using existing user identity (GitHub, Google, SSO), and maintains an immutable audit trail. It's an enterprise-ready deployment of the https://www.sigstore.dev[Sigstore project^]. RHTAS also extends its signing and verification capabilities to AI models, improving security during the AI model development lifecycle.
+* **https://developers.redhat.com/products/trusted-profile-analyzer/overview[Red Hat Trusted Profile Analyzer (RHTPA)^]**: Provides platform engineers, developers, and security teams with **visibility and actionable insights into the risk profile** (vulnerabilities, licenses) of their software supply chain across the entire SDLC. It leverages Software Bill of Materials (SBOM) management, open-source dependency risk analysis, and license tracking to detect vulnerabilities, malicious code, and compliance risks.
 
 RHADS is **enhanced** by several free, complementary developer tools:
 
-* https://podman-desktop.io/[Podman Desktop]: This free, open-source tool provides a GUI for local container and Kubernetes management, helping developers build, run, and deploy applications on their desktop and reducing "works on my machine" issues. It supports air-gapped installation and includes an AI Lab extension for AI experimentation. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on ARO and ROSA.
-* https://developers.redhat.com/products/mta/overview[Red Hat Migration Toolkit for Applications (MTA)]: This toolkit aids in modernizing legacy Java applications for container and cloud-native platforms, enabling assessment, refactoring, and migration with minimal disruption. It accelerates replatforming to OpenShift and will feature future AI integration with Developer Lightspeed for code generation to speed modernization based on static analysis.
-* https://developers.redhat.com/products/openshift-ide-extensions/overview[Red Hat IDE Plugins]: These plugins facilitate local coding by integrating Red Hat ecosystem technologies directly into popular Integrated Development Environments (IDEs), and connect IDEs to OpenShift clusters for direct access to resources.
+* https://podman-desktop.io/[Podman Desktop^]: This free, open-source tool provides a GUI for local container and Kubernetes management, helping developers build, run, and deploy applications on their desktop and reducing "works on my machine" issues. It supports air-gapped installation and includes an AI Lab extension for AI experimentation. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on ARO and ROSA.
+* https://developers.redhat.com/products/mta/overview[Red Hat Migration Toolkit for Applications (MTA)^]: This toolkit aids in modernizing legacy Java applications for container and cloud-native platforms, enabling assessment, refactoring, and migration with minimal disruption. It accelerates replatforming to OpenShift and will feature future AI integration with Developer Lightspeed for code generation to speed modernization based on static analysis.
+* https://developers.redhat.com/products/openshift-ide-extensions/overview[Red Hat IDE Plugins^]: These plugins facilitate local coding by integrating Red Hat ecosystem technologies directly into popular Integrated Development Environments (IDEs), and connect IDEs to OpenShift clusters for direct access to resources.
 
 These tools extend the OpenShift experience to developer desktops and complement RHADS's features for increased productivity and security across hybrid and multi-cloud environments.
 
 RHADS **complements OpenShift**:
 
 *   It extends OpenShift's capabilities "to the left of the SDLC".
-*   It integrates seamlessly with various supported tools and offerings, including **https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift Dev Spaces]**, **https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[OpenShift Pipelines]**, and **https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps]**. This allows development teams to:
+*   It integrates seamlessly with various supported tools and offerings, including **https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift Dev Spaces^]**, **https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[OpenShift Pipelines^]**, and **https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps^]**. This allows development teams to:
 ** Code, build, test, and debug directly from their browser, mirroring production environments without requiring local setup.
-** Release more quickly and test features, also enabling automated testing for earlier bug detection and improved Mean Time To Resolution (MTTR). Customers can also integrate existing CI/CD solutions into https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub].
-*   It also complements https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes[Red Hat Advanced Cluster Security for Kubernetes (ACS)], which enforces security policies for containerized applications, ensuring only trusted artifacts run in the cluster.
+** Release more quickly and test features, also enabling automated testing for earlier bug detection and improved Mean Time To Resolution (MTTR). Customers can also integrate existing CI/CD solutions into https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub^].
+*   It also complements https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes[Red Hat Advanced Cluster Security for Kubernetes (ACS)^], which enforces security policies for containerized applications, ensuring only trusted artifacts run in the cluster.
 
 The architecture aims to empower platform teams to define and curate trusted environments and tools, which developers then consume for accelerated, secure application delivery from development to production.
 
 == Typical RHADS deployment
 
-RHADS is designed with a modular approach that allows it to be integrated seamlessly with a variety of supported tools and existing platforms and systems, including those already in use by customers. The following diagram shows a typical RHADS deployment, the components involved, and how they interact with each other.
+RHADS is designed with a modular approach that allows it to be integrated seamlessly with a variety of supported tools and existing platforms and systems, including those already in use by customers. The following diagram shows a typical RHADS deployment, the components involved, and how they interact with each other. There are many icons, most of which are 3rd-party products already in use by customers, demonstrating the flexibility and extensibility of RHADS.
 
-image::getting-started/rhads-components.png[alt="RHADS Components"]
+image::getting-started/rhads-components.png[alt="RHADS Components",link=self, window="image"]
 
 Here is a summary of the components and their roles based on the diagram above.
 
@@ -104,7 +104,7 @@ Provides core operational capabilities including:
 === Cross-Cutting Concerns
 
 ==== Authentication / Authorization / Signing
-Uses OpenID Connect providers like Red Hat build of https://www.keycloak.org[Keycloak] for secure identity and access management. Digital signing ensures trust across all pipeline stages. RHADS supports both keyless and key-based signing, using existing user identities like GitHub, Google, or SSO, and maintains an immutable audit trail for maximum transparency and trust.
+Uses OpenID Connect providers like Red Hat build of https://www.keycloak.org[Keycloak^] for secure identity and access management. Digital signing ensures trust across all pipeline stages. RHADS supports both keyless and key-based signing, using existing user identities like GitHub, Google, or SSO, and maintains an immutable audit trail for maximum transparency and trust.
 
 ==== Policy Enforcement
 Policies are enforced from CI through runtime using signed artifacts, security scanning, and GitOps reconciliation. RHADS supports a variety of policies, including:
@@ -117,9 +117,9 @@ Policies are enforced from CI through runtime using signed artifacts, security s
 
 == RHADS Install Options
 
-RHADS is designed as an **add-on offering for https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift] and https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus[Red Hat OpenShift Platform Plus]**. Additionally, using https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer[Red Hat Trusted Artifact Signer] to sign artifacts on Red Hat Enterprise Linux (RHEL) is supported.
+RHADS is designed as an **add-on offering for https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift^] and https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus[Red Hat OpenShift Platform Plus^]**. Additionally, using https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer[Red Hat Trusted Artifact Signer^] to sign/verify artifacts and https://developers.redhat.com/products/trusted-profile-analyzer/overview[Red Hat Trusted Profile Analyzer^] to analyze software profiles on Red Hat Enterprise Linux (RHEL) is supported.
 
-*   **Deployment Locations**: RHADS components can be deployed wherever OpenShift is deployed, including on https://azure.microsoft.com/en-us/products/openshift[Azure Red Hat OpenShift (ARO)] and https://aws.amazon.com/rosa/[Red Hat OpenShift Service on AWS (ROSA)]. Crucially, **RHADS can also be deployed on non-OpenShift Kubernetes platforms**.
+*   **Deployment Locations**: RHADS components can be deployed wherever OpenShift is deployed, including on https://azure.microsoft.com/en-us/products/openshift[Azure Red Hat OpenShift (ARO)^] and https://aws.amazon.com/rosa/[Red Hat OpenShift Service on AWS (ROSA)^]. Crucially, **RHADS can also be deployed on non-OpenShift Kubernetes platforms**.
 *   **Managed Offering**: It is **not available as a managed offering**; RHADS components are self-managed by the customer.
 *   **Bare Metal**: RHADS can be sold on bare metal OpenShift clusters exclusively. For non-OpenShift clusters on bare metal, per-core and per-user options should be used.
 
@@ -132,12 +132,12 @@ RHADS components and the complementary developer tools can be installed in a var
 | Deployment Type | Features and Capabilities
 
 | Local (Developer Desktop) Install
-a| * *https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub Local]* is a complementary feature of RHADS designed for local development and testing of Red Hat Developer Hub components, such as plugins and templates. It enables platform engineers to run RHDH directly on their local machines without the need for a full Kubernetes setup, simplifying development by allowing direct installation with Docker or Podman. Whether you need to validate the configuration of software catalogs, write and test TechDocs, or build RHDH dynamic plugins, RHDH Local simplifies the process, allowing you to iterate quickly and troubleshoot locally before deploying changes to a production system. https://developers.redhat.com/blog/2025/03/31/rhdh-local-test-develop-locally-red-hat-developer-hub-using-containers[Learn more]
-* *https://podman-desktop.io/[Podman Desktop]* is designed for local development and explicitly supports air-gapped installation. It provides a graphical user interface (GUI) for managing containers and Kubernetes directly on a developer's machine, allowing for building, running, and deploying containerized applications locally, thereby reducing "works on my machine" issues by ensuring consistent environments. Podman Desktop also includes an AI Lab extension for experimenting with AI locally. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on managed OpenShift services like ARO and ROSA.
-* *https://developers.redhat.com/products/redhat-support/overview[Red Hat IDE Plugins]* enable local coding and integrate Red Hat ecosystem technologies directly into popular Integrated Development Environments.
+a| * *https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub Local^]* is a complementary feature of RHADS designed for local development and testing of Red Hat Developer Hub components, such as plugins and templates. It enables platform engineers to run RHDH directly on their local machines without the need for a full Kubernetes setup, simplifying development by allowing direct installation with Docker or Podman. Whether you need to validate the configuration of software catalogs, write and test TechDocs, or build RHDH dynamic plugins, RHDH Local simplifies the process, allowing you to iterate quickly and troubleshoot locally before deploying changes to a production system. https://developers.redhat.com/blog/2025/03/31/rhdh-local-test-develop-locally-red-hat-developer-hub-using-containers[Learn more^]
+* *https://podman-desktop.io/[Podman Desktop^]* is designed for local development and explicitly supports air-gapped installation. It provides a graphical user interface (GUI) for managing containers and Kubernetes directly on a developer's machine, allowing for building, running, and deploying containerized applications locally, thereby reducing "works on my machine" issues by ensuring consistent environments. Podman Desktop also includes an AI Lab extension for experimenting with AI locally. While a community project, it receives Cooperative Community Support for Red Hat customers, including those on managed OpenShift services like ARO and ROSA.
+* *https://developers.redhat.com/products/redhat-support/overview[Red Hat IDE Plugins^]* enable local coding and integrate Red Hat ecosystem technologies directly into popular Integrated Development Environments.
 
 | Disconnected/Air-Gapped Environment deployments
-a| *https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub]*
+a| *https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub^]*
 
 * Supports fully and partially disconnected environments on OpenShift & xKS.
 ** If you are using a supported Kubernetes platform in a fully disconnected or partially disconnected environment, you can install Red Hat Developer Hub by using the Helm chart. Supported Kubernetes platforms include the following:
@@ -148,22 +148,22 @@ a| *https://developers.redhat.com/products/developer-hub[Red Hat Developer Hub]*
 * Requires access to a local image mirror.
 * Includes a customizable script to mirror dependencies.
 
-*https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer[Red Hat Trusted Artifact Signer]*
+*https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-artifact-signer[Red Hat Trusted Artifact Signer^]*
 
 * Supports offline verification using a cloned TUF Trust Root.
 * Validates against a trusted, local state of the transparency log.
 * Ensures provenance and integrity without a live connection to Rekor's servers.
 
-*https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-profile-analyzer[Red Hat Trusted Profile Analyzer]*
+*https://www.redhat.com/en/technologies/cloud-computing/openshift/trusted-profile-analyzer[Red Hat Trusted Profile Analyzer^]*
 
 * Supports offline analysis of software profiles.
 * Requires mirroring/cloning of Advisory and CVE data sources.
 * Must be configured via its API to use the cloned data sources.
 
 | Self-Managed OpenShift and Managed OpenShift Cloud Services deployments
-a| * RHADS is designed as an add-on offering for https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift] and https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus[OpenShift Platform Plus] and can be deployed wherever OpenShift is deployed, including on-premises, private cloud, and public cloud environments.
+a| * RHADS is designed as an add-on offering for https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift^] and https://www.redhat.com/en/technologies/cloud-computing/openshift/platform-plus[OpenShift Platform Plus^] and can be deployed wherever OpenShift is deployed, including on-premises, private cloud, and public cloud environments.
 * RHADS can also be sold and deployed on bare metal OpenShift clusters exclusively.
-* Furthermore, https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-developer-suite[Red Hat Advanced Developer Suite] can be deployed on non-OpenShift Kubernetes platforms, and customers can purchase it on a per-core or per-user basis for these environments.
+* Furthermore, https://www.redhat.com/en/products/advanced-developer-suite[Red Hat Advanced Developer Suite^] can be deployed on non-OpenShift Kubernetes platforms, and customers can purchase it on a per-core or per-user basis for these environments.
 
 |===
 

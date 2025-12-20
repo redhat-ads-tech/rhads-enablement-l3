@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+#
+# Check if logged into OpenShift cluster
+echo "Checking OpenShift login status..."
+if ! oc whoami &>/dev/null; then
+    echo "Error: Not logged into OpenShift cluster"
+    echo "Please log in and try again"
+    exit 1
+fi
+
+# Get current user and server info
+CURRENT_USER=$(oc whoami)
+CURRENT_SERVER=$(oc whoami --show-server)
+echo "Logged in as: $CURRENT_USER"
+echo "Connected to: $CURRENT_SERVER"
+
+echo "Fetching L3 Enablement related info from OpenShift..."
+
+# Get the console URL from the console route
+OPENSHIFT_CLUSTER_CONSOLE_URL=$(oc get route console -n openshift-console -o jsonpath='{.spec.host}')
+if [ -z "$OPENSHIFT_CLUSTER_CONSOLE_URL" ]; then
+    echo "Error: Could not retrieve console URL"
+    exit 1
+fi
+echo "Console URL: https://$OPENSHIFT_CLUSTER_CONSOLE_URL"
+
+# get ingress domain from ingresscontroller
+OPENSHIFT_CLUSTER_INGRESS_DOMAIN=$(oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.status.domain}')
+if [ -z "$OPENSHIFT_CLUSTER_INGRESS_DOMAIN" ]; then
+    echo "Error: Could not determine ingress domain"
+    exit 1
+fi
+echo "Ingress domain: $OPENSHIFT_CLUSTER_INGRESS_DOMAIN"
+
+# Get RHDH URL from route
+RHDH_URL=$(oc get route backstage-developer-hub -n tssc-dh -o jsonpath='{.spec.host}')
+if [ -z "$RHDH_URL" ]; then
+    echo "Error: Could not retrieve RHDH URL"
+    exit 1
+fi
+echo "RHDH URL: https://$RHDH_URL"
+
+# Get RHDH user password from secret
+RHDH_USER_PASSWORD=$(oc get secret tssc-developer-hub-env -n tssc-dh -o jsonpath='{.data.KEYCLOAK_CLIENT_SECRET}' | base64 -d)
+if [ -z "$RHDH_USER_PASSWORD" ]; then
+    echo "Error: Could not retrieve RHDH user password"
+    exit 1
+fi
+echo "RHDH user password retrieved"
+
+# Get Quay URL from secret
+QUAY_URL=$(oc get secret tssc-developer-hub-env -n tssc-dh -o jsonpath='{.data.QUAY__URL}' | base64 -d)
+if [ -z "$QUAY_URL" ]; then
+    echo "Error: Could not retrieve Quay URL"
+    exit 1
+fi
+echo "Quay URL: $QUAY_URL"
+
+# Get ACS URL from route
+ACS_URL=$(oc get route central -n tssc-acs -o jsonpath='{.spec.host}')
+if [ -z "$ACS_URL" ]; then
+    echo "Error: Could not retrieve ACS URL"
+    exit 1
+fi
+echo "ACS URL: https://$ACS_URL"
+
+# Get ACS admin password from secret
+ACS_ADMIN_PASSWORD=$(oc get secret central-htpasswd -n tssc-acs -o jsonpath='{.data.password}' | base64 -d)
+if [ -z "$ACS_ADMIN_PASSWORD" ]; then
+    echo "Error: Could not retrieve ACS admin password"
+    exit 1
+fi
+echo "ACS admin password retrieved"
+
+echo "Starting build process..."
+echo "Removing old site..."
+rm -rf ./www/*
+echo "Building new site..."
+
+podman run --rm --name showroom-builder --platform linux/amd64 \
+  -v "./:/antora:z" \
+  docker.io/antora/antora --attribute openshift_console_url="https://$OPENSHIFT_CLUSTER_CONSOLE_URL" \
+  --attribute openshift_cluster_ingress_domain="$OPENSHIFT_CLUSTER_INGRESS_DOMAIN" \
+  --attribute product_name_rhdh="Red Hat Developer Hub" \
+  --attribute rhdh_url="https://$RHDH_URL" \
+  --attribute rhdh_user="user1" \
+  --attribute rhdh_user_password="$RHDH_USER_PASSWORD" \
+  --attribute quay_url="$QUAY_URL" \
+  --attribute quay_admin_user="quayadmin" \
+  --attribute quay_admin_password="$RHDH_USER_PASSWORD" \
+  --attribute openshift_admin_user="admin" \
+  --attribute openshift_admin_password="admin-password" \
+  --attribute acs_url="https://$ACS_URL" \
+  --attribute acs_admin_user="admin" \
+  --attribute acs_admin_password="$ACS_ADMIN_PASSWORD" \
+  default-site.yml
+
+echo "Build process complete. Check the ./www folder for the generated site."
+echo "To view the site locally, run the following command: utilities/lab-serve"
+echo "If already running then browse to http://localhost:8080/index.html"

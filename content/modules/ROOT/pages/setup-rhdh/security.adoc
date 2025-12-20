@@ -1,0 +1,327 @@
+= Configure Role-Based Access Control (RBAC)
+
+Role-Based Access Control (RBAC) enables fine-grained permission management in {product_rhdh_name}, allowing you to control user access to specific features, views, and catalog entities based on their roles, group, and other properties. This integration provides administrators with the ability to enforce security policies and ensure users only access resources appropriate for their roles.
+
+RBAC in {product_rhdh_name} enables:
+
+* Control access to specific features and functionality, including plugin-provided capabilities
+* Restrict access to particular views and interfaces within the developer portal
+* Limit visibility to subsets of entities in the Software Catalog
+* Define granular permissions for different user groups and individual users
+
+Configuring RBAC requires:
+
+. Enabling the permission plugin in your {product_rhdh_name} configuration
+. Designating RBAC administrators with policy management privileges  
+. Creating and configuring role-based policies for users and groups
+. Testing and validating the policies
+
+== Understanding RBAC Policies
+
+RBAC rules in {product_rhdh_name} are applied to both individual *Users* and *Groups*. The system follows a *deny by default* security policy, meaning that once RBAC is enabled, users will have no access to any resources unless explicitly granted through RBAC policies.
+
+[WARNING]
+====
+Enabling RBAC will immediately restrict feature access for all users except designated administrators. In production scenarios, make sure to define your policies ahead of time using the declarative option or at a time that minimizes end-user impact.
+====
+
+RBAC policies can be managed in two ways:
+
+* *Through the UI*: Designated administrators can create and manage policies using the Administration interface
+* *Through configuration files*: Policies can be defined using Casbin rules in CSV format and mounted as volumes
+
+This exercise will initially utilize the UI-based approach so you can become familiar with RBAC concepts, then the configuration file approach will be used.
+
+== Enable and Configure the Permission Plugin
+
+The permission plugin provides the RBAC functionality for {product_rhdh_name}. You'll need to add this plugin to your dynamic plugin configuration.
+
+=== Add the RBAC Dynamic Plugin
+
+. Log in to the {openshift_console_url}[OpenShift Web Console^] using the following credentials:
+  * Username: `{openshift_admin_user}`
+  * Password: `{openshift_admin_password}`
+. Navigate to *Workloads > ConfigMaps* and select the *{m2_rhdh_plugins_cm_name}* ConfigMap (make sure the project is set to *{m2_rhdh_project}*).
+. Edit the ConfigMap to include the RBAC plugin in the `plugins` entry.
++
+[source,yaml,role=execute]
+----
+- package: ./dynamic-plugins/dist/backstage-community-plugin-rbac
+  disabled: false
+----
+. Click *Save*.
+
+=== Configure the RBAC Plugin
+
+To manage RBAC policies though the {product_rhdh_name} UI, you must designate specific users as RBAC administrators. These users will have permission to create, modify, and delete access policies through the *Administration > RBAC* view in the UI.
+
+. In your {product_rhdh_name} *{m2_rhdh_cm_name}* ConfigMap, add the permission plugin settings to the *app-config.yaml* at the top level (aligned with the existing top-level keys like `app` or `integrations`).
++
+[source,yaml,role=execute,subs=attributes+]
+----
+permission:
+  enabled: true
+  rbac:
+    admin:
+      users:
+        - name: user:default/admin
+----
++
+[NOTE]
+====
+In this exercise you're using `user:default/admin` as the administrative user in the lab environment. Replace this with a valid user entity reference in real-world scenarios - you can view valid user entities in the {product_rhdh_name} Software Catalog by filtering by *Kind: User*.
+====
+. Save the configuration changes and wait for the {product_rhdh_name} instance to restart and apply the new configuration.
+
+== Verify RBAC is Enabled
+
+Once RBAC is enabled, you'll verify that the deny-by-default policy is working correctly and that administrator access is properly configured.
+
+=== Verify Initial Access Restrictions
+
+. Navigate to your {product_rhdh_name} instance and log as *user1*.
+. Observe that access is now restricted:
+  * No entities are visible in the Software Catalog (click _Catalog_ on the left)
+  * Self-service templates are not accessible  (click the `+` button at the top)
+  * No APIs are available (click _APIs_ on the left)
+
+This confirms that the deny-by-default policy is in effect. You can see that no entities are visible to *user1* in the following screenshot.
+
+image::setup-rhdh/security-deny-by-default.png[link=self, window="image"]
+
+=== Confirm Administrator Access
+
+. Log out from {product_rhdh_name} using the dropdown in the top-right corner.
+. Log in again, but as:
+    * *Username*: `{openshift_admin_user}`
+    * *Password*: `{openshift_admin_password}`
+. Select *Catalog* from the side menu.
+. This *admin* user should have full access to entities in the Software Catalog, as shown.
++
+image::setup-rhdh/security-admin-catalog-access.png[link=self, window="image"]
+. Next, select *Administration > RBAC* item in the side menu - the RBAC UI should be displayed.
++
+image::setup-rhdh/security-rbac-view-admin.png[link=self, window="image"]
+
+Now that you've confirmed RBAC is enabled, and that the *admin* user can access the RBAC administration view, it's time to manage RBAC policies.
+
+== Create RBAC Policies
+
+With RBAC enabled and administrator access confirmed, you can now create policies to grant appropriate access to users and groups.
+
+=== Access the RBAC Management Interface
+
+. While logged in as an administrator, navigate to *Administration > RBAC* in the {product_rhdh_name} interface.
+. This interface displays existing policies and provides options to create, modify, and delete access policies.
++
+image::setup-rhdh/security-rbac-view-admin.png[link=self, window="image"]
+. Click the pre-existing *rbac_admin* policy and confirm that your *admin* user is a member.
+
+=== Create a Group-Based Access Policy
+
+You'll create a policy that grants basic catalog viewing permissions to users in the `tssc` group. Recall that the *Group* entities in your Software Catalog have been synchronized from Keycloak.
+
+. Return to the  *Administration > RBAC* screen.
+. Click *Create* to start creating a new policy.
+. Configure the policy with the following settings:
+  * *Policy Name*: `tssc-catalog-view`
+  * *Description*: `Grants basic catalog viewing permissions to TSSC group members`
+  * *Owner*: Empty
++
+image::setup-rhdh/security-rbac-policy-name-desc.png[link=self, window="image"]
++
+[NOTE]
+====
+You can verify that the `tssc` group exists by navigating to the Software Catalog and filtering by *Kind: Group*. Group entity references follow the format `group:[namespace]/[group-name]`, e.g `group:default/tssc`. The *tssc* group has one member: *user1*.
+
+image::setup-rhdh/security-tssc-group.png[link=self, window="image"]
+====
+. Click *Next*.
+. Select the `tssc` group to apply this policy to.
++
+image::setup-rhdh/security-rbac-policy-group.png[link=self, window="image"]
+. Click *Next*.
+
+=== Configure Policy Permissions
+. In the *Add permission policies*, select the *Catalog* plugin.
++ 
+image::setup-rhdh/security-rbac-policy-plugins.png[link=self, window="image"]
+. Expand
+  * `catalog.entity.read` - Allows reading catalog entities
+  * `catalog.entity.refresh` - Allows refreshing entity data  
+  * `catalog.location.read` - Allows reading location information
+. Confirm that your selections match the following screenshot.
++
+image::setup-rhdh/security-rbac-policy-plugin-settings.png[link=self, window="image"]
+. Click *Next* to review your new policy.
++
+image::setup-rhdh/security-rbac-policy-review.png[link=self, window="image"]
+. Click *Create* to save the policy.
+
+Nice work! You created your first RBAC policy - time to validate it's working as intended.
+
+== Validate Policy Implementation
+
+Test the newly created policy to ensure it grants the expected access while maintaining appropriate restrictions.
+
+=== Test Group Member Access
+
+. Log out from {product_rhdh_name}.
+. Log in as a user who is a non-privileged user that's member of the `tssc` group (`{rhdh_user}` / `{rhdh_user_password}`).
+. Visit the Software Catalog to confirm that entities are visible.
+. Select the *HTTP Sink Application* to confirm *{rhdh_user}* can view it.
+. Navigate to the *CD* tab - you should notice a permission error.
++ 
+image::setup-rhdh/security-restricted-user1.png[link=self, window="image"]
+. Additionally, click the three dots in the top-right to confirm you cannot click the *Unregister entity* action.
+
+You just witnessed RBAC in action. Access to Argo CD information is restricted separate to the entities themselves, enabling fine-grained access control.
+
+* The user cannot access the *CD* tab (this requires separate continuous delivery permissions)
+* The user cannot unregister or delete entities  
+* The user cannot import new entities or create new locations
+* Administrative functions remain inaccessible
+
+[NOTE]
+====
+Different {product_rhdh_name} features and plugins require specific permissions. You'll need to create additional policies to grant access to features like continuous delivery views, template creation, or entity management as needed for your organization.
+====
+
+== Using Casbin Files for RBAC Management
+
+Scaling permissions management, ensuring an audit trail for changes, and using a GitOps-based deployment approach are all good reasons to consider using a configuration as code approach for managing RBAC policies. {product_rhdh_name} supports a policy-as-code approach for RBAC via https://casbin.org/docs/policy-storage/[Casbin files^].
+
+In this section you'll learn how to define policies using Casbin and load them into {product_rhdh_name}.
+
+=== Create a Casbin Rules ConfigMap
+
+. Login to the OpenShift Web Console.
+. Ensure the *{m2_rhdh_project}* is selected in the project selector.
+. Expand *Workloads > ConfigMaps* and click *Create ConfigMap*.
+. Select the *Form view*.
+. Set the *Name* to `rbac-policies`.
+. Set the *Key* to `rbac-policies.csv`.
+. Enter the following value in the text field:
++
+[source,csv,role=execute,subs=attributes+]
+----
+p, role:default/location_read, catalog.entity.read, read, allow
+p, role:default/location_read, catalog.location.read, read, allow
+
+p, role:default/platformengineer, catalog.entity.create, create, allow
+p, role:default/platformengineer, catalog.entity.refresh, update, allow
+p, role:default/platformengineer, catalog.entity.delete, delete, allow
+p, role:default/platformengineer, catalog.location.create, create, allow
+p, role:default/platformengineer, catalog.location.delete, delete, allow
+  
+p, role:default/scaffolder_execute, scaffolder.action.execute, use, allow
+p, role:default/scaffolder_execute, scaffolder.template.parameter.read, read, allow
+p, role:default/scaffolder_execute, scaffolder.template.step.read, read, allow
+p, role:default/scaffolder_execute, scaffolder.task.create, create, allow
+p, role:default/scaffolder_execute, scaffolder.task.cancel, use, allow
+p, role:default/scaffolder_execute, scaffolder.task.read, read, allow
+p, role:default/scaffolder_execute, catalog.location.create, create, allow
+
+p, role:default/plugins, topology.view.read, read, allow
+p, role:default/plugins, tekton.view.read, read, allow
+p, role:default/plugins, argocd.view.read, read, allow
+p, role:default/plugins, kubernetes.proxy, use, allow
+
+g, user:default/admin, role:default/location_read
+g, user:default/admin, role:default/platformengineer
+g, user:default/admin, role:default/scaffolder_execute
+g, user:default/admin, role:default/plugins
+
+g, group:default/tssc, role:default/location_read
+g, group:default/tssc, role:default/scaffolder_execute
+g, group:default/tssc, role:default/plugins
+----
+. Scroll down and click *Create*
+
+You created a ConfigMap named *rbac-policies* that contains a file named *rbac-policies.csv*. The Casbin rules create numerous policies that apply to specific roles. For example, the following block creates a role named *location_read* that enables assigned groups and users to read general catalog entities and locations entities:
+
+[source,csv,subs=attributes+]
+----
+p, role:default/location_read, catalog.entity.read, read, allow
+p, role:default/location_read, catalog.location.read, read, allow
+----
+
+This role is later assigned to groups (the *tssc* group) and users (the *admin* user):
+
+[source,csv,subs=attributes+]
+----
+g, user:default/admin, role:default/location_read
+g, group:default/tssc, role:default/location_read
+----
+
+=== Update {product_rhdh_name} RBAC Configurations
+
+To actually use your new RBAC policies you'll need to load the ConfigMap into the {product_rhdh_name} pod, and update the `permissions` block in the *app-config.yaml* to use it.
+
+. Navigate to *Workloads > ConfigMaps* in the *{m2_rhdh_project}* project.
+. Select the *{m2_rhdh_cm_name}* ConfigMap.
+. Choose *Actions > Edit ConfigMap* and select the YAML editor.
+. Update the `permissions` section to include a `policies-csv-file` key that reads the loaded `rbac-policies.csv`, and click *Save*.
++
+[source,yaml,subs=attributes+,role=execute]
+----
+permission:
+  enabled: true
+  rbac:
+    policies-csv-file: /opt/app-root/src/rbac-policies.csv
+    admin:
+      users:
+        - name: user:default/admin
+----
+
+Next, update the Backstage CR to load the new ConfigMap:
+
+. Navigate to your https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/setup-rhdh/rhdh.redhat.com{tilde}v1alpha3{tilde}Backstage/rhdh[Backstage Custom Resource in the OpenShift Web Console^] and click the *YAML* tab.
+. Add the *rbac-policies* ConfigMap by creating a new `extraFiles` section (at the same level as `extraEnvs`) and adding a new `configMaps` section with the name of the ConfigMap you created.
++
+[source,yaml,subs=attributes+,role=execute]
+----
+application:
+  extraFiles:
+    mountPath: /opt/app-root/src
+    configMaps:
+      - name: rbac-policies
+----
++
+image::setup-rhdh/security-casbin-cr.png[link=self, window="image"]
+. Click *Save*.
+. Navigate to *Workloads > Pods* in the OpenShift Web Console and wait for the new {product_rhdh_name} pod to report readiness.
+
+=== Verify the Casbin-based Policies 
+ 
+. Login to {product_rhdh_name} as the `{openshift_admin_user}` user using the password `{openshift_admin_password}`.
+. Visit the *Administration > RBAC* screen.
+. Your new roles should be listed, and reflect the values in the ConfigMap.
++
+image::setup-rhdh/security-casbin-roles-list.png[link=self, window="image"]
+. Click on the `location_read` policy and confirm that the *Modified by* column states that it's managed by the policy file.
++
+image::setup-rhdh/security-casbin-role.png[link=self, window="image"]
+
+You're now equipped to apply RBAC policies to {product_rhdh_name} instances. This is a critical capability for organizations to ensure 
+only designated individuals can make changes to their internal developer portal, and developers only see what's relevant to their team and 
+role.
+
+== Congratulations!
+
+You've successfully installed and configured a {product_rhdh_name} instance with comprehensive integrations! Across this entire module, you accomplished:
+
+* **Installed and deployed {product_rhdh_name}** using the Operator-based method, creating the Backstage Custom Resource and ConfigMap with the initial app-config.yaml configuration
+* **Configured authentication with Keycloak** by enabling the OIDC provider, setting up the Keycloak catalog backend plugin, and synchronizing User and Group entities from Keycloak into the Software Catalog
+* **Enabled dynamic plugin caching** using PersistentVolumeClaims to significantly improve deployment speed and reliability by caching plugin packages across pod restarts
+* **Integrated GitLab for catalog discovery** by configuring the GitLab catalog provider and integrations, enabling automatic discovery and import of catalog-info.yaml files from GitLab repositories
+* **Integrated Argo CD for continuous delivery visibility** by creating a dedicated readonly user, enabling Argo CD plugins, and configuring entity annotations to display deployment status directly in the Software Catalog
+* **Enabled Role-Based Access Control (RBAC)** by configuring the permission plugin, creating group-based access policies through both UI and Casbin policy files, and implementing fine-grained access controls with deny-by-default security
+
+This knowledge is valuable for customer engagements because it demonstrates:
+
+* **Complete platform setup**: You can guide customers through the full installation and configuration process, from initial Operator deployment through comprehensive integrations with their existing tooling
+* **Best practices for production deployments**: The combination of plugin caching, proper secret management, and RBAC shows customers how to build robust, secure, and performant {product_rhdh_name} instances. Other modules go deeper into production-ready best practices for other components in the RHADS stack.
+* **Integration patterns**: Experience with Keycloak, GitLab, and Argo CD integrations enables you to help customers connect {product_rhdh_name} to their authentication providers, source control systems, and CI/CD platforms
+* **Security and governance**: The RBAC implementation demonstrates how to enforce access controls and ensure developers only see resources appropriate for their roles, critical for enterprise environments
+* **Scalable configuration management**: Using ConfigMaps, Secrets, and policy-as-code approaches shows customers how to manage {product_rhdh_name} configurations at scale while maintaining audit trails and version control

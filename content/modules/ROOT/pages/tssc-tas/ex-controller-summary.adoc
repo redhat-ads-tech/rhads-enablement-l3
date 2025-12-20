@@ -1,0 +1,75 @@
+:imagesdir: ../../assets/images
+
+= Admission Controllers Summary
+
+In the last chapters, we have learned 
+
+* how *Tekton Chains* can sign images and create signed attestations of the build process
+* how we can build our own "predicates" and create our own signed attestations from them
+* how *Enterprise Contract* (*Conforma*) can be used to validate attestations using complex `rego` policies and rules
+* how we can create our own policies and rules to validate our own custom attestations using *Enterprise Contract*
+* how Red Hat's build of the *Sigstore Admission Controller* can validate
+** image signatures, both "key-ful" and keyless
+** the existence of attestations
+** the attestations themselves, based on `rego` policies
+* how *Red Hat Advanced Cluster Security for Kubernetes* (RHACS) 
+** can validate image signatures, both "key-ful" and keyless
+** can use ACS policies to control the admission of images that don't conform to our security standards or best practices
+
+== Which admission controller do I use?
+
+Simple answer: *_Both!_* 😉
+
+In an ideal world, our customers should be using both, since (while they have an overlap), they focus on different things:
+
+[cols="2,1,1,1"]
+|===
+| ^|*Policy Engine* 2+^|*k8s Admission Controllers*
+| ^|*ec (Conforma)* ^|*Sigstore* ^|*ACS*
+
+|*Validate image signatures* ^|✅ ^|✅ ^|✅
+
+4+|*Can validate images based on*
+|Image OCI Metadata ^|❌ ^|✅ ^|✅
+|Available attestations ^|✅ ^|✅ ^|❌
+|Attestation data ^|✅ ^|✅ ^|❌
+|Image vulnerability data ^|❌ ^|❌ ^|✅
+|Image contents ^|❌ ^|❌ ^|✅
+|===
+
+While the *Sigstore Admission Controller* (and `ec`, for that matter) focus on the *HOW* 
+
+* how was it built (the build process)
+* what source and input was used
+* any other process steps attested
+
+the *ACS Admission Controller* focuses on the *WHAT*
+
+* what components are in the image
+* what vulnerabilities do we have in the image
+
+In a production environment, we would
+
+. Create our build attestations (SLSA and more) using *Tekton Chains* or other tools (`cosign` in GitHub Actions,etc)
+. Sign our images (and attestations) using *Tekton Chains* or directly via *`cosign`*
+. In our CD pipeline (e.g. release pipeline), verify compliance and integrity using *`ec`* (*Enterprise Contract / Conforma*) and its collection of `rego` policies (or our own)
+
+To avoid by deployment pipeline bypass, we would
+
+. Use the *Sigstore Admission Controller*, define `ClusterImagePolicies` to verify signatures, attestations and build process compliance (by checking SLSA attestations directly using `rego` policies or by checking for custom `ec` attestations)
+. Use the *ACS Admission Controller* to verify image security compliance (CVEs, Content) based on ACS policies.
+
+[IMPORTANT]
+====
+Reducing ACS to its _admission controller capabilities_ doesn't do it justice and would be a mistake! ACS can + 
+
+* identify abnormal behaviour in running containers by defining baselines (what is considered normal behaviour), both in terms of running processes and network activity.
+* detect unwanted/forbidden running processes in containers
+* manage cluster compliance against industry controls (CIS, HIPAA, etc)
+* analyse network traffic and suggest (and apply) network policies
+
+...to name just a few capabilities. 
+
+However, this L3 experience is focused on Red Hat Advanced Developer Suite (RHADS) - and while ACS goes hand-in-hand with RHADS, it is an additional SKU (either via OPP - OpenShift Platform Plus, together with ACM, Quay and ODF, or as a standalone ACS SKU).
+
+====

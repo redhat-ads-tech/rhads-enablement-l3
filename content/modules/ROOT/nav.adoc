@@ -112,6 +112,5 @@
 *** xref:ai-safety/labs/lab-modelsignval.adoc[Hands-on Lab: Model signing and validation]
 
 * xref:end-to-end.adoc[Module 16: RHADS Complete: Summary and Next Steps]
----
 
 * xref:env.adoc[My lab environment details]

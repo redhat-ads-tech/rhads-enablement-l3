@@ -1,0 +1,9 @@
+[NOTE]
+====
+*Quick Logout Links*
+
+Prior to starting this module, click the following two links and make sure you log out of previous sessions to prevent errors related to performing actions as the wrong user.
+
+* link:{openshift_console_url}[Logout from OpenShift^,window="_blank"]
+* link:https://gitlab-gitlab.{openshift_cluster_ingress_domain}/users/sign_out[Logout from GitLab^,window="_blank"]
+====

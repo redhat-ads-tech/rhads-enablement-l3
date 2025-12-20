@@ -1,17 +1,35 @@
-= End to End with RHADS
+= RHADS Complete: Summary and Next Steps
 
-== End to End with RHADS
+== Overview
 
-// TODO: Add content for end to end with RHADS
+We've made it to the final module! Here we'll take a look back at everything you've learned about Red Hat Advanced Developer Suite (RHADS). We'll revisit the key concepts we've covered, see how all the components work together, and talk about what comes next on your RHADS journey.
 
-== Complete Workflow
+Below is a high-level summary of each module covered in this workshop. We'll revisit the core concepts to reinforce your understanding of the end-to-end workflow.
 
-// TODO: Add complete workflow
+* **Modules 1-4: Getting Started and Core Setup**
+    - Recap of RHADS architecture, RHDH, TPA, and TAS installation. Understanding the foundational components of RHADS and how they work together to create a comprehensive developer platform.
+* **Modules 5-6: Customization and Orchestration**
+    - Review of customizing RHADS with RHDH configurations and the role of the Orchestrator. Learning how to tailor RHADS to your organization's needs and implement automated workflows that streamline development processes.
+* **Modules 7-9: Security Best Practices**
+    - Summary of RHADS security practices including keyless signing, attestations, SBOMs, and policy enforcement with TPA and TAS. Implementing robust security controls throughout your software supply chain using RHADS components.
+* **Modules 10-12: Trusted Software Supply Chain (TSSC)**
+    - Revisiting RHADS TSSC implementation in OpenShift, integration with RHDH, and patterns for third-party tools. Mastering how to build secure, compliant pipelines with RHADS that integrate security scanning and connect seamlessly with existing CI/CD tools.
+* **Modules 13-14: Artificial Intelligence**
+    - Overview of building AI agents with RHADS and enabling Data Scientists with a secure AI supply chain. Building and deploying AI applications responsibly using RHADS while maintaining security and governance throughout the AI/ML lifecycle.
 
-== Integration Points
+Congratulations on completing the Red Hat Advanced Developer Suite workshop! You are now equipped with the knowledge to build a secure, efficient, and customized developer platform that accelerates application delivery while enforcing security and compliance.
 
-// TODO: Add integration points
+We have demonstrated how RHADS empowers platform engineering teams to:
 
-== Summary and Next Steps
+- **Increase Developer Productivity:** By providing self-service tools and golden paths.
+- **Strengthen Security Posture:** By integrating a trusted software supply chain from the start.
+- **Embrace AI Innovation:** By creating a secure and scalable environment for AI/ML workloads.
 
-// TODO: Add summary and next steps 
+=== What's Next?
+
+Now that you've mastered how Red Hat Advanced Developer Suite (RHADS) empowers organizations to "move fast and stay safe" by increasing developer productivity, strengthening software supply chain security, and enabling AI-powered development, it's time to bring that knowledge to life. The Red Hat Demo Platform features a https://catalog.demo.redhat.com/catalog?search=RHADS&item=babylon-catalog-prod%2Fenterprise.redhat-ads-demo.prod[comprehensive RHADS demo environment] (login required) that provides a turnkey solution to showcase RHADS's unified internal developer platform, trusted software supply chain capabilities, and streamlined tools. Leverage this tool to confidently demonstrate how RHADS streamlines development workflows and reduces risk across the entire software development lifecycle.
+
+For additional hands-on exploration and self-paced learning, Red Hat offers comprehensive https://www.redhat.com/en/interactive-labs[interactive labs] that complement your RHADS knowledge. These include step-by-step https://www.redhat.com/en/interactive-labs/openshift[OpenShift interactive experiences] where you can practice container orchestration, explore CI/CD pipelines with Tekton, and experiment with DevOps workflows. You can also try OpenShift through the https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[developer sandbox] for immediate hands-on experience. These browser-based labs let you dive deeper into containerization workflows and cloud-native development patterns that form the foundation of RHADS implementations, perfect for reinforcing yours and your customer's understanding in a guided environment.
+
+Now go forth and build amazing things with RHADS! 🚀
+
