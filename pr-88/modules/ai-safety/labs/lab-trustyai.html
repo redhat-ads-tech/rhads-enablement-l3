@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TrustyAI: OpenShift AI Bias Monitoring :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/ai-safety/labs/lab-trustyai.html">
+    <link rel="prev" href="lab-intro-ai-safety.html">
+    <link rel="next" href="lab-modelsignval.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="icon" href="../../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#setup-rhdh/foundations.adoc">Module 2: Setup Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#setup-rhdh/foundations.adoc">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/foundations.adoc#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#setup-rhdh/setup-rhdh.adoc">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/setup-rhdh.adoc">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/configure-your-first-plugin.adoc">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/plugin-cache.adoc">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/connect-gitlab-scm.adoc">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/connect-argocd.adoc">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-rhdh/security.adoc">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#setup-tpa/setup.adoc">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-tpa/setup.adoc">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-tpa/setup-openshift.adoc">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-tpa/setup-rhel.adoc">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#setup-tas/setup.adoc">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-tas/setup.adoc">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-tas/setup-openshift.adoc">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-tas/setup-rhel.adoc">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#rhdh-ui/foundations.adoc">Module 5: Red Hat Developer Hub User Interface</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#rhdh-ui/foundations.adoc">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#rhdh-ui/customize-rhdh.adoc">Hands-on Lab: Customize RHDH Appearance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#rhdh-ui/techdocs-foundations.adoc">TechDocs Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#rhdh-ui/techdocs-lab-user.adoc">TechDocs Lab 1: Creating and Editing TechDocs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#rhdh-orchestrator/overview.adoc">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#rhdh-orchestrator/overview.adoc">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#rhdh-orchestrator/install.adoc">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhdh-orchestrator/install.adoc">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhdh-orchestrator/workflows.adoc">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhdh-orchestrator/advanced-workflow.adoc">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#security-practices/overview.adoc">Module 7: Getting started with security best practices</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#security-practices/overview.adoc">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#security-practices/security-practices.adoc">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#security-practices/understanding-keyless.adoc">Understanding Keyless Signing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#security-practices/exercises.adoc">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#security-practices/ex1-signing-images.adoc">Image Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#security-practices/ex2-git-signing.adoc">Commit Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#security-practices/ex3-provenance.adoc">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#security-practices/ex4-sboms.adoc">SBOM Creation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#tssc-tpa/tssc-tpa.adoc">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#tssc-tpa/correlation.adoc">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#tssc-tpa/exercises.adoc">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#tssc-tpa/ex1-uploading-sboms.adoc">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#tssc-tpa/ex2-ui-usecases.adoc">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#tssc-tpa/ex3-licenses.adoc">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#tssc-tas/tssc-tas.adoc">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#tssc-tas/exercises.adoc">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#tssc-tas/ex1-chains.adoc">Tekton Chains</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#tssc-tas/ex2-enterprise-contract.adoc">Conforma and Rego policies</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#tssc-tas/ex3-sigstore-controller.adoc">Sigstore Admission Controller</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="#tssc-tas/ex3.1-sigstore-prep.adoc">Preparation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="#tssc-tas/ex3.2-sigstore-install.adoc">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="#tssc-tas/ex3.3-sigstore-config.adoc">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="#tssc-tas/ex3.4-sigstore-cip.adoc">ClusterImagePolicies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#tssc-tas/ex4-acs-controller.adoc">RHACS Admission Controller</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#tssc-tas/ex-controller-summary.adoc">Admission Controllers Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#production-rhdh/tssc-rhdh.adoc">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#production-rhdh/introduction.adoc">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#production-rhdh/introduction.adoc">An overview of the composite product set (RHADS)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#production-rhdh/lab.adoc">Hands on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#production-rhdh/lab.adoc">Full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-3rdparty-ci.html">Module 11: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc">Module 12: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#self-service-patterns/self-service-patterns.adoc#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#self-service-patterns/lab-intro-self-service-patterns.adoc">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#self-service-patterns/lab-intro-self-service-patterns.adoc#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#self-service-patterns/lab-vm-self-service-patterns.adoc">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#self-service-patterns/lab-namespace-self-service-patterns.adoc">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#self-service-patterns/lab-db-self-service-patterns.adoc">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../ai-intro.html">Module 13: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc">Module 14: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai.adoc#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.adoc">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.adoc#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.adoc">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.adoc">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.adoc">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.adoc#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.adoc">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.adoc">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../ai-safety-intro.html">Module 15: AI Safety</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../ai-safety-intro.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../ai-safety-intro.html">Foundations: Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../ai-safety-trustyai.html#trustyAI">Foundations: TrustyAI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../ai-safety-modelsignval.html#modelsignval">Foundations: Model Signing and Model Validation</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-intro-ai-safety.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-intro-ai-safety.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="lab-trustyai.html">Hands-on Lab: Trusty AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-modelsignval.html">Hands-on Lab: Model signing and validation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../end-to-end.html">Module 16: RHADS Complete: Summary and Next Steps</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="#env.adoc">My lab environment details</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dev Mode</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../customer-configurations.html">Customer Configurations and Third-party Integrations</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../customizing-rhdh.html">Customizing RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../orchestrator-overview.html">Orchestrator Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../rhads-ai.html">RHADS for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../rhads-datascience.html">RHADS for Data Science</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../security-practices.html">Security Best Practices</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../self-service-patterns.html">Integration Patterns</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../setup-rhdh.html">Setup RHDH</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../setup-tas.html">Setup TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../setup-tpa.html">Setup TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-overview.html">Trusted Software Supply Chain</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-rhdh.html">Trusted Software Supply Chain with RHDH for Production</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-tas.html">Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../tssc-tpa.html">Trusted Software Supply Chain with TPA</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../attrs-page.html">Attributes Page</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="../ai-safety-intro.html">Module 15: AI Safety</a></li>
+    <li><a href="lab-intro-ai-safety.html">Hands-on Lab</a></li>
+    <li><a href="lab-trustyai.html">Hands-on Lab: Trusty AI</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">TrustyAI: OpenShift AI Bias Monitoring</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_what_youll_learn">What You&#8217;ll Learn</a></li>
+<li><a href="#_lab_scenario">Lab Scenario</a></li>
+<li><a href="#_lab_overview">Lab Overview</a></li>
+</ul>
+</li>
+<li><a href="#_enable_user_workload_monitoring">Enable User Workload Monitoring</a></li>
+<li><a href="#_install_and_configure_trustyai">Install and Configure TrustyAI</a>
+<ul class="sectlevel2">
+<li><a href="#_update_the_rhoai_operator_to_include_trustyai">Update the RHOAI Operator to include TrustyAI</a></li>
+<li><a href="#_set_up_tls_configuration">Set up TLS Configuration</a></li>
+<li><a href="#_configure_trustyai">Configure TrustyAI</a></li>
+</ul>
+</li>
+<li><a href="#_deploy_the_model">Deploy the model</a>
+<ul class="sectlevel2">
+<li><a href="#_configure_the_storage">Configure the storage</a></li>
+<li><a href="#_serve_the_model">Serve the model</a></li>
+</ul>
+</li>
+<li><a href="#_initialize_model_data_for_trustyai">Initialize Model Data for TrustyAI</a></li>
+<li><a href="#_explore_the_metrics">Explore the Metrics</a>
+<ul class="sectlevel2">
+<li><a href="#_understanding_trustyais_rest_api">Understanding TrustyAI&#8217;s REST API</a></li>
+<li><a href="#_examining_trustyais_model_metadata">Examining TrustyAI&#8217;s Model Metadata</a></li>
+<li><a href="#_label_data_fields">Label Data Fields</a></li>
+<li><a href="#_understanding_statistical_parity_difference_spd">Understanding Statistical Parity Difference (SPD)</a></li>
+<li><a href="#_check_model_fairness">Check Model Fairness</a></li>
+</ul>
+</li>
+<li><a href="#_schedule_a_fairness_metric_request">Schedule a Fairness Metric Request</a></li>
+<li><a href="#_schedule_an_identity_metric_request">Schedule an Identity Metric Request</a>
+<ul class="sectlevel2">
+<li><a href="#_understanding_identity_metrics">Understanding Identity Metrics</a></li>
+</ul>
+</li>
+<li><a href="#_check_the_metrics">Check the Metrics</a>
+<ul class="sectlevel2">
+<li><a href="#_simulate_some_real_world_data">Simulate Some Real World Data</a></li>
+<li><a href="#_results">Results</a></li>
+</ul>
+</li>
+<li><a href="#_conclusion">Conclusion</a></li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Welcome to this hands-on lab where you&#8217;ll learn how to implement AI bias monitoring using <strong>TrustyAI</strong>, a core component of <strong>Red Hat OpenShift AI</strong>. This lab will equip you with the technical knowledge to deploy and configure TrustyAI for continuous fairness monitoring of production ML models.</p>
+</div>
+<div class="sect2">
+<h3 id="_what_youll_learn"><a class="anchor" href="#_what_youll_learn"></a>What You&#8217;ll Learn</h3>
+<div class="paragraph">
+<p>By the end of this lab, you&#8217;ll be able to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Deploy and configure TrustyAI on Red Hat OpenShift AI</p>
+</li>
+<li>
+<p>Implement real-time bias monitoring for deployed models</p>
+</li>
+<li>
+<p>Understand key fairness metrics (Statistical Parity Difference)</p>
+</li>
+<li>
+<p>Detect bias drift between training and production data</p>
+</li>
+<li>
+<p>Configure TrustyAI as part of a comprehensive AI safety strategy</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lab_scenario"><a class="anchor" href="#_lab_scenario"></a>Lab Scenario</h3>
+<div class="paragraph">
+<p>In this lab, you&#8217;ll deploy TrustyAI to monitor two loan default prediction models. The scenario simulates a production environment where models need to remain fair across different demographic groups throughout their lifecycle.</p>
+</div>
+<div class="paragraph">
+<p>During this lab, you&#8217;ll work directly on an <strong>OpenShift cluster</strong> using the <strong>Web Console</strong> and <strong>Web Terminal</strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lab_overview"><a class="anchor" href="#_lab_overview"></a>Lab Overview</h3>
+<div class="paragraph">
+<p>You&#8217;ll work with two candidate neural network models (Model Alpha and Model Beta) that predict loan default risk. Both models analyze the same applicant features:</p>
+</div>
+<div class="paragraph">
+<p><strong>Demographic Information:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Age (in days)</p>
+</li>
+<li>
+<p>Is Male-Identifying?</p>
+</li>
+<li>
+<p>Number of Children</p>
+</li>
+<li>
+<p>Number of Total Family Members</p>
+</li>
+<li>
+<p>Is Partnered?</p>
+</li>
+<li>
+<p>Lives with Parents?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Financial Information:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Total Income</p>
+</li>
+<li>
+<p>Length of Employment (in days)</p>
+</li>
+<li>
+<p>Is Employed?</p>
+</li>
+<li>
+<p>Owns Car?</p>
+</li>
+<li>
+<p>Owns Realty?</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Notice that one of the features is "Is Male-Identifying?"—this is a protected attribute that we&#8217;ll monitor for potential bias. In production, models can inadvertently learn to make decisions based on protected characteristics, even when the model isn&#8217;t explicitly designed to do so.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Both models performed similarly during training, but the real question is: <strong>How will they perform on real-world data, and will they remain fair across different demographic groups?</strong> That&#8217;s exactly what TrustyAI helps us answer.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_enable_user_workload_monitoring"><a class="anchor" href="#_enable_user_workload_monitoring"></a>Enable User Workload Monitoring</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TrustyAI exposes fairness metrics through Prometheus. To collect and visualize these metrics in OpenShift&#8217;s monitoring dashboard, we need to enable user workload monitoring. This allows Prometheus to scrape metrics from user namespaces like our model-namespace.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Enable user workload monitoring by creating a ConfigMap in the openshift-monitoring namespace.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Copy the following content:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-import-yaml.png" target="image"><img src="../../_images/ai-safety/openshift-import-yaml.png" alt="OpenShift Import YAML"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Paste the content and click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>Configure user workload monitoring to retain metric data for 15 days.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Copy the following content:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-workload-monitoring-config
+  namespace: openshift-user-workload-monitoring
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: ""
+data:
+  config.yaml: |
+    prometheus:
+      logLevel: debug
+      retention: 15d</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+
+Click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on the current screen, paste the content, and click <strong>Create</strong>.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This retention period allows you to analyze bias trends over time. Later in the lab, we&#8217;ll query these metrics to monitor fairness.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_install_and_configure_trustyai"><a class="anchor" href="#_install_and_configure_trustyai"></a>Install and Configure TrustyAI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat OpenShift AI is already installed on your cluster. However, TrustyAI is an optional component that needs to be explicitly enabled. Let&#8217;s walk through the installation and configuration process.</p>
+</div>
+<div class="paragraph">
+<p>In the <strong>OpenShift Web Console</strong>, click on <strong>Operators &#8594; Installed Operators</strong> and select the <strong>RH OpenShift AI</strong> operator or use the following URL  {openshift_console_url}/k8s/ns/redhat-ods-operator/operators.coreos.com<sub>v1alpha1</sub>ClusterServiceVersion/rhods-operator.2.25.0[Web Console^]</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If you need to re-login to the OpenShift Cluster: {openshift_console_url}[Web Console^]</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use your user credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: {openshift_admin_user}</p>
+</li>
+<li>
+<p><strong>Password</strong>: {openshift_admin_password}</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_update_the_rhoai_operator_to_include_trustyai"><a class="anchor" href="#_update_the_rhoai_operator_to_include_trustyai"></a>Update the RHOAI Operator to include TrustyAI</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the <strong>Data Science Cluster</strong> tab and click on <strong>Edit</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/trustyAI-cluster.png" target="image"><img src="../../_images/ai-safety/trustyAI-cluster.png" alt="TrustyAI"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Edit the <strong>DataScienceCluster</strong> and update the <strong>TrustyAI</strong> component to be <strong>Managed</strong> so it will be installed in the cluster.</p>
+<div class="paragraph">
+<p>Remove the current content associated with trustyAI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">      eval:
+        lmeval:
+          permitCodeExecution: deny
+          permitOnline: deny</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace the <strong>managementState</strong> to Managed:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">  Managed</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ensure you have the correct indentation:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/trutyAI-operatorupdate.png" target="image"><img src="../../_images/ai-safety/trutyAI-operatorupdate.png" alt="TrustyAI"></a></span></p>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_set_up_tls_configuration"><a class="anchor" href="#_set_up_tls_configuration"></a>Set up TLS Configuration</h3>
+<div class="paragraph">
+<p>Now we need to configure secure communication between your models and TrustyAI.</p>
+</div>
+<div class="paragraph">
+<p><strong>Why This Matters:</strong> When models make predictions, TrustyAI needs to observe the input data and predictions to calculate fairness metrics. In production environments, this data often contains PII (Personally Identifiable Information) or sensitive business data. TLS encryption ensures this data remains secure in transit.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll integrate TrustyAI&#8217;s Certificate Authority (CA) bundle into the OpenShift AI model controller so that model payloads are encrypted end-to-end.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In OpenShift, click on the <strong>OpenShift  Web Terminal</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal.png" target="image"><img src="../../_images/ai-safety/openshift-terminal.png" alt="OpenShift  Web Terminal"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click <strong>Start</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal-start.png" target="image"><img src="../../_images/ai-safety/openshift-terminal-start.png" alt="OpenShift Web Terminal Start"></a></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the following content and paste it on the terminal</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE=redhat-ods-applications
+oc patch configmap inferenceservice-config -n $NAMESPACE --type merge -p '{"metadata": {"annotations": {"opendatahub.io/managed": "false"}}}'
+IMAGE=$(oc get configmap inferenceservice-config -n $NAMESPACE -o json | jq -r '.data.agent | fromjson | .image')
+oc patch configmap inferenceservice-config \
+    -n "$NAMESPACE" \
+    --type json \
+    -p="[{
+      \"op\": \"add\",
+      \"path\": \"/data/logger\",
+      \"value\": \"{\\\"image\\\" : \\\"$IMAGE\\\",\\\"memoryRequest\\\": \\\"100Mi\\\",\\\"memoryLimit\\\": \\\"1Gi\\\",\\\"cpuRequest\\\": \\\"100m\\\",\\\"cpuLimit\\\": \\\"1\\\",\\\"defaultUrl\\\": \\\"http://default-broker\\\",\\\"caBundle\\\": \\\"kserve-logger-ca-bundle\\\",\\\"caCertFile\\\": \\\"service-ca.crt\\\",\\\"tlsSkipVerify\\\": false}\"
+    }]"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Copy the following content and paste it on the terminal</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Review the output:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">configmap/inferenceservice-config patched
+configmap/inferenceservice-config patched</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The two "patched" messages confirm that the KServe inference service configuration has been updated to include TrustyAI&#8217;s CA bundle. This enables secure, encrypted communication between deployed models and the TrustyAI service when logging prediction data for bias monitoring.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_trustyai"><a class="anchor" href="#_configure_trustyai"></a>Configure TrustyAI</h3>
+<div class="paragraph">
+<p>Let&#8217;s create a dedicated namespace for our loan prediction models and deploy the TrustyAI service.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the OpenShift Web console, create a new project in the cluster, click on <strong>Home &#8594; Projects &#8594; Create Project</strong> with the name:</p>
+</li>
+<li>
+<p><strong>model-namespace</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-new-project.png" target="image"><img src="../../_images/ai-safety/openshift-new-project.png" alt="OpenShift New Project"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The following YAML creates four resources for TrustyAI:</p>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ServiceAccount (user-one)</strong>: Creates an identity for authenticating to TrustyAI&#8217;s API endpoints</p>
+</li>
+<li>
+<p><strong>RoleBinding (user-one-view)</strong>: Grants the ServiceAccount permission to view resources in the namespace</p>
+</li>
+<li>
+<p><strong>ConfigMap (kserve-logger-ca-bundle)</strong>: Holds the TLS certificate bundle for secure communication. The annotation automatically populates this with OpenShift&#8217;s CA certificates</p>
+</li>
+<li>
+<p><strong>TrustyAIService</strong>: The main TrustyAI service that stores model inference data in a 1Gi PersistentVolumeClaim, saves data in CSV format, and calculates fairness metrics every 5 seconds</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Copy the following content:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: user-one
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-one-view
+subjects:
+  - kind: ServiceAccount
+    name: user-one
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kserve-logger-ca-bundle
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+data: {}
+---
+apiVersion: trustyai.opendatahub.io/v1
+kind: TrustyAIService
+metadata:
+  name: trustyai-service
+spec:
+  # Optional values for replicas, image and tag. Below are the default values.
+  # replicas: 1
+  # image: quay.io/trustyaiservice/trustyai-service
+  # tag: latest
+  storage:
+    format: "PVC"
+    folder: "/inputs"
+    size: "1Gi"
+  data:
+    filename: "data.csv"
+    format: "CSV"
+  metrics:
+    schedule: "5s"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong></p>
+</li>
+<li>
+<p>Paste the content and click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>You should see a similar screen like this one, showing all resources has been successfully created:</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/import-ok.png" target="image"><img src="../../_images/ai-safety/import-ok.png" alt="OpenShift Import YAML"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verify the <strong>trustyAI service pod</strong> is running by running the following command on the terminal:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see the pod running with two containers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         READY   STATUS    RESTARTS   AGE
+trustyai-service-6d59478756-4pcmh            2/2     Running   0          107s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Congratulations you have successfully configured TrustyAI</strong></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deploy_the_model"><a class="anchor" href="#_deploy_the_model"></a>Deploy the model</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_configure_the_storage"><a class="anchor" href="#_configure_the_storage"></a>Configure the storage</h3>
+<div class="paragraph">
+<p>Models need persistent storage for their binary files. This YAML creates an S3-compatible storage solution using MinIO:</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Service (minio)</strong>: Exposes MinIO on port 9000 for S3-compatible API access</p>
+</li>
+<li>
+<p><strong>Deployment (model-s3-storage-emulator)</strong>: Runs a MinIO container pre-loaded with the loan prediction models</p>
+</li>
+<li>
+<p><strong>Secret (aws-connection-minio-data-connection)</strong>: Contains the credentials and connection details that OpenShift AI uses to access the model storage</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy the following content:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+spec:
+  ports:
+    - name: minio-client-port
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: minio
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-s3-storage-emulator
+  labels:
+    app: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+        maistra.io/expose-route: 'true'
+      name: minio
+    spec:
+      containers:
+        - args:
+            - server
+            - /data1
+          env:
+            - name: MINIO_ACCESS_KEY
+              value:  THEACCESSKEY
+            - name: MINIO_SECRET_KEY
+              value: THESECRETKEY
+          image: quay.io/trustyai_testing/modelmesh-minio-examples:latest
+          name: minio
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-connection-minio-data-connection
+  labels:
+    opendatahub.io/dashboard: 'true'
+    opendatahub.io/managed: 'true'
+  annotations:
+    opendatahub.io/connection-type: s3
+    openshift.io/display-name: Minio Data Connection
+data: #these are dummy values to populate the ODH UI with, and do not correspond to any real AWS credentials
+  AWS_ACCESS_KEY_ID: VEhFQUNDRVNTS0VZ
+  AWS_DEFAULT_REGION: dXMtc291dGg=
+  AWS_S3_BUCKET: bW9kZWxtZXNoLWV4YW1wbGUtbW9kZWxz
+  AWS_S3_ENDPOINT: aHR0cDovL21pbmlvOjkwMDA=
+  AWS_SECRET_ACCESS_KEY: VEhFU0VDUkVUS0VZ
+type: Opaque</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Select the <strong>model-namespace</strong> project and click <strong>Import YAML</strong>  or use the following URL: {openshift_console_url}[Web Console^]/k8s/ns/model-namespace/import</p>
+</li>
+<li>
+<p>Paste the content and click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>You should see a similar screen like this one, showing all resources has been successfully created:</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/import-ok-data.png" target="image"><img src="../../_images/ai-safety/import-ok-data.png" alt="OpenShift Import Data"></a></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_serve_the_model"><a class="anchor" href="#_serve_the_model"></a>Serve the model</h3>
+<div class="paragraph">
+<p>This YAML deploys two loan prediction models (Alpha and Beta) using OpenShift AI:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ServingRuntime (ovms-1.x)</strong>: Defines the OpenVINO Model Server runtime that executes ONNX models. It configures ports, resource limits, and supported model formats</p>
+</li>
+<li>
+<p><strong>InferenceService (demo-loan-nn-onnx-alpha)</strong>: Deploys Model Alpha with 1-4Gi memory, connecting to the MinIO storage at path <code>ovms/loan_model_alpha</code></p>
+</li>
+<li>
+<p><strong>InferenceService (demo-loan-nn-onnx-beta)</strong>: Deploys Model Beta with identical configuration but loads from path <code>ovms/loan_model_beta</code></p>
+<div class="paragraph">
+<p>Both models have authentication enabled (<code>security.opendatahub.io/enable-auth</code>) and Istio sidecar injection for service mesh integration. TrustyAI will monitor both models' predictions for bias.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Next, copy the following content to serve the model:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: serving.kserve.io/v1alpha1
+kind: ServingRuntime
+metadata:
+  name: ovms-1.x
+  annotations:
+    opendatahub.io/accelerator-name: ""
+    opendatahub.io/apiProtocol: REST
+    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
+    opendatahub.io/template-display-name: OpenVINO Model Server
+    opendatahub.io/template-name: kserve-ovms
+    openshift.io/display-name: ovms-1.x
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8888"
+  labels:
+    opendatahub.io/dashboard: "true"
+spec:
+  containers:
+    - name: kserve-container
+      image: quay.io/opendatahub/openvino_model_server:stable-nightly-2024-08-04
+      args:
+        - --model_name={{.Name}}
+        - --port=8001
+        - --rest_port=8888
+        - --model_path=/mnt/models
+        - --file_system_poll_wait_seconds=0
+        - --grpc_bind_address=0.0.0.0
+        - --rest_bind_address=0.0.0.0
+        - --target_device=AUTO
+        - --metrics_enable
+      ports:
+        - containerPort: 8888
+          protocol: TCP
+      volumeMounts:
+        - mountPath: /dev/shm
+          name: shm
+  multiModel: false
+  protocolVersions:
+    - v2
+    - grpc-v2
+  supportedModelFormats:
+    - autoSelect: true
+      name: openvino_ir
+      version: opset13
+    - name: onnx
+      version: "1"
+    - autoSelect: true
+      name: tensorflow
+      version: "1"
+    - autoSelect: true
+      name: tensorflow
+      version: "2"
+    - autoSelect: true
+      name: paddle
+      version: "2"
+    - autoSelect: true
+      name: pytorch
+      version: "2"
+  volumes:
+    - emptyDir:
+        medium: Memory
+        sizeLimit: 2Gi
+      name: shm
+---
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: demo-loan-nn-onnx-alpha
+  annotations:
+    openshift.io/display-name: demo-loan-nn-onnx-alpha
+    security.opendatahub.io/enable-auth: "true"
+    serving.knative.openshift.io/enablePassthrough: "true"
+    sidecar.istio.io/inject: "true"
+    sidecar.istio.io/rewriteAppHTTPProbers: "true"
+  labels:
+    opendatahub.io/dashboard: "true"
+spec:
+  predictor:
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      modelFormat:
+        name: onnx
+        version: "1"
+      resources:
+        limits:
+          cpu: "2"
+          memory: 8Gi
+        requests:
+          cpu: "1"
+          memory: 4Gi
+      runtime: ovms-1.x
+      storage:
+        key: aws-connection-minio-data-connection
+        path: ovms/loan_model_alpha
+---
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: demo-loan-nn-onnx-beta
+  annotations:
+    openshift.io/display-name: demo-loan-nn-onnx-beta
+    security.opendatahub.io/enable-auth: "true"
+    serving.knative.openshift.io/enablePassthrough: "true"
+    sidecar.istio.io/inject: "true"
+    sidecar.istio.io/rewriteAppHTTPProbers: "true"
+  labels:
+    opendatahub.io/dashboard: "true"
+spec:
+  predictor:
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      modelFormat:
+        name: onnx
+        version: "1"
+      resources:
+        limits:
+          cpu: "2"
+          memory: 8Gi
+        requests:
+          cpu: "1"
+          memory: 4Gi
+      runtime: ovms-1.x
+      storage:
+        key: aws-connection-minio-data-connection
+        path: ovms/loan_model_beta</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Import YAML</strong> and paste the content or click <strong>Import More YAML</strong> on the current screen.</p>
+</li>
+<li>
+<p>Click on <strong>Create</strong>.</p>
+</li>
+<li>
+<p>You should see a similar screen like this one, showing all resources has been successfully created:</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/import-ok-model.png" target="image"><img src="../../_images/ai-safety/import-ok-model.png" alt="OpenShift Import Model"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Check the <strong>new pods</strong> by clicking on <strong>Workloads &#8594; Pods</strong> using the <strong>model-namespace</strong> namespace, you should see a similar screen like this:</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> you will see the deployments being updated, expect the new 4-container deployment to briefly coexist with the old 3-container version.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/pods-running.png" target="image"><img src="../../_images/ai-safety/pods-running.png" alt="OpenShift Import Data"></a></span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initialize_model_data_for_trustyai"><a class="anchor" href="#_initialize_model_data_for_trustyai"></a>Initialize Model Data for TrustyAI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before monitoring, TrustyAI needs to know the expected behavior of the model. This is done by uploading a baseline or "training" dataset.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In OpenShift, click on the <strong>OpenShift Web Terminal</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal.png" target="image"><img src="../../_images/ai-safety/openshift-terminal.png" alt="OpenShift  Web Terminal"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click <strong>Start</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal-start.png" target="image"><img src="../../_images/ai-safety/openshift-terminal-start.png" alt="OpenShift Web Terminal Start"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project model-namespace
+git clone https://github.com/redhat-ads-tech/odh-trustyai-demos.git
+cd odh-trustyai-demos/2-BiasMonitoring/kserve-demo
+
+for batch in 0 250 500 750 1000 1250 1500 1750 2000 2250; do
+  scripts/send_data_batch data/training/$batch.json
+done</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The script will run for a few minutes.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You should see the <strong>expected output:</strong> <code>2250 datapoints successfully added to each model</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/data-output.png" target="image"><img src="../../_images/ai-safety/data-output.png" alt="OpenShift Web Terminal Output"></a></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: While the script outputs confirmation messages indicating data reception by TrustyAI, you can also verify the stream in the OpenShift web console.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore_the_metrics"><a class="anchor" href="#_explore_the_metrics"></a>Explore the Metrics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a new query to explore the metrics in OpenShift.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on <strong>Observe &#8594; Metrics</strong> or use the following URL: {openshift_console_url/monitoring/query-browser?query0=}[Web Console^]</p>
+</li>
+<li>
+<p>Click on <strong>Add query</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/query-add-new.png" target="image"><img src="../../_images/ai-safety/query-add-new.png" alt="Metrics"></a></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Metric:</strong> In the <strong>Expression field</strong>, enter the Prometheus metric: <code>trustyai_model_observations_total</code>.</p>
+</li>
+<li>
+<p><strong>Time Settings:</strong> Set the time window to <strong>5 minutes</strong> (top left) and the refresh interval to <strong>15 seconds</strong> (top right).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/query-new-added.png" target="image"><img src="../../_images/ai-safety/query-new-added.png" alt="Metrics"></a></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Verification:</strong> After running the query, confirm that both models are listed, each reporting close to <strong>2250 observed inferences</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-init.png" target="image"><img src="../../_images/ai-safety/metrics-init.png" alt="Metrics"></a></span></p>
+</div>
+<div class="paragraph">
+<p>This total count confirms that TrustyAI has successfully cataloged sufficient inputs and outputs (around 2250 per model) to begin meaningful bias analysis.</p>
+</div>
+<div class="sect2">
+<h3 id="_understanding_trustyais_rest_api"><a class="anchor" href="#_understanding_trustyais_rest_api"></a>Understanding TrustyAI&#8217;s REST API</h3>
+<div class="paragraph">
+<p>TrustyAI can be interacted with via REST API (shown in this lab), Kubernetes CRDs, or Prometheus queries. This lab uses the REST API, which provides five key endpoints:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>/info</strong> - Retrieves model schemas, field names, and observation counts</p>
+</li>
+<li>
+<p><strong>/info/names</strong> - Applies human-readable labels to generic field names (e.g., <code>customer_data_input-3</code> → <code>"Is Male-Identifying?"</code>)</p>
+</li>
+<li>
+<p><strong>/metrics/group/fairness/spd</strong> - Calculates Statistical Parity Difference once and returns the result immediately</p>
+</li>
+<li>
+<p><strong>/metrics/group/fairness/spd/request</strong> - Schedules recurring SPD calculations, exposed to Prometheus as <code>trustyai_spd</code></p>
+</li>
+<li>
+<p><strong>/metrics/identity/request</strong> - Monitors average field values over time to detect data drift, exposed as <code>trustyai_identity</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_examining_trustyais_model_metadata"><a class="anchor" href="#_examining_trustyais_model_metadata"></a>Examining TrustyAI&#8217;s Model Metadata</h3>
+<div class="paragraph">
+<p>We can also verify that TrustyAI sees the models via the /info endpoint:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export TOKEN=$(oc whoami -t)
+echo "TrustyAI Token: $TOKEN"
+TRUSTY_ROUTE=https://$(oc get route/trustyai-service --template={{.spec.host}})
+curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-alpha"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'
+curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-beta"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">// Sample output (abbreviated)
+      "customer_data_input-7": {
+        "type": "DOUBLE",
+        "name": "customer_data_input-7",
+        "columnIndex": 7
+      }
+    },
+    "nameMapping": {}
+  },
+  "outputSchema": {
+    "items": {
+      "predict": {
+        "type": "INT64",
+        "name": "predict",
+        "columnIndex": 11
+      }
+    },
+    "nameMapping": {}
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The output shows the model schema as TrustyAI sees it. Notice that <code>nameMapping</code> is currently empty (<code>{}</code>), meaning the model is still using generic field names like <code>customer_data_input-7</code>. This confirms TrustyAI has registered the models and is tracking their input/output structure, but the fields need human-readable labels for meaningful bias analysis.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>+
+The output of each curl command is a JSON file containing schema and volume details for the model, specifically:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The name, data type, and position of all input and output fields.</p>
+</li>
+<li>
+<p>The total running count of observed input-output pairs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/redhat-ads-tech/odh-trustyai-demos/blob/main/2-BiasMonitoring/kserve-demo/resources/info_response.json" target="_blank" rel="noopener">Explore the Bias Monitoring Sample Data</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_label_data_fields"><a class="anchor" href="#_label_data_fields"></a>Label Data Fields</h3>
+<div class="paragraph">
+<p>As deployed, the model uses generic, hard-to-read field names (e.g., customer_data_input-x). To make the monitoring metrics human-readable, we must apply a set of name mappings to assign meaningful labels to the input and output fields.</p>
+</div>
+<div class="paragraph">
+<p>This is achieved by sending a POST request to the /info/names endpoint.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">MODEL_ALPHA=demo-loan-nn-onnx-alpha
+MODEL_BETA=demo-loan-nn-onnx-beta
+export TOKEN=$(oc whoami -t)
+TRUSTY_ROUTE=https://$(oc get route/trustyai-service --template={{.spec.host}})
+
+for model in $MODEL_ALPHA $MODEL_BETA; do
+  curl -sk  -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/info/names \
+      -H "Content-Type: application/json" \
+      -d "{
+          \"modelId\": \"$model\",
+          \"inputMapping\":
+              {
+                  \"customer_data_input-0\": \"Number of Children\",
+                  \"customer_data_input-1\": \"Total Income\",
+                  \"customer_data_input-2\": \"Number of Total Family Members\",
+                  \"customer_data_input-3\": \"Is Male-Identifying?\",
+                  \"customer_data_input-4\": \"Owns Car?\",
+                  \"customer_data_input-5\": \"Owns Realty?\",
+                  \"customer_data_input-6\": \"Is Partnered?\",
+                  \"customer_data_input-7\": \"Is Employed?\",
+                  \"customer_data_input-8\": \"Live with Parents?\",
+                  \"customer_data_input-9\": \"Age\",
+                  \"customer_data_input-10\": \"Length of Employment?\"
+              },
+          \"outputMapping\":
+              {
+                  \"predict\": \"Will Default?\"
+              }
+      }"
+  echo
+done</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Feature and output name mapping successfully applied.
+Feature and output name mapping successfully applied.</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You should see two success messages—one for each model (Alpha and Beta). This confirms that TrustyAI has updated the metadata for both models with human-readable field names.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Verify the name mappings have been applied:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export TOKEN=$(oc whoami -t)
+curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-alpha"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'
+curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-beta"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">// Sample output (abbreviated)
+  "Age": {
+        "type": "DOUBLE",
+        "name": "customer_data_input-9",
+        "columnIndex": 9
+      }
+    },
+    "nameMapping": {
+      "customer_data_input-0": "Number of Children",
+      "customer_data_input-1": "Total Income",
+      "customer_data_input-2": "Number of Total Family Members",
+      "customer_data_input-3": "Is Male-Identifying?",
+      "customer_data_input-4": "Owns Car?",
+      "customer_data_input-5": "Owns Realty?",
+      "customer_data_input-6": "Is Partnered?",
+      "customer_data_input-7": "Is Employed?",
+      "customer_data_input-8": "Live with Parents?",
+      "customer_data_input-9": "Age",
+      "customer_data_input-10": "Length of Employment?"
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Notice that <code>nameMapping</code> is now populated with human-readable labels. The generic field name <code>customer_data_input-3</code> now maps to <code>"Is Male-Identifying?"</code>, which is the protected attribute we&#8217;ll monitor for bias. These labels will appear in all fairness metrics, making the bias reports interpretable by data scientists and compliance teams.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_understanding_statistical_parity_difference_spd"><a class="anchor" href="#_understanding_statistical_parity_difference_spd"></a>Understanding Statistical Parity Difference (SPD)</h3>
+<div class="paragraph">
+<p>Statistical Parity Difference measures whether a model treats different demographic groups fairly by comparing their rates of favorable outcomes.</p>
+</div>
+<div class="paragraph">
+<p><strong>How to interpret SPD values:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>SPD = 0</strong>: Perfect fairness - both groups receive favorable outcomes at the same rate</p>
+</li>
+<li>
+<p><strong>SPD between -0.1 and 0.1</strong>: Acceptable fairness threshold (standard in many bias audits)</p>
+</li>
+<li>
+<p><strong>SPD outside -0.1 to 0.1</strong>: Indicates potential bias requiring investigation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Example:</strong> An SPD of -0.15 means one group is 15 percentage points less likely to receive a favorable outcome than another group, indicating negative bias.</p>
+</div>
+<div class="paragraph">
+<p>TrustyAI calculates SPD by comparing the <code>privilegedAttribute</code> group (e.g., male-identifying) against the <code>unprivilegedAttribute</code> group (e.g., non-male-identifying) to detect if the model favors one group over another.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_check_model_fairness"><a class="anchor" href="#_check_model_fairness"></a>Check Model Fairness</h3>
+<div class="paragraph">
+<p>To compute the model&#8217;s cumulative fairness up to this point, we can check the /metrics/group/fairness/spd endpoint.</p>
+</div>
+<div class="paragraph">
+<p>Take the time to review the script and understand the new payload structure:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>modelId</strong>: The name of the model to query</p>
+</li>
+<li>
+<p><strong>protectedAttribute</strong>: The name of the feature that distinguishes the groups that we are checking for fairness over.</p>
+</li>
+<li>
+<p><strong>privilegedAttribute</strong>: The value of the protectedAttribute the describes the suspected favored (positively biased) class.</p>
+</li>
+<li>
+<p><strong>unprivilegedAttribute</strong>: The value of the protectedAttribute the describes the suspected unfavored (negatively biased) class.</p>
+</li>
+<li>
+<p><strong>outcomeName</strong>: The name of the output that provides the output we are examining for fairness.</p>
+</li>
+<li>
+<p><strong>favorableOutcome</strong>: The value of the outcomeName output that describes the favorable or desired model prediction.</p>
+</li>
+<li>
+<p><strong>batchSize</strong>: The number of previous inferences to include in the calculation.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo "=== MODEL ALPHA ==="
+curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/metrics/group/fairness/spd/ \
+     --header 'Content-Type: application/json' \
+     --data "{
+                 \"modelId\": \"demo-loan-nn-onnx-alpha\",
+                 \"protectedAttribute\": \"Is Male-Identifying?\",
+                 \"privilegedAttribute\": 1.0,
+                 \"unprivilegedAttribute\": 0.0,
+                 \"outcomeName\": \"Will Default?\",
+                 \"favorableOutcome\": 0,
+                 \"batchSize\": 5000
+             }"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Review the output, you should see a similar output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Model Alpha
+{
+   "timestamp":"2023-10-24T12:06:04.586+00:00",
+   "type":"metric",
+   "value":-0.0029676404469311524,
+   "namedValues":null,
+   "specificDefinition":"The SPD of -0.002968 indicates that the likelihood of Group:Is Male-Identifying?=1.0 receiving Outcome:Will Default?=0 was -0.296764 percentage points lower than that of Group:Is Male-Identifying?=0.0.",
+   "name":"SPD",
+   "id":"d2707d5b-cae9-41aa-bcd3-d950176cbbaf",
+   "thresholds":{"lowerBound":-0.1,"upperBound":0.1,"outsideBounds":false}
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Model Alpha shows an SPD value of <code>-0.003</code> (approximately -0.3%). This is well within the acceptable fairness threshold of -0.1 to 0.1 (as indicated by <code>"outsideBounds":false</code>). The model is treating male-identifying and non-male-identifying applicants almost identically during training, with less than 1 percentage point difference in favorable outcomes.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo "\n=== MODEL BETA ==="
+curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/metrics/group/fairness/spd \
+     --header 'Content-Type: application/json' \
+     --data "{
+                 \"modelId\": \"demo-loan-nn-onnx-beta\",
+                 \"protectedAttribute\": \"Is Male-Identifying?\",
+                 \"privilegedAttribute\": 1.0,
+                 \"unprivilegedAttribute\": 0.0,
+                 \"outcomeName\": \"Will Default?\",
+                 \"favorableOutcome\": 0,
+                 \"batchSize\": 5000
+             }"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Review the output, you should see a similar output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Model Beta
+{
+   "timestamp":"2023-10-24T12:06:04.930+00:00",
+   "type":"metric",
+   "value":0.027796371582978097,
+   "namedValues":null,
+   "specificDefinition":"The SPD of 0.027796 indicates that the likelihood of Group:Is Male-Identifying?=1.0 receiving Outcome:Will Default?=0 was 2.779637 percentage points higher than that of Group:Is Male-Identifying?=0.0.",
+   "name":"SPD",
+   "id":"21252b73-651b-4b09-b3af-ddc0be0352d8",
+   "thresholds":{"lowerBound":-0.1,"upperBound":0.1,"outsideBounds":false}
+}</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Model Beta shows an SPD value of <code>0.028</code> (approximately 2.8%). While this is also within the acceptable fairness threshold, it shows slightly more bias than Model Alpha. Male-identifying applicants are about 2.8 percentage points more likely to receive a favorable outcome. Both models appear fair on training data, but will they remain fair in production? The next sections will set up continuous monitoring to find out.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_schedule_a_fairness_metric_request"><a class="anchor" href="#_schedule_a_fairness_metric_request"></a>Schedule a Fairness Metric Request</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>However, while it&#8217;s great that our models are fair over the training data, we need to monitor that they remain fair over real-world inference data as well. To do this, we can schedule some metric requests, such as to compute at recurring intervals throughout deployment. To do this, we simply pass the same payloads to the /metrics/group/fairness/spd/request endpoint:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo "=== MODEL ALPHA ==="
+curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/metrics/group/fairness/spd/request \
+     --header 'Content-Type: application/json' \
+     --data "{
+                 \"modelId\": \"demo-loan-nn-onnx-alpha\",
+                 \"protectedAttribute\": \"Is Male-Identifying?\",
+                 \"privilegedAttribute\": 1.0,
+                 \"unprivilegedAttribute\": 0.0,
+                 \"outcomeName\": \"Will Default?\",
+                 \"favorableOutcome\": 0,
+                 \"batchSize\": 5000
+             }"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">=== MODEL ALPHA ===
+{"requestId":"e2a51b63-de0c-4c48-bd2c-7406208f4d36","timestamp":"2025-12-18T22:51:47.856+00:00"}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo "\n=== MODEL BETA ==="
+curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/metrics/group/fairness/spd/request \
+     --header 'Content-Type: application/json' \
+     --data "{
+                 \"modelId\": \"demo-loan-nn-onnx-beta\",
+                 \"protectedAttribute\": \"Is Male-Identifying?\",
+                 \"privilegedAttribute\": 1.0,
+                 \"unprivilegedAttribute\": 0.0,
+                 \"outcomeName\": \"Will Default?\",
+                 \"favorableOutcome\": 0,
+                 \"batchSize\": 5000
+             }"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">=== MODEL BETA ===
+{"requestId":"515a0265-8c91-473d-97d8-3c37291ae626","timestamp":"2025-12-18T22:54:50.892+00:00"}</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Learning tip: From these, we see that both model Alpha and Beta are quite fair over the Is Male-Identifying? field, with the two groups' rates of positive outcomes only differing by -0.3% and 2.8% respectively.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_schedule_an_identity_metric_request"><a class="anchor" href="#_schedule_an_identity_metric_request"></a>Schedule an Identity Metric Request</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_understanding_identity_metrics"><a class="anchor" href="#_understanding_identity_metrics"></a>Understanding Identity Metrics</h3>
+<div class="paragraph">
+<p>Identity metrics track average field values over time to detect data drift - for example, monitoring if the ratio of male/non-male applicants in production differs from training data, or if the model&#8217;s prediction rates change unexpectedly when demographics shift.</p>
+</div>
+<div class="paragraph">
+<p>Furthermore, let&#8217;s monitor the average values of various data fields over time, to see the average ratio of loan-payback to loan-default predictions, as well as the average ratio of male-identifying to non-male-identifying applicants. We can do this by creating an Identity Metric Request via POST&#8217;ing the /metrics/identity/request endpoint:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">for model in "demo-loan-nn-onnx-alpha" "demo-loan-nn-onnx-beta"; do
+  for field in "Is Male-Identifying?" "Will Default?"; do
+      curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/metrics/identity/request \
+       --header 'Content-Type: application/json' \
+       --data "{
+                 \"columnName\": \"$field\",
+                 \"batchSize\": 250,
+                 \"modelId\": \"$model\"
+               }"
+  done
+done</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">{"requestId":"b13a056f-6f30-4fcc-8080-311b96f570b7","timestamp":"2025-12-18T23:10:00.334+00:00"}{"requestId":"70379c44-bcfa-40f6-9d8d-ea0679d214b3","timestamp":"2025-12-18T23:10:00.369+00:00"}{"requestId":"facb7dc6-61d5-421b-92a7-26e8fe73ef36","timestamp":"2025-12-18T23:10:00.400+00:00"}{"requestId":"b9a2c4b3-dbf7-4a73-8ab0-3c47e9aa2916","timestamp":"2025-12-18T23:10:00.432+00:00"}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The payload is structured as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>columnName</strong>: The name of the field to compute the averaging over</p>
+</li>
+<li>
+<p><strong>batchSize</strong>: The number of previous inferences to include in the average-value calculation</p>
+</li>
+<li>
+<p><strong>modelId</strong>: The name of the model to query</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_check_the_metrics"><a class="anchor" href="#_check_the_metrics"></a>Check the Metrics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we&#8217;ve scheduled our metric requests, TrustyAI will calculate fairness and identity metrics every 5 seconds and expose them via Prometheus. Let&#8217;s verify the metrics are being generated and collected.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Wait approximately 30-60 seconds for the first metrics to be generated and scraped by Prometheus.</p>
+</li>
+<li>
+<p>Navigate to <strong>Observe &#8594; Metrics</strong> in the OpenShift console: {openshift_console_url}/monitoring/query-browser?query0=[Web Console^]</p>
+<div class="paragraph">
+<p>If you&#8217;re already on that page, click the refresh icon before the new metrics appear in the suggested expressions.</p>
+</div>
+</li>
+<li>
+<p>Configure the query browser:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Set the time window to <strong>5 minutes</strong> (top left dropdown)</p>
+</li>
+<li>
+<p>Set the refresh interval to <strong>15 seconds</strong> (top right dropdown)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Query for fairness metrics:</p>
+<div class="paragraph">
+<p>In the "Expression" field, type: <code>trustyai_spd</code></p>
+</div>
+<div class="paragraph">
+<p>You should see metrics like:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>trustyai_spd{model="demo-loan-nn-onnx-alpha"}</code></p>
+</li>
+<li>
+<p><code>trustyai_spd{model="demo-loan-nn-onnx-beta"}</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-spd.png" target="image"><img src="../../_images/ai-safety/metrics-spd.png" alt="Metrics"></a></span></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Query for identity metrics:</p>
+<div class="paragraph">
+<p>Clear the expression field and type: <code>trustyai_identity</code></p>
+</div>
+<div class="paragraph">
+<p>You should see metrics like:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>trustyai_identity{columnName="Is Male-Identifying?", model="demo-loan-nn-onnx-alpha"}</code></p>
+</li>
+<li>
+<p><code>trustyai_identity{columnName="Will Default?", model="demo-loan-nn-onnx-alpha"}</code></p>
+</li>
+<li>
+<p><code>trustyai_identity{columnName="Is Male-Identifying?", model="demo-loan-nn-onnx-beta"}</code></p>
+</li>
+<li>
+<p><code>trustyai_identity{columnName="Will Default?", model="demo-loan-nn-onnx-beta"}</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-identity.png" target="image"><img src="../../_images/ai-safety/metrics-identity.png" alt="Metrics"></a></span></p>
+</div>
+<div class="sect2">
+<h3 id="_simulate_some_real_world_data"><a class="anchor" href="#_simulate_some_real_world_data"></a>Simulate Some Real World Data</h3>
+<div class="paragraph">
+<p>Now that we&#8217;ve got our metric monitoring set up, let&#8217;s send some "real world" data through our models to see if they remain fair:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+</li>
+<li>
+<p>Copy the following content and past it on the terminal.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">for batch in "01" "02" "03" "04" "05" "06" "07" "08"; do
+  scripts/send_data_batch data/batch_$batch.json
+  sleep 5
+done</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">// Sample output (abbreviated)
+4736 datapoints already in ALPHA dataset
+4736 datapoints already in BETA dataset
+Data batch transmission (ATTEMPT 0)
+ - Making sure TrustyAI demo-loan-nn-onnx-alpha dataset contains at least 4736 points, has 4986 (tried 0 times) [done]
+ - Making sure TrustyAI demo-loan-nn-onnx-beta dataset contains at least 4736 points, has 4986 (tried 0 times) [done]
+4986 datapoints already in ALPHA dataset
+4986 datapoints already in BETA dataset</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Once the data is being sent, return to Observe &#8594; Metrics page and watch the SPD and Identity metric values change.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_results"><a class="anchor" href="#_results"></a>Results</h3>
+<div class="paragraph">
+<p>Let&#8217;s first look at our two models' fairness:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-spd-updated.png" target="image"><img src="../../_images/ai-safety/metrics-spd-updated.png" alt="Metrics"></a></span></p>
+</div>
+<div class="paragraph">
+<p>Immediately, we notice that the two models have drastically different fairnesses over the real world data. Model Alpha (blue) remained within the "acceptably fair" range between -0.1 and 0.1, ending at around 0.09. However, Model Beta (yellow) plummeted out of the fair range, ending at -0.274, meaning that non-male-identifying applicants were 27 percent less likely to get a favorable outcome from the model than male-identifying applicants; clearly an unacceptable bias.</p>
+</div>
+<div class="paragraph">
+<p>We can investigate this further by examining our identity metrics, first looking at the inbound ratio of male-identifying to non-male-identifying applicants:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-identity-updated.png" target="image"><img src="../../_images/ai-safety/metrics-identity-updated.png" alt="Metrics"></a></span></p>
+</div>
+<div class="paragraph">
+<p>We can immediately see that in our training data, the ratio between male/non-male was around 0.8, but in the real-world data, it quickly dropped to 0, meaning every single applicant was non-male. This is a strong indicator that our training data did not match our real-world data, which is very likely to indicate poor or biased model performance.</p>
+</div>
+<div class="paragraph">
+<p>Meanwhile, looking at the will-default to will-not-default ratio:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-identity-last.png" target="image"><img src="../../_images/ai-safety/metrics-identity-last.png" alt="Metrics"></a></span></p>
+</div>
+<div class="paragraph">
+<p>We can see that despite seeing only non-male applicants, Model Alpha (green) still provided varying outcomes to the various applicants, predicting "will-default" around 25% of the time. Model Beta (purple) predicted "will-default" 100% of the time: every single applicant was predicted to default on their loan. Again, this is a clear indicator that our model is performing poorly on the real-world data and/or has encoded a systematic bias from its training; it is predicting that every single non-male applicant will default.</p>
+</div>
+<div class="paragraph">
+<p>These examples show exactly why monitoring bias in production is so important: models that are equally fair at training time may perform drastically differently over real-world data, with hidden biases only manifesting over real-world data. This means these biases are exposed to the public, being imposed upon whoever is subject to your models decisions, and therefore using TrustyAI to provide early warning of these biases can protect you from the damages that problematic models in production can do.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TrustyAI represents one critical component of Red Hat&#8217;s comprehensive AI Safety strategy. While this lab focused on bias monitoring through fairness metrics like Statistical Parity Difference, AI safety encompasses a broader set of concerns including model explainability, drift detection, data quality monitoring, and adversarial robustness. The key insight from this lab is that fairness is not a static property verified once at training time—it&#8217;s a dynamic characteristic that must be continuously monitored as data distributions shift in production. Model Beta&#8217;s dramatic fairness degradation when encountering a different demographic distribution illustrates why AI safety requires runtime guardrails, not just development-time testing. By integrating TrustyAI into OpenShift AI&#8217;s model serving infrastructure, organizations can build production ML systems that maintain fairness, transparency, and accountability throughout the model lifecycle. This continuous monitoring capability, combined with other AI safety tools like explainability frameworks and model governance platforms, enables organizations to deploy AI systems responsibly in high-stakes domains where bias can have real-world consequences.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="lab-intro-ai-safety.html" class="query-params-link">Hands-on Lab</a></span>
+  <span class="next"><a href="lab-modelsignval.html" class="query-params-link">Hands-on Lab: Model signing and validation</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../../_/js/vendor/clipboard.js"></script>
+<script src="../../../_/js/site.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
