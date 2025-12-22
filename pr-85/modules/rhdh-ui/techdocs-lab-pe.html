@@ -443,21 +443,8 @@
 <div class="paragraph">
 <p>What is different from the default Red Hat Developer Hub TechDocs deployment:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Storage backend: Often Amazon s3, or, as shown in this lab, with local policy and control, OpenShift Data Foundation emulation of S3 storage.</p>
-</li>
-<li>
-<p><code>Build: external</code> vs <code>build: local</code>: Arrange a pipeline that builds docs for each repository, rather than using the builtin RHDH builder.</p>
-</li>
-<li>
-<p>RHDH will always serve the latest prepared HTML from the storage backend. It doesn&#8217;t have to poll repositories and potentially pause for re-generation when loading each TechDoc view.</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p>The TechDocs Basic deployment mode generates and stores documentation artifacts on the RHDH instance. The Recommended deployment mode uses continuous integration in each repository to generate documentation, storing the result in some external storage. In this configuration, TechDocs is basically read-only, fetching prepared documentation and presenting it in the Developer Hub interface.</p>
+<p>The TechDocs Basic deployment mode generates and stores documentation artifacts within the RHDH instance. A recommended deployment uses persistent storage, external to RHDH, and potentially distributes the TechDocs <em>generation</em> step to continuous integration tasks in each repository.</p>
 </div>
 </div>
 </div>
