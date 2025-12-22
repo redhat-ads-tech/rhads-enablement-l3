@@ -8,21 +8,21 @@ This section provides a practical implementation with Red Hat Trusted Artifact S
 [#modelsignval]
 == Model Signing and Model Validation
 
-The *identity token* is provided to the Red Hat Trusted Artifact Signer (RHTAS) Certificate Authority.
+. The *identity token* is provided to the Red Hat Trusted Artifact Signer (RHTAS) Certificate Authority.
 
-2- The RHTAS Certificate Authority will issue a certificate for the model based on the identity token.
-3- RHTAS Transparency Log receives the Signed Model Certificate.
-4- The RHTAS Transparency Log adds detailed information received from the certificate for traceability as part of the Log inclusion proof. This information is returned and now it’s part of the Signed Model Certificate Proof
-5- The Signed Model Certificate Proof is now part of the Model and will be deployed with the model in the Model Hub.
-6- Once there's a request, the RHTAS Controller will verify that the model is signed before serving the model.
-7- The model signed is served.
+. The RHTAS Certificate Authority will issue a certificate for the model based on the identity token.
+. RHTAS Transparency Log receives the Signed Model Certificate.
+. The RHTAS Transparency Log adds detailed information received from the certificate for traceability as part of the Log inclusion proof. This information is returned and now it’s part of the Signed Model Certificate Proof.
+. The Signed Model Certificate Proof is now part of the Model and will be deployed with the model in the Model Hub.
+. Once there's a request, the RHTAS Controller will verify that the model is signed before serving the model.
+. The model signed is served.
 
-image::ai-safety/model-signing-validation.png[]
+image::ai-safety/model-signing-validation.png[link=self, window="image"]
 
 === Model Development Lifecycle with Model Validation Operator
 
 Model signing and validation will continue the entire process of the Model Development Lifecycle, as it's shown in the picture:
 
-image::ai-safety/model-signing.png[]
+image::ai-safety/model-signing.png[link=self, window="image"]
 
 Signing the model before becoming an OCI artifact has many benefits, including preventing Model Supply Chain attacks, including source tampering and injecting vulnerabilities in the model. After the model is signed, it’s validated, ensuring the content of the model has not been tampered with. Once the model is deployed, ensuring the model is valid prevents Model poisoning, such as compromise storage and changing model output. Last, once the model is served, providing the model’s provenance is critical to avoid the exploit of model theft. In this case, the model is swapped by a copy of the same model, but this model was trained with bad data, resulting in a bad model. When validating the model provenance, this type of attack is prevented, ensuring the model served is the original model already signed and verified.

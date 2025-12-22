@@ -54,10 +54,10 @@ Both models performed similarly during training, but the real question is: *How 
 
 == Enable User Workload Monitoring
 
-TrustyAI exposes fairness metrics through Prometheus. To collect and visualize these metrics in OpenShift's monitoring dashboard, we need to enable user workload monitoring. This allows Prometheus to scrape metrics from user namespaces like our model-namespace.
+TrustyAI exposes fairness metrics through Prometheus. To collect and visualize these metrics in OpenShift's monitoring dashboard, we need to enable user workload monitoring. This allows Prometheus to scrape metrics from user namespaces like our *model-namespace*.
 
 . Enable user workload monitoring by creating a ConfigMap in the openshift-monitoring namespace.
-.. Copy the following content:
+. Copy the following content:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -77,39 +77,11 @@ image:ai-safety/openshift-import-yaml.png[OpenShift Import YAML, link=self, wind
 
 . Paste the content and click *Create*.
 
-. Configure user workload monitoring to retain metric data for 15 days.
-.. Copy the following content:
-
-+
-[source,yaml,role=execute,subs=attributes+]
-----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: user-workload-monitoring-config
-  namespace: openshift-user-workload-monitoring
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: ""
-data:
-  config.yaml: |
-    prometheus:
-      logLevel: debug
-      retention: 15d
-----
-+
-Click *Import YAML* or click *Import More YAML* on the current screen, paste the content, and click *Create*.
-
-[NOTE]
-====
-This retention period allows you to analyze bias trends over time. Later in the lab, we'll query these metrics to monitor fairness.
-====
-
-
 == Install and Configure TrustyAI
 
 Red Hat OpenShift AI is already installed on your cluster. However, TrustyAI is an optional component that needs to be explicitly enabled. Let's walk through the installation and configuration process.
 
-In the *OpenShift Web Console*, click on *Operators -> Installed Operators* and select the *RH OpenShift AI* operator or use the following URL  {openshift_console_url}/k8s/ns/redhat-ods-operator/operators.coreos.com~v1alpha1~ClusterServiceVersion/rhods-operator.2.25.0[Web Console^]
+In the *OpenShift Web Console*, click on *Operators -> Installed Operators* and select the *RH OpenShift AI* operator or use the following URL  {openshift_console_url}/k8s/ns/redhat-ods-operator/operators.coreos.com~v1alpha1~ClusterServiceVersion/rhods-operator.2.25.1[Web Console^]
 
 * If you need to re-login to the OpenShift Cluster: {openshift_console_url}[Web Console^]
 
@@ -120,14 +92,14 @@ In the *OpenShift Web Console*, click on *Operators -> Installed Operators* and 
 
 === Update the RHOAI Operator to include TrustyAI
 
-. Select the *Data Science Cluster* tab and click on *Edit*.
-
+. Select the *Data Science Cluster* tab and click on *Edit*
++
 image:ai-safety/trustyAI-cluster.png[TrustyAI, link=self, window="image"]
-
 
 . Edit the *DataScienceCluster* and update the *TrustyAI* component to be *Managed* so it will be installed in the cluster.
 +
-Remove the current content associated with trustyAI:
+. Go to line *157* and search for the *trustyAI* component.
+. *Remove* the current content associated with trustyAI:
 +
 [source,console]
 ----
@@ -137,14 +109,14 @@ Remove the current content associated with trustyAI:
           permitOnline: deny
 ----
 +
-Replace the *managementState* to Managed:
+. *Replace* the *managementState* to Managed:
 +
-[source, bash,role=execute,subs=attributes+]
+[source,bash,role=execute,subs=attributes+]
 ----
   Managed
 ----
 +
-Ensure you have the correct indentation:
+. Ensure you have the correct indentation:
 +
 image:ai-safety/trutyAI-operatorupdate.png[TrustyAI, link=self, window="image"]
 
@@ -158,17 +130,17 @@ Now we need to configure secure communication between your models and TrustyAI.
 
 We'll integrate TrustyAI's Certificate Authority (CA) bundle into the OpenShift AI model controller so that model payloads are encrypted end-to-end.
 
-. In OpenShift, click on the *OpenShift  Web Terminal*
-
-image:ai-safety/openshift-terminal.png[OpenShift  Web Terminal, link=self, window="image"]
+. In OpenShift, click on the *OpenShift Web Terminal*
++
+image:ai-safety/openshift-terminal.png[OpenShift Web Terminal, link=self, window="image"]
 
 . Click *Start*
-
++
 image:ai-safety/openshift-terminal-start.png[OpenShift Web Terminal Start, link=self, window="image"]
 
-* Copy the following content and paste it on the terminal
-
-[source, bash,role=execute,subs=attributes+]
+. Copy the following content and paste it on the terminal
++
+[source,bash,role=execute,subs=attributes+]
 ----
 NAMESPACE=redhat-ods-applications
 oc patch configmap inferenceservice-config -n $NAMESPACE --type merge -p '{"metadata": {"annotations": {"opendatahub.io/managed": "false"}}}'
@@ -182,10 +154,8 @@ oc patch configmap inferenceservice-config \
       \"value\": \"{\\\"image\\\" : \\\"$IMAGE\\\",\\\"memoryRequest\\\": \\\"100Mi\\\",\\\"memoryLimit\\\": \\\"1Gi\\\",\\\"cpuRequest\\\": \\\"100m\\\",\\\"cpuLimit\\\": \\\"1\\\",\\\"defaultUrl\\\": \\\"http://default-broker\\\",\\\"caBundle\\\": \\\"kserve-logger-ca-bundle\\\",\\\"caCertFile\\\": \\\"service-ca.crt\\\",\\\"tlsSkipVerify\\\": false}\"
     }]"
 ----
-Copy the following content and paste it on the terminal
 
-
-* Review the output:
+. Review the output:
 +
 [source,console]
 ----
@@ -203,13 +173,9 @@ The two "patched" messages confirm that the KServe inference service configurati
 
 Let's create a dedicated namespace for our loan prediction models and deploy the TrustyAI service.
 
-. In the OpenShift Web console, create a new project in the cluster, click on *Home -> Projects -> Create Project* with the name: 
-
-. *model-namespace*
-
-
+. In the OpenShift Web console, create a new project in the cluster, click on *Home -> Projects -> Create Project* with the name: *model-namespace*
++
 image:ai-safety/openshift-new-project.png[OpenShift New Project, link=self, window="image"]
-
 
 . The following YAML creates four resources for TrustyAI:
 +
@@ -220,7 +186,7 @@ image:ai-safety/openshift-new-project.png[OpenShift New Project, link=self, wind
 * *TrustyAIService*: The main TrustyAI service that stores model inference data in a 1Gi PersistentVolumeClaim, saves data in CSV format, and calculates fairness metrics every 5 seconds
 --
 +
-Copy the following content:
+. Copy the following content:
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
@@ -269,36 +235,37 @@ spec:
     schedule: "5s"
 ----
 
-. Click on the *plus icon* and next, click *Import YAML* 
+. Click on the *plus icon* and next, click *Import YAML* or click *Import More YAML* on the current screen.
 
 . Paste the content and click *Create*.
 
 . You should see a similar screen like this one, showing all resources has been successfully created:
-
++
 image:ai-safety/import-ok.png[OpenShift Import YAML, link=self, window="image"]
 
 . Verify the *trustyAI service pod* is running by running the following command on the terminal:
-
++
 [source,bash,role=execute,subs=attributes+]
 ----
-oc get pods
+oc get pods -n model-namespace
 ----
-
++
 You will see the pod running with two containers:
-
++
 [source,console]
 ----
+// Sample output 
 NAME                                         READY   STATUS    RESTARTS   AGE
 trustyai-service-6d59478756-4pcmh            2/2     Running   0          107s
 ----
 
-*Congratulations you have successfully configured TrustyAI*
+✅ *Success!* You have successfully configured TrustyAI. The service is now ready to monitor model predictions for bias. Next, you'll deploy the loan prediction models and configure them to send inference data to TrustyAI for continuous fairness monitoring.
 
 == Deploy the model
 === Configure the storage
 
 Models need persistent storage for their binary files. This YAML creates an S3-compatible storage solution using MinIO:
-+
+
 --
 * *Service (minio)*: Exposes MinIO on port 9000 for S3-compatible API access
 * *Deployment (model-s3-storage-emulator)*: Runs a MinIO container pre-loaded with the loan prediction models
@@ -528,15 +495,16 @@ spec:
 . Click on *Create*.
 
 . You should see a similar screen like this one, showing all resources has been successfully created:
-
++
 image:ai-safety/import-ok-model.png[OpenShift Import Model, link=self, window="image"]
 
-
 . Check the *new pods* by clicking on *Workloads -> Pods* using the *model-namespace* namespace, you should see a similar screen like this:
-
-
-*Note:* you will see the deployments being updated, expect the new 4-container deployment to briefly coexist with the old 3-container version.
-
++
+[IMPORTANT]
+====
+You will see the deployments being updated. Expect the new 4-container deployment to briefly coexist with the old 3-container version.
+====
++
 image:ai-safety/pods-running.png[OpenShift Import Data, link=self, window="image"]
 
 
@@ -544,13 +512,7 @@ image:ai-safety/pods-running.png[OpenShift Import Data, link=self, window="image
 
 Before monitoring, TrustyAI needs to know the expected behavior of the model. This is done by uploading a baseline or "training" dataset. 
 
-. In OpenShift, click on the *OpenShift Web Terminal*
-
-image:ai-safety/openshift-terminal.png[OpenShift  Web Terminal, link=self, window="image"]
-
-. Click *Start*
-
-image:ai-safety/openshift-terminal-start.png[OpenShift Web Terminal Start, link=self, window="image"]
+. In OpenShift, use the *OpenShift Web Terminal*
 
 . Copy the following content and past it on the terminal.
 
@@ -565,37 +527,44 @@ for batch in 0 250 500 750 1000 1250 1500 1750 2000 2250; do
 done
 ----
 
+[TIP]
+====
 The script will run for a few minutes.
+====
 
-
-.  You should see the *expected output:* `2250 datapoints successfully added to each model`
-
+. You should see the *expected output:* `2250 datapoints successfully added to each model`
++
 image:ai-safety/data-output.png[OpenShift Web Terminal Output, link=self, window="image"]
 
-*Note*: While the script outputs confirmation messages indicating data reception by TrustyAI, you can also verify the stream in the OpenShift web console.
+[TIP]
+====
+While the script outputs confirmation messages indicating data reception by TrustyAI, you can also verify the stream in the OpenShift web console.
+====
 
 == Explore the Metrics
 
 Create a new query to explore the metrics in OpenShift.
 
-* Click on *Observe -> Metrics* or use the following URL: {openshift_console_url/monitoring/query-browser?query0=}[Web Console^]
-* Click on *Add query*
+. Click on *Observe -> Metrics* or use the following URL: {openshift_console_url/monitoring/query-browser?query0=}[Web Console^]
 
+. Click on *Add query*
++
 image:ai-safety/query-add-new.png[Metrics, link=self, window="image"]
 
+. In the *Expression field*, enter the Prometheus metric: `trustyai_model_observations_total`
 
-* **Metric:** In the *Expression field*, enter the Prometheus metric: `trustyai_model_observations_total`.
-* **Time Settings:** Set the time window to **5 minutes** (top left) and the refresh interval to **15 seconds** (top right).
-
-
+. Set the time window to **5 minutes** (top left), click *Run queries* and the refresh interval to **15 seconds** (top right)
++
 image:ai-safety/query-new-added.png[Metrics, link=self, window="image"]
 
-* **Verification:** After running the query, confirm that both models are listed, each reporting close to **2250 observed inferences**. 
-
+. After running the query, confirm that both models are listed, each reporting close to **2250 observed inferences**
++
 image:ai-safety/metrics-init.png[Metrics, link=self, window="image"]
-
-
++
+[IMPORTANT]
+====
 This total count confirms that TrustyAI has successfully cataloged sufficient inputs and outputs (around 2250 per model) to begin meaningful bias analysis.
+====
 
 
 === Understanding TrustyAI's REST API
@@ -613,14 +582,14 @@ TrustyAI can be interacted with via REST API (shown in this lab), Kubernetes CRD
 
 We can also verify that TrustyAI sees the models via the /info endpoint:
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 
 [source, bash,role=execute,subs=attributes+]
 ----
 export TOKEN=$(oc whoami -t)
 echo "TrustyAI Token: $TOKEN"
-TRUSTY_ROUTE=https://$(oc get route/trustyai-service --template={{.spec.host}})
+TRUSTY_ROUTE=https://$(oc get route/trustyai-service -n model-namespace --template={{.spec.host}})
 curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-alpha"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'
 curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-beta"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'
 ----
@@ -628,6 +597,17 @@ curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-n
 [source, console]
 ----
 // Sample output (abbreviated)
+      },
+      "customer_data_input-9": {
+        "type": "DOUBLE",
+        "name": "customer_data_input-9",
+        "columnIndex": 9
+      },
+      "customer_data_input-8": {
+        "type": "DOUBLE",
+        "name": "customer_data_input-8",
+        "columnIndex": 8
+      },
       "customer_data_input-7": {
         "type": "DOUBLE",
         "name": "customer_data_input-7",
@@ -635,30 +615,20 @@ curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-n
       }
     },
     "nameMapping": {}
-  },
-  "outputSchema": {
-    "items": {
-      "predict": {
-        "type": "INT64",
-        "name": "predict",
-        "columnIndex": 11
-      }
-    },
-    "nameMapping": {}
-  }
-}
 ----
-+
+
 [NOTE]
 ====
 The output shows the model schema as TrustyAI sees it. Notice that `nameMapping` is currently empty (`{}`), meaning the model is still using generic field names like `customer_data_input-7`. This confirms TrustyAI has registered the models and is tracking their input/output structure, but the fields need human-readable labels for meaningful bias analysis.
 ====
-+
+
+[IMPORTANT]
+====
 The output of each curl command is a JSON file containing schema and volume details for the model, specifically:
 
 * The name, data type, and position of all input and output fields.
 * The total running count of observed input-output pairs.
-
+====
 
 https://github.com/redhat-ads-tech/odh-trustyai-demos/blob/main/2-BiasMonitoring/kserve-demo/resources/info_response.json[Explore the Bias Monitoring Sample Data^]
 
@@ -668,7 +638,7 @@ As deployed, the model uses generic, hard-to-read field names (e.g., customer_da
 
 This is achieved by sending a POST request to the /info/names endpoint.
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 +
 [source, bash,role=execute,subs=attributes+]
@@ -676,7 +646,7 @@ This is achieved by sending a POST request to the /info/names endpoint.
 MODEL_ALPHA=demo-loan-nn-onnx-alpha
 MODEL_BETA=demo-loan-nn-onnx-beta
 export TOKEN=$(oc whoami -t)
-TRUSTY_ROUTE=https://$(oc get route/trustyai-service --template={{.spec.host}})
+TRUSTY_ROUTE=https://$(oc get route/trustyai-service -n model-namespace --template={{.spec.host}})
 
 for model in $MODEL_ALPHA $MODEL_BETA; do
   curl -sk  -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/info/names \
@@ -706,15 +676,16 @@ for model in $MODEL_ALPHA $MODEL_BETA; do
 done
 ----
 +
-[source, console]
-----
-Feature and output name mapping successfully applied.
-Feature and output name mapping successfully applied.
-----
-+
 [NOTE]
 ====
 You should see two success messages—one for each model (Alpha and Beta). This confirms that TrustyAI has updated the metadata for both models with human-readable field names.
+
+[source, console]
+----
+// Sample output 
+Feature and output name mapping successfully applied.
+Feature and output name mapping successfully applied.
+----
 ====
 
 . Verify the name mappings have been applied:
@@ -749,7 +720,7 @@ curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-n
       "customer_data_input-10": "Length of Employment?"
     }
 ----
-+
+
 [NOTE]
 ====
 Notice that `nameMapping` is now populated with human-readable labels. The generic field name `customer_data_input-3` now maps to `"Is Male-Identifying?"`, which is the protected attribute we'll monitor for bias. These labels will appear in all fairness metrics, making the bias reports interpretable by data scientists and compliance teams.
@@ -783,7 +754,7 @@ Take the time to review the script and understand the new payload structure:
 * *batchSize*: The number of previous inferences to include in the calculation.
 
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 +
 [source, bash,role=execute,subs=attributes+]
@@ -825,7 +796,7 @@ Model Alpha
 Model Alpha shows an SPD value of `-0.003` (approximately -0.3%). This is well within the acceptable fairness threshold of -0.1 to 0.1 (as indicated by `"outsideBounds":false`). The model is treating male-identifying and non-male-identifying applicants almost identically during training, with less than 1 percentage point difference in favorable outcomes.
 ====
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 +
 [source, bash,role=execute,subs=attributes+]
@@ -874,7 +845,7 @@ Model Beta shows an SPD value of `0.028` (approximately 2.8%). While this is als
 However, while it's great that our models are fair over the training data, we need to monitor that they remain fair over real-world inference data as well. To do this, we can schedule some metric requests, such as to compute at recurring intervals throughout deployment. To do this, we simply pass the same payloads to the /metrics/group/fairness/spd/request endpoint:
 
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 +
 [source, bash,role=execute,subs=attributes+]
@@ -899,7 +870,7 @@ curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/me
 {"requestId":"e2a51b63-de0c-4c48-bd2c-7406208f4d36","timestamp":"2025-12-18T22:51:47.856+00:00"}
 ----
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 +
 [source, bash,role=execute,subs=attributes+]
@@ -924,7 +895,10 @@ curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/me
 {"requestId":"515a0265-8c91-473d-97d8-3c37291ae626","timestamp":"2025-12-18T22:54:50.892+00:00"}
 ----
 
-Learning tip: From these, we see that both model Alpha and Beta are quite fair over the Is Male-Identifying? field, with the two groups' rates of positive outcomes only differing by -0.3% and 2.8% respectively.
+[TIP]
+====
+From these results, we see that both model Alpha and Beta are quite fair over the Is Male-Identifying? field, with the two groups' rates of positive outcomes only differing by -0.3% and 2.8% respectively.
+====
 
 
 == Schedule an Identity Metric Request
@@ -936,7 +910,7 @@ Identity metrics track average field values over time to detect data drift - for
 Furthermore, let's monitor the average values of various data fields over time, to see the average ratio of loan-payback to loan-default predictions, as well as the average ratio of male-identifying to non-male-identifying applicants. We can do this by creating an Identity Metric Request via POST'ing the /metrics/identity/request endpoint:
 
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 +
 [source, bash,role=execute,subs=attributes+]
@@ -1012,7 +986,7 @@ image:ai-safety/metrics-identity.png[Metrics, link=self, window="image"]
 === Simulate Some Real World Data
 Now that we've got our metric monitoring set up, let's send some "real world" data through our models to see if they remain fair:
 
-. Open the *OpenShift Web Terminal*, {openshift_console_url}/terminal[Web Console^]:
+. Open the *OpenShift Web Terminal*.
 . Copy the following content and past it on the terminal.
 +
 [source, bash,role=execute,subs=attributes+]
@@ -1038,27 +1012,50 @@ Data batch transmission (ATTEMPT 0)
 
 
 Once the data is being sent, return to Observe -> Metrics page and watch the SPD and Identity metric values change.
+Let's check the results. Let's first look at our two models' fairness.
 
-=== Results
-Let's first look at our two models' fairness:
+=== Models' Fairness
+
+. Query for identity metrics:
++
+. Clear the expression field and type: `trustyai_spd`
++
+. You should see metrics like:
 
 image:ai-safety/metrics-spd-updated.png[Metrics, link=self, window="image"]
 
-Immediately, we notice that the two models have drastically different fairnesses over the real world data. Model Alpha (blue) remained within the "acceptably fair" range between -0.1 and 0.1, ending at around 0.09. However, Model Beta (yellow) plummeted out of the fair range, ending at -0.274, meaning that non-male-identifying applicants were 27 percent less likely to get a favorable outcome from the model than male-identifying applicants; clearly an unacceptable bias.
+Immediately, we notice that the two models have drastically different fairnesses over the real world data. Model Alpha (blue) remained within the "acceptably fair" range between -0.1 and 0.1, ending at around 0.09. However, Model Beta (orange) plummeted out of the fair range, ending at -0.274, meaning that non-male-identifying applicants were 27 percent less likely to get a favorable outcome from the model than male-identifying applicants; clearly an unacceptable bias.
 
-We can investigate this further by examining our identity metrics, first looking at the inbound ratio of male-identifying to non-male-identifying applicants:
+We can investigate this further by examining our identity metrics, first looking at the inbound ratio of male-identifying to non-male-identifying applicants.
 
+=== Models' Identity metric
 
-image:ai-safety/metrics-identity-updated.png[Metrics, link=self, window="image"]
+. Query for identity metrics:
++
+. Clear the expression field and type: `trustyai_identity`
+
+[NOTE]
+====
+Ensure you have unchecked: *Will Default?* while *Is Male-Identifying?* remains checked.
+====
+
+. You should see metrics like:
+
+image:ai-safety/trustyai_identity-updated.png[Metrics, link=self, window="image"]
 
 We can immediately see that in our training data, the ratio between male/non-male was around 0.8, but in the real-world data, it quickly dropped to 0, meaning every single applicant was non-male. This is a strong indicator that our training data did not match our real-world data, which is very likely to indicate poor or biased model performance.
 
 Meanwhile, looking at the will-default to will-not-default ratio:
 
-image:ai-safety/metrics-identity-last.png[Metrics, link=self, window="image"]
+[NOTE]
+====
+Ensure you have checked: *Will Default?* while *Is Male-Identifying?* is unchecked.
+====
+
+image:ai-safety/trustyai_identity-last.png[Metrics, link=self, window="image"]
 
 
-We can see that despite seeing only non-male applicants, Model Alpha (green) still provided varying outcomes to the various applicants, predicting "will-default" around 25% of the time. Model Beta (purple) predicted "will-default" 100% of the time: every single applicant was predicted to default on their loan. Again, this is a clear indicator that our model is performing poorly on the real-world data and/or has encoded a systematic bias from its training; it is predicting that every single non-male applicant will default.
+We can see that despite seeing only non-male applicants, Model Alpha (green) still provided varying outcomes to the various applicants, predicting "will-default" around 25% of the time. Model Beta (blue) predicted "will-default" 100% of the time: every single applicant was predicted to default on their loan. Again, this is a clear indicator that our model is performing poorly on the real-world data and/or has encoded a systematic bias from its training; it is predicting that every single non-male applicant will default.
 
 These examples show exactly why monitoring bias in production is so important: models that are equally fair at training time may perform drastically differently over real-world data, with hidden biases only manifesting over real-world data. This means these biases are exposed to the public, being imposed upon whoever is subject to your models decisions, and therefore using TrustyAI to provide early warning of these biases can protect you from the damages that problematic models in production can do.
 

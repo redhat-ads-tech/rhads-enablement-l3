@@ -32,7 +32,7 @@ The Sigstore community built a new model signing project to resolve these challe
 Next, it is critical that the model signed can be verified through the entire model development lifecycle, including inference process. Model validation, ensures that the model is trusted and not tampered through the entire process, including once the model is deployed Model Hub and a Kubernetes Cluster.
 
 
-image:ai-safety/introduction/mdl-validation.png[MDL Validation,link=self, window="image"]
+image:ai-safety/introduction/mdl-validation.png[link=self, window="image"]
 
 ---
 

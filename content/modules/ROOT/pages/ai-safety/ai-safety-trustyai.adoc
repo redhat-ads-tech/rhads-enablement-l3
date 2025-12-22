@@ -13,14 +13,14 @@ TrustyAI is an open-source community and toolkit for all things responsible AI, 
 ** A component within ODH + RHOAI, for enabling responsible AI workflows within Kubernetes/OpenShift
 
 
-image::ai-safety/trusty-ai-what.png[width=80%]
+image::ai-safety/trusty-ai-what.png[link=self, window="image"]
 
 
 == TrustyAI Pillars
-image::ai-safety/trustyAI-pillars.png[]
+image::ai-safety/trustyAI-pillars.png[link=self, window="image"]
 
 == TrustyAI REST Service
-image::ai-safety/trustyAI-rest.png[]
+image::ai-safety/trustyAI-rest.png[link=self, window="image"]
 
 == TrustyAI REST Service: Bias and Drift
 
@@ -33,14 +33,14 @@ Compare the rates at which different input groups receive a specific model outco
 * Predictions made in the morning are 15 points lower than those made in the afternoon.
 
 
-image::ai-safety/trustyAI-bias.png[]
+image::ai-safety/trustyAI-bias.png[link=self, window="image"]
 
 
 == TrustyAI LLM Evaluation
 
 Perform various link:https://github.com/opendatahub-io/lm-evaluation-harness/blob/main/lm_eval/tasks/README.md[evaluation tasks, window='_blank'] over LLMs to understand and quantify their knowledge, capabilities, and behaviors.
 
-image::ai-safety/trustyai-eval.png[]
+image::ai-safety/trustyai-eval.png[link=self, window="image"]
 
 * 100+ out-of-the-box  evaluations or tasks
 * Create custom tasks via Unitxt
@@ -51,7 +51,7 @@ Moderates the interaction pathways between users and generative models, with:
 * Customizable input and output content validators
 * Request-time configuration allowing dynamic, per-request guardrailing
 
-image::ai-safety/trusty-ai-guardrails.png[]
+image::ai-safety/trusty-ai-guardrails.png[link=self, window="image"]
 
 *Examples:*
 
