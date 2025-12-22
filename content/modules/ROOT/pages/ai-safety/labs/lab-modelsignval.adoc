@@ -26,9 +26,9 @@ During this lab, you'll work directly on an *OpenShift cluster* using the *Web C
 
 In this section, you'll create the infrastructure for model storage and signing. The YAML below creates four resources:
 
-* *Namespace (model-signing)*: During this lab, you will be using the *model-signing* namespace. 
+* *Namespace (model-signing)*: During this lab, you will be using the *model-signing* namespace.
 * *PersistentVolumeClaim (model-storage-pvc)*: Requests 5Gi of storage for the model files.
-* *Job (download-model)*: Downloads a sample ONNX model from the ONNX Model.
+* *Job (download-model)*: Downloads a sample TensorFlow SavedModel.
 * *Pod (model-signing)*: Runs the RHTAS model-transparency container with the model-signing CLI tool.
 
 === Deploy Storage and Signing Infrastructure
@@ -72,7 +72,8 @@ spec:
             - /bin/sh
             - -c
             - |
-              wget -O /models/model.onnx https://github.com/onnx/models/raw/main/validated/vision/classification/mnist/model/mnist-8.onnx
+              apk add --no-cache wget
+              wget -O /models/saved_model.pb https://github.com/varodrig/model-validation-operator/raw/0835d8a8a7297b9f2ee00257c129e934ec724652/demo/signed_model/saved_model.pb
           volumeMounts:
             - name: model-storage
               mountPath: /models
