@@ -481,7 +481,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Modify app-config.yaml in the RHDH configMap, setting <code>techdocs.builder`</code> from <code>local</code> to <code>external</code>. This disables the local generator.</p>
+<p>Modify app-config.yaml in the RHDH configMap, setting <code>techdocs.builder</code> from <code>local</code> to <code>external</code>. This disables the local generator.</p>
 </li>
 </ul>
 </div>
@@ -496,18 +496,16 @@
 <div class="paragraph">
 <p>The <code>backstage.io/techdocs-ref</code> annotation in an entity&#8217;s <code>catalog-info.yaml</code> dictates the source file location for TechDocs preparation.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_standard_location"><a class="anchor" href="#_standard_location"></a>Standard Location</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_standard_location"><a class="anchor" href="#_standard_location"></a>Standard Location</h3>
 <div class="paragraph">
 <p>Most entities should specify <code>dir:.</code> That is, their catalog-info&#8217;s <code>dir:</code> parameter should be set to <em>dot</em> (<code>.</code>), the current directory of <code>catalog-info.yaml</code>. With this configuration, Source files and mkdocs.yml live in the same directory as catalog-info.yaml. The entire directory is downloaded during the <em>Prepare</em> step.</p>
 </div>
-<div class="sect2">
-<h3 id="_docs_in_a_sub_directory"><a class="anchor" href="#_docs_in_a_sub_directory"></a>Docs in a sub-directory</h3>
+<div class="sect3">
+<h4 id="_docs_in_a_sub_directory"><a class="anchor" href="#_docs_in_a_sub_directory"></a>Docs in a sub-directory</h4>
 <div class="paragraph">
 <p>A child directory of the current directory may be specified instead, e.g., <code>dir:./name/</code>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -654,42 +652,34 @@ data:
     app:
         baseUrl: ${BACKEND_URL}
         title: Red Hat Developer Hub
-    [ ... ]
+[ ... ]
     quay:
         uiUrl: ${QUAY__URL}
     signInPage: oidc
-    awsS3:
+    awsS3:<i class="conum" data-value="1"></i><b>(1)</b>
       - accessKeyId: ${AWS_ACCESS_KEY_ID}
       - secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
     techdocs:
         builder: local
         generator:
             runIn: local
-        publisher:
-          type: 'awsS3'
-          awsS3:
-            bucketName: techdocs-LONG-STRING-OF-CHARS<i class="conum" data-value="1"></i><b>(1)</b>
-            credentials:
-              accessKeyId: ${AWS_ACCESS_KEY_ID}
-              secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
-            endpoint: https://s3-openshift-storage.apps.cluster-pl2qd.dynamic.redhatworkshops.io<i class="conum" data-value="2"></i><b>(2)</b>
-            region: https://s3-openshift-storage.apps.cluster-pl2qd.dynamic.redhatworkshops.io:443<i class="conum" data-value="3"></i><b>(3)</b>
-            s3ForcePathStyle: true</code></pre>
+            publisher:
+              awsS3:
+                bucketName: '${BUCKET_NAME}'
+                credentials:
+                  accessKeyId: '${AWS_ACCESS_KEY_ID}'
+                  secretAccessKey: '${AWS_SECRET_ACCESS_KEY}'
+                endpoint: 'https://${BUCKET_HOST}'
+                region: '${BUCKET_REGION}'
+                s3ForcePathStyle: true
+              type: awsS3</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Replace the value of <code>bucketName:</code> with that returned when you execute the following command in the OpenShift Web Terminal: <code>oc get configmap rhdh-bucket-claim -o jsonpath='{.data.BUCKET_NAME}'</code></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Replace the value of <code>endpoint:</code> with <code>https://s3-openshift-storage.{openshift_cluster_ingress_domain}</code></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Replace the value of <code>region:</code> with <code>https://s3-openshift-storage.{openshift_cluster_ingress_domain}:443</code></td>
+<td>Copy and paste the YAML from here to the end of this block at the end of your <code>tssc-developer-hub-app-config</code> ConfigMap.</td>
 </tr>
 </table>
 </div>
@@ -700,7 +690,7 @@ data:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As you may remember from the setup-tpa module, the following script when executed in the <code>tssc-dh</code> Project will retrieve all of the credentials for your ODF storage bucket at once and dressed up with a bit of formatting:
+As you may remember from the setup-tpa module, the following script when executed in the <code>tssc-dh</code> Project namespace will retrieve all of the credentials for your ODF storage bucket at once and dressed up with a bit of formatting, so you can inspect what is being constructed from the variables in the YAML above. Remember, the values for these variable comes from the <code>rhdh-bucket-claim</code> ConfigMap and Secret generated when you created the <code>rhdh-bucket-claim</code> OBC.
 </td>
 </tr>
 </table>
@@ -711,6 +701,10 @@ As you may remember from the setup-tpa module, the following script when execute
 
 CLAIM="rhdh-bucket-claim"
 
+echo -n "Bucket Name:         "
+oc get configmap $CLAIM -o jsonpath='{.data.BUCKET_NAME}'
+echo ""
+
 echo -n "Access Key ID:       "
 oc get secret $CLAIM -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 -d
 echo ""
@@ -719,13 +713,8 @@ echo -n "Secret Access Key:   "
 oc get secret $CLAIM -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 -d
 echo ""
 
-echo -n "Endpoint:            "
-oc get route s3 -n openshift-storage -o jsonpath='https://{.spec.host}'
-echo ""
-
-echo -n "Bucket Name:         "
-oc get configmap $CLAIM -o jsonpath='{.data.BUCKET_NAME}'
-echo ""</code></pre>
+echo -n "Bucket Host:         "
+oc get configmap $CLAIM -o jsonpath='{.data.BUCKET_HOST}</code></pre>
 </div>
 </div>
 </div>
