@@ -511,7 +511,8 @@
 <li><a href="#_check_the_metrics">Check the Metrics</a>
 <ul class="sectlevel2">
 <li><a href="#_simulate_some_real_world_data">Simulate Some Real World Data</a></li>
-<li><a href="#_results">Results</a></li>
+<li><a href="#_models_fairness">Models' Fairness</a></li>
+<li><a href="#_models_identity_metric">Models' Identity metric</a></li>
 </ul>
 </li>
 <li><a href="#_conclusion">Conclusion</a></li>
@@ -633,14 +634,13 @@
 <h2 id="_enable_user_workload_monitoring"><a class="anchor" href="#_enable_user_workload_monitoring"></a>Enable User Workload Monitoring</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TrustyAI exposes fairness metrics through Prometheus. To collect and visualize these metrics in OpenShift&#8217;s monitoring dashboard, we need to enable user workload monitoring. This allows Prometheus to scrape metrics from user namespaces like our model-namespace.</p>
+<p>TrustyAI exposes fairness metrics through Prometheus. To collect and visualize these metrics in OpenShift&#8217;s monitoring dashboard, we need to enable user workload monitoring. This allows Prometheus to scrape metrics from user namespaces like our <strong>model-namespace</strong>.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>Enable user workload monitoring by creating a ConfigMap in the openshift-monitoring namespace.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
+</li>
 <li>
 <p>Copy the following content:</p>
 <div class="listingblock execute">
@@ -656,9 +656,6 @@ data:
 </div>
 </div>
 </li>
-</ol>
-</div>
-</li>
 <li>
 <p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong></p>
 </li>
@@ -672,51 +669,7 @@ data:
 <li>
 <p>Paste the content and click <strong>Create</strong>.</p>
 </li>
-<li>
-<p>Configure user workload monitoring to retain metric data for 15 days.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Copy the following content:</p>
-</li>
 </ol>
-</div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: user-workload-monitoring-config
-  namespace: openshift-user-workload-monitoring
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: ""
-data:
-  config.yaml: |
-    prometheus:
-      logLevel: debug
-      retention: 15d</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>+
-Click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on the current screen, paste the content, and click <strong>Create</strong>.</p>
-</div>
-</li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>This retention period allows you to analyze bias trends over time. Later in the lab, we&#8217;ll query these metrics to monitor fairness.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
@@ -727,7 +680,7 @@ Click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on
 <p>Red Hat OpenShift AI is already installed on your cluster. However, TrustyAI is an optional component that needs to be explicitly enabled. Let&#8217;s walk through the installation and configuration process.</p>
 </div>
 <div class="paragraph">
-<p>In the <strong>OpenShift Web Console</strong>, click on <strong>Operators &#8594; Installed Operators</strong> and select the <strong>RH OpenShift AI</strong> operator or use the following URL  {openshift_console_url}/k8s/ns/redhat-ods-operator/operators.coreos.com<sub>v1alpha1</sub>ClusterServiceVersion/rhods-operator.2.25.0[Web Console^]</p>
+<p>In the <strong>OpenShift Web Console</strong>, click on <strong>Operators &#8594; Installed Operators</strong> and select the <strong>RH OpenShift AI</strong> operator or use the following URL  {openshift_console_url}/k8s/ns/redhat-ods-operator/operators.coreos.com<sub>v1alpha1</sub>ClusterServiceVersion/rhods-operator.2.25.1[Web Console^]</p>
 </div>
 <div class="ulist">
 <ul>
@@ -758,20 +711,19 @@ Click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Select the <strong>Data Science Cluster</strong> tab and click on <strong>Edit</strong>.</p>
-</li>
-</ol>
-</div>
+<p>Select the <strong>Data Science Cluster</strong> tab and click on <strong>Edit</strong></p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/trustyAI-cluster.png" target="image"><img src="../../_images/ai-safety/trustyAI-cluster.png" alt="TrustyAI"></a></span></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p>Edit the <strong>DataScienceCluster</strong> and update the <strong>TrustyAI</strong> component to be <strong>Managed</strong> so it will be installed in the cluster.</p>
-<div class="paragraph">
-<p>Remove the current content associated with trustyAI:</p>
-</div>
+</li>
+<li>
+<p>Go to line <strong>157</strong> and search for the <strong>trustyAI</strong> component.</p>
+</li>
+<li>
+<p><strong>Remove</strong> the current content associated with trustyAI:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">      eval:
@@ -780,17 +732,17 @@ Click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on
           permitOnline: deny</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Replace the <strong>managementState</strong> to Managed:</p>
-</div>
+</li>
+<li>
+<p><strong>Replace</strong> the <strong>managementState</strong> to Managed:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">  Managed</code></pre>
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Ensure you have the correct indentation:</p>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/trutyAI-operatorupdate.png" target="image"><img src="../../_images/ai-safety/trutyAI-operatorupdate.png" alt="TrustyAI"></a></span></p>
 </div>
@@ -815,30 +767,19 @@ Click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In OpenShift, click on the <strong>OpenShift  Web Terminal</strong></p>
-</li>
-</ol>
-</div>
+<p>In OpenShift, click on the <strong>OpenShift Web Terminal</strong></p>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal.png" target="image"><img src="../../_images/ai-safety/openshift-terminal.png" alt="OpenShift  Web Terminal"></a></span></p>
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal.png" target="image"><img src="../../_images/ai-safety/openshift-terminal.png" alt="OpenShift Web Terminal"></a></span></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p>Click <strong>Start</strong></p>
-</li>
-</ol>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal-start.png" target="image"><img src="../../_images/ai-safety/openshift-terminal-start.png" alt="OpenShift Web Terminal Start"></a></span></p>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Copy the following content and paste it on the terminal</p>
-</li>
-</ul>
-</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE=redhat-ods-applications
@@ -854,11 +795,7 @@ oc patch configmap inferenceservice-config \
     }]"</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Copy the following content and paste it on the terminal</p>
-</div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Review the output:</p>
 <div class="listingblock">
@@ -882,7 +819,7 @@ configmap/inferenceservice-config patched</code></pre>
 </table>
 </div>
 </li>
-</ul>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -893,18 +830,11 @@ configmap/inferenceservice-config patched</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In the OpenShift Web console, create a new project in the cluster, click on <strong>Home &#8594; Projects &#8594; Create Project</strong> with the name:</p>
-</li>
-<li>
-<p><strong>model-namespace</strong></p>
-</li>
-</ol>
-</div>
+<p>In the OpenShift Web console, create a new project in the cluster, click on <strong>Home &#8594; Projects &#8594; Create Project</strong> with the name: <strong>model-namespace</strong></p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-new-project.png" target="image"><img src="../../_images/ai-safety/openshift-new-project.png" alt="OpenShift New Project"></a></span></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p>The following YAML creates four resources for TrustyAI:</p>
 <div class="openblock">
@@ -927,9 +857,9 @@ configmap/inferenceservice-config patched</code></pre>
 </div>
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Copy the following content:</p>
-</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
@@ -979,29 +909,22 @@ spec:
 </div>
 </li>
 <li>
-<p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong></p>
+<p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on the current screen.</p>
 </li>
 <li>
 <p>Paste the content and click <strong>Create</strong>.</p>
 </li>
 <li>
 <p>You should see a similar screen like this one, showing all resources has been successfully created:</p>
-</li>
-</ol>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/import-ok.png" target="image"><img src="../../_images/ai-safety/import-ok.png" alt="OpenShift Import YAML"></a></span></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p>Verify the <strong>trustyAI service pod</strong> is running by running the following command on the terminal:</p>
-</li>
-</ol>
-</div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n model-namespace</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1009,12 +932,16 @@ spec:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         READY   STATUS    RESTARTS   AGE
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">// Sample output
+NAME                                         READY   STATUS    RESTARTS   AGE
 trustyai-service-6d59478756-4pcmh            2/2     Running   0          107s</code></pre>
 </div>
 </div>
+</li>
+</ol>
+</div>
 <div class="paragraph">
-<p><strong>Congratulations you have successfully configured TrustyAI</strong></p>
+<p>✅ <strong>Success!</strong> You have successfully configured TrustyAI. The service is now ready to monitor model predictions for bias. Next, you&#8217;ll deploy the loan prediction models and configure them to send inference data to TrustyAI for continuous fairness monitoring.</p>
 </div>
 </div>
 </div>
@@ -1026,9 +953,6 @@ trustyai-service-6d59478756-4pcmh            2/2     Running   0          107s</
 <h3 id="_configure_the_storage"><a class="anchor" href="#_configure_the_storage"></a>Configure the storage</h3>
 <div class="paragraph">
 <p>Models need persistent storage for their binary files. This YAML creates an S3-compatible storage solution using MinIO:</p>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="openblock">
 <div class="content">
@@ -1299,24 +1223,31 @@ spec:
 </li>
 <li>
 <p>You should see a similar screen like this one, showing all resources has been successfully created:</p>
-</li>
-</ol>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/import-ok-model.png" target="image"><img src="../../_images/ai-safety/import-ok-model.png" alt="OpenShift Import Model"></a></span></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p>Check the <strong>new pods</strong> by clicking on <strong>Workloads &#8594; Pods</strong> using the <strong>model-namespace</strong> namespace, you should see a similar screen like this:</p>
-</li>
-</ol>
-</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p><strong>Note:</strong> you will see the deployments being updated, expect the new 4-container deployment to briefly coexist with the old 3-container version.</p>
+<p>You will see the deployments being updated. Expect the new 4-container deployment to briefly coexist with the old 3-container version.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/pods-running.png" target="image"><img src="../../_images/ai-safety/pods-running.png" alt="OpenShift Import Data"></a></span></p>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -1330,25 +1261,8 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In OpenShift, click on the <strong>OpenShift Web Terminal</strong></p>
+<p>In OpenShift, use the <strong>OpenShift Web Terminal</strong></p>
 </li>
-</ol>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal.png" target="image"><img src="../../_images/ai-safety/openshift-terminal.png" alt="OpenShift  Web Terminal"></a></span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Click <strong>Start</strong></p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-terminal-start.png" target="image"><img src="../../_images/ai-safety/openshift-terminal-start.png" alt="OpenShift Web Terminal Start"></a></span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
 <li>
 <p>Copy the following content and past it on the terminal.</p>
 </li>
@@ -1365,21 +1279,43 @@ for batch in 0 250 500 750 1000 1250 1500 1750 2000 2250; do
 done</code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
 <p>The script will run for a few minutes.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>You should see the <strong>expected output:</strong> <code>2250 datapoints successfully added to each model</code></p>
-</li>
-</ol>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/data-output.png" target="image"><img src="../../_images/ai-safety/data-output.png" alt="OpenShift Web Terminal Output"></a></span></p>
 </div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p><strong>Note</strong>: While the script outputs confirmation messages indicating data reception by TrustyAI, you can also verify the stream in the OpenShift web console.</p>
+<p>While the script outputs confirmation messages indicating data reception by TrustyAI, you can also verify the stream in the OpenShift web console.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1389,44 +1325,47 @@ done</code></pre>
 <div class="paragraph">
 <p>Create a new query to explore the metrics in OpenShift.</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
 <p>Click on <strong>Observe &#8594; Metrics</strong> or use the following URL: {openshift_console_url/monitoring/query-browser?query0=}[Web Console^]</p>
 </li>
 <li>
 <p>Click on <strong>Add query</strong></p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/query-add-new.png" target="image"><img src="../../_images/ai-safety/query-add-new.png" alt="Metrics"></a></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Metric:</strong> In the <strong>Expression field</strong>, enter the Prometheus metric: <code>trustyai_model_observations_total</code>.</p>
 </li>
 <li>
-<p><strong>Time Settings:</strong> Set the time window to <strong>5 minutes</strong> (top left) and the refresh interval to <strong>15 seconds</strong> (top right).</p>
+<p>In the <strong>Expression field</strong>, enter the Prometheus metric: <code>trustyai_model_observations_total</code></p>
 </li>
-</ul>
-</div>
+<li>
+<p>Set the time window to <strong>5 minutes</strong> (top left), click <strong>Run queries</strong> and the refresh interval to <strong>15 seconds</strong> (top right)</p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/query-new-added.png" target="image"><img src="../../_images/ai-safety/query-new-added.png" alt="Metrics"></a></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Verification:</strong> After running the query, confirm that both models are listed, each reporting close to <strong>2250 observed inferences</strong>.</p>
 </li>
-</ul>
-</div>
+<li>
+<p>After running the query, confirm that both models are listed, each reporting close to <strong>2250 observed inferences</strong></p>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-init.png" target="image"><img src="../../_images/ai-safety/metrics-init.png" alt="Metrics"></a></span></p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
 <div class="paragraph">
 <p>This total count confirms that TrustyAI has successfully cataloged sufficient inputs and outputs (around 2250 per model) to begin meaningful bias analysis.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
 </div>
 <div class="sect2">
 <h3 id="_understanding_trustyais_rest_api"><a class="anchor" href="#_understanding_trustyais_rest_api"></a>Understanding TrustyAI&#8217;s REST API</h3>
@@ -1461,7 +1400,7 @@ done</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -1472,7 +1411,7 @@ done</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export TOKEN=$(oc whoami -t)
 echo "TrustyAI Token: $TOKEN"
-TRUSTY_ROUTE=https://$(oc get route/trustyai-service --template={{.spec.host}})
+TRUSTY_ROUTE=https://$(oc get route/trustyai-service -n model-namespace --template={{.spec.host}})
 curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-alpha"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'
 curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-nn-onnx-beta"].data | {inputSchema: .inputSchema, outputSchema: .outputSchema}'</code></pre>
 </div>
@@ -1480,29 +1419,25 @@ curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-n
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">// Sample output (abbreviated)
+      },
+      "customer_data_input-9": {
+        "type": "DOUBLE",
+        "name": "customer_data_input-9",
+        "columnIndex": 9
+      },
+      "customer_data_input-8": {
+        "type": "DOUBLE",
+        "name": "customer_data_input-8",
+        "columnIndex": 8
+      },
       "customer_data_input-7": {
         "type": "DOUBLE",
         "name": "customer_data_input-7",
         "columnIndex": 7
       }
     },
-    "nameMapping": {}
-  },
-  "outputSchema": {
-    "items": {
-      "predict": {
-        "type": "INT64",
-        "name": "predict",
-        "columnIndex": 11
-      }
-    },
-    "nameMapping": {}
-  }
-}</code></pre>
+    "nameMapping": {}</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1518,9 +1453,15 @@ curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-n
 </tr>
 </table>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>+
-The output of each curl command is a JSON file containing schema and volume details for the model, specifically:</p>
+<p>The output of each curl command is a JSON file containing schema and volume details for the model, specifically:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1531,6 +1472,10 @@ The output of each curl command is a JSON file containing schema and volume deta
 <p>The total running count of observed input-output pairs.</p>
 </li>
 </ul>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><a href="https://github.com/redhat-ads-tech/odh-trustyai-demos/blob/main/2-BiasMonitoring/kserve-demo/resources/info_response.json" target="_blank" rel="noopener">Explore the Bias Monitoring Sample Data</a></p>
@@ -1547,7 +1492,7 @@ The output of each curl command is a JSON file containing schema and volume deta
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -1556,7 +1501,7 @@ The output of each curl command is a JSON file containing schema and volume deta
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">MODEL_ALPHA=demo-loan-nn-onnx-alpha
 MODEL_BETA=demo-loan-nn-onnx-beta
 export TOKEN=$(oc whoami -t)
-TRUSTY_ROUTE=https://$(oc get route/trustyai-service --template={{.spec.host}})
+TRUSTY_ROUTE=https://$(oc get route/trustyai-service -n model-namespace --template={{.spec.host}})
 
 for model in $MODEL_ALPHA $MODEL_BETA; do
   curl -sk  -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/info/names \
@@ -1586,12 +1531,6 @@ for model in $MODEL_ALPHA $MODEL_BETA; do
 done</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">Feature and output name mapping successfully applied.
-Feature and output name mapping successfully applied.</code></pre>
-</div>
-</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1601,6 +1540,13 @@ Feature and output name mapping successfully applied.</code></pre>
 <td class="content">
 <div class="paragraph">
 <p>You should see two success messages—one for each model (Alpha and Beta). This confirms that TrustyAI has updated the metadata for both models with human-readable field names.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">// Sample output
+Feature and output name mapping successfully applied.
+Feature and output name mapping successfully applied.</code></pre>
+</div>
 </div>
 </td>
 </tr>
@@ -1642,9 +1588,6 @@ curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-n
       "customer_data_input-10": "Length of Employment?"
     }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1722,7 +1665,7 @@ curl -H "Authorization: Bearer ${TOKEN}" $TRUSTY_ROUTE/info | jq '.["demo-loan-n
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -1776,7 +1719,7 @@ curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/me
 </div>
 </li>
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -1846,7 +1789,7 @@ curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/me
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -1874,7 +1817,7 @@ curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/me
 </div>
 </li>
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -1903,8 +1846,19 @@ curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/me
 </li>
 </ol>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>Learning tip: From these, we see that both model Alpha and Beta are quite fair over the Is Male-Identifying? field, with the two groups' rates of positive outcomes only differing by -0.3% and 2.8% respectively.</p>
+<p>From these results, we see that both model Alpha and Beta are quite fair over the Is Male-Identifying? field, with the two groups' rates of positive outcomes only differing by -0.3% and 2.8% respectively.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1922,7 +1876,7 @@ curl -sk -H "Authorization: Bearer ${TOKEN}" -X POST --location $TRUSTY_ROUTE/me
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -2062,7 +2016,7 @@ done</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <strong>OpenShift Web Terminal</strong>, {openshift_console_url}/terminal[Web Console^]:</p>
+<p>Open the <strong>OpenShift Web Terminal</strong>.</p>
 </li>
 <li>
 <p>Copy the following content and past it on the terminal.</p>
@@ -2090,25 +2044,70 @@ Data batch transmission (ATTEMPT 0)
 </ol>
 </div>
 <div class="paragraph">
-<p>Once the data is being sent, return to Observe &#8594; Metrics page and watch the SPD and Identity metric values change.</p>
+<p>Once the data is being sent, return to Observe &#8594; Metrics page and watch the SPD and Identity metric values change.
+Let&#8217;s check the results. Let&#8217;s first look at our two models' fairness.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_results"><a class="anchor" href="#_results"></a>Results</h3>
-<div class="paragraph">
-<p>Let&#8217;s first look at our two models' fairness:</p>
+<h3 id="_models_fairness"><a class="anchor" href="#_models_fairness"></a>Models' Fairness</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Query for identity metrics:</p>
+</li>
+<li>
+<p>Clear the expression field and type: <code>trustyai_spd</code></p>
+</li>
+<li>
+<p>You should see metrics like:</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-spd-updated.png" target="image"><img src="../../_images/ai-safety/metrics-spd-updated.png" alt="Metrics"></a></span></p>
 </div>
 <div class="paragraph">
-<p>Immediately, we notice that the two models have drastically different fairnesses over the real world data. Model Alpha (blue) remained within the "acceptably fair" range between -0.1 and 0.1, ending at around 0.09. However, Model Beta (yellow) plummeted out of the fair range, ending at -0.274, meaning that non-male-identifying applicants were 27 percent less likely to get a favorable outcome from the model than male-identifying applicants; clearly an unacceptable bias.</p>
+<p>Immediately, we notice that the two models have drastically different fairnesses over the real world data. Model Alpha (blue) remained within the "acceptably fair" range between -0.1 and 0.1, ending at around 0.09. However, Model Beta (orange) plummeted out of the fair range, ending at -0.274, meaning that non-male-identifying applicants were 27 percent less likely to get a favorable outcome from the model than male-identifying applicants; clearly an unacceptable bias.</p>
 </div>
 <div class="paragraph">
-<p>We can investigate this further by examining our identity metrics, first looking at the inbound ratio of male-identifying to non-male-identifying applicants:</p>
+<p>We can investigate this further by examining our identity metrics, first looking at the inbound ratio of male-identifying to non-male-identifying applicants.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_models_identity_metric"><a class="anchor" href="#_models_identity_metric"></a>Models' Identity metric</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Query for identity metrics:</p>
+</li>
+<li>
+<p>Clear the expression field and type: <code>trustyai_identity</code></p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Ensure you have unchecked: <strong>Will Default?</strong> while <strong>Is Male-Identifying?</strong> remains checked.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You should see metrics like:</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-identity-updated.png" target="image"><img src="../../_images/ai-safety/metrics-identity-updated.png" alt="Metrics"></a></span></p>
+<p><span class="image"><a class="image" href="../../_images/ai-safety/trustyai_identity-updated.png" target="image"><img src="../../_images/ai-safety/trustyai_identity-updated.png" alt="Metrics"></a></span></p>
 </div>
 <div class="paragraph">
 <p>We can immediately see that in our training data, the ratio between male/non-male was around 0.8, but in the real-world data, it quickly dropped to 0, meaning every single applicant was non-male. This is a strong indicator that our training data did not match our real-world data, which is very likely to indicate poor or biased model performance.</p>
@@ -2116,11 +2115,25 @@ Data batch transmission (ATTEMPT 0)
 <div class="paragraph">
 <p>Meanwhile, looking at the will-default to will-not-default ratio:</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/ai-safety/metrics-identity-last.png" target="image"><img src="../../_images/ai-safety/metrics-identity-last.png" alt="Metrics"></a></span></p>
+<p>Ensure you have checked: <strong>Will Default?</strong> while <strong>Is Male-Identifying?</strong> is unchecked.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>We can see that despite seeing only non-male applicants, Model Alpha (green) still provided varying outcomes to the various applicants, predicting "will-default" around 25% of the time. Model Beta (purple) predicted "will-default" 100% of the time: every single applicant was predicted to default on their loan. Again, this is a clear indicator that our model is performing poorly on the real-world data and/or has encoded a systematic bias from its training; it is predicting that every single non-male applicant will default.</p>
+<p><span class="image"><a class="image" href="../../_images/ai-safety/trustyai_identity-last.png" target="image"><img src="../../_images/ai-safety/trustyai_identity-last.png" alt="Metrics"></a></span></p>
+</div>
+<div class="paragraph">
+<p>We can see that despite seeing only non-male applicants, Model Alpha (green) still provided varying outcomes to the various applicants, predicting "will-default" around 25% of the time. Model Beta (blue) predicted "will-default" 100% of the time: every single applicant was predicted to default on their loan. Again, this is a clear indicator that our model is performing poorly on the real-world data and/or has encoded a systematic bias from its training; it is predicting that every single non-male applicant will default.</p>
 </div>
 <div class="paragraph">
 <p>These examples show exactly why monitoring bias in production is so important: models that are equally fair at training time may perform drastically differently over real-world data, with hidden biases only manifesting over real-world data. This means these biases are exposed to the public, being imposed upon whoever is subject to your models decisions, and therefore using TrustyAI to provide early warning of these biases can protect you from the damages that problematic models in production can do.</p>

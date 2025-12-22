@@ -479,20 +479,34 @@
 <div class="sect1">
 <h2 id="modelsignval"><a class="anchor" href="#modelsignval"></a>Model Signing and Model Validation</h2>
 <div class="sectionbody">
-<div class="paragraph">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
 <p>The <strong>identity token</strong> is provided to the Red Hat Trusted Artifact Signer (RHTAS) Certificate Authority.</p>
-</div>
-<div class="paragraph">
-<p>2- The RHTAS Certificate Authority will issue a certificate for the model based on the identity token.
-3- RHTAS Transparency Log receives the Signed Model Certificate.
-4- The RHTAS Transparency Log adds detailed information received from the certificate for traceability as part of the Log inclusion proof. This information is returned and now it’s part of the Signed Model Certificate Proof
-5- The Signed Model Certificate Proof is now part of the Model and will be deployed with the model in the Model Hub.
-6- Once there&#8217;s a request, the RHTAS Controller will verify that the model is signed before serving the model.
-7- The model signed is served.</p>
+</li>
+<li>
+<p>The RHTAS Certificate Authority will issue a certificate for the model based on the identity token.</p>
+</li>
+<li>
+<p>RHTAS Transparency Log receives the Signed Model Certificate.</p>
+</li>
+<li>
+<p>The RHTAS Transparency Log adds detailed information received from the certificate for traceability as part of the Log inclusion proof. This information is returned and now it’s part of the Signed Model Certificate Proof.</p>
+</li>
+<li>
+<p>The Signed Model Certificate Proof is now part of the Model and will be deployed with the model in the Model Hub.</p>
+</li>
+<li>
+<p>Once there&#8217;s a request, the RHTAS Controller will verify that the model is signed before serving the model.</p>
+</li>
+<li>
+<p>The model signed is served.</p>
+</li>
+</ol>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../_images/ai-safety/model-signing-validation.png" alt="model signing validation">
+<a class="image" href="../_images/ai-safety/model-signing-validation.png" target="image"><img src="../_images/ai-safety/model-signing-validation.png" alt="model signing validation"></a>
 </div>
 </div>
 <div class="sect2">
@@ -502,7 +516,7 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../_images/ai-safety/model-signing.png" alt="model signing">
+<a class="image" href="../_images/ai-safety/model-signing.png" target="image"><img src="../_images/ai-safety/model-signing.png" alt="model signing"></a>
 </div>
 </div>
 <div class="paragraph">
