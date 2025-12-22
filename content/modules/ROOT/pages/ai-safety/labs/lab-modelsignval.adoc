@@ -73,7 +73,7 @@ spec:
             - -c
             - |
               apk add --no-cache wget
-              wget -O /models/saved_model.pb https://github.com/varodrig/model-validation-operator/raw/0835d8a8a7297b9f2ee00257c129e934ec724652/demo/signed_model/saved_model.pb
+              wget -O /models/saved_model.pb https://github.com/redhat-ads-tech/rhads-enablement-l3/raw/refs/heads/main/content/modules/ROOT/solutions/ai-safety/models/saved_model.pb
           volumeMounts:
             - name: model-storage
               mountPath: /models
