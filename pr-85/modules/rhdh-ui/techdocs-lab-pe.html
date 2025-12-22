@@ -514,7 +514,7 @@
 <h2 id="_platform_engineering_production_techdocs"><a class="anchor" href="#_platform_engineering_production_techdocs"></a>[Platform] Engineering Production TechDocs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab establishes production TechDocs in divisible segments. First, persistent storage (for this document cache) on an S3-style object store. This is the key step, first because some kind of persistent storage is required in order to even consider extenal generation, and secondly, because when running on OpenShit, even external (that is, external to RHDH) generation will tend to run within pipelines on the cluster. This is a distinct advantage of deploying Backstage as Developer Hub on Openshift, because it makes the choice between local and external TechDocs generation a matter of site practices and preferences, rather than a hard requirement for the most basic load balancing.</p>
+<p>This lab establishes production TechDocs in divisible segments. First, persistent storage (for this document cache) on an S3-style object store. This is the key step, first because some kind of persistent storage is required in order to even consider external generation, and secondly, because when running on OpenShit, even external (that is, external to RHDH) generation will tend to run within pipelines on the cluster. This is a distinct advantage of deploying Backstage as Developer Hub on Openshift, because it makes the choice between local and external TechDocs generation a matter of site practices and preferences, rather than a hard requirement for the most basic load balancing.</p>
 </div>
 <div class="sect2">
 <h3 id="_existing_deployments"><a class="anchor" href="#_existing_deployments"></a>Existing Deployments</h3>
@@ -622,7 +622,7 @@ Up in the conceptual clouds, it works like this:
 </table>
 </div>
 <div class="paragraph">
-<p>Developer Hub CR&#8217;s <code>extraEnvs</code> points to the <code>rhdh-bucket-claim</code> ConfigMap and Secret. This makes them available in the RHDH Pod, where they appear to processes within as conventional files and environment variables. The RHDH ConfigMap then refers to those resources trasmuted from the Kubernetes API to the conventional unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the RHDH ConfigMap. Because you will change the overall developer hub deployment to connect to the <code>rhdh-bucket-claim</code>, when the Developer Hub application reads <code>$AWS_ACCESS_KEY</code>, it will find the value set in the <code>rhdh-bucket-claim</code> Secret.</p>
+<p>Developer Hub CR&#8217;s <code>extraEnvs</code> points to the <code>rhdh-bucket-claim</code> ConfigMap and Secret. This makes them available in the RHDH Pod, where they appear to processes within as conventional files and environment variables. The RHDH ConfigMap then refers to those resources transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the RHDH ConfigMap. Because you will change the overall developer hub deployment to connect to the <code>rhdh-bucket-claim</code>, when the Developer Hub application reads <code>$AWS_ACCESS_KEY</code>, it will find the value set in the <code>rhdh-bucket-claim</code> Secret.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -636,7 +636,7 @@ Up in the conceptual clouds, it works like this:
 <p>Click the <strong>YAML</strong> tab to open the ConfigMap source.</p>
 </li>
 <li>
-<p>Edit the end of the ConfigMap YAML immediately below the <code>quay:</code> section to match the following, combined with the three values you must edit. Those three items are numbered correspoding to a numbered explanation for each that follows.</p>
+<p>Edit the end of the ConfigMap YAML immediately below the <code>quay:</code> section to match the following, combined with the three values you must edit. Those three items are numbered corresponding to a numbered explanation for each that follows.</p>
 </li>
 </ol>
 </div>
@@ -766,7 +766,7 @@ spec:
 </div>
 </div>
 <div class="sect3">
-<h4 id="_local_generation_peristent_storage"><a class="anchor" href="#_local_generation_peristent_storage"></a>Local Generation, Peristent Storage</h4>
+<h4 id="_local_generation_persistent_storage"><a class="anchor" href="#_local_generation_persistent_storage"></a>Local Generation, Persistent Storage</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
