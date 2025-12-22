@@ -549,7 +549,7 @@
 <p><strong>PersistentVolumeClaim (model-storage-pvc)</strong>: Requests 5Gi of storage for the model files.</p>
 </li>
 <li>
-<p><strong>Job (download-model)</strong>: Downloads a sample ONNX model from the ONNX Model.</p>
+<p><strong>Job (download-model)</strong>: Downloads a sample TensorFlow SavedModel.</p>
 </li>
 <li>
 <p><strong>Pod (model-signing)</strong>: Runs the RHTAS model-transparency container with the model-signing CLI tool.</p>
@@ -599,7 +599,8 @@ spec:
             - /bin/sh
             - -c
             - |
-              wget -O /models/model.onnx https://github.com/onnx/models/raw/main/validated/vision/classification/mnist/model/mnist-8.onnx
+              apk add --no-cache wget
+              wget -O /models/saved_model.pb https://github.com/varodrig/model-validation-operator/raw/0835d8a8a7297b9f2ee00257c129e934ec724652/demo/signed_model/saved_model.pb
           volumeMounts:
             - name: model-storage
               mountPath: /models
