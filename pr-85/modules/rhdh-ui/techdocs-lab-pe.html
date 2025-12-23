@@ -609,23 +609,20 @@ objectbucketclaim.objectbucket.io/rhdh-bucket-claim created</code></pre>
 <div class="paragraph">
 <p>Creating the ObjectBucketClaim also creates the ConfigMap and Secret. Those will be mounted in the Red Hat Developer Hub Pods, available as environment variables or beneath the file paths. Next, edit the Developer Hub Dynamic Plugins ConfigMap to connect the RHDH instance to the storage bucket you created. The Dynamic Plugins ConfigMap refers to variables contained, in turn, in the <code>rhdh-bucket-claim</code> ConfigMap and Secret. Referenced here, those variables will be populated after you adjust the Developer Hub CustomResource to point to their sources in the <code>rhdh-bucket-claim</code> ConfigMap and Secret.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Up in the conceptual clouds, it works like this:
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
-<p>Developer Hub CR&#8217;s <code>extraEnvs</code> points to the <code>rhdh-bucket-claim</code> ConfigMap and Secret. This makes them available in the RHDH Pod, where they appear to processes within as conventional files and environment variables. The RHDH Dynamic Plugins ConfigMap then refers to those resources with names transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the Dynamic Plugins ConfigMap. Because you will change the overall Developer Hub deployment to make it see the <code>rhdh-bucket-claim</code> resources, when the Developer Hub application reads <code>$AWS_ACCESS_KEY</code> from its environment, it will find in it the value declared in the <code>rhdh-bucket-claim</code> Secret. In effect, ODF has put the keys to a storage bucket in a known location. You arrange for RHDH to access that location.</p>
+<p>To summarize:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
+<li>
+<p>The Developer Hub Custom Resources&#8217;s <code>extraEnvs</code> points to the <code>rhdh-bucket-claim</code> ConfigMap and Secret. This makes their contents available in the running RHDH Pod, where they appear to processes within as conventional files and environment variables.</p>
+</li>
+<li>
+<p>The RHDH Dynamic Plugins ConfigMap then refers to those resources with names transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the Dynamic Plugins ConfigMap.</p>
+</li>
+<li>
+<p>Because you will change the overall Developer Hub deployment to make it see the <code>rhdh-bucket-claim</code> resources, when the Developer Hub application reads <code>$AWS_ACCESS_KEY</code> from its environment, it will find in it the value declared in the <code>rhdh-bucket-claim</code> Secret. In effect, ODF has put the keys to a storage bucket in a known location. You arrange for RHDH to access that location.</p>
+</li>
 <li>
 <p>In the OpenShift Web Console, click <strong>Workloads</strong> in the left navigation to expand it, then click  <strong>ConfigMaps</strong>.</p>
 </li>
@@ -636,7 +633,7 @@ Up in the conceptual clouds, it works like this:
 <p>Click the <strong>YAML</strong> tab to open the ConfigMap source.</p>
 </li>
 <li>
-<p>Edit the Dynamic Plugins ConfigMap YAML immediately after the existing line <code>package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic</code> and immediately before the keycloak stanza that follows, to make the result match this YAML excerpt:</p>
+<p>Edit the Dynamic Plugins ConfigMap YAML immediately after the existing line <code>package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic</code> and immediately before the keycloak stanza (<code>- disabled: false</code>) that follows, to make the result match this YAML excerpt:</p>
 </li>
 </ol>
 </div>
