@@ -793,10 +793,10 @@ spec:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mkdocs_techdocs_core_mkdocs_mechanics"><a class="anchor" href="#_mkdocs_techdocs_core_mkdocs_mechanics"></a>mkdocs-techdocs-core: MkDocs Mechanics</h2>
+<h2 id="_mkdocs_techdocs_core_builder_mechanics"><a class="anchor" href="#_mkdocs_techdocs_core_builder_mechanics"></a>mkdocs-techdocs-core: Builder Mechanics</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>An entity has techdocs features configured when it is tagged with the <code>backstage.io/techdocs-ref</code> <em>annotation</em>.</p>
+<p>An Entity has TechDocs features configured when it is tagged with the <code>backstage.io/techdocs-ref</code> <em>annotation</em>.</p>
 </div>
 <div class="sect2">
 <h3 id="_entity_annotation_docs_location"><a class="anchor" href="#_entity_annotation_docs_location"></a>Entity Annotation, Docs Location</h3>
@@ -839,6 +839,9 @@ spec:
 <h3 id="_mkdocs_summary"><a class="anchor" href="#_mkdocs_summary"></a>MkDocs Summary</h3>
 <div class="paragraph">
 <p>You&#8217;ve been through the details of the "server" side (find, build, store, publish) of Red Hat Developer Hub TechDocs configuration for external storage, and you&#8217;ve seen the mechanism on the "client" side (Templates and the Entities they make) that specifies <code>mkdocs-techdocs-core</code>. <a href="https://github.com/backstage/mkdocs-techdocs-core"><code>Mkdocs-techdocs-core</code></a> is a plugin that customizes the <a href="https://mkdocs.org/">MkDocs</a> program for TechDocs operation. MkDocs is a sort of domain-specific static site generator for documentation.</p>
+</div>
+<div class="paragraph">
+<p>At this point, your TechDocs deployment centralizes builds in OpenShift (<code>builder: local</code>), but stores the resulting HTML in object bucket storage <em>external</em> to Red Hat Developer Hub. It passes configuration and secrets references only between neccessary applications and only through standard mechanisms. This configuration is not an exact match for the upstream BackStage "recommended" TechDocs setup, but the upstream recommended setup is not running on an OpenShift cluster. Many setups will still want to distribute TechDocs builds out to project pipelines, as shown in the next section, but RHDH on OpenShift makes local TechDocs builds to external storage a legitimate production layout.</p>
 </div>
 </div>
 </div>
@@ -897,9 +900,8 @@ techdocs-cli publish --publisher-type awsS3 --storage-name techdocs-etc-BEEF-etc
 
 generate-and-publish-techdocs:
   stage: build-docs
-  image: node:18 # Or whatever. 20 worked and 24 might too.
+  image: node:18 # Tested 18 and 20.
   variables:
-    # Set these variables in your GitLab project's CI/CD settings
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     AWS_REGION: $AWS_REGION
@@ -907,7 +909,7 @@ generate-and-publish-techdocs:
   script:
     - npm install -g npx
     - npm install -g @techdocs/cli
-    # Node isn't bad enough - we need python, too:
+    # 1st half of entire Internet downloaded. Download part 2/2? Enter Y or N? Y
     - python3 -m venv .techdocs-venv
     - source .techdocs-venv/bin/activate
     - pip install "mkdocs-techdocs-core==1.*"
