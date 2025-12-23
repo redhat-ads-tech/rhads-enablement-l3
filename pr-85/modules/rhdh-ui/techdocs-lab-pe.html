@@ -974,19 +974,19 @@ This exercise is specifically contrived to highlight what is happening when the 
 <div class="sect3">
 <h4 id="_reconfigure_rhdh_techdocs_for_builder_external"><a class="anchor" href="#_reconfigure_rhdh_techdocs_for_builder_external"></a>Reconfigure RHDH TechDocs for builder: external</h4>
 <div class="paragraph">
-<p>Switch back to the OpenShift Web Console. Ensure you are in the Administrator perspective, in the <code>tssc-dh</code> Project. Click <strong>Workloads</strong> in the lef navigation, then <strong>ConfigMaps</strong>. Select the <code>tssc-developer-hub-dynamic-plugins</code> to open it for editing. Scroll down to the <code>pluginConfig.techdocs.builder</code> parameter and change its value from <code>local</code> to <code>external</code>. RHDH will start a new Pod with the new configuration in the read-mostly mode described in this labs introduction.</p>
+<p>Switch back to the OpenShift Web Console. Ensure you are in the Administrator perspective, in the <code>tssc-dh</code> Project. Click <strong>Workloads</strong> in the lef navigation, then <strong>ConfigMaps</strong>. Select the <code>tssc-developer-hub-dynamic-plugins</code> to open it for editing. Scroll down to the <code>pluginConfig.techdocs.builder</code> parameter and change its value from <code>local</code> to <code>external</code>. RHDH will start a new Pod with the new configuration in the read-mostly mode described in the introduction to this lab.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_edit_docs_trigger_rebuild"><a class="anchor" href="#_edit_docs_trigger_rebuild"></a>Edit docs, trigger rebuild</h4>
 <div class="paragraph">
-<p>Returning to <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/" target="_blank" rel="noopener">your <code>uq</code> component&#8217;s source repo</a> is the fastest route to commit a new change to its documentation and trigger the GitLab CI you&#8217;ve set up. Once you land there, click the <strong>docs</strong> directory in the file listing, then click <strong>index.md</strong> to open it for editing. You&#8217;ve edited this file twice already, but previously you reached through links in RHDH. Make a recognizable change to the file, then scroll down and <strong>Commit Changes</strong>.</p>
+<p>Returning to <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/" target="_blank" rel="noopener">your <code>uq</code> component&#8217;s source repo</a> is the fastest route to commit a new change to its documentation and trigger the GitLab CI you&#8217;ve set up. Once you land there, click the <strong>docs</strong> directory in the file listing, then click <strong>index.md</strong> to open it for editing. You&#8217;ve edited this file twice already, but previously reached it through links in RHDH. Make a recognizable change to the file, then scroll down and <strong>Commit Changes</strong>.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_read_it_again_for_the_very_first_time"><a class="anchor" href="#_read_it_again_for_the_very_first_time"></a>Read it again, for the very first time</h4>
 <div class="paragraph">
-<p>At last you can return to <a href="https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}/">Red Hat Developer Hub</a>. Find your <code>uq</code> component in the catalog and click through to the index of it&#8217;s TechDocs (or just click <strong>Docs</strong> in the left navigation). Refresh the content with the link in the green notification as in each of the previous milestones.</p>
+<p>At last you can return to <a href="https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}/">Red Hat Developer Hub</a>. Find your <code>uq</code> component in the catalog and click through to its TechDocs (or just click <strong>Docs</strong> in the left navigation). Refresh the content with the link in the green notification as in each of the previous milestones.</p>
 </div>
 </div>
 </div>
