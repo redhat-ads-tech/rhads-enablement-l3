@@ -885,6 +885,119 @@ techdocs-cli publish --publisher-type awsS3 --storage-name techdocs-etc-BEEF-etc
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_builder_in_gitlab_runner"><a class="anchor" href="#_builder_in_gitlab_runner"></a>Builder in GitLab Runner</h3>
+<div class="paragraph">
+<p>The outlines of a <code>.gitlab-ci.yaml</code> defininig a techdocs-cli Runner on your GitLab instance should look fairly familiar by now:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">stages:
+  - build-docs
+
+generate-and-publish-techdocs:
+  stage: build-docs
+  image: node:18 # Or whatever. 20 worked and 24 might too.
+  variables:
+    # Set these variables in your GitLab project's CI/CD settings
+    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+    AWS_REGION: $AWS_REGION
+    TECHDOCS_BUCKET_NAME: $TECHDOCS_BUCKET_NAME
+  script:
+    - npm install -g npx
+    - npm install -g @techdocs/cli
+    # Node isn't bad enough - we need python, too:
+    - python3 -m venv .techdocs-venv
+    - source .techdocs-venv/bin/activate
+    - pip install "mkdocs-techdocs-core==1.*"
+    # Generate the documentation site
+    - npx @techdocs/cli generate --no-docker --source-dir . --output-dir ./site
+    # Publish the generated site to external storage
+    - npx @techdocs/cli publish --publisher-type awsS3 --storage-url https://${TECHDOCS_BUCKET_NAME}.s3.${AWS_REGION} --entity default/component/${{ parameters.name }}
+  only:
+    - main # Don't build branches etc - build commits that modify main branch</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_the_gitlab_ci_for_techdocs_ci_mkdocs_techdocs_core"><a class="anchor" href="#_create_the_gitlab_ci_for_techdocs_ci_mkdocs_techdocs_core"></a>Create the GitLab CI for techdocs-ci, mkdocs-techdocs-core</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy the YAML excerpt above to your clipboard.</p>
+</li>
+<li>
+<p>Visit <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/" target="_blank" rel="noopener">your <code>uq</code> component&#8217;s source repo</a>.</p>
+</li>
+<li>
+<p>Click <strong>Build</strong> in the left navigation, then <strong>Pipelines</strong> in the sub-menu that appears.</p>
+</li>
+<li>
+<p>Since there is no existing <code>.gitlab-ci.yaml</code> file defining a pipeline in this repo yet, you can click "Try the Default Template" to create the file.</p>
+</li>
+<li>
+<p>Select all of the skeleton YAML in the Default pipeline and delete it. Replace it entirely with the YAML you copied from the <code>stages:</code> excerpt above.</p>
+</li>
+<li>
+<p>Replace <code>$AWS_ACCESS_KEY_ID</code> with the value returned by the same object bucket config dump bash script you used earlier. (I.e., return to the OpenShift Web Console in another browser tab or window, open the Web Terminal, and run the script to obtain the values for your object bucket.</p>
+</li>
+<li>
+<p>Replace <code>$AWS_SECRET_ACCESS_KEY</code> with its value returned from the config dump script.</p>
+</li>
+<li>
+<p>Ignore <code>$AWS_REGION</code>, or replace it with the empty set (<code>''</code>).</p>
+</li>
+<li>
+<p>Replace <code>$TECHDOCS_BUCKET_NAME</code> with its value returned from the script.</p>
+</li>
+<li>
+<p>Click <strong>Commmit changes</strong> to save the file and create the CI action.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This exercise is specifically contrived to highlight what is happening when the system prepares, generates, and publishes Red Hat Developer Hub TechDocs. It is intentionally stripped out and isolated from other pipelines that build or scaffold source code and gitops configuration, so that the operation and position of <code>mkdocs-techdocs-core</code> and the ODF S3 Object Bucket storage are obvious.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For the same reasons, you quickly pasted plain text credentials into the GitLab CI action configuration, simply to avoid any disctracting extra detail. The last cherry on top of this lab as a production-like example of Red Hat Developer Hub is entering those ODF object bucket credentials, fetched once again from the bucket claim dump script, into GitLab settings where they become available, securely, as names in an environment variable-like namespace accessible to the GitLab CI. That is left as a brief exercise for the reader.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reconfigure_rhdh_techdocs_for_builder_external"><a class="anchor" href="#_reconfigure_rhdh_techdocs_for_builder_external"></a>Reconfigure RHDH TechDocs for builder: external</h4>
+<div class="paragraph">
+<p>Switch back to the OpenShift Web Console. Ensure you are in the Administrator perspective, in the <code>tssc-dh</code> Project. Click <strong>Workloads</strong> in the lef navigation, then <strong>ConfigMaps</strong>. Select the <code>tssc-developer-hub-dynamic-plugins</code> to open it for editing. Scroll down to the <code>pluginConfig.techdocs.builder</code> parameter and change its value from <code>local</code> to <code>external</code>. RHDH will start a new Pod with the new configuration in the read-mostly mode described in this labs introduction.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_edit_docs_trigger_rebuild"><a class="anchor" href="#_edit_docs_trigger_rebuild"></a>Edit docs, trigger rebuild</h4>
+<div class="paragraph">
+<p>Returning to <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/" target="_blank" rel="noopener">your <code>uq</code> component&#8217;s source repo</a> is the fastest route to commit a new change to its documentation and trigger the GitLab CI you&#8217;ve set up. Once you land there, click the <strong>docs</strong> directory in the file listing, then click <strong>index.md</strong> to open it for editing. You&#8217;ve edited this file twice already, but previously you reached through links in RHDH. Make a recognizable change to the file, then scroll down and <strong>Commit Changes</strong>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_read_it_again_for_the_very_first_time"><a class="anchor" href="#_read_it_again_for_the_very_first_time"></a>Read it again, for the very first time</h4>
+<div class="paragraph">
+<p>At last you can return to <a href="https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}/">Red Hat Developer Hub</a>. Find your <code>uq</code> component in the catalog and click through to the index of it&#8217;s TechDocs (or just click <strong>Docs</strong> in the left navigation). Refresh the content with the link in the green notification as in each of the previous milestones.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_techdocs_summary"><a class="anchor" href="#_techdocs_summary"></a>TechDocs Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Nice work. Now you can explain how TechDocs prepares, generates, and publishes documentation in Backstage and Red Hat Developer Hub, and you have a foundation to assess at customer sites and projects whether simple centralized TechDocs processing directly within RHDH makes the most sense, or if the specific requirements of a particular case demand distributed generation at the point of continuous integration in each Catalog Entity repo. In either event, you know how to wire TechDocs to persistent and highly scalable storage atop OpenShift Data Foundation.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
