@@ -514,7 +514,7 @@
 <h2 id="_platform_engineering_production_techdocs"><a class="anchor" href="#_platform_engineering_production_techdocs"></a>[Platform] Engineering Production TechDocs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab establishes production TechDocs in divisible segments. First, persistent storage (for this document cache) on an S3-style object store. This is the key step, first because some kind of persistent storage is required in order to even consider external generation, and secondly, because when running on OpenShit, even external (that is, external to RHDH) generation will tend to run within pipelines on the cluster. This is a distinct advantage of deploying Backstage as Developer Hub on Openshift, because it makes the choice between local and external TechDocs generation a matter of site practices and preferences, rather than a hard requirement for the most basic load balancing.</p>
+<p>This lab establishes production TechDocs in divisible segments. First, persistent storage (for this document cache) on an S3-style object store. This is the key step, because some kind of persistent storage is required in order to even consider external generation, and because when running on OpenShift, even external (that is, external to RHDH) generation will tend to run in pipelines on the cluster. This is a distinct advantage of deploying a Backstage IDP in the form of {rhdh_product_name} on OpenShift, because it makes the choice between local and external TechDocs generation a matter of site practices and preferences, rather than a hard requirement for the most basic division of labor.</p>
 </div>
 <div class="sect2">
 <h3 id="_existing_deployments"><a class="anchor" href="#_existing_deployments"></a>Existing Deployments</h3>
@@ -552,10 +552,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In the OpenShift Web Console, visit <strong>Storage</strong> &gt; <strong>Object Storage</strong> &gt; <strong>ObjectBucketClaims</strong>.</p>
-</li>
-<li>
-<p>Make sure that the <code>tssc-dh</code> Project is selected in the <strong>Project</strong> pull down menu at top center.</p>
+<p>In the OpenShift Web Console, visit <strong>Storage</strong> &gt; <strong>Object Storage</strong> &gt; <strong>ObjectBucketClaims</strong> to check the OpenShift Data Foundation. You&#8217;ll see UI tabs for storage <em>Buckets</em>, backing stores, and the this step&#8217;s focus, <em>Object Bucket Claims</em>. You might see the initialism OBC used to represent these resources that declare segments of storage available to applications on the cluster.</p>
 </li>
 <li>
 <p>Copy the following Kubernetes manifest to your clipboard.</p>
@@ -598,6 +595,9 @@ spec:
 objectbucketclaim.objectbucket.io/rhdh-bucket-claim created</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>In the OpenShift Web Console, visit <strong>Workloads</strong> &#8594; <strong>ConfigMaps</strong> and <strong>Workloads</strong> &#8594; <strong>Secrets</strong> in turn to examine the <code>rhdh-bucket-claim</code> resources of each type automatically created when you declared your OBC.</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <a class="image" href="../_images/rhdh-ui/claim-secret.png" target="image"><img src="../_images/rhdh-ui/claim-secret.png" alt="claim secret"></a>
@@ -622,7 +622,7 @@ Up in the conceptual clouds, it works like this:
 </table>
 </div>
 <div class="paragraph">
-<p>Developer Hub CR&#8217;s <code>extraEnvs</code> points to the <code>rhdh-bucket-claim</code> ConfigMap and Secret. This makes them available in the RHDH Pod, where they appear to processes within as conventional files and environment variables. The RHDH ConfigMap then refers to those resources transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the RHDH ConfigMap. Because you will change the overall developer hub deployment to connect to the <code>rhdh-bucket-claim</code>, when the Developer Hub application reads <code>$AWS_ACCESS_KEY</code>, it will find the value set in the <code>rhdh-bucket-claim</code> Secret.</p>
+<p>Developer Hub CR&#8217;s <code>extraEnvs</code> points to the <code>rhdh-bucket-claim</code> ConfigMap and Secret. This makes them available in the RHDH Pod, where they appear to processes within as conventional files and environment variables. The RHDH Dynamic Plugins ConfigMap then refers to those resources with names transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the Dynamic Plugins ConfigMap. Because you will change the overall developer hub deployment to connect to the <code>rhdh-bucket-claim</code>, when the Developer Hub application reads <code>$AWS_ACCESS_KEY</code> in its run time environment, it will find in it the value declared in the <code>rhdh-bucket-claim</code> Secret. In effect, ODF has put the keys to a storage bucket in a lockbox. You arrange for RHDH to access that lockbox.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -630,13 +630,13 @@ Up in the conceptual clouds, it works like this:
 <p>In the OpenShift Web Console, click <strong>Workloads</strong> in the left navigation to expand it, then click  <strong>ConfigMaps</strong>.</p>
 </li>
 <li>
-<p>Select the <strong>tssc-developer-hub-app-config</strong> ConfigMap to open it.</p>
+<p>Select the <strong>tssc-developer-hub-dynamic-plugins</strong> ConfigMap to open it.</p>
 </li>
 <li>
 <p>Click the <strong>YAML</strong> tab to open the ConfigMap source.</p>
 </li>
 <li>
-<p>Edit the end of the ConfigMap YAML immediately below the <code>quay:</code> section to match the following, combined with the three values you must edit. Those three items are numbered corresponding to a numbered explanation for each that follows.</p>
+<p>Edit the Dynamic Plugins ConfigMap YAML immediately after the existing line <code>package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic</code> and immediately before the keycloak stanza that follows, to make the result match this YAML excerpt:</p>
 </li>
 </ol>
 </div>
@@ -645,43 +645,42 @@ Up in the conceptual clouds, it works like this:
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: tssc-developer-hub-app-config
+  name: tssc-developer-hub-dynamic-plugins
   namespace: tssc-dh
-data:
-  app-config.tssc.yaml: |
-    app:
-        baseUrl: ${BACKEND_URL}
-        title: Red Hat Developer Hub
 [ ... ]
-    quay:
-        uiUrl: ${QUAY__URL}
-    signInPage: oidc
-    awsS3:<i class="conum" data-value="1"></i><b>(1)</b>
-      - accessKeyId: ${AWS_ACCESS_KEY_ID}
-      - secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
-    techdocs:
-        builder: local
-        generator:
+    - disabled: false
+      package: ./dynamic-plugins/dist/backstage-plugin-techdocs
+    - disabled: false
+      package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic
+      pluginConfig:<i class="conum" data-value="1"></i><b>(1)</b>
+        techdocs:
+          builder: local
+          generator:
             runIn: local
-            publisher:
-              awsS3:
-                bucketName: '${BUCKET_NAME}'
-                credentials:
-                  accessKeyId: '${AWS_ACCESS_KEY_ID}'
-                  secretAccessKey: '${AWS_SECRET_ACCESS_KEY}'
-                endpoint: 'https://${BUCKET_HOST}'
-                region: '${BUCKET_REGION}'
-                s3ForcePathStyle: true
-              type: awsS3</code></pre>
+          publisher:
+            awsS3:
+              bucketName: '${BUCKET_NAME}'
+              credentials:
+                accessKeyId: '${AWS_ACCESS_KEY_ID}'
+                secretAccessKey: '${AWS_SECRET_ACCESS_KEY}'
+              endpoint: 'https://${BUCKET_HOST}'
+              region: '${BUCKET_REGION}'
+              s3ForcePathStyle: true
+            type: awsS3
+    - disabled: false<i class="conum" data-value="2"></i><b>(2)</b>
+      package: ./dynamic-plugins/dist/backstage-community-plugin-catalog-backend-module-keycloak-dynamic</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Copy and paste the YAML from here to the end of this block at the end of your <code>tssc-developer-hub-app-config</code> ConfigMap.</td>
+<td>Copy and paste the YAML from here to the end of this block to extend the <code>package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic</code> section of your <code>tssc-developer-hub-dynamic-plugins</code> configMap with a <code>pluginConfig</code> setting options for TechDocs storage in your ODF Object Bucket.</td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>&lt;2&gt;This line already exists and should become the first line after the end of your ends.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -690,7 +689,7 @@ data:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As you may remember from the setup-tpa module, the following script when executed in the <code>tssc-dh</code> Project namespace will retrieve all of the credentials for your ODF storage bucket at once and dressed up with a bit of formatting, so you can inspect what is being constructed from the variables in the YAML above. Remember, the values for these variable comes from the <code>rhdh-bucket-claim</code> ConfigMap and Secret generated when you created the <code>rhdh-bucket-claim</code> OBC.
+As you may remember from the setup-tpa module, the following script when executed in the <code>tssc-dh</code> Project namespace will retrieve all of the credentials for your ODF storage bucket at once and dressed up with a bit of formatting, so you can inspect what is being constructed from the variables in the YAML above. Remember, the values for these variables come from the <code>rhdh-bucket-claim</code> ConfigMap and Secret generated when you create the <code>rhdh-bucket-claim</code> OBC.
 </td>
 </tr>
 </table>
@@ -762,7 +761,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Click <strong>Save</strong> to commit the changes. It will take a few moments for the Red Hat Developer Hub Pod to restart.</p>
+<p>Click <strong>Save</strong> to commit the changes. It will take a few moments for the Red Hat Developer Hub Pod to restart. Navigate to <strong>Workloads</strong> &#8594; Pods in the left navigation to watch a new RHDH Pod rollout in response to your changes to the desired state.</p>
 </div>
 </div>
 <div class="sect3">
