@@ -543,16 +543,16 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Namespace (model-signing)</strong>: During this lab, you will be using the <strong>model-signing</strong> namespace.</p>
+<p><strong>Namespace (model-signing)</strong>: Dedicated namespace for this lab</p>
 </li>
 <li>
-<p><strong>PersistentVolumeClaim (model-storage-pvc)</strong>: Requests 5Gi of storage for the model files.</p>
+<p><strong>PersistentVolumeClaim (model-storage-pvc)</strong>: Requests 5Gi of storage for model files</p>
 </li>
 <li>
-<p><strong>Job (download-model)</strong>: Downloads a sample TensorFlow SavedModel.</p>
+<p><strong>Job (download-model)</strong>: Downloads a TensorFlow SavedModel</p>
 </li>
 <li>
-<p><strong>Pod (model-signing)</strong>: Runs the RHTAS model-transparency container with the model-signing CLI tool.</p>
+<p><strong>Pod (model-signing)</strong>: Runs the RHTAS model-transparency container with the model-signing CLI tool</p>
 </li>
 </ul>
 </div>
@@ -580,7 +580,6 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  volumeName: pvc-8af02176-3d32-4bf3-8793-249453eeee57
   storageClassName: gp3-csi
   volumeMode: Filesystem
 ---
@@ -599,8 +598,7 @@ spec:
             - /bin/sh
             - -c
             - |
-              apk add --no-cache wget
-              wget -O /models/saved_model.pb https://github.com/redhat-ads-tech/rhads-enablement-l3/raw/refs/heads/main/content/modules/ROOT/solutions/ai-safety/models/saved_model.pb
+              wget -O /models/saved_model.pb https://github.com/redhat-ads-tech/rhads-enablement-l3/raw/0c5a70192e9b03510b1702b850f5090cea8d945e/content/modules/ROOT/solutions/ai-safety/models/saved_model.pb
           volumeMounts:
             - name: model-storage
               mountPath: /models
@@ -609,9 +607,43 @@ spec:
         - name: model-storage
           persistentVolumeClaim:
             claimName: model-storage-pvc
-  backoffLimit: 3
----
-apiVersion: v1
+  backoffLimit: 3</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong></p>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/openshift-import-yaml.png" target="image"><img src="../../_images/ai-safety/openshift-import-yaml.png" alt="OpenShift Import YAML"></a></span></p>
+</div>
+</li>
+<li>
+<p>Paste the content and click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>Verify all resources have been successfully created:</p>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="../../_images/ai-safety/msv-import-ok.png" target="image"><img src="../../_images/ai-safety/msv-import-ok.png" alt="OpenShift Import YAML"></a></span></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>✅ <strong>Success!</strong> You have deployed the storage and signing infrastructure. The download job will fetch the model, and the model-signing pod is ready for cryptographic signing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sign_the_model_2"><a class="anchor" href="#_sign_the_model_2"></a>Sign the Model</h3>
+<div class="paragraph">
+<p>Now you&#8217;ll use the model-signing CLI tool to cryptographically sign the model. RHTAS uses Sigstore&#8217;s keyless signing approach, which leverages OIDC identity providers (Google, GitHub, Microsoft) instead of managing private keys.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy the following content:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Pod
 metadata:
   name: model-signing
@@ -638,28 +670,11 @@ spec:
 </div>
 </li>
 <li>
-<p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong>
-<span class="image"><a class="image" href="../../_images/ai-safety/openshift-import-yaml.png" target="image"><img src="../../_images/ai-safety/openshift-import-yaml.png" alt="OpenShift Import YAML"></a></span></p>
+<p>Click on the <strong>plus icon</strong> and next, click <strong>Import YAML</strong> or click <strong>Import More YAML</strong> on the current screen.</p>
 </li>
 <li>
 <p>Paste the content and click <strong>Create</strong>.</p>
 </li>
-<li>
-<p>You should see a similar screen like this one, showing all resources has been successfully created:</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="../../_images/ai-safety/msv-import-ok.png" target="image"><img src="../../_images/ai-safety/msv-import-ok.png" alt="OpenShift Import YAML"></a></span></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_sign_the_model_2"><a class="anchor" href="#_sign_the_model_2"></a>Sign the Model</h3>
-<div class="paragraph">
-<p>Now you&#8217;ll use the model-signing CLI tool to cryptographically sign the model. RHTAS uses Sigstore&#8217;s keyless signing approach, which leverages OIDC identity providers (Google, GitHub, Microsoft) instead of managing private keys.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
 <li>
 <p>Navigate to the model-signing pod terminal in OpenShift: <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/model-signing/pods/model-signing/terminal" target="_blank" rel="noopener">Pod Terminal</a></p>
 </li>
@@ -671,13 +686,13 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Review the output. You should see output similar to:</p>
+<p>Expected output:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/msv-terminal.png" target="image"><img src="../../_images/ai-safety/msv-terminal.png" alt="Pod Terminal"></a></span></p>
 </div>
 <div class="paragraph">
-<p>Copy the URL provided by sigstore <strong>model-signing</strong> and open it in your web browser. Choose <strong>Google</strong> from the list of identity providers: Google, GitHub, Microsoft.</p>
+<p>Copy the URL provided by sigstore <strong>model-signing</strong> and open it in your web browser. Choose an identity provider (Google, GitHub, or Microsoft).</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><a class="image" href="../../_images/ai-safety/msv-sigstore-auth.png" target="image"><img src="../../_images/ai-safety/msv-sigstore-auth.png" alt="Pod Terminal"></a></span></p>
@@ -706,23 +721,26 @@ Signing succeeded</code></pre>
 </li>
 </ol>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock important">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
 <div class="paragraph">
 <p>The signing process creates a signature file:
-* <strong>model.sig</strong>: Model signing bundle, containing the model manifest hash, attestation, and signature linking your OIDC identity</p>
+* <strong>model.sig</strong>: Model signing bundle containing the model manifest hash, attestation, and signature linking your OIDC identity</p>
 </div>
 <div class="paragraph">
-<p>This file will be used by the Model Validation Operator to verify the model hasn&#8217;t been tampered with and the model that will run on the cluster is actually signed.</p>
+<p>The Model Validation Operator uses this file to verify the model is signed and untampered.</p>
 </div>
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>✅ <strong>Success!</strong> You have cryptographically signed the model using RHTAS and Sigstore. The signature file is ready for validation enforcement.</p>
 </div>
 </div>
 </div>
@@ -733,12 +751,12 @@ Signing succeeded</code></pre>
 <div class="sect2">
 <h3 id="_install_the_model_validation_operator"><a class="anchor" href="#_install_the_model_validation_operator"></a>Install the Model Validation Operator</h3>
 <div class="paragraph">
-<p>The Model Validation Operator uses a Mutation Webhook to inject an init container on the pod that will run the model. This allows the Model Validation Controller to know what pod/model needs to be verified.</p>
+<p>The Model Validation Operator uses a Mutation Webhook to inject an init container on the pod that will run the model. This identifies which pods/models require verification.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit * Operators &#8594; Operator Hub* and search for the Model Validation Operator:</p>
+<p>Visit <strong>Operators &#8594; Operator Hub</strong> and search for the Model Validation Operator:</p>
 <div class="paragraph">
 <p><a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/operatorhub/all-namespaces?keyword=Model+Validation+Operator&amp;source=%5B%22Red+Hat%22%5D" target="_blank" rel="noopener">Operator Hub</a></p>
 </div>
@@ -762,16 +780,16 @@ Signing succeeded</code></pre>
 </div>
 </div>
 </li>
-</ol>
-</div>
-<div class="paragraph">
+<li>
 <p>Next, click <strong>View Operator</strong> to configure the CRD.</p>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_create_modelvalidation_custom_resource_definition"><a class="anchor" href="#_create_modelvalidation_custom_resource_definition"></a>Create ModelValidation Custom Resource Definition</h3>
 <div class="paragraph">
-<p>The ModelValidation CRD tells the operator which models to validate and which OIDC identity is authorized to sign them. Let&#8217;s review the key fields:</p>
+<p>The ModelValidation CRD tells the operator which models to validate and which OIDC identity is authorized to sign them. Key fields:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -803,7 +821,7 @@ Signing succeeded</code></pre>
 </div>
 </li>
 <li>
-<p>Select <strong>YAML</strong> as the configure via.</p>
+<p>Select <strong>YAML</strong> view.</p>
 </li>
 <li>
 <p>Copy the following content and replace <strong>REPLACE_WITH_YOUR_EMAIL</strong> with the email you used during model signing:</p>
@@ -824,11 +842,11 @@ spec:
     signaturePath: /models/model.sig</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
 <div class="paragraph">
@@ -838,23 +856,19 @@ spec:
 </tr>
 </table>
 </div>
-</li>
-</ol>
-</div>
-</li>
-</ul>
-</div>
 <div class="imageblock">
 <div class="content">
 <a class="image" href="../../_images/ai-safety/msv-mv.png" target="image"><img src="../../_images/ai-safety/msv-mv.png" alt="msv mv"></a>
 </div>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p>Paste the content in the YAML editor and click <strong>Create</strong></p>
 </li>
 </ol>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -870,7 +884,7 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Copy the following InferenceService definition:</p>
+<p>Copy the following Pod definition:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
@@ -909,10 +923,7 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to the pods view in your cluster:</p>
-<div class="paragraph">
-<p><a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/model-signing/pods" target="_blank" rel="noopener">Pods</a></p>
-</div>
+<p>Navigate to the pods view in your cluster: <a href="https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/model-signing/pods" target="_blank" rel="noopener">Pods</a></p>
 </li>
 <li>
 <p>Click on the <strong>model-server</strong> pod</p>
@@ -921,7 +932,7 @@ spec:
 <p>Check the pod&#8217;s <strong>Logs &#8594; Init Containers</strong>. You should see a container named <code>model-validation</code>.</p>
 </li>
 <li>
-<p>Click on the <strong>model-validator</strong> init container and view its logs. You should see:</p>
+<p>Click on the <strong>model-validator</strong> init container and view its logs:</p>
 <div class="imageblock">
 <div class="content">
 <a class="image" href="../../_images/ai-safety/msv-pod-running.png" target="image"><img src="../../_images/ai-safety/msv-pod-running.png" alt="msv pod running"></a>
@@ -929,15 +940,15 @@ spec:
 </div>
 </li>
 <li>
-<p>Verify the main container started successfully by checking the pod status shows <strong>Running</strong></p>
+<p>Verify the pod status shows <strong>Running</strong></p>
 </li>
 </ol>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock important">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
 <div class="paragraph">
@@ -947,16 +958,19 @@ spec:
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>✅ <strong>Success!</strong> The Model Validation Operator successfully verified the signed model and allowed the pod to start.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_test_validation_failure"><a class="anchor" href="#_test_validation_failure"></a>Test Validation Failure</h3>
 <div class="paragraph">
-<p>To see validation in action, you can use another folder where it is empty, you will create a new pod with a new <strong>mountPath:/path</strong>:</p>
+<p>To demonstrate validation failure, create a pod with a different mount path pointing to an empty directory:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Copy the following InferenceService definition:</p>
+<p>Copy the following Pod definition:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
@@ -997,11 +1011,11 @@ spec:
 <a class="image" href="../../_images/ai-safety/msv-pod-failure.png" target="image"><img src="../../_images/ai-safety/msv-pod-failure.png" alt="msv pod failure"></a>
 </div>
 </div>
-</li>
-</ol>
-</div>
 <div class="paragraph">
 <p>The pod will never reach Running state, demonstrating how the operator prevents tampered models from executing.</p>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
