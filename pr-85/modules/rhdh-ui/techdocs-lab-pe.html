@@ -888,7 +888,7 @@ techdocs-cli publish --publisher-type awsS3 --storage-name techdocs-etc-BEEF-etc
 <div class="sect2">
 <h3 id="_builder_in_gitlab_runner"><a class="anchor" href="#_builder_in_gitlab_runner"></a>Builder in GitLab Runner</h3>
 <div class="paragraph">
-<p>The outlines of a <code>.gitlab-ci.yaml</code> defininig a techdocs-cli Runner on your GitLab instance should look fairly familiar by now:</p>
+<p>The outlines of a <code>.gitlab-ci.yaml</code> defining a techdocs-cli Runner on your GitLab instance should look fairly familiar by now:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -951,7 +951,7 @@ generate-and-publish-techdocs:
 <p>Replace <code>$TECHDOCS_BUCKET_NAME</code> with its value returned from the script.</p>
 </li>
 <li>
-<p>Click <strong>Commmit changes</strong> to save the file and create the CI action.</p>
+<p>Click <strong>Commit changes</strong> to save the file and create the CI action.</p>
 </li>
 </ol>
 </div>
@@ -968,7 +968,7 @@ This exercise is specifically contrived to highlight what is happening when the 
 </table>
 </div>
 <div class="paragraph">
-<p>For the same reasons, you quickly pasted plain text credentials into the GitLab CI action configuration, simply to avoid any disctracting extra detail. The last cherry on top of this lab as a production-like example of Red Hat Developer Hub is entering those ODF object bucket credentials, fetched once again from the bucket claim dump script, into GitLab settings where they become available, securely, as names in an environment variable-like namespace accessible to the GitLab CI. That is left as a brief exercise for the reader.</p>
+<p>For the same reasons, you quickly pasted plain text credentials into the GitLab CI action configuration, just to stay focused for the moment on operation rather configuration. The last cherry atop this lab as a production-like example of Red Hat Developer Hub would be entering those ODF object bucket credentials, fetched once again from the bucket claim dump script, into GitLab settings, instead of into plain text. From there they become available, more securely, as names in an environment variable-like namespace accessible to the GitLab CI. Such configuration is left as a brief, and entirely optional, exercise for the reader.</p>
 </div>
 </div>
 <div class="sect3">
