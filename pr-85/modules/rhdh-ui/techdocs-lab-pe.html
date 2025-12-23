@@ -621,7 +621,7 @@ objectbucketclaim.objectbucket.io/rhdh-bucket-claim created</code></pre>
 <p>The RHDH Dynamic Plugins ConfigMap then refers to those resources with names transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the Dynamic Plugins ConfigMap.</p>
 </li>
 <li>
-<p>Because you will change the overall Developer Hub deployment to make it see the <code>rhdh-bucket-claim</code> resources, when the Developer Hub application reads <code>$AWS_ACCESS_KEY</code> from its environment, it will find in it the value declared in the <code>rhdh-bucket-claim</code> Secret. In effect, ODF has put the keys to a storage bucket in a known location. You arrange for RHDH to access that location.</p>
+<p>Because you will change the overall Developer Hub deployment to make it see the <code>rhdh-bucket-claim</code> resources, when the Developer Hub application reads <code>$AWS_ACCESS_KEY_ID</code> from its environment, it will find in it the value declared in the <code>rhdh-bucket-claim</code> Secret. In effect, ODF has put the keys to a storage bucket in a known location. You arrange for RHDH to access that location.</p>
 </li>
 <li>
 <p>In the OpenShift Web Console, click <strong>Workloads</strong> in the left navigation to expand it, then click  <strong>ConfigMaps</strong>.</p>
