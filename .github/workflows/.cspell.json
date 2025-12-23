@@ -169,8 +169,12 @@
     "keyfully",
     "parameterises",
     "Agentic",
-    "Ollama"
-
+    "Ollama",
+    "explainability",
+    "KSERVE",
+    "onnx",
+    "ovms",
+    "guardrailing"
   ],
   "ignoreWords": [
     "sysout",
@@ -244,7 +248,9 @@
     "Ummm",
     "opadocs",
     "Aaand",
-    "deployedimage"
+    "deployedimage",
+    "rhods",
+    "Unitxt"
 
   ],
   "ignorePaths": [

@@ -1,0 +1,19 @@
+= Hands-on Labs: AI Safety
+
+== Introduction
+
+These hands-on labs provide practical experience implementing AI safety controls using Red Hat OpenShift AI, RHTAS, and TrustyAI. In future modules, you'll integrate these capabilities with Red Hat Advanced Developer Suite.
+
+== Labs
+
+* TrustyAI - Bias Monitoring
+* Model Signing and Validation
+
+== Getting Started
+
+. Access the OpenShift cluster: {openshift_console_url}[OpenShift Console^]
+
+. Login with your credentials:
++
+* *Username*: {openshift_admin_user}
+* *Password*: {openshift_admin_password}
