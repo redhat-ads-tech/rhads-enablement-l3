@@ -1,0 +1,348 @@
+= TechDocs Lab 2: Production TechDocs
+
+What is different from the default {product_rhdh_name} TechDocs deployment:
+
+The TechDocs Basic deployment mode generates and stores documentation artifacts within the RHDH instance. A recommended deployment uses persistent storage, external to RHDH, and potentially distributes the TechDocs _generation_ step to continuous integration tasks in each repository.
+
+== Implementing production TechDocs
+
+Implementing those differences to create a production-ready TechDocs deployment involves 3 high level tasks:
+
+1. **Storage** - ODF S3 Emulation
+   * Create a ODF storage claim for an emulated S3 bucket and configure TechDocs to retrieve HTML from it.
+2. **Flexible Generation** Centered in {product_rhdh_name}, or distributed in project CI pipelines
+   * Integrate documentation site generation and storage publication into the CI/CD pipeline for each source repository.
+3. **Read-Mostly** TechDocs
+   * Modify app-config.yaml in the RHDH configMap, setting `techdocs.builder` from `local` to `external`. This disables the local generator.
+
+== [Platform] Engineering Production TechDocs
+
+This lab establishes production TechDocs in divisible segments. First, persistent storage (for this document cache) on an S3-style object store. This is the key step, because some kind of persistent storage is required in order to even consider external generation, and because when running on OpenShift, even external (that is, external to RHDH) generation will tend to run in pipelines on the cluster. This is a distinct advantage of deploying a Backstage IDP in the form of {product_rhdh_name} on OpenShift, because it makes the choice between local and external TechDocs generation a matter of site practices and preferences, rather than a hard requirement for the most basic division of labor.
+
+=== Existing Deployments
+
+Begin with the platform components already deployed in the `tssc-dh` Project.
+
+. Go to the {openshift_console_url}[OpenShift Web Console^]. Log in with the credentials:
+    * Username: `{openshift_admin_user}`
+    * Password: `{openshift_admin_password}`
+. Ensure the *Administrator* perspective is selected using the *Perspective Switcher* at the top of the left-hand navigation.
+
+=== External Storage
+
+You met OpenShift Data Foundation in the xref:setup-tpa/setup-openshift.adoc[Setup Trusted Profile Analyzer] module. A part of OpenShift Platform Plus, OpenShift Data Foundation is already configured and deployed in your environment. You need ODF to provide an emulated S3 bucket to store generated TechDocs HTML.
+
+==== Create ObjectBucketClaim
+
+. In the OpenShift Web Console, visit **Storage** > **Object Storage** > **ObjectBucketClaims** to check the OpenShift Data Foundation. You'll see UI tabs for storage _Buckets_, backing stores, and the this step's focus, _Object Bucket Claims_. You might see the initialism OBC used to represent these resources that declare segments of storage available to applications on the cluster.
+
+. Copy the following Kubernetes manifest to your clipboard.
+
+[source,yaml]
+----
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: rhdh-bucket-claim
+spec:
+  generateBucketName: techdocs
+  storageClassName: openshift-storage.noobaa.io
+----
+
+. Click the `>_` icon near the top right of the OpenShift Web Console to open the Web Terminal.
+
+. Set `oc(1)` to the `tssc-dh` current working Project: `oc project tssc-dh`
+
+. Type `cat > rhdh-bucket-claim.yaml`, followed by kbd:[Enter].
+
+. Paste the copied YAML into the paused terminal, followed by `^D`: kbd:[CTRL-D]. This signals the end of the file and writes it to disk, from where you can _apply_ it to the cluster.
+
+. Apply the manifest to the cluster with the _oc_(1) command line tool:
+
+[source,sh]
+----
+% oc apply -f rhdh-bucket-claim.yaml
+objectbucketclaim.objectbucket.io/rhdh-bucket-claim created
+----
+
+In the OpenShift Web Console, visit **Workloads** -> **ConfigMaps** and **Workloads** -> **Secrets** in turn to examine the `rhdh-bucket-claim` resources of each type automatically created when you declared your OBC.
+
+image::rhdh-ui/claim-secret.png[link=self, window="image"]
+
+==== ConfigMap configures Developer Hub
+
+Creating the ObjectBucketClaim also creates a ConfigMap and a Secret containing configuration details for the claimed bucket. These two `rhdh-bucket-claim` resources will be mounted in the {product_rhdh_name} Pod, available as environment variables or beneath file paths.
+
+Edit the Developer Hub Dynamic Plugins ConfigMap to connect the RHDH instance to the storage bucket you created. The Dynamic Plugins ConfigMap refers to variables defined in the `rhdh-bucket-claim` ConfigMap and Secret. Referenced here, those variables will be populated after you adjust the Developer Hub CustomResource to point to their sources in the `rhdh-bucket-claim` ConfigMap and Secret.
+
+. In the OpenShift Web Console, click **Workloads** in the left navigation to expand it, then click  **ConfigMaps**.
+
+. Select the **tssc-developer-hub-dynamic-plugins** ConfigMap to open it.
+
+. Click the **YAML** tab to open the ConfigMap source.
+
+. Edit the Dynamic Plugins ConfigMap YAML immediately after the existing line `package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic` and immediately before the keycloak stanza (`- disabled: false`) that follows, to make the result match this YAML excerpt:
+
+[source,yaml]
+----
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: tssc-developer-hub-dynamic-plugins
+  namespace: tssc-dh
+[ ... ]
+    - disabled: false
+      package: ./dynamic-plugins/dist/backstage-plugin-techdocs
+    - disabled: false
+      package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic
+      pluginConfig:<1>
+        techdocs:
+          builder: local
+          generator:
+            runIn: local
+          publisher:
+            awsS3:
+              bucketName: '${BUCKET_NAME}'
+              credentials:
+                accessKeyId: '${AWS_ACCESS_KEY_ID}'
+                secretAccessKey: '${AWS_SECRET_ACCESS_KEY}'
+              endpoint: 'https://${BUCKET_HOST}'
+              region: '${BUCKET_REGION}'
+              s3ForcePathStyle: true
+            type: awsS3
+    - disabled: false<2>
+      package: ./dynamic-plugins/dist/backstage-community-plugin-catalog-backend-module-keycloak-dynamic
+----
+<1> Copy and paste the YAML from this line to the line labeled with (2) to extend the `package: ./dynamic-plugins/dist/backstage-plugin-techdocs-backend-dynamic` section of your `tssc-developer-hub-dynamic-plugins` configMap with a `pluginConfig` setting options for TechDocs storage in your ODF Object Bucket.
+
+<2> This line exists and should become the first line after the end of the lines you insert.
+
+NOTE: As you may remember from the setup-tpa module, the following script when executed in the `tssc-dh` Project namespace will retrieve all of the credentials for your ODF storage bucket at once and dressed up with a bit of formatting, so you can inspect what is being constructed from the variables in the YAML above. Remember, the values for these variables come from the `rhdh-bucket-claim` ConfigMap and Secret generated when you create the `rhdh-bucket-claim` OBC.
+
+[source,bash]
+------
+#!/bin/bash
+
+CLAIM="rhdh-bucket-claim"
+
+echo -n "Bucket Name:         "
+oc get configmap $CLAIM -o jsonpath='{.data.BUCKET_NAME}'
+echo ""
+
+echo -n "Access Key ID:       "
+oc get secret $CLAIM -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 -d
+echo ""
+
+echo -n "Secret Access Key:   "
+oc get secret $CLAIM -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 -d
+echo ""
+
+echo -n "Bucket Host:         "
+oc get configmap $CLAIM -o jsonpath='{.data.BUCKET_HOST}
+------
+
+==== Adjust RHDH Custom Resource
+
+. In the OpenShift Web Console, go to **Operators** -> **Installed Operators** -> **Red Hat Developer Hub Operator** -> **Red Hat Developer Hub**
+
+. Select the `developer-hub` CR. Its letter `B` icon recpresents its Custom Resource Kind, _Backstage_.
+
+. Open the YAML view by clicking the **YAML** tab
+
+. Edit the `extraEnvs:` stanza to include the names of your bucket claim's configMap and Secret. Both are named `rhdh-bucket-claim`:
+
+[source,yaml]
+----
+apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+ name: developer-hub
+spec:
+ application:
+  appConfig:
+    configMaps:
+      - name: tssc-developer-hub-app-config
+    mountPath: /opt/app-root/src
+  dynamicPluginsConfigMapName: tssc-developer-hub-dynamic-plugins
+  extraEnvs:
+    configMaps:
+      - name: rhdh-bucket-claim
+    secrets:
+      - name: tssc-developer-hub-env
+      - name: rhdh-bucket-claim
+    replicas: 1
+    route:
+      enabled: true
+[ ... ]
+----
+
+Click **Save** to commit the changes. It will take a few moments for the {product_rhdh_name} Pod to restart. Navigate to **Workloads** -> Pods in the left navigation to watch a new RHDH Pod rollout in response to your changes to the desired state.
+
+==== Local Generation, Persistent Storage
+
+. Navigate to {rhdh_url}[{product_rhdh_name}^, window="rhdh"] and login as `{rhdh_user}` with password `{rhdh_user_password}`.
+
+. Click the pencil-and-paper Edit icon to the right of the first document heading, _Trusted Application Pipeline Software Template_, in your _uq_ document.
+
+. Log into GitLab using username `{gitlab_user}` and password `{gitlab_user_password}`.
+
+. Arrive in the doc source in the GitLab/user1/uq source repository that holds your component source and documentation.
+
+. Edit the document in the repository service editor for the quickest experience. For example, you might change the second sentence to clarify it, or change the page first heading for the highest visibility in the result.
+
+. Leave the default **Commit message**, or edit it if you like. The commit message can't be blank.
+.. Leave the **Target Branch** set to the default, `main`.
+
+. Click the *Commit changes* button.
+
+. Navigate or switch browser tabs back to your component's TechDoc index page in {product_rhdh_name}. Refresh _your browser_ if you don't see the expected "building", then "please refresh" banner.
+
+. Click the **Refresh** link in the green-outlined "please refresh" banner shown on the TechDocs page to load the latest HTML rendition of your document from ODF object storage.
+
+==== External Storage: Summary
+
+The Developer Hub Custom Resources's `extraEnvs` points to the `rhdh-bucket-claim` ConfigMap and Secret. This makes their contents available in the running RHDH Pod, where they appear to processes within as conventional files and environment variables. 
+
+The RHDH Dynamic Plugins ConfigMap then refers to those resources with names transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable `$AWS_ACCESS_KEY_ID` in the next YAML listing, the relevant excerpt from the Dynamic Plugins ConfigMap.
+
+When the Developer Hub application later reads `$AWS_ACCESS_KEY_ID` from its environment, it finds in it the value declared in the `rhdh-bucket-claim` Secret.
+
+In effect, ODF has put the key to a storage bucket in a known location. You arranged for RHDH to access that location.
+
+== mkdocs-techdocs-core: Builder Mechanics
+
+An Entity has TechDocs features configured when it is tagged with the `backstage.io/techdocs-ref` _annotation_.
+
+=== Entity Annotation, Docs Location
+
+The `backstage.io/techdocs-ref` annotation in an entity's `catalog-info.yaml` dictates the source file location for the entity's documentation source.
+
+Most entities should specify `dir:.` That is, their catalog-info's `dir:` parameter should be set to _dot_ (`.`), the current directory of `catalog-info.yaml`. With this configuration, Source files and mkdocs.yml live in the same directory as catalog-info.yaml. The entire directory is downloaded during the _Prepare_ step.
+
+==== Docs in a sub-directory
+
+A child directory of the current directory may be specified instead, e.g., `dir:./name/`.
+
+=== The annotated description of your Component
+
+Take a look at your https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/-/blob/main/catalog-info.yaml#L15[`catalog-info.yaml` definition's line 15^]. You'll see the `backstage.io/techdocs-ref` annotation and its reference to the current directory as the documentation location.
+
+=== mkdocs.yaml: Configuring the builder
+
+Now view your Component's https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/-/blob/main/mkdocs.yml[`mkdocs.yml`^]. This file configures any options for the mkdocs-techdocs builder.
+
+=== Where they came from
+
+In the Quarkus Java template from which your `uq` template was instantiated, you'll find the skeletal forms of the `catalog-info.yaml` and `mkdocs.yml` that are templated with instance values and added during the initialization of new instances created from the Template. You've probably noticed you can navigate from the RHDH Catalog to the Template's source repo (like you can with any Catalog entity). https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/template.yaml[`template.yaml`^] is a quick shortcut to the Template's source.
+
+This primary Template fills in the https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/skeleton/source-repo/catalog-info.yaml[catalog-info.yaml^] and
+https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/content/mkdocs.yml[mkdocs.yml^] skeletons with instance configuration and settings you entered in the create-from-Template forms.
+
+=== MkDocs Summary
+
+You've been through the details of the "server" side (find, build, store, publish) of {product_rhdh_name} TechDocs configuration for external storage, and you've seen the mechanism on the "client" side (Templates and the Entities they make) that specifies `mkdocs-techdocs-core`. https://github.com/backstage/mkdocs-techdocs-core[`Mkdocs-techdocs-core`] is a plugin that customizes the operation of https://mkdocs.org/[MkDocs] for TechDocs. MkDocs is a sort of domain-specific static site generator for documentation.
+
+At this point, your TechDocs deployment centralizes builds in OpenShift (`builder: local`), but stores the resulting HTML in object bucket storage _external_ to {product_rhdh_name}. It passes configuration and secrets references only between necessary applications and only through standard mechanisms. This configuration is not an exact match for the upstream BackStage "recommended" TechDocs setup, but the upstream recommended setup is not running on an OpenShift cluster. Many setups will still want to distribute TechDocs builds out to project pipelines, as shown in the next section, but RHDH on OpenShift makes local TechDocs builds to external storage a legitimate production layout.
+
+== builder: external
+
+Somewhat incredibly, a cli tool drives all of this. Embedded in RHDH is a version of `techdocs-cli`, and you could employ the same program on the command line to fetch doc source from some repo and drive `mkdocs-techdos-core` to build and publish it.
+
+=== Builder by hand
+
+NOTE: You are not expected to copy and run this. It will not work without adjustments to fit the publish step to your `rhdh-bucket-claim`  configuration and neither `npm` nor `pip` are immediately available in your OpenShift web console.
+
+[source,bash]
+------
+# Git that which is owed
+git clone https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq
+cd uq
+
+# Install gobs of node
+npm install -g @techdocs/cli
+pip install "mkdocs-techdocs-core==1.*"
+
+# Generate docs like code
+techdocs-cli generate --no-docker
+
+# Publish ala mode
+# _storage-name_ wants BUCKET_NAME. Retrieved as in script above.
+# _entity_ wants namespace/kind/name from entity catalog-info.
+#    Special case: If catalog-info does not spec a namespace,
+#    its namespace is taken to be the literal string `default`.
+techdocs-cli publish --publisher-type awsS3 --storage-name techdocs-etc-BEEF-etc-BEEF --entity default/Component/uq
+------
+
+=== Builder in GitLab Runner
+
+The outlines of a `.gitlab-ci.yaml` defining a techdocs-cli Runner on your GitLab instance should look fairly familiar by now:
+
+[source,yaml]
+------
+stages:
+  - build-docs
+
+generate-and-publish-techdocs:
+  stage: build-docs
+  image: node:18 # Tested 18 and 20.
+  variables:
+    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+    AWS_REGION: $AWS_REGION
+    TECHDOCS_BUCKET_NAME: $TECHDOCS_BUCKET_NAME
+  script:
+    - npm install -g npx
+    - npm install -g @techdocs/cli
+    # 1st half of entire Internet downloaded. Download part 2/2? Enter Y or N? Y
+    - python3 -m venv .techdocs-venv
+    - source .techdocs-venv/bin/activate
+    - pip install "mkdocs-techdocs-core==1.*"
+    # Generate the documentation site
+    - npx @techdocs/cli generate --no-docker --source-dir . --output-dir ./site
+    # Publish the generated site to external storage
+    - npx @techdocs/cli publish --publisher-type awsS3 --storage-url https://${TECHDOCS_BUCKET_NAME}.s3.${AWS_REGION} --entity default/component/${{ parameters.name }}
+  only:
+    - main # Don't build branches etc - build commits that modify main branch
+------
+
+==== Create the GitLab CI for techdocs-ci, mkdocs-techdocs-core
+
+. Copy the YAML excerpt above to your clipboard.
+
+. Visit https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/[your `uq` component's source repo^].
+
+. Click **Build** in the left navigation, then **Pipelines** in the sub-menu that appears.
+
+. Since there is no existing `.gitlab-ci.yaml` file defining a pipeline in this repo yet, you can click "Try the Default Template" to create the file.
+
+. Select all of the skeleton YAML in the Default pipeline and delete it. Replace it entirely with the YAML you copied from the `stages:` excerpt above.
+
+. Replace `$AWS_ACCESS_KEY_ID` with the value returned by the same object bucket config dump bash script you used earlier. (I.e., return to the OpenShift Web Console in another browser tab or window, open the Web Terminal, and run the script to obtain the values for your object bucket.
+
+. Replace `$AWS_SECRET_ACCESS_KEY` with its value returned from the config dump script.
+
+. Ignore `$AWS_REGION`, or replace it with the empty set (`''`).
+
+. Replace `$TECHDOCS_BUCKET_NAME` with its value returned from the script.
+
+. Click **Commit changes** to save the file and create the CI action.
+
+NOTE: This exercise is specifically contrived to highlight what is happening when the system prepares, generates, and publishes {product_rhdh_name} TechDocs. It is intentionally stripped out and isolated from other pipelines that build or scaffold source code and gitops configuration, so that the operation and position of `mkdocs-techdocs-core` and the ODF S3 Object Bucket storage are obvious. 
+
+For the same reasons, you quickly pasted plain text credentials into the GitLab CI action configuration, just to stay focused for the moment on operation rather configuration. The last cherry atop this lab as a production-like example of {product_rhdh_name} would be entering those ODF object bucket credentials, fetched once again from the bucket claim dump script, into GitLab settings, instead of into plain text. From there they become available, more securely, as names in an environment variable-like namespace accessible to the GitLab CI. Such configuration is left as a brief, and entirely optional, exercise for the reader.
+
+==== Reconfigure RHDH TechDocs for builder: external
+
+Switch back to the OpenShift Web Console. Ensure you are in the Administrator perspective, in the `tssc-dh` Project. Click **Workloads** in the lef navigation, then **ConfigMaps**. Select the `tssc-developer-hub-dynamic-plugins` to open it for editing. Scroll down to the `pluginConfig.techdocs.builder` parameter and change its value from `local` to `external`. RHDH will start a new Pod with the new configuration in the read-mostly mode described in the introduction to this lab.
+
+==== Edit docs, trigger rebuild
+
+Returning to https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/[your `uq` component's source repo^] is the fastest route to commit a new change to its documentation and trigger the GitLab CI you've set up. Once you land there, click the **docs** directory in the file listing, then click **index.md** to open it for editing. You've edited this file twice already, but previously reached it through links in RHDH. Make a recognizable change to the file, then scroll down and **Commit Changes**.
+
+==== Read it again, for the very first time
+
+At last you can return to https://backstage-developer-hub-tssc-dh.{openshift_cluster_ingress_domain}/[{product_rhdh_name}]. Find your `uq` component in the catalog and click through to its TechDocs (or just click **Docs** in the left navigation). Refresh the content with the link in the green notification as in each of the previous milestones.
+
+== TechDocs Summary
+
+Nice work. Now you can explain how TechDocs prepares, generates, and publishes documentation in Backstage and {product_rhdh_name}, and you have a foundation to assess at customer sites and projects whether simple centralized TechDocs processing directly within RHDH makes the most sense, or if the specific requirements of a particular case demand distributed generation at the point of continuous integration in each Catalog Entity repo. In either event, you know how to wire TechDocs to persistent and highly scalable storage atop OpenShift Data Foundation.

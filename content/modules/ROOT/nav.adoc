@@ -29,7 +29,7 @@
 ** xref:rhdh-ui/customize-rhdh.adoc[Hands-on Lab: Customize RHDH Appearance]
 ** xref:rhdh-ui/techdocs-foundations.adoc[TechDocs Foundations]
 ** xref:rhdh-ui/techdocs-lab-user.adoc[TechDocs Lab 1: Creating and Editing TechDocs]
-
+** xref:rhdh-ui/techdocs-lab-pe.adoc[TechDocs Lab 2: Production TechDocs]
 * xref:rhdh-orchestrator/overview.adoc[Module 6: Orchestrator for Red Hat Developer Hub]
 ** xref:rhdh-orchestrator/overview.adoc[Foundations]
 ** xref:rhdh-orchestrator/install.adoc[Hands-on Lab]
