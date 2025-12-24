@@ -828,17 +828,17 @@ spec:
 <div class="sect2">
 <h3 id="_where_they_came_from"><a class="anchor" href="#_where_they_came_from"></a>Where they came from</h3>
 <div class="paragraph">
-<p>In the Quarkus Java template from which your <code>uq</code> template was instantiated, you&#8217;ll find the skeletal forms of the <code>catalog-info.yaml</code> and <code>mkdocs.yml</code> that are templated with instance values and added during the initialization of new instances created from the Template. You&#8217;ve probably noticed you can navigate from the RHDH Catalog to the Template&#8217;s source repo (like you can with any Catalog entity). <a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/template.yaml" target="_blank" rel="noopener"><code>mkdocs.yml</code></a> is a quick shortcut to the Template&#8217;s source.</p>
+<p>In the Quarkus Java template from which your <code>uq</code> template was instantiated, you&#8217;ll find the skeletal forms of the <code>catalog-info.yaml</code> and <code>mkdocs.yml</code> that are templated with instance values and added during the initialization of new instances created from the Template. You&#8217;ve probably noticed you can navigate from the RHDH Catalog to the Template&#8217;s source repo (like you can with any Catalog entity). <a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/template.yaml" target="_blank" rel="noopener"><code>template.yaml</code></a> is a quick shortcut to the Template&#8217;s source.</p>
 </div>
 <div class="paragraph">
 <p>This primary Template fills in the <a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/skeleton/source-repo/catalog-info.yaml" target="_blank" rel="noopener">catalog-info.yaml</a> and
-<a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/content/mkdocs.yml" target="_blank" rel="noopener">mkdocs.yml</a> skeletons with instance configuration and settings you entered in the Template create form.</p>
+<a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/content/mkdocs.yml" target="_blank" rel="noopener">mkdocs.yml</a> skeletons with instance configuration and settings you entered in the create-from-Template forms.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_mkdocs_summary"><a class="anchor" href="#_mkdocs_summary"></a>MkDocs Summary</h3>
 <div class="paragraph">
-<p>You&#8217;ve been through the details of the "server" side (find, build, store, publish) of Red Hat Developer Hub TechDocs configuration for external storage, and you&#8217;ve seen the mechanism on the "client" side (Templates and the Entities they make) that specifies <code>mkdocs-techdocs-core</code>. <a href="https://github.com/backstage/mkdocs-techdocs-core"><code>Mkdocs-techdocs-core</code></a> is a plugin that customizes the <a href="https://mkdocs.org/">MkDocs</a> program for TechDocs operation. MkDocs is a sort of domain-specific static site generator for documentation.</p>
+<p>You&#8217;ve been through the details of the "server" side (find, build, store, publish) of Red Hat Developer Hub TechDocs configuration for external storage, and you&#8217;ve seen the mechanism on the "client" side (Templates and the Entities they make) that specifies <code>mkdocs-techdocs-core</code>. <a href="https://github.com/backstage/mkdocs-techdocs-core"><code>Mkdocs-techdocs-core</code></a> is a plugin that customizes the operation of <a href="https://mkdocs.org/">MkDocs</a> for TechDocs. MkDocs is a sort of domain-specific static site generator for documentation.</p>
 </div>
 <div class="paragraph">
 <p>At this point, your TechDocs deployment centralizes builds in OpenShift (<code>builder: local</code>), but stores the resulting HTML in object bucket storage <em>external</em> to Red Hat Developer Hub. It passes configuration and secrets references only between necessary applications and only through standard mechanisms. This configuration is not an exact match for the upstream BackStage "recommended" TechDocs setup, but the upstream recommended setup is not running on an OpenShift cluster. Many setups will still want to distribute TechDocs builds out to project pipelines, as shown in the next section, but RHDH on OpenShift makes local TechDocs builds to external storage a legitimate production layout.</p>
@@ -883,7 +883,7 @@ techdocs-cli generate --no-docker
 # _storage-name_ wants BUCKET_NAME. Retrieved as in script above.
 # _entity_ wants namespace/kind/name from entity catalog-info.
 #    Special case: If catalog-info does not spec a namespace,
-#    the namespace is taken to be the literal string `default`.
+#    its namespace is taken to be the literal string `default`.
 techdocs-cli publish --publisher-type awsS3 --storage-name techdocs-etc-BEEF-etc-BEEF --entity default/Component/uq</code></pre>
 </div>
 </div>
