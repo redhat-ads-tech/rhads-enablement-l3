@@ -1,0 +1,159 @@
+= Enable Red Hat Developer Hub MCP features (Bonus Lab II)
+
+As an extension of how Red Hat Advance Developer Suite (RHADS) can integrates with other products and third-party tools
+to bring AI into developer's activities, this lab explores how to use Red Hat Developer Hub MCP server and tools for that
+purposes.
+
+This lab showcases how to integrate your AI assistant and expand its capabilities by the
+https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.8/html-single/interacting_with_model_context_protocol_tools_for_red_hat_developer_hub/index[Red Hat Developer Hub MCP feature].
+
+== Introduction
+
+Since Red Hat Developer Hub 1.8, there is a Developer Preview feature to integrate it with AI
+clients by Model Context Protocol (MCP) server. This feature provides a standardized method
+for AI applications to access Red Hat Developer Hub information and workflows through defined MCP tools.
+
+https://modelcontextprotocol.io/docs/getting-started/intro[MCP] is a standardized method for linking AI models
+and applications (MCP clients) with external systems (MCP servers). This connection facilitates access to information and
+workflows residing on those systems. MCP servers are responsive for defining the tools that MCP clients can interact with.
+
+Red Hat Developer Hub supports running MCP tools through the `mcp-actions-backend` plugin. This plugins will enable
+the Software Catalog MCP and TechDocs MCP tools.
+
+The **Software Catalog MCP** lists catalog entities, such as `Components`, `Systems`, `Resources`,
+`APIs`, `Locations`, `Users`, and `Groups`.
+
+The **TechDocs MCP** tool enables MCP clients to search and retrieve documentation directly from TechDocs registered
+in Red Hat Developer Hub. The following TechDocs MCP tools are supported: `fetch-techdocs`, `analyze-techdocs-coverage`, `retrieve-techdocs-content`.
+
+== Enable MCP Plugins
+
+NOTE: The xref:setup-rhdh/foundations.adoc[Setup Red Hat Developer Hub] module provides an in-depth overview of {product_rhdh_name}'s dynamic plugins feature. Visit that module if you'd like a deep-dive on deployment and configuration for {product_rhdh_name} and the dynamic plugins feature.
+
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core{tilde}v1{tilde}ConfigMap[ConfigMaps screen^] in the *{ns_tssc_rhdh}* project. Login using:
+  * Username: `{openshift_admin_user}`
+  * Password: `{openshift_admin_password}`
+. Select and view the YAML for the *tssc-developer-hub-dynamic-plugins* ConfigMap.
+. Add at the end the next configuration:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+    - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/backstage-plugin-mcp-actions-backend:bs_1.42.5__0.1.2!backstage-plugin-mcp-actions-backend
+      disabled: false
+    - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-software-catalog-mcp-tool:bs_1.42.5__0.2.3!red-hat-developer-hub-backstage-plugin-software-catalog-mcp-tool
+      disabled: false
+    - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-techdocs-mcp-tool:bs_1.42.5__0.3.0!red-hat-developer-hub-backstage-plugin-techdocs-mcp-tool
+      disabled: false
+----
+. Select and view the YAML for the *tssc-developer-hub-app-config* ConfigMap.
+. Extend the `backend` block adding another external access and defining the actions:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+    backend:
+        auth:
+            keys:
+            -   secret: ${BACKEND_SECRET}
+            externalAccess:
+            -   type: static
+                options:
+                  token: ${BACKEND_SECRET}
+                  subject: Orchestrator
+            # Add new external access for MCP clients
+            -   type: static
+                options:
+                  token: ${MCP_TOKEN}
+                  subject: mcp-clients
+        # Enable actions and plugin sources
+        actions:
+          pluginSources:
+            - software-catalog-mcp-tool
+            - techdocs-mcp-tool    
+        baseUrl: ${BACKEND_URL}
+        cors:
+            origin: ${BACKEND_URL}            
+----
++
+The `MCP_TOKEN` is a static token for authentication against the MCP server endpoint. MCP clients
+(such as Cursor, Continue, or Lightspeed Core) will use this token for authentication.
+. Visit the https://console-openshift-console.{openshift_cluster_ingress_domain}/k8s/ns/{ns_tssc_rhdh}/core{tilde}v1{tilde}Secret[Secrets screen^] in the *{ns_tssc_rhdh}* project.
+. Select and edit *tssc-developer-hub-env* Secret to add a new **MCP_TOKEN** entry. Add any value longer than 8 characters. For example: `sample-token-for-rhdh-mcp-server`. 
+
+== Configure RHDH MCP server in the AI Assistant
+
+* Access Red Hat OpenShift Dev Spaces from the component already created in Red Hat Developer Hub. Go back to {rhdh_url}/catalog/default/component/ai-agent[Red Hat Developer Hub UI^] and log in with your user credentials:
++
+** *Username*: {rhdh_user}
+** *Password*: {rhdh_user_password}
+
+* Next, click the *ai-agent* component.
+* From the component's overview, click the *Red Hat OpenShift Dev Spaces* link.
++
+image:rhads-ai/rhads/rhdh-devspaces-click.png[width=100%]
+
+* Click the Continue icon:
++
+image:rhads-ai/rhdevspaces/devspaces-continue-icon.png[width=40%]
+
+* Click the **tools icon**, in the tools window, click the plus icon to configure the MCP server.
++
+image:rhads-ai/rhdevspaces/mcp-configure-new.png[width=100%]
+
+* A `new-mcp-server-1.yaml` is create to add the definition of Red Hat Developer Hub MCP server. This
+configuration requires to use the `MCP_TOKEN` and the MCP server endpoint.
++
+** Complete the configuration using this content for this file:
++
+[source,yaml,role=execute,subs=attributes+]
+----
+name: RHDH MCP server
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: RHDH MCP Server
+    type: streamable-http
+    url: {rhdh_url}/api/mcp-actions/v1
+    requestOptions:
+      headers:
+        Authorization: "Bearer sample-token-for-rhdh-mcp-server"
+----
+
+== Use the RHDH MCP from your AI Assistant
+
+Click the back icon to return to the Continue chat, and ensure **agent** is selected in the Continue terminal. This agent interacts
+with the MCP server tools.
+
+image:rhads-ai/rhdevspaces/mcp-server-select-agent.png[width=40%]
+
+From the Continue chat, let's try the next query:
+
+[source,text,role=execute,subs=attributes+]
+----
+Could you list the templates available in the Red Hat Developer Hub catalog?
+----
+
+The chat should be something similar to:
+
+image:rhads-ai/rhdevspaces/continue-chat-templates.png[width=100%]
+
+Let's try other queries, such as:
+
+[source,text,role=execute,subs=attributes+]
+----
+Could you list the components of the Red Hat Developer Hub catalog where the owner is the `user1`?
+----
+
+[source,text,role=execute,subs=attributes+]
+----
+What is the coverage of techdocs in the default namespace?
+----
+
+[source,text,role=execute,subs=attributes+]
+----
+Fetch page `index.html` from techdoc with reference `component:default/uq`
+----
+
+Try your own queries.
+
+**Congratulations**, you have successfully integrated the Red Hat Developer Hub MCP Server in Red Hat OpenShift Dev Spaces
+as part of the AI assistant and learned about the AI Agent's tools.

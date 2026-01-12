@@ -1,4 +1,3 @@
-
 = Install and Configure {product_rhdh_name}
 
 == Installation Requirements
@@ -53,7 +52,7 @@ The {product_rhdh_name} Operator provides a Backstage https://kubernetes.io/docs
 A minimal Backstage CR resembles the following YAML:
 
 ```yaml
-apiVersion: rhdh.redhat.com/v1alpha3
+apiVersion: rhdh.redhat.com/v1alpha4
 kind: Backstage
 metadata:
   name: my-rhdh-instance
@@ -110,7 +109,6 @@ data:
   app-config.yaml: |
     app:
       title: Red Hat Developer Hub
-      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 
     # Enable guest sign-in without user validation. This configuration
     # is unsafe - only use it for testing when Developer Hub is not
@@ -119,10 +117,6 @@ data:
       providers:
         guest:
           dangerouslyAllowOutsideDevelopment: true
-    backend:
-      baseUrl: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
-      cors:
-        origin: https://backstage-{m2_rhdh_instance}-{m2_rhdh_project}.{openshift_cluster_ingress_domain}
 ----
 . Click *Create* to create the ConfigMap containing your *app-config.yaml*.
 
@@ -138,7 +132,7 @@ The URL referenced in the ConfigMap is determined by combining the Backstage CR 
 +
 [source,yaml,role=execute,subs=attributes+]
 ----
-apiVersion: rhdh.redhat.com/v1alpha3
+apiVersion: rhdh.redhat.com/v1alpha4
 kind: Backstage
 metadata:
   name: {m2_rhdh_instance}
