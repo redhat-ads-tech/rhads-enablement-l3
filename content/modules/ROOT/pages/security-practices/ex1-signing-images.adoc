@@ -153,7 +153,7 @@ By typing 'y', you attest that (1) you are not submitting the personal data of a
 error opening browser: exec: "xdg-open": executable file not found in $PATH
 Go to the following link in a browser:
 
-         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=Sr5AAQRbSo1E_1LvSFKMAl_CUkHwEGmMZ8GLmAsrFcA&code_challenge_method=S256&nonce=34eBTcbIeGurtNmu4dIfeFsyirk&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34eBTeWy36XLoRyD9czZI5xQyyZ
+         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=Sr5AAQRbSo1E_1LvSFKMAl_CUkHwEGmMZ8GLmAsrFcA&code_challenge_method=S256&nonce=34eBTcbIeGurtNmu4dIfeFsyirk&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34eBTeWy36XLoRyD9czZI5xQyyZ
 Enter verification code:
 ---- 
 
@@ -424,18 +424,18 @@ So, we can do the same for our pipeline user:
 cosign verify --certificate-identity=pipeline-auth@demo.redhat.com $IMAGE | jq
 ----
 
-If we want to explicitly verify that the identity `user1@demo.redhat.com` was verified against our OIDC server and realm `\https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
+If we want to explicitly verify that the identity `user1@demo.redhat.com` was verified against our OIDC server and realm `\https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam`, we can add the `--certificate-oidc-issuer` parameter:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE | jq
+cosign verify --certificate-identity user1@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam $IMAGE | jq
 ---- 
 
 and 
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE | jq
+cosign verify --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam $IMAGE | jq
 ---- 
 
 We can also use `regular expressions`, using *`--certificate-identity-regexp`* and *`--certificate-oidc-issuer-regexp`* if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the `redhatworkshops.io` domain:
@@ -460,10 +460,10 @@ The following checks were performed on each of these signatures:
   - Existence of the claims in the transparency log was verified offline
   - The code-signing certificate was verified using trusted certificate authority certificates
 logIndex  Subject                        Issuer
-13        user1@demo.redhat.com          https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
-14        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
-15        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
-16        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+13        user1@demo.redhat.com          https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
+14        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
+15        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
+16        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
 ---- 
 
 
