@@ -447,26 +447,47 @@ We can also use `regular expressions`, using *`--certificate-identity-regexp`* a
 cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE | jq
 ---- 
 
-This regular expression "search pattern" will give us all signatures that it can validate and match. Since the output is JSON, we can also work with that to give us a table of signatures, their Rekor logIndex and the OIDC Issuer, since we could have multiple signatures from multiple identities from various OIDC systems...
+This regular expression "search pattern" will give us all signatures that it can validate and match. We could have multiple signatures from multiple identities from various OIDC systems, so a table of signatures with their Rekor logIndex and OIDC issuer is useful.
+
+[IMPORTANT]
+====
+Up to `cosign` 2.x the `verify` JSON carried the identity in an `optional` object, and the table was a single `jq` expression over `.optional.Subject` / `.optional.Issuer` / `.optional.Bundle.Payload.logIndex`. In `cosign` 3.x that object comes back empty:
+
+[source,json]
+----
+  {
+    "critical": { ... },
+    "optional": {}
+  }
+----
+
+The identity did not go away - it moved. It was always in the signing certificate, and 3.x now leaves it only there. So we fetch the signature bundle and read the certificate: the `Subject Alternative Name` holds the email, and the Fulcio extension `1.3.6.1.4.1.57264.1.1` holds the issuer.
+====
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' $IMAGE | jq -r '["logIndex", "Subject", "Issuer"], (.[] | [.optional.Bundle.Payload.logIndex, .optional.Subject, .optional.Issuer]) | @tsv' | column -t
----- 
+{ printf "logIndex\tSubject\tIssuer\n"
+  cosign download signature $IMAGE \
+    | jq -r '[.verificationMaterial.tlogEntries[0].logIndex, .verificationMaterial.certificate.rawBytes] | @tsv' \
+    | while IFS=$'\t' read -r idx cert; do
+        txt=$(echo "$cert" | base64 -d | openssl x509 -inform DER -noout -text)
+        sub=$(echo "$txt" | sed -n 's/.*email://p' | head -1)
+        iss=$(echo "$txt" | grep -A1 '1.3.6.1.4.1.57264.1.1:' | tail -1 | tr -d ' ')
+        printf "%s\t%s\t%s\n" "$idx" "$sub" "$iss"
+      done
+} | column -t
+----
 
 [source,console]
 ----
-Verification for quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest --
-The following checks were performed on each of these signatures:
-  - The cosign claims were validated
-  - Existence of the claims in the transparency log was verified offline
-  - The code-signing certificate was verified using trusted certificate authority certificates
 logIndex  Subject                        Issuer
 13        user1@demo.redhat.com          https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
 14        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
 15        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
 16        pipeline-auth@demo.redhat.com  https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam
----- 
+----
+
+NOTE: `cosign download signature` does not verify anything - it just pulls the bundles off the registry. Run it after the `cosign verify` above, not instead of it.
 
 
 === Offline verification (no access to TAS infrastructure)

@@ -165,10 +165,13 @@ Again, you'll be asked to copy the URL to a browser, login and then copy the res
 
 IMPORTANT: Don't worry if "nothing happens" when you paste the code to your terminal session - gitsign doesn't echo the code. Just hit *return* after pasting. If it doesn't work, the commit won't happen and you can try again. 
 
+NOTE: `gitsign` prints a `WARNING: Both TUF signing config and environment variables are set.` line before it does anything. It is expected here and harmless - the TAS endpoints come from the `gitsign.*` keys in the global `git` config, which is exactly what we want, and the warning is only telling you which of the two sources won.
+
 [source,console]
 ----
 podman-terminal:/workspace/signing-and-verification [+]$ unset SIGSTORE_ID_TOKEN #if still around from the previous exercise, gitsign would use it
 git commit -m "added an empty README.MD"
+WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 error opening browser: exec: "xdg-open": executable file not found in $PATH
 Go to the following link in a browser:
 

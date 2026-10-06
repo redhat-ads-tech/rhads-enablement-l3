@@ -428,9 +428,11 @@ Root status:
 
 For testing, we'll create an empty container image and push it to the https://ttl.sh/[ttl.sh^] ephemeral container registry.
 
+NOTE: The tag is the time-to-live - `ttl.sh` deletes the image when it expires. We use `24h`, the maximum, because the signing, attestation and verification exercises that follow all refer back to this same image. If you take a break and later hit `MANIFEST_UNKNOWN: manifest unknown`, the image has aged out: re-run the build and push below, then carry on.
+
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 echo "FROM scratch" > ./tmp.Dockerfile
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
@@ -440,15 +442,14 @@ You should see:
 
 [source,console]
 ----
-podman-terminal:/workspace$ UUID=$(uuidgen | cut -d'-' -f1)
-IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+podman-terminal:/workspace$ IMAGE_NAME="ttl.sh/rhtas/test-image-4be1a048:24h"
 echo "FROM scratch" > ./tmp.Dockerfile
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
 STEP 1/1: FROM scratch
-COMMIT ttl.sh/rhtas/test-image-4be1a048:1h
+COMMIT ttl.sh/rhtas/test-image-4be1a048:24h
 --> 555cca0b8910
-Successfully tagged ttl.sh/rhtas/test-image-4be1a048:1h
+Successfully tagged ttl.sh/rhtas/test-image-4be1a048:24h
 555cca0b89106c0b78185f2091e7708384ee7694f555d100ee5c7ba50e44dbcd
 Getting image source signatures
 Copying config 555cca0b89 done   | 
@@ -459,7 +460,7 @@ Now we'll sign it:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign sign -y --use-signing-config=false $IMAGE_NAME
 ----
 
@@ -504,7 +505,7 @@ Paste the code into your Podman Terminal. Cosign signs the image, pushes the sig
 Enter verification code: 77ca50a9-1427-469a-a496-0d62e54d4b94.2e7ce116-84a4-40a4-bd30-94ef56b5d000.22114fef-296a-47ad-9333-f37452ce1033
 
 Successfully verified SCT...
-WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:1h uses a tag, not a digest, to identify the image to sign.
+WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:24h uses a tag, not a digest, to identify the image to sign.
     This can lead you to sign a different image than the intended one. Please use a
     digest (example.com/ubuntu@sha256:abc123...) rather than tag
     (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
@@ -516,7 +517,7 @@ Pushing signature to: ttl.sh/rhtas/test-image-4be1a048
 
 [NOTE]
 ====
-To test our deployment, signing an image via an image tag (`test-image:1h`) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their unique digest.
+To test our deployment, signing an image via an image tag (`test-image:24h`) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their unique digest.
 ====
 
 
@@ -524,14 +525,14 @@ With `cosign tree` we can quickly check what Supply Chain Security Artifacts (Si
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign tree $IMAGE_NAME
 ----
 
 [source,console]
 ----
 podman-terminal:/workspace$ cosign tree $IMAGE_NAME
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:1h
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:24h
 └── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-4be1a048:sha256-a07d920dbb3de8e69dff08c3e94fb4fe1df7e7f859da67941673ff7e0f3769f7.sig
    └── 🍒 sha256:9937a84e9e6e5ddb9612521094563b78f398292431b8f137144c2ac142f13e1a
 ---- 
@@ -546,7 +547,7 @@ With `cosign verify` we can verify that
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign verify --certificate-identity=user1@demo.redhat.com \
        $IMAGE_NAME | jq
 ---- 
@@ -563,7 +564,7 @@ If we want to explicitly verify that the identity `user1@demo.redhat.com` (or yo
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign verify --certificate-identity user1@demo.redhat.com \
               --certificate-oidc-issuer \
               https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam \
@@ -575,12 +576,13 @@ We can also use `regular expressions`, using *`--certificate-identity-regexp`* a
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
               --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' \
               $IMAGE_NAME | jq
----- 
+----
 
+NOTE: The JSON these print has a `critical` object with the image digest and an `optional` object that is *empty*. That is expected on `cosign` 3.x - up to 2.x the identity and Rekor log index were repeated there, and they no longer are. The verification still happened; what you are reading is the claim that was verified, not the certificate behind it. xref:security-practices/ex1-signing-images.adoc[The signing exercise in the Security Practices module] shows how to pull the identity back out of the signing certificate.
 
 We can also verify that our signing event and associated metadata has been recorded in the write-only transparency database (Rekor). 
 
@@ -701,9 +703,12 @@ Again, you'll be asked to copy the URL to a browser, login and then copy the res
 
 IMPORTANT: Don't worry if "nothing happens" when you paste the code to your terminal session - gitsign doesn't echo the code. Just hit *return* after pasting. If it doesn't work, the commit won't happen and you can try again. 
 
+NOTE: `gitsign` prints a `WARNING: Both TUF signing config and environment variables are set.` line before it does anything. It is expected here and harmless - the TAS endpoints come from the `gitsign.*` keys in the global `git` config, which is exactly what we want, and the warning is only telling you which of the two sources won.
+
 [source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main) [+]$ git commit -m "added an empty file to test commit signing"
+WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 error opening browser: exec: "xdg-open": executable file not found in $PATH
 Go to the following link in a browser:
 
@@ -782,7 +787,7 @@ For convenience, we'll include the commands for setting the environment to our T
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cd /workspace
 source ~/setup-tas-environment.sh student-tas
 export OIDC_ISSUER_URL="${OIDC_ISSUER_URL%/realms/*}/realms/{keycloak_realm_name}"
@@ -828,7 +833,7 @@ Now that we have a predicate file, we can attest that (sign and attach it to the
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign attest -y --use-signing-config=false --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME
 ----
 
@@ -840,14 +845,14 @@ With `cosign tree`, this time we'll not only see the image signature but also th
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign tree $IMAGE_NAME
 ----
 
 [source,console]
 ----
 podman-terminal:/workspace$ cosign tree $IMAGE_NAME
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:1h
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:24h
 └── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.att
    └── 🍒 sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
 └── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.sig
@@ -882,7 +887,7 @@ For a short report, showing the rules applied and successes or violations:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 ec validate image --image $IMAGE_NAME \
                   --certificate-identity=user1@demo.redhat.com \
                   --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
