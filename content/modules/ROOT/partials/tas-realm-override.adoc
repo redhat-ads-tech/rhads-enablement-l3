@@ -1,11 +1,17 @@
 // MAINTAINERS: delete this partial once the terminal image is rebuilt.
 //
-// Real fix, one line: setup-tas-environment.sh:98 in
-// quay.io/tssc_demos/ttyd-admin-terminal:latest hardcodes
-// /realms/trusted-artifact-signer. Every other OIDC var in that script derives
-// from $OIDC_ISSUER_URL, incl. gitsign.issuer at :49 - so line 98 is the whole fix.
-// Image source not found: not in redhat-tssc-tmm, not in l3-enablement-helpers
-// (which only references the image, security-concepts/template-podman-terminal.yaml:188).
+// Image source: github.com/redhat-tssc-tmm/security-roadshow, images/terminal
+// (Containerfile + build.sh, which builds and pushes :latest and a timestamp tag).
+//
+// Real fix is ONE line: setup-tas-environment.sh:98 hardcodes
+// /realms/trusted-artifact-signer; RHADS 1.8 consolidated that realm into
+// tssc-iam. Every other OIDC var derives from $OIDC_ISSUER_URL, incl.
+// gitsign.issuer at :49.
+//
+// DO NOT bulk-replace trusted-artifact-signer in that script. Four other hits
+// (:51, :59, :121, :147) are the OIDC *client ID*, which really is still named
+// trusted-artifact-signer in 1.8 - confirmed in the live walk. Only :98 is a
+// realm path. Changing the rest breaks login.
 //
 // Cleanup is 6 sites, not 5. Five include:: of this file, plus an inline copy in
 // setup-tas/setup-openshift.adoc's "convenience" block (~:790) that does not use it.
