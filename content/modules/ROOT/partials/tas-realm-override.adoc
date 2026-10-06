@@ -10,15 +10,22 @@
 //
 // DO NOT bulk-replace trusted-artifact-signer in that script. Four other hits
 // (:51, :59, :121, :147) are the OIDC *client ID*, which really is still named
-// trusted-artifact-signer in 1.8 - confirmed in the live walk. Only :98 is a
-// realm path. Changing the rest breaks login.
+// trusted-artifact-signer in 1.8. Only :98 is a realm path. Proof - Fulcio's own
+// config, oc get fulcio -n tssc-tas -o jsonpath='{.items[0].spec.config.OIDCIssuers}':
+//   ClientID: trusted-artifact-signer
+//   Issuer:   https://sso.<domain>/realms/tssc-iam
+// One trusted issuer, new realm, old client name. Changing the rest breaks login.
+//
+// Note the old realm is NOT deleted - both KeycloakRealmImports exist and both
+// /.well-known/openid-configuration return 200. The stale setting fails at Fulcio,
+// not at Keycloak, so don't go looking for a 404.
 //
 // Cleanup is 6 sites, not 5. Five include:: of this file, plus an inline copy in
 // setup-tas/setup-openshift.adoc's "convenience" block (~:790) that does not use it.
 
 [IMPORTANT]
 ====
-The `setup-tas-environment.sh` helper baked into the terminal image still points the OIDC variables at the old `trusted-artifact-signer` realm, which RHADS 1.8 consolidated into `{keycloak_realm_name}`. It also writes them to `~/.bashrc`, so every new terminal - and every re-run of the helper - brings the stale realm back.
+The `setup-tas-environment.sh` helper baked into the terminal image still points the OIDC variables at the old `trusted-artifact-signer` realm. RHADS 1.8 moved the signing client into `{keycloak_realm_name}` and pointed Fulcio there, so that is now the only issuer Fulcio will accept. The helper also writes the variables to `~/.bashrc`, so every new terminal - and every re-run of the helper - brings the stale realm back.
 
 Until the image is rebuilt, repoint them yourself. This is safe to run as often as you like:
 
@@ -32,7 +39,7 @@ git config --global gitsign.issuer "$OIDC_ISSUER_URL"
 echo "$OIDC_ISSUER_URL"
 ----
 
-Skip it and the login URL `cosign` and `gitsign` hand you points at a realm that no longer exists. Verification fails too - including the commands that pass no issuer flag at all, because `cosign` falls back to `COSIGN_CERTIFICATE_OIDC_ISSUER`:
+Skip it and the login URL `cosign` and `gitsign` hand you still works - the old realm is still served, so you will log in and get a token back. Fulcio then refuses the token, because the issuer it names is not the one Fulcio trusts. Verification fails too - including the commands that pass no issuer flag at all, because `cosign` falls back to `COSIGN_CERTIFICATE_OIDC_ISSUER`:
 
 [source,console]
 ----
