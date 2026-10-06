@@ -782,6 +782,10 @@ Since we don't know if our ephemeral image is still there, let's quickly create 
 
 For convenience, we'll include the commands for setting the environment to our TAS deployment in `student-tas`, the realm override and the `cosign initialize` so we're all set for the "real" exercise:
 
+// MAINTAINERS: the five export/git config lines below are an inline copy of
+// partial$tas-realm-override.adoc - inlined because this block is one
+// copy-pasteable unit. Delete them with the partial when the image is rebuilt.
+
 [source,bash,role=execute,subs=attributes+]
 ----
 IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"

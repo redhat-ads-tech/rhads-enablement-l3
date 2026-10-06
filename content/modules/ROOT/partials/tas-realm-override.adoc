@@ -1,3 +1,15 @@
+// MAINTAINERS: delete this partial once the terminal image is rebuilt.
+//
+// Real fix, one line: setup-tas-environment.sh:98 in
+// quay.io/tssc_demos/ttyd-admin-terminal:latest hardcodes
+// /realms/trusted-artifact-signer. Every other OIDC var in that script derives
+// from $OIDC_ISSUER_URL, incl. gitsign.issuer at :49 - so line 98 is the whole fix.
+// Image source not found: not in redhat-tssc-tmm, not in l3-enablement-helpers
+// (which only references the image, security-concepts/template-podman-terminal.yaml:188).
+//
+// Cleanup is 6 sites, not 5. Five include:: of this file, plus an inline copy in
+// setup-tas/setup-openshift.adoc's "convenience" block (~:790) that does not use it.
+
 [IMPORTANT]
 ====
 The `setup-tas-environment.sh` helper baked into the terminal image still points the OIDC variables at the old `trusted-artifact-signer` realm, which RHADS 1.8 consolidated into `{keycloak_realm_name}`. It also writes them to `~/.bashrc`, so every new terminal - and every re-run of the helper - brings the stale realm back.
