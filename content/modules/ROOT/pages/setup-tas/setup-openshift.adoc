@@ -382,49 +382,34 @@ As the first step, we need to "initialize" `cosign` - this downloads public trus
 cosign initialize
 ----
 
+`cosign` takes the TUF endpoint from the `COSIGN_MIRROR` and `COSIGN_ROOT` variables that `setup-tas-environment.sh` set for us, so there is nothing to pass on the command line.
+
 [source,console]
 ----
 podman-terminal:/workspace$ cosign initialize
 WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
-Root status: 
- {
-        "local": "/home/student/.sigstore/root",
-        "remote": "https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io",
-        "metadata": {
-                "root.json": {
-                        "version": 1,
-                        "len": 4128,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "snapshot.json": {
-                        "version": 1,
-                        "len": 994,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "targets.json": {
-                        "version": 1,
-                        "len": 2416,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "timestamp.json": {
-                        "version": 1,
-                        "len": 995,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                }
-        },
-        "targets": [
-                "fulcio_v1.crt.pem",
-                "trusted_root.json",
-                "tsa.certchain.pem",
-                "ctfe.pub",
-                "rekor.pub"
-        ]
-}
 ----
+
+That really is the whole output. `cosign` 3.x prints nothing on success - earlier versions reported a `Root status:` JSON summary here, and that is gone.
+
+[NOTE]
+====
+Since the command is now silent, the way to see *which* trust root you got is the directory it wrote:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cat ~/.sigstore/root/remote.json; echo
+----
+
+[source,console]
+----
+{"mirror":"https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io"}
+----
+
+It should name *your* TAS. If it says `https://tuf-repo-cdn.sigstore.dev`, `cosign` initialized against the public Sigstore instance - which happens when it runs in a shell that has not picked up the TAS variables. Signing still appears to work right up to the last step, then fails with `only able to verify 0 SCT entries; unable to meet threshold of 1`, because the certificate was logged in our Certificate Transparency log and the public trust root does not list it. That error names the CT log rather than TUF, so it is easy to misread as a broken TAS deployment.
+
+The fix is just to run `cosign initialize` again from a shell where `echo $COSIGN_MIRROR` shows your TAS - the next run repoints `remote.json` and no cleanup is needed.
+====
 
 For testing, we'll create an empty container image and push it to the https://ttl.sh/[ttl.sh^] ephemeral container registry.
 
@@ -797,8 +782,6 @@ export SIGSTORE_OIDC_ISSUER="$OIDC_ISSUER_URL"
 git config --global gitsign.issuer "$OIDC_ISSUER_URL"
 cosign initialize
 echo "FROM scratch" > ./tmp.Dockerfile
-UUID=$(uuidgen | cut -d'-' -f1)
-IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
 cosign sign -y --use-signing-config=false $IMAGE_NAME

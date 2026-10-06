@@ -69,44 +69,9 @@ cosign initialize
 ----
 podman-terminal:/workspace$ cosign initialize
 WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
-Root status: 
- {
-        "local": "/home/student/.sigstore/root",
-        "remote": "https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io",
-        "metadata": {
-                "root.json": {
-                        "version": 1,
-                        "len": 4128,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "snapshot.json": {
-                        "version": 1,
-                        "len": 994,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "targets.json": {
-                        "version": 1,
-                        "len": 2416,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "timestamp.json": {
-                        "version": 1,
-                        "len": 995,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                }
-        },
-        "targets": [
-                "fulcio_v1.crt.pem",
-                "trusted_root.json",
-                "ctfe.pub",
-                "rekor.pub"
-        ]
-}
 ----
+
+NOTE: That is the entire output - `cosign` 3.x no longer prints the `Root status:` JSON summary that earlier versions did. To confirm which TUF endpoint it used, read `~/.sigstore/root/remote.json`; it should name your TAS and not `tuf-repo-cdn.sigstore.dev`.
 
 include::partial$tas-realm-override.adoc[]
 
