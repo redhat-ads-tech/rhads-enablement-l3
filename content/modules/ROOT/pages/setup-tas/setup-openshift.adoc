@@ -719,6 +719,7 @@ NOTE: The verification commands below print a `WARNING: Both TUF signing config 
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main)$ git log --show-signature -1
 commit d22de699250b5112928298d844a93eab34452ef1 (HEAD -> main)
+2025/10/25 16:55:02 WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
 gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam)
@@ -734,6 +735,7 @@ Date:   Sat Oct 25 16:54:44 2025 +0000
 [source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main)$ git verify-commit HEAD
+2025/10/25 16:55:02 WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
 gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam)
@@ -756,6 +758,7 @@ gitsign verify --certificate-identity=user1@demo.redhat.com \
 [source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main)$ gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+2025/10/25 16:55:02 WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
 gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam)
