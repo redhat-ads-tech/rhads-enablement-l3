@@ -801,6 +801,7 @@ Once you have successfully signed the image, let's create a simple "Predicate Fi
 
 [source,bash,role=execute,subs=attributes+]
 ----
+cd /workspace
 cat > predicate.json << 'EOF'
 {
   "builder": {
