@@ -784,7 +784,7 @@ For convenience, we'll include the commands for setting the environment to our T
 
 // MAINTAINERS: the five export/git config lines below are an inline copy of
 // partial$tas-realm-override.adoc - inlined because this block is one
-// copy-pasteable unit. Delete them with the partial when the image is rebuilt.
+// unit to copy and paste. Delete them with the partial when the image is rebuilt.
 
 [source,bash,role=execute,subs=attributes+]
 ----
