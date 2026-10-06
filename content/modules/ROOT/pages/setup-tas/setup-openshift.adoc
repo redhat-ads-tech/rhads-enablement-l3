@@ -865,17 +865,17 @@ ec version
 [source,console]
 ----
 podman-terminal:/workspace$ ec version
-Version            v0.6.223+redhat
-Source ID          acaa315ecfaffa3a8cae5818d666067c5b74c595
-Change date        2025-08-12 15:03:16 +0000 UTC (10 weeks ago)
-ECC                v0.1.79
-OPA                v0.70.0
-Conftest           v0.55.0
-Cosign             v2.4.1
-Sigstore           v1.8.9
-Rekor              v1.3.6
-Tekton Pipeline    v0.66.0
-Kubernetes Client  v0.31.0
+Version            v0.8.149+redhat
+Source ID          6510e3de0f00296fc2acc38ef913980dd393ea51
+Change date        2026-07-22 17:01:50 +0000 UTC (10 weeks ago)
+ECC                v0.1.7
+OPA                v1.15.2
+Conftest           v0.68.2
+Cosign             v3.0.4
+Sigstore           v1.10.8
+Rekor              v1.5.3
+Tekton Pipeline    v1.12.0
+Kubernetes Client  v0.36.0
 ----
 
 For a short report, showing the rules applied and successes or violations:
