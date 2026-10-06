@@ -83,9 +83,10 @@ Then, clone the following repository and execute the terminal deployment:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
-cd l3-enablement-helpers/security-concepts
-./deploy-podman-terminal.sh 
+cd ~
+[ -d l3-enablement-helpers ] || git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd ~/l3-enablement-helpers/security-concepts
+./deploy-podman-terminal.sh
 ----
 
 Wait for the pod to be ready.  

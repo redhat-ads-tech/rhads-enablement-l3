@@ -117,7 +117,7 @@ Retrieving signed certificate...
         This information will be used for signing this artifact and will be stored in public transparency logs and cannot be removed later, and is subject to the Immutable Record notice at https://lfprojects.org/policies/hosted-project-tools-immutable-records/.
 
 By typing 'y', you attest that (1) you are not submitting the personal data of any other person; and (2) you understand and agree to the statement and the Agreement terms at the URLs listed above.
-error opening browser: exec: "xdg-open": executable file not found in $PATH
+error opening browser: exec: "xdg-open,x-www-browser,www-browser": executable file not found in $PATH
 Go to the following link in a browser:
 
          https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=Sr5AAQRbSo1E_1LvSFKMAl_CUkHwEGmMZ8GLmAsrFcA&code_challenge_method=S256&nonce=34eBTcbIeGurtNmu4dIfeFsyirk&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34eBTeWy36XLoRyD9czZI5xQyyZ

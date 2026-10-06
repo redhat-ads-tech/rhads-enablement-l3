@@ -172,7 +172,7 @@ NOTE: `gitsign` prints a `WARNING: Both TUF signing config and environment varia
 podman-terminal:/workspace/signing-and-verification [+]$ unset SIGSTORE_ID_TOKEN #if still around from the previous exercise, gitsign would use it
 git commit -m "added an empty README.MD"
 WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
-error opening browser: exec: "xdg-open": executable file not found in $PATH
+error opening browser: exec: "xdg-open,x-www-browser,www-browser": executable file not found in $PATH
 Go to the following link in a browser:
 
          https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=RsKP9nk7eE46s1SjfATmpVJ71Cwqezf4b2-hD1mheMk&code_challenge_method=S256&nonce=34fKmq5ZXx3ntLnEe2mEoXm3yZe&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34fKmnw1ITfl9ycQzmRo7BNFu3p
