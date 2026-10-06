@@ -179,8 +179,8 @@ NOTE: We are using RHBK (Red Hat Build of Keycloak) here, but you can also use A
 [cols="1,3", frame=none, grid=none, stripes=none]
 |===
 .2+| image:m3-tpa-openshift/keycloak-realms.png[width=150]
-| We already have a working install of TPA that we'll use in later exercises - this uses the `chicken` realm in Keycloak. {product_rhdh_name}, OpenShift and Trusted Artifact Signer use the `trusted-artifact-signer` realm. 
-| With that said - let's use the `trusted-artifact-signer` realm for our install, so we can use the same user across all applications.
+| Every application in this lab shares a single Keycloak realm, `tssc-iam` - {product_rhdh_name}, OpenShift, Trusted Artifact Signer and the working install of TPA we'll use in later exercises all authenticate against it.
+| So we'll use `tssc-iam` for our install too, which means the same user works across all of them.
 |===
 
 ==== *Clients, Client Scopes and RBAC*
@@ -311,7 +311,7 @@ Continue assigning the roles to the client scopes as follows:
 
 *Users*
 
-Now that we have the client scopes and assigned those to specific roles, we need to assign those roles to our users (or, in a production environment, more likely to groups of users). 
+Now that we have the client scopes and assigned those to specific roles, we need to assign those roles to our users (or, in a production environment, more likely to groups of users).
 
 In the same realm (1) go to users (2) and click on `user1` (3):
 
@@ -502,7 +502,7 @@ Replace the `spec.appDomain` value with:
 
 Do the same in the `spec.oidc.IssuerUrl` (this is Keycloak realm where we defined our clients and client scopes):
 
-`issuerUrl: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'`
+`issuerUrl: 'https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam'`
 
 And, while you still have it in your clipboard, also for the `spec.storage.region`:
 
@@ -738,7 +738,7 @@ NOTE: Make sure you copied and ran the above commands, as that makes sure you're
 +
 `bucket: <run_s3.sh_from_your_namespace_to_get_the_bucket_name>`
 
-. Set `oidc.issuerUrl` to `\https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`
+. Set `oidc.issuerUrl` to `\https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam`
 +
 NOTE: If you decide to try out the `filesystem` storage, obviously you don't have to change any value there - these are left in the `values-fs.yaml` file for reference, but commented out. You still need to change the `oidc.issuerUrl` field, but that's all.
 

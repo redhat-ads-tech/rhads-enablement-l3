@@ -11,11 +11,11 @@ TUF Configuration:
   COSIGN_ROOT: https://tuf-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io/root.json
 
 OIDC Configuration:
-  OIDC_ISSUER_URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  OIDC_ISSUER_URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam
   COSIGN_OIDC_CLIENT_ID: trusted-artifact-signer
-  COSIGN_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
-  COSIGN_CERTIFICATE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
-  SIGSTORE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+  COSIGN_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam
+  COSIGN_CERTIFICATE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam
+  SIGSTORE_OIDC_ISSUER: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam
 
 Fulcio Configuration:
   COSIGN_FULCIO_URL: https://fulcio-server-tssc-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io

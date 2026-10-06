@@ -23,8 +23,8 @@ spec:
     config:
       OIDCIssuers:
         - ClientID: trusted-artifact-signer
-          Issuer: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'
-          IssuerURL: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'
+          Issuer: 'https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam'
+          IssuerURL: 'https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam'
           Type: email
     externalAccess:
       enabled: true

@@ -92,12 +92,13 @@ NOTE: It's a linux terminal, so use kbd:[CTRL+SHIFT+V] (or kbd:[CMD+V] on macOS)
 
 [source,bash,role=execute,subs=attributes+]
 ----
-git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
-cd l3-enablement-helpers
+cd ~
+[ -d l3-enablement-helpers ] || git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd ~/l3-enablement-helpers
 prerequisites/get-keycloak-info.sh
 ----
 
-So, you can go to the https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/trusted-artifact-signer/clients[Keycloak Admin console^,window="keycloak"] and login with the username and password provided by the `get-keycloak-info.sh` script that you just executed.
+So, you can go to the https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/tssc-iam/clients[Keycloak Admin console^,window="keycloak"] and login with the username and password provided by the `get-keycloak-info.sh` script that you just executed.
 
 In the _Clients_ view, there is a `trusted-artifact-signer` client (you may need to advance to the next page if there are more than 10 clients to see it). This client will be used for authentication with Fulcio and therefore controls what data is associated with the authenticated user when Fulcio requests an authenticated identity.
 
@@ -151,6 +152,22 @@ Fulcio will not allow authentication via an arbitrary client, it will validate t
 You could of course hardcode the `email-verified` value... that is up to you, but since Keycloak provides this feature, we'll use it.
 
 Should you want to experiment with the upstream https://www.sigstore.dev/[sigstore] deployment, make sure your client gives the `sigstore` string as `aud` (audience).
+====
+
+*Verified user emails*
+
+Because Fulcio rejects identities whose email isn't verified, every user you intend to sign with needs the *Email verified* flag set in Keycloak. This flag is frequently unset for the `{openshift_admin_user}` user - and always unset if you had to create these users by hand in xref:setup-tpa/setup-openshift.adoc[Module 3], since Keycloak creates users as unverified. An unverified `{openshift_admin_user}` also prevents the "Podman Terminal" we deploy later in this module from starting.
+
+[IMPORTANT]
+====
+Do this now, before you continue:
+
+. In the https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/tssc-iam/users[Keycloak Admin console^,window="keycloak"], select the `tssc-iam` realm, then _Users_.
+. Open the `{openshift_admin_user}` user.
+. Make sure the _Email_ field is populated and switch *Email verified* to `On`, then _Save_.
+. Repeat for `{rhdh_user}` if its email is not verified either.
+
+While you are on this screen, note the *Email* value for each user - that is the identity that ends up in the signing certificate, and it is what you will pass to `--certificate-identity` when verifying later in this module.
 ====
 
 == Operator Installation
@@ -234,9 +251,10 @@ If you haven't already done so, please open your {openshift_console_url}/termina
 
 [source,bash,role=execute,subs=attributes+]
 ----
-git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
-cd l3-enablement-helpers/tas-verification
-./deploy-podman-terminal.sh 
+cd ~
+[ -d l3-enablement-helpers ] || git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd ~/l3-enablement-helpers/tas-verification
+./deploy-podman-terminal.sh
 ----
 
 *Click & Expand to see the terminal output*
@@ -259,7 +277,7 @@ You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluste
 [cols="1,3"]
 |===
 a|image::security-practices/attention-please.png[] 
-a|In this Lab environment, *Trusted Artifact Signer* and *OpenShift* use the same Keycloak Realm (in case you were wondering why it says "TRUSTED-ARTIFACT-SIGNER" when you login to OpenShift).
+a|In this Lab environment, *Trusted Artifact Signer* and *OpenShift* use the same Keycloak realm, `tssc-iam` (in case you were wondering why logging in to OpenShift hands you off to the `rhbk` single sign-on provider).
 
 2+|*PLEASE LOG OUT OF THE {openshift_console_url}[OPENSHIFT CONSOLE^,window="console"] NOW* 
 
@@ -270,6 +288,8 @@ You won't be able to sign with `user1` / `{rhdh_user_password}`.
 It's ok to sign with `admin` but we want to avoid the impression that signing is an admin task - as long as you have an OIDC Identity, you can sign. 
 
 Also, all the ready-made examples that you can copy & paste use `user1`.
+
+2+|Logging out of the console may land you on a `DNS_PROBE_FINISHED_NXDOMAIN` browser error - that is a known issue with the post-logout redirect in this environment and is harmless. To be certain the session is gone, also log out at the source via the https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam/protocol/openid-connect/logout[Keycloak logout endpoint^,window="sso"].
 |===
 ====
 
@@ -353,6 +373,8 @@ podman-terminal:/workspace$ source ~/setup-tas-environment.sh student-tas
 
 If you type `help` again, you should now see all environment variables set to their endpoints in the `student-tas` namespace (with the exception of the OIDC endpoints, since we're using the same Keycloak, Realm and Client for all TAS installations here).
 
+include::partial$tas-realm-override.adoc[]
+
 === Signing and verifying container images
 
 As the first step, we need to "initialize" `cosign` - this downloads public trust root certificates from the TUF endpoint that our TAS instance provides:
@@ -362,55 +384,42 @@ As the first step, we need to "initialize" `cosign` - this downloads public trus
 cosign initialize
 ----
 
+`cosign` takes the TUF endpoint from the `COSIGN_MIRROR` and `COSIGN_ROOT` variables that `setup-tas-environment.sh` set for us, so there is nothing to pass on the command line.
+
 [source,console]
 ----
 podman-terminal:/workspace$ cosign initialize
 WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
-Root status: 
- {
-        "local": "/home/student/.sigstore/root",
-        "remote": "https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io",
-        "metadata": {
-                "root.json": {
-                        "version": 1,
-                        "len": 4128,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "snapshot.json": {
-                        "version": 1,
-                        "len": 994,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "targets.json": {
-                        "version": 1,
-                        "len": 2416,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                },
-                "timestamp.json": {
-                        "version": 1,
-                        "len": 995,
-                        "expiration": "22 Oct 26 16:21 UTC",
-                        "error": ""
-                }
-        },
-        "targets": [
-                "fulcio_v1.crt.pem",
-                "trusted_root.json",
-                "tsa.certchain.pem",
-                "ctfe.pub",
-                "rekor.pub"
-        ]
-}
 ----
 
-For testing, we'll create an empty container image and push it to the https://ttl.sh/[ttl.sh^] ephemeral container registry.
+That really is the whole output. `cosign` 3.x prints nothing on success - earlier versions reported a `Root status:` JSON summary here, and that is gone.
+
+[NOTE]
+====
+Since the command is now silent, the way to see *which* trust root you got is the directory it wrote:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+cat ~/.sigstore/root/remote.json; echo
+----
+
+[source,console]
+----
+{"mirror":"https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io"}
+----
+
+It should name *your* TAS. If it says `https://tuf-repo-cdn.sigstore.dev`, `cosign` initialized against the public Sigstore instance - which happens when it runs in a shell that has not picked up the TAS variables. Signing still appears to work right up to the last step, then fails with `only able to verify 0 SCT entries; unable to meet threshold of 1`, because the certificate was logged in our Certificate Transparency log and the public trust root does not list it. That error names the CT log rather than TUF, so it is easy to misread as a broken TAS deployment.
+
+The fix is just to run `cosign initialize` again from a shell where `echo $COSIGN_MIRROR` shows your TAS - the next run repoints `remote.json` and no cleanup is needed.
+====
+
+For testing, we'll create an empty container image and push it to the https://ttl.sh/[ttl.sh^] ephemeral container registry.
+
+NOTE: The tag is the time-to-live - `ttl.sh` deletes the image when it expires. We use `24h`, the maximum, because the signing, attestation and verification exercises that follow all refer back to this same image. If you take a break and later hit `MANIFEST_UNKNOWN: manifest unknown`, the image has aged out: re-run the build and push below, then carry on.
+
+[source,bash,role=execute,subs=attributes+]
+----
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 echo "FROM scratch" > ./tmp.Dockerfile
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
@@ -420,15 +429,14 @@ You should see:
 
 [source,console]
 ----
-podman-terminal:/workspace$ UUID=$(uuidgen | cut -d'-' -f1)
-IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
+podman-terminal:/workspace$ IMAGE_NAME="ttl.sh/rhtas/test-image-4be1a048:24h"
 echo "FROM scratch" > ./tmp.Dockerfile
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
 STEP 1/1: FROM scratch
-COMMIT ttl.sh/rhtas/test-image-4be1a048:1h
+COMMIT ttl.sh/rhtas/test-image-4be1a048:24h
 --> 555cca0b8910
-Successfully tagged ttl.sh/rhtas/test-image-4be1a048:1h
+Successfully tagged ttl.sh/rhtas/test-image-4be1a048:24h
 555cca0b89106c0b78185f2091e7708384ee7694f555d100ee5c7ba50e44dbcd
 Getting image source signatures
 Copying config 555cca0b89 done   | 
@@ -439,17 +447,27 @@ Now we'll sign it:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
-cosign sign -y $IMAGE_NAME
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
+cosign sign -y --use-signing-config=false $IMAGE_NAME
 ----
+
+[NOTE]
+====
+`--use-signing-config=false` tells `cosign` to take the Fulcio, Rekor and OIDC endpoints from the environment variables we set above, rather than from a signing config served by TUF. Recent `cosign` releases refuse to sign when both are present, with an error about a conflicting signing config. The alternative is to unset the `COSIGN_*` / `SIGSTORE_*` service URL variables, but then you lose the environment-driven setup this module relies on.
+====
 
 Since we are running in a terminal session with no browser, we are presented with a URL that we need to open, pointing to our SSO (Keycloak) server. If we ran this locally on our desktops, a browser window would open directly.
 
 [source,console]
 ----
-podman-terminal:/workspace$ cosign sign -y $IMAGE_NAME
+podman-terminal:/workspace$ cosign sign -y --use-signing-config=false $IMAGE_NAME
+WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:24h uses a tag, not a digest, to identify the image to sign.
+    This can lead you to sign a different image than the intended one. Please use a
+    digest (example.com/ubuntu@sha256:abc123...) rather than tag
+    (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
+    images by tag will be removed in a future release.
+
 Generating ephemeral keys...
-Retrieving signed certificate...
 
         The sigstore service, hosted by sigstore a Series of LF Projects, LLC, is provided pursuant to the Hosted Project Tools Terms of Use, available at https://lfprojects.org/policies/hosted-project-tools-terms-of-use/.
         Note that if your submission includes personal data associated with this signed artifact, it will be part of an immutable record.
@@ -457,10 +475,10 @@ Retrieving signed certificate...
         This information will be used for signing this artifact and will be stored in public transparency logs and cannot be removed later, and is subject to the Immutable Record notice at https://lfprojects.org/policies/hosted-project-tools-immutable-records/.
 
 By typing 'y', you attest that (1) you are not submitting the personal data of any other person; and (2) you understand and agree to the statement and the Agreement terms at the URLs listed above.
-error opening browser: exec: "xdg-open": executable file not found in $PATH
+error opening browser: exec: "xdg-open,x-www-browser,www-browser": executable file not found in $PATH
 Go to the following link in a browser:
 
-         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=DxXBBX3iEO2fNVNRZ-oEftgt5FwLYX_vsDixiRJ1Tnc&code_challenge_method=S256&nonce=34fQJpS9CBW6stygUkIaHgOT6tM&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34fQJoeiPNVwNTDFcTOzfVROYdm
+         https://sso.apps.cluster-qkw52.dynamic.redhatworkshops.io/realms/tssc-iam/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=DxXBBX3iEO2fNVNRZ-oEftgt5FwLYX_vsDixiRJ1Tnc&code_challenge_method=S256&nonce=34fQJpS9CBW6stygUkIaHgOT6tM&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34fQJoeiPNVwNTDFcTOzfVROYdm
 Enter verification code: 
 ---- 
 
@@ -478,20 +496,14 @@ Paste the code into your Podman Terminal. Cosign signs the image, pushes the sig
 ----
 Enter verification code: 77ca50a9-1427-469a-a496-0d62e54d4b94.2e7ce116-84a4-40a4-bd30-94ef56b5d000.22114fef-296a-47ad-9333-f37452ce1033
 
+Retrieving signed certificate...
 Successfully verified SCT...
-WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:1h uses a tag, not a digest, to identify the image to sign.
-    This can lead you to sign a different image than the intended one. Please use a
-    digest (example.com/ubuntu@sha256:abc123...) rather than tag
-    (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
-    images by tag will be removed in a future release.
-
 tlog entry created with index: 18
-Pushing signature to: ttl.sh/rhtas/test-image-4be1a048
 ---- 
 
 [NOTE]
 ====
-To test our deployment, signing an image via an image tag (`test-image:1h`) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their unique digest.
+To test our deployment, signing an image via an image tag (`test-image:24h`) is fine, but  should heed the warning, because tags can be changed and you might inadvertently sign the wrong image - as a matter of good practice, you should always sign images using their unique digest.
 ====
 
 
@@ -499,17 +511,24 @@ With `cosign tree` we can quickly check what Supply Chain Security Artifacts (Si
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign tree $IMAGE_NAME
 ----
 
 [source,console]
 ----
 podman-terminal:/workspace$ cosign tree $IMAGE_NAME
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:1h
-└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-4be1a048:sha256-a07d920dbb3de8e69dff08c3e94fb4fe1df7e7f859da67941673ff7e0f3769f7.sig
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:24h
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: ttl.sh/rhtas/test-image-4be1a048@sha256:a07d920dbb3de8e69dff08c3e94fb4fe1df7e7f859da67941673ff7e0f3769f7
    └── 🍒 sha256:9937a84e9e6e5ddb9612521094563b78f398292431b8f137144c2ac142f13e1a
----- 
+----
+
+[NOTE]
+====
+Where that signature *lives* depends on the registry. Given a registry that implements the OCI referrers API - `ttl.sh` does - `cosign` 3.x attaches the signature as a referrer of the image digest, which is what you see above. Against a registry without referrers support it falls back to the older convention: a sibling tag named after the digest, `…:sha256-a07d920d….sig`, which `cosign tree` reports as `🔐 Signatures for an image tag`. Either way the signature is the same; only where it is stored differs.
+
+Note also that the digest on the `🔗` line is the *signature artifact's* own digest, not the image's - so it will not match the `docker-manifest-digest` that `cosign verify` reports below.
+====
 
 With `cosign verify` we can verify that
 
@@ -521,33 +540,42 @@ With `cosign verify` we can verify that
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign verify --certificate-identity=user1@demo.redhat.com \
        $IMAGE_NAME | jq
 ---- 
-WARNING: If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` instead by pressing the kbd:[⬆️] key and editing the username in the command. You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
+[WARNING]
+====
+`--certificate-identity` has to match *exactly* the email address of the user you signed with, otherwise `cosign` reports `Error: no signatures found`.
 
-If we want to explicitly verify that the identity `user1@demo.redhat.com` (or `admin@demo.redhat.com` if you logged in as `admin` while generating the signature) was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer`, we can add the `--certificate-oidc-issuer` parameter:
+If you signed as `{openshift_admin_user}` rather than `{rhdh_user}`, press the kbd:[⬆️] key and edit the identity in the command. The `{openshift_admin_user}` user's email is *not* necessarily `admin@demo.redhat.com` - look it up in the https://sso.{openshift_cluster_ingress_domain}/admin/master/console/#/tssc-iam/users[Keycloak Admin console^,window="keycloak"] under _Realm_ `tssc-iam` -> _Users_ -> `{openshift_admin_user}` -> _Email_.
+
+You will need to do this for all subsequent commands that use the `user1@demo.redhat.com` identity.
+====
+
+If we want to explicitly verify that the identity `user1@demo.redhat.com` (or your `{openshift_admin_user}` email if you logged in as `{openshift_admin_user}` while generating the signature) was verified against our OIDC server and realm `https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam`, we can add the `--certificate-oidc-issuer` parameter:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
-cosign verify --certificate-identity user1@demo.redhat.com \# <1>
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
+cosign verify --certificate-identity user1@demo.redhat.com \
               --certificate-oidc-issuer \
-              https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer $IMAGE_NAME | jq
----- 
-<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
+              https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam \
+              $IMAGE_NAME | jq # <1>
+----
+<1> If you signed with the admin user, you will get an error - use that user's email here instead
 
 We can also use `regular expressions`, using *`--certificate-identity-regexp`* and *`--certificate-oidc-issuer-regexp`* if we want to e.g. verify that the image was signed by a Red Hatter that authenticated against any OIDC system running on the `redhatworkshops.io` domain:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign verify --certificate-identity-regexp '.*@.*redhat\.com$' \
               --certificate-oidc-issuer-regexp '\.redhatworkshops\.io/' \
               $IMAGE_NAME | jq
----- 
+----
 
+NOTE: The JSON these print has a `critical` object with the image digest and an `optional` object that is *empty*. That is expected on `cosign` 3.x - up to 2.x the identity and Rekor log index were repeated there, and they no longer are. The verification still happened; what you are reading is the claim that was verified, not the certificate behind it. xref:security-practices/ex1-signing-images.adoc[The signing exercise in the Security Practices module] shows how to pull the identity back out of the signing certificate.
 
 We can also verify that our signing event and associated metadata has been recorded in the write-only transparency database (Rekor). 
 
@@ -577,17 +605,19 @@ So, let's open our  https://admin-terminal-ttyd.{openshift_cluster_ingress_domai
 
 [source,bash,role=execute,subs=attributes+]
 ----
-git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
-cd l3-enablement-helpers
+cd /workspace
+[ -d l3-enablement-helpers ] || git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd /workspace/l3-enablement-helpers
 touch this-is-an-empty-file.txt
 git add .
 git status
----- 
+----
 
 [source,console]
 ----
-podman-terminal:/workspace$ git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
-cd l3-enablement-helpers
+podman-terminal:/workspace$ cd /workspace
+[ -d l3-enablement-helpers ] || git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd /workspace/l3-enablement-helpers
 touch this-is-an-empty-file.txt
 git add .
 git status
@@ -618,6 +648,8 @@ source ~/setup-tas-environment.sh student-tas
 ----
 ====
 
+include::partial$tas-realm-override.adoc[]
+
 Before we commit our change, let's take a look at our `git` configuration:
 
 [source,bash,role=execute,subs=attributes+]
@@ -642,7 +674,7 @@ This section tells `git` to use `gpg`-style signing (similar to the "traditional
 ----
 ...
 gitsign.fulcio=https://fulcio-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
-gitsign.issuer=https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
+gitsign.issuer=https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam
 gitsign.rekor=https://rekor-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
 gitsign.clientid=trusted-artifact-signer
 ...
@@ -669,10 +701,10 @@ IMPORTANT: Don't worry if "nothing happens" when you paste the code to your term
 [source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main) [+]$ git commit -m "added an empty file to test commit signing"
-error opening browser: exec: "xdg-open": executable file not found in $PATH
+error opening browser: exec: "xdg-open,x-www-browser,www-browser": executable file not found in $PATH
 Go to the following link in a browser:
 
-         https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=4OvrJrKnGjzzU-ENJck2tzNLTEhdJ1JnLmP04YjR52M&code_challenge_method=S256&nonce=34ZBbWJBdMmpAa3RQwHuVxSZmNk&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34ZBbcXNytmleT7V3DxndgnbIdV
+         https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam/protocol/openid-connect/auth?access_type=online&client_id=trusted-artifact-signer&code_challenge=4OvrJrKnGjzzU-ENJck2tzNLTEhdJ1JnLmP04YjR52M&code_challenge_method=S256&nonce=34ZBbWJBdMmpAa3RQwHuVxSZmNk&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=openid+email&state=34ZBbcXNytmleT7V3DxndgnbIdV
 Enter verification code: 
 tlog entry created with index: 1
 [main d22de69] added an empty file to test commit signing
@@ -683,13 +715,16 @@ podman-terminal:/workspace/l3-enablement-helpers (main)$
 
 To verify your commit signature, you'd use `gitsign verify` - however, the traditional git signature verification means also work (`git log --show-signature`, `git verify-commit`), but they don't verify the inclusion of the OIDC Identity and OIDC Issuer for that identity (called "certificate claims"), therefore are less secure:
 
+NOTE: The verification commands below print a `WARNING: Both TUF signing config and environment variables are set.` line first. It is expected and harmless - it only tells you which of the two endpoint sources won. The signing step above does not print it, because signing takes its endpoints from the `gitsign.*` keys in the global `git` config.
+
 [source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main)$ git log --show-signature -1
 commit d22de699250b5112928298d844a93eab34452ef1 (HEAD -> main)
+2025/10/25 16:55:02 WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
-gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam)
 Validated Git signature: true
 Validated Rekor entry: true
 Validated Certificate claims: false
@@ -702,9 +737,10 @@ Date:   Sat Oct 25 16:54:44 2025 +0000
 [source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main)$ git verify-commit HEAD
+2025/10/25 16:55:02 WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
-gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam)
 Validated Git signature: true
 Validated Rekor entry: true
 Validated Certificate claims: false
@@ -715,18 +751,19 @@ So, let's do it securely
 
 [source,bash,role=execute,subs=attributes+]
 ----
-gitsign verify --certificate-identity=user1@demo.redhat.com \# <1>
+gitsign verify --certificate-identity=user1@demo.redhat.com \
                --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
-               HEAD
----- 
-<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
+               HEAD # <1>
+----
+<1> If you signed with the admin user, you will get an error - use that user's email here instead
 
 [source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers (main)$ gitsign verify --certificate-identity=user1@demo.redhat.com --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER HEAD
+2025/10/25 16:55:02 WARNING: Both TUF signing config and environment variables are set. Environment variables will take precedence. To use the TUF signing config from 'gitsign initialize', unset GITSIGN_FULCIO_URL, GITSIGN_REKOR_URL, GITSIGN_OIDC_ISSUER, and related environment variables.
 tlog index: 1
 gitsign: Signature made using certificate ID 0x1d599ea7405ba2518fc81f7dab53b9f25373478c | CN=student.tas.signature,O=rhads-learners
-gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer)
+gitsign: Good signature from [user1@demo.redhat.com](https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam)
 Validated Git signature: true
 Validated Rekor entry: true
 Validated Certificate claims: true
@@ -743,26 +780,34 @@ Here, we'll use a simple example without external policies - the `ec` client has
 
 Since we don't know if our ephemeral image is still there, let's quickly create a new one in our https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"].
 
-For convenience, we'll include the commands for setting the environment to our TAS deployment in `student-tas` and the `cosign initialize` so we're all set for the "real" exercise:
+For convenience, we'll include the commands for setting the environment to our TAS deployment in `student-tas`, the realm override and the `cosign initialize` so we're all set for the "real" exercise:
+
+// MAINTAINERS: the five export/git config lines below are an inline copy of
+// partial$tas-realm-override.adoc - inlined because this block is one
+// unit to copy and paste. Delete them with the partial when the image is rebuilt.
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cd /workspace
 source ~/setup-tas-environment.sh student-tas
+export OIDC_ISSUER_URL="${OIDC_ISSUER_URL%/realms/*}/realms/{keycloak_realm_name}"
+export COSIGN_OIDC_ISSUER="$OIDC_ISSUER_URL"
+export COSIGN_CERTIFICATE_OIDC_ISSUER="$OIDC_ISSUER_URL"
+export SIGSTORE_OIDC_ISSUER="$OIDC_ISSUER_URL"
+git config --global gitsign.issuer "$OIDC_ISSUER_URL"
 cosign initialize
 echo "FROM scratch" > ./tmp.Dockerfile
-UUID=$(uuidgen | cut -d'-' -f1)
-IMAGE_NAME="ttl.sh/rhtas/test-image-${UUID}:1h"
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
-cosign sign -y $IMAGE_NAME
+cosign sign -y --use-signing-config=false $IMAGE_NAME
 ----
 
 Once you have successfully signed the image, let's create a simple "Predicate File" that doesn't contain much information about the build process but is at least syntactically correct (according to the https://slsa.dev/spec/v1.0/provenance[SLSA predicate specification^,window="slsa"]) 
 
 [source,bash,role=execute,subs=attributes+]
 ----
+cd /workspace
 cat > predicate.json << 'EOF'
 {
   "builder": {
@@ -788,30 +833,30 @@ Now that we have a predicate file, we can attest that (sign and attach it to the
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
-cosign attest -y --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
+cosign attest -y --use-signing-config=false --predicate ./predicate.json --type slsaprovenance $IMAGE_NAME
 ----
 
 Again, we will have to verify our identity (by logging into Keycloak and copying the success code - or, if run from a local workstation, just by logging into Keycloak).
 
 
 
-With `cosign tree`, this time we'll not only see the image signature but also the attestation:
+With `cosign tree`, this time we'll not only see the image signature but also the attestation - told apart by their artifact types, `https://sigstore.dev/cosign/sign/v1` for the signature and `https://slsa.dev/provenance/v0.2` for the SLSA provenance we just attached:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 cosign tree $IMAGE_NAME
 ----
 
 [source,console]
 ----
 podman-terminal:/workspace$ cosign tree $IMAGE_NAME
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:1h
-└── 💾 Attestations for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.att
-   └── 🍒 sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
-└── 🔐 Signatures for an image tag: ttl.sh/rhtas/test-image-0c5e2a69:sha256-b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9.sig
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:24h
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
    └── 🍒 sha256:f9266c99008d19ca8f82ef47ce654f9b1eb1ed840dfc2bf2286a89100a294abf
+└── 🔗 https://slsa.dev/provenance/v0.2 artifacts via OCI referrer: ttl.sh/rhtas/test-image-0c5e2a69@sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
+   └── 🍒 sha256:b6c3b279f887b1a0cf37a2d63da8376e85b0cd53596cd980369e848df88e1d58
 ----
 
 We will now verify the attestation as well as the image using `ec` - enterprise contract, which has an embedded `cosign` version for the image signature verification part:
@@ -824,17 +869,17 @@ ec version
 [source,console]
 ----
 podman-terminal:/workspace$ ec version
-Version            v0.6.223+redhat
-Source ID          acaa315ecfaffa3a8cae5818d666067c5b74c595
-Change date        2025-08-12 15:03:16 +0000 UTC (10 weeks ago)
-ECC                v0.1.79
-OPA                v0.70.0
-Conftest           v0.55.0
-Cosign             v2.4.1
-Sigstore           v1.8.9
-Rekor              v1.3.6
-Tekton Pipeline    v0.66.0
-Kubernetes Client  v0.31.0
+Version            v0.8.149+redhat
+Source ID          6510e3de0f00296fc2acc38ef913980dd393ea51
+Change date        2026-07-22 17:01:50 +0000 UTC (10 weeks ago)
+ECC                v0.1.7
+OPA                v1.15.2
+Conftest           v0.68.2
+Cosign             v3.0.4
+Sigstore           v1.10.8
+Rekor              v1.5.3
+Tekton Pipeline    v1.12.0
+Kubernetes Client  v0.36.0
 ----
 
 For a short report, showing the rules applied and successes or violations:
@@ -842,13 +887,13 @@ For a short report, showing the rules applied and successes or violations:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
+IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:24h"
 ec validate image --image $IMAGE_NAME \
-                  --certificate-identity=user1@demo.redhat.com \# <1>
-                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \ 
-                  --show-successes
+                  --certificate-identity=user1@demo.redhat.com \
+                  --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
+                  --show-successes # <1>
 ----
-<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
+<1> If you signed with the admin user, you will get an error - use that user's email here instead
 
 [source,console]
 ----
@@ -881,11 +926,11 @@ For a more verbose report, use
 [source,bash,role=execute,subs=attributes+]
 ----
 ec validate image --image $IMAGE_NAME \
-                  --certificate-identity=user1@demo.redhat.com \# <1>
+                  --certificate-identity=user1@demo.redhat.com \
                   --certificate-oidc-issuer=$SIGSTORE_OIDC_ISSUER \
-                  --output json --show-successes | jq
+                  --output json --show-successes | jq # <1>
 ----
-<1> If you signed with the admin user, you will get an error - use `admin@demo.redhat.com` here instead
+<1> If you signed with the admin user, you will get an error - use that user's email here instead
 
 *Click & Expand to see a full JSON report*
 

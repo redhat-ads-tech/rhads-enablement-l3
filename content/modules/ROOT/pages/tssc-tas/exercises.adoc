@@ -83,9 +83,10 @@ Then, clone the following repository and execute the terminal deployment:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
-cd l3-enablement-helpers/security-concepts
-./deploy-podman-terminal.sh 
+cd ~
+[ -d l3-enablement-helpers ] || git clone https://github.com/redhat-tssc-tmm/l3-enablement-helpers.git
+cd ~/l3-enablement-helpers/security-concepts
+./deploy-podman-terminal.sh
 ----
 
 Wait for the pod to be ready.  
@@ -97,7 +98,7 @@ You should now have a new terminal https://admin-terminal-ttyd.{openshift_cluste
 
 We have just asked you to start with a fresh "Podman Terminal" - therefore, you need to initialize (meaning: download) a fresh *Trust Root* from the Red Hat Trusted Artifact Signer TUF (The Update Framework) endpoint.
 
-We have done this before - it's a simple call of `cosign initialize` - this uses the `COSIGN_ROOT` and `TUF_URL` environment variables (you can check the environment variables pointing to your RHTAS instance by typing `help`).
+We have done this before - it's a simple call of `cosign initialize`, which uses the `COSIGN_MIRROR` and `COSIGN_ROOT` environment variables (you can check the environment variables pointing to your RHTAS instance by typing `help`).
 
 IMPORTANT: Do this in your "Podman Terminal" that we just deployed - we will exclusively use the "Podman Terminal" in the exercises! 
 
@@ -106,6 +107,8 @@ IMPORTANT: Do this in your "Podman Terminal" that we just deployed - we will exc
 cosign initialize
 ----
 
-This creates the *Trust Root* structure in your user's home directory (under `~/.sigstore`) that verification commands in the next chapters need.
+This creates the *Trust Root* structure in your user's home directory (under `~/.sigstore`) that verification commands in the next chapters need. `cosign` 3.x prints nothing when it succeeds, so if you want to confirm it used *your* TUF endpoint and not the public Sigstore one, read `~/.sigstore/root/remote.json`.
+
+include::partial$tas-realm-override.adoc[]
 
 

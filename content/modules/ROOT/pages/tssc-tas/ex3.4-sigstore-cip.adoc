@@ -119,8 +119,11 @@ We need to create the the ClusterImagePolicy in the `policy-controller-operator`
 
 NOTE: Remember, our "Podman Terminal" comes with these preconfigured, simply type `help` in the terminal to see the full list.
 
+IMPORTANT: The first line below re-applies the `{keycloak_realm_name}` realm override from the start of this module. If you are still in the same terminal it changes nothing; if you opened a new one, it keeps the stale `trusted-artifact-signer` issuer out of the `ClusterImagePolicy`, where it would silently reject every image you are about to test. Check the echoed `OIDC_ISSUER_URL` before moving on.
+
 [source,bash,role=execute,subs=attributes+]
 ----
+export OIDC_ISSUER_URL="${OIDC_ISSUER_URL%/realms/*}/realms/{keycloak_realm_name}"
 
 oc project policy-controller-operator
 echo ""
