@@ -108,6 +108,8 @@ Root status:
 }
 ----
 
+include::partial$tas-realm-override.adoc[]
+
 Since we're now looking at a "real" image registry, `cosign` needs to authenticate with the registry, using `cosign login` - as any other tool (`podman`, `docker`, `skopeo`,...) would have, too:
 
 [source,bash,role=execute,subs=attributes+]

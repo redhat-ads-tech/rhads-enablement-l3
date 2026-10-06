@@ -108,4 +108,6 @@ cosign initialize
 
 This creates the *Trust Root* structure in your user's home directory (under `~/.sigstore`) that verification commands in the next chapters need.
 
+include::partial$tas-realm-override.adoc[]
+
 

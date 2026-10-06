@@ -352,7 +352,7 @@ podman-terminal:/workspace$ source ~/setup-tas-environment.sh student-tas
 [INFO] TAS environment variables already configured in .bashrc
 [INFO] TAS environment variables initialized successfully!
 [INFO] TUF URL: https://tuf-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
-[INFO] OIDC Issuer URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam
+[INFO] OIDC Issuer URL: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
 [INFO] Fulcio URL: https://fulcio-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
 [INFO] Rekor URL: https://rekor-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
 [INFO] Setting up global git configuration...
@@ -364,12 +364,14 @@ podman-terminal:/workspace$ source ~/setup-tas-environment.sh student-tas
 [INFO] Configured settings:
 [INFO]   User: Wile E. Coyote <boom@acme.com>
 [INFO]   Fulcio URL: https://fulcio-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
-[INFO]   OIDC Issuer: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/tssc-iam
+[INFO]   OIDC Issuer: https://sso.apps.cluster-mdt2d.dynamic.redhatworkshops.io/realms/trusted-artifact-signer
 [INFO]   Rekor URL: https://rekor-server-student-tas.apps.cluster-mdt2d.dynamic.redhatworkshops.io
 [INFO]   Client ID: trusted-artifact-signer
 ----
 
 If you type `help` again, you should now see all environment variables set to their endpoints in the `student-tas` namespace (with the exception of the OIDC endpoints, since we're using the same Keycloak, Realm and Client for all TAS installations here).
+
+include::partial$tas-realm-override.adoc[]
 
 === Signing and verifying container images
 
@@ -649,6 +651,8 @@ source ~/setup-tas-environment.sh student-tas
 ----
 ====
 
+include::partial$tas-realm-override.adoc[]
+
 Before we commit our change, let's take a look at our `git` configuration:
 
 [source,bash,role=execute,subs=attributes+]
@@ -774,13 +778,18 @@ Here, we'll use a simple example without external policies - the `ec` client has
 
 Since we don't know if our ephemeral image is still there, let's quickly create a new one in our https://admin-terminal-ttyd.{openshift_cluster_ingress_domain}["Podman Terminal"^,window="terminal"].
 
-For convenience, we'll include the commands for setting the environment to our TAS deployment in `student-tas` and the `cosign initialize` so we're all set for the "real" exercise:
+For convenience, we'll include the commands for setting the environment to our TAS deployment in `student-tas`, the realm override and the `cosign initialize` so we're all set for the "real" exercise:
 
 [source,bash,role=execute,subs=attributes+]
 ----
 IMAGE_NAME="ttl.sh/rhtas/test-image-{guid}:1h"
 cd /workspace
 source ~/setup-tas-environment.sh student-tas
+export OIDC_ISSUER_URL="${OIDC_ISSUER_URL%/realms/*}/realms/{keycloak_realm_name}"
+export COSIGN_OIDC_ISSUER="$OIDC_ISSUER_URL"
+export COSIGN_CERTIFICATE_OIDC_ISSUER="$OIDC_ISSUER_URL"
+export SIGSTORE_OIDC_ISSUER="$OIDC_ISSUER_URL"
+git config --global gitsign.issuer "$OIDC_ISSUER_URL"
 cosign initialize
 echo "FROM scratch" > ./tmp.Dockerfile
 UUID=$(uuidgen | cut -d'-' -f1)

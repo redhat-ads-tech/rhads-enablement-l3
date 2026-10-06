@@ -1,0 +1,27 @@
+[IMPORTANT]
+====
+The `setup-tas-environment.sh` helper baked into the terminal image still points the OIDC variables at the old `trusted-artifact-signer` realm, which RHADS 1.8 consolidated into `{keycloak_realm_name}`. It also writes them to `~/.bashrc`, so every new terminal - and every re-run of the helper - brings the stale realm back.
+
+Until the image is rebuilt, repoint them yourself. This is safe to run as often as you like:
+
+[source,bash,role=execute,subs=attributes+]
+----
+export OIDC_ISSUER_URL="${OIDC_ISSUER_URL%/realms/*}/realms/{keycloak_realm_name}"
+export COSIGN_OIDC_ISSUER="$OIDC_ISSUER_URL"
+export COSIGN_CERTIFICATE_OIDC_ISSUER="$OIDC_ISSUER_URL"
+export SIGSTORE_OIDC_ISSUER="$OIDC_ISSUER_URL"
+git config --global gitsign.issuer "$OIDC_ISSUER_URL"
+echo "$OIDC_ISSUER_URL"
+----
+
+Skip it and the login URL `cosign` and `gitsign` hand you points at a realm that no longer exists. Verification fails too - including the commands that pass no issuer flag at all, because `cosign` falls back to `COSIGN_CERTIFICATE_OIDC_ISSUER`:
+
+[source,console]
+----
+Error: ... none of the expected identities matched what was in the certificate,
+got subjects [user1@demo.redhat.com] with issuer
+"https://sso.{openshift_cluster_ingress_domain}/realms/{keycloak_realm_name}",
+expected issuer value
+"https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer"
+----
+====

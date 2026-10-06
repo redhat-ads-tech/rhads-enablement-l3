@@ -87,6 +87,8 @@ cd /workspace
 cosign initialize
 ----
 
+include::partial$tas-realm-override.adoc[]
+
 In our preparations, we created an empty git repository that we will clone now and commit to it. We could do that from the GitLab UI (the repository is {gitlab_url}/l3-students/signing-and-verification[here^,window="gitlab"], sign in with `{gitlab_user}` and `{gitlab_user_password}`) - but since we have the terminal open, why not use it?
 
 [source,bash,role=execute,subs=attributes+]
