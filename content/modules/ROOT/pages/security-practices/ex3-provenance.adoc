@@ -133,7 +133,7 @@ cd /workspace/l3-enablement-helpers/security-concepts
 cosign attest --predicate empty-in-toto.json --type https://example.com/predicate/v1 $IMAGE
 ----
 
-Using `cosign tree` after attesting, you should see the signed attestation (`*.att`) alongside the signature from the previous exercise:
+Now run `cosign tree` again. The attestation is attached alongside the two signatures from the previous exercise - but notice that it does *not* announce itself as an attestation:
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -143,12 +143,61 @@ cosign tree $IMAGE
 [source,console]
 ----
 cosign tree $IMAGE
-📦 Supply Chain Security Related artifacts for an image: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
-└── 💾 Attestations for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.att
-   └── 🍒 sha256:6e1bd0b49e31237c28d14b0e90f69c532defd47685a7ea1e5920e63924adf378
-└── 🔐 Signatures for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
-   └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5
+📦 Supply Chain Security Related artifacts for an image: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5a5158f2a4ed8c049f7135658ed77dd1f6a46c6053b32146d9c9cf5948ca8eaf
+   └── 🍒 sha256:4be159b0b5796d267b952278380b1118d44885ae127b4a79f4bbfc6e99b76385
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:7893603608c9d84b5411c7115f778e414d08f2ab475b8fda695a544f2cb9032a
+   └── 🍒 sha256:93762970a2eb4b1577aa9350bd03c23a8b28406a4d1ece6e057ef61997f6fb8c
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:4faa67ec0d07d73fa69747303a29601e69ac650b58f38a9c77a8a2a098daa065
+   └── 🍒 sha256:0d0d72ce95841bb4abd200e8360653d34115bdf706ed13a77af33f388d8e7874
 ----
+
+Three entries, all labelled identically, and none of them says "attestation". That is expected, and it is worth understanding why - it tells you something real about how `cosign` 3.x stores things.
+
+[NOTE]
+====
+*Everything is an attestation now.* `cosign` 3.x writes every artifact as a https://github.com/sigstore/protobuf-specs[Sigstore bundle^] containing a DSSE envelope, and attaches it as an *OCI referrer* of the image digest rather than as a sibling `…​.sig` or `…​.att` tag. A plain `cosign sign` is simply an attestation whose predicate type is `https://sigstore.dev/cosign/sign/v1`.
+
+So the old shape - `🔐 Signatures for an image tag` and `💾 Attestations for an image tag`, each pointing at a `.sig` / `.att` tag - is gone on any registry that implements the OCI referrers API, which Quay does. You will still see the tag-based layout against a registry without referrers support.
+
+What `cosign tree` gives you is *that* artifacts exist and their digests. It does not currently distinguish a signature from an attestation in its output. To ask what each artifact actually *is*, use the commands below.
+====
+
+==== Telling signatures and attestations apart
+
+`cosign download` has two subcommands, `signature` and `attestation`. Be aware that on a bundle-based registry they return the *same* set of artifacts - the real distinction lives in the `predicateType` field inside each DSSE payload:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload | @base64d | fromjson | .predicateType'
+----
+
+[source,console]
+----
+https://sigstore.dev/cosign/sign/v1
+https://example.com/predicate/v1
+https://sigstore.dev/cosign/sign/v1
+----
+
+Two signatures and one attestation - the `https://example.com/predicate/v1` line is the one we just attached.
+
+The more practical approach, and the one used throughout the rest of this module, is to let `cosign` filter for you by asking about a specific predicate type with `--type`:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign verify-attestation --type https://example.com/predicate/v1 --certificate-identity pipeline-auth@demo.redhat.com --certificate-oidc-issuer $SIGSTORE_OIDC_ISSUER $IMAGE
+----
+
+[source,console]
+----
+Verification for quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - Existence of the claims in the transparency log was verified offline
+  - The code-signing certificate was verified using trusted certificate authority certificates
+----
+
+If no attestation of that predicate type exists, this fails rather than returning nothing - which makes it a much better check than reading `cosign tree` output by eye.
 
 === Verifying & Downloading Attestations
 
