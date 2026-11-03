@@ -350,15 +350,21 @@ Before we dive into verification, here's a helpful `cosign` command that tells u
 [source,console]
 ----
 cosign tree $IMAGE
-📦 Supply Chain Security Related artifacts for an image: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
-└── 🔐 Signatures for an image tag: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
-   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
-   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
-   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
-   └── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
+📦 Supply Chain Security Related artifacts for an image: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:70f9e0c5b81b5044daf6e1ce31e47f29063ed17ea67dd5b440bad0338a58aa79
+   └── 🍒 sha256:d71f6efec1dfa99c89acfb9ea25349f9b99264e93fd75c5c70ee9767f862e1a5
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:66eb65f92422795dda5e2c79523b45f801bcbe2d9b9555120f2e3f06e1a33693
+   └── 🍒 sha256:0ce8d59f45ff17708211e982b333acb6fbc9d8046c038bb89d3f99c55e7f0ef0
 ----
 
-In this case, we can see that we have multiple signatures for this image (since we signed interactively and with the OAuth access token) but no other artifacts attached or related.
+In this case, we can see two signatures for this image - one per signing - and no other artifacts attached or related. Each is listed as an *OCI referrer* of the image, tagged with the artifact type `https://sigstore.dev/cosign/sign/v1`.
+
+[NOTE]
+====
+Where a signature *lives* depends on the registry. Quay implements the OCI referrers API, so `cosign` 3.x attaches the signature as a referrer of the image digest, which is what you see above. A registry without referrers support falls back to the older convention - a sibling tag named after the digest, `…:sha256-5c50daa8….sig`, which `cosign tree` reports as `🔐 Signatures for an image tag`. Either way the signature is the same; only where it is stored differs.
+
+Note also that the digest on each `🔗` line is the *signature artifact's* own digest, not the image's - so it will not match the `docker-manifest-digest` that `cosign verify` reports below.
+====
 
 === Online
 
