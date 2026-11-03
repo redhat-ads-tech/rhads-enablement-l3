@@ -254,7 +254,7 @@ This gives us the outer structure (stored in the OCI Registry under the `applica
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq .
+cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq .
 ----
 
 
@@ -264,7 +264,7 @@ In other words, going forward we can focus on supplying the _actual_ predicate a
 
 [source,json]
 ----
-cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq .
+cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq .
 {
   "_type": "https://in-toto.io/Statement/v0.1",
   "predicateType": "https://example.com/predicate/v1",
@@ -334,7 +334,7 @@ source ./get-access-token.sh #has probably expired, so refresh
 cosign attest --predicate minimum-slsa-provenance.json --type slsaprovenance $IMAGE
 ----
 
-A `cosign tree` will now show us two attestations associated with this image:..
+A `cosign tree` now shows four artifacts - the two signatures and the two attestations:
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -344,27 +344,49 @@ cosign tree $IMAGE
 [source,console]
 ----
 cosign tree $IMAGE
-📦 Supply Chain Security Related artifacts for an image: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
-└── 💾 Attestations for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.att
-   ├── 🍒 sha256:6e1bd0b49e31237c28d14b0e90f69c532defd47685a7ea1e5920e63924adf378
-   └── 🍒 sha256:2c9aaacbdcad589845dfd37f830e878673e41aaa79a5623d23ff152c69fdb5b9
-└── 🔐 Signatures for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
-   └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5
+📦 Supply Chain Security Related artifacts for an image: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:4faa67ec0d07d73fa69747303a29601e69ac650b58f38a9c77a8a2a098daa065
+   └── 🍒 sha256:0d0d72ce95841bb4abd200e8360653d34115bdf706ed13a77af33f388d8e7874
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5a5158f2a4ed8c049f7135658ed77dd1f6a46c6053b32146d9c9cf5948ca8eaf
+   └── 🍒 sha256:4be159b0b5796d267b952278380b1118d44885ae127b4a79f4bbfc6e99b76385
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:0d1a7621f015e3d31e98db1552f2b7468b71fc96e1d50ee11608161f0f85d0f1
+   └── 🍒 sha256:08bc78f9073f2a1a759c58b9d20745d98c065507f3236a8e61e0f5e01eb2db64
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:7893603608c9d84b5411c7115f778e414d08f2ab475b8fda695a544f2cb9032a
+   └── 🍒 sha256:93762970a2eb4b1577aa9350bd03c23a8b28406a4d1ece6e057ef61997f6fb8c
 ----
+
+As before, `cosign tree` cannot tell you which is which - and the entries are not in a stable order between runs. Ask for the predicate types instead:
+
+[source,bash,role=execute,subs=attributes+]
+----
+cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload | @base64d | fromjson | .predicateType'
+----
+
+[source,console]
+----
+https://sigstore.dev/cosign/sign/v1
+https://example.com/predicate/v1
+https://slsa.dev/provenance/v0.2
+https://sigstore.dev/cosign/sign/v1
+----
+
+Our two signings, the empty `example.com` predicate from earlier, and the SLSA provenance we just attached.
 
 Using `cosign download attestation` will give us both (all), but we can filter by type using `--predicate-type`:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign download attestation $IMAGE --predicate-type slsaprovenance | jq -r '.payload' | base64 -d | jq .
+cosign download attestation $IMAGE --predicate-type slsaprovenance | jq -r '.dsseEnvelope.payload' | base64 -d | jq .
 ----
 
 or, more explicitly
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign download attestation $IMAGE --predicate-type "https://slsa.dev/provenance/v0.2" | jq -r '.payload' | base64 -d | jq .
+cosign download attestation $IMAGE --predicate-type "https://slsa.dev/provenance/v0.2" | jq -r '.dsseEnvelope.payload' | base64 -d | jq .
 ----
+
+NOTE: The payload is nested under `.dsseEnvelope` because `cosign` 3.x returns a Sigstore bundle rather than a bare DSSE envelope. Older material shows `jq -r '.payload'` here, which now silently returns `null` rather than erroring - if you see `null`, that is the cause.
 
 So, the predicate we provided (starting with `"builder": {` ) has been wrapped in an `in-toto` statement, linking it to the image:
 
