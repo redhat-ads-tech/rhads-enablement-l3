@@ -27,7 +27,7 @@ asciidoc:
     ns_tssc_gitops: tssc-gitops
     ns_tssc_rhdh: tssc-dh
 
-    keycloak_realm_name: trusted-artifact-signer
+    keycloak_realm_name: tssc-iam
     keycloak_client_id: rhdh
     # Use { common_password }
     # keycloak_client_secret: {common_password}

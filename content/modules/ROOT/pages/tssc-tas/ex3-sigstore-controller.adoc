@@ -26,49 +26,21 @@ The PolicyController CR defines the global behaviour of the Admission Controller
 If you went through previous RHTAS chapters and exercises, the name "Trust Root" should ring a bell.
 The Trust Root is the collection and configuration of public certificates of the various services that Trusted Artifact Signer provides, such as Fulcio (the Certificate Issuer) and Rekor (the Transparency Database).
 
-When you issue a `cosign initialize`, a Trust Root is obtained from the TUF (The Update Framework) endpoint of the TAS installation and stored in the user's home directory `~/.sigstore`. 
+When you issue a `cosign initialize`, a Trust Root is obtained from the TUF (The Update Framework) endpoint of the TAS installation and stored in the user's home directory `~/.sigstore`. `cosign` reads that endpoint from the `COSIGN_MIRROR` / `COSIGN_ROOT` variables the terminal already has set, and from `cosign` 3.x on it prints nothing at all on success - so to see what it recorded, read the file it wrote:
 
-[source,json]
+[source,console]
 ----
 podman-terminal:/workspace/l3-enablement-helpers$ cosign initialize
-Root status: 
- {
-        "local": "/home/student/.sigstore/root",
-        "remote": "https://tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io",
-        "metadata": {
-                "root.json": {
-                        "version": 1,
-                        "len": 4128,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                },
-                "snapshot.json": {
-                        "version": 1,
-                        "len": 994,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                },
-                "targets.json": {
-                        "version": 1,
-                        "len": 2071,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                },
-                "timestamp.json": {
-                        "version": 1,
-                        "len": 995,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                }
-        },
-        "targets": [
-                "trusted_root.json",
-                "ctfe.pub",
-                "rekor.pub",
-                "fulcio_v1.crt.pem"
-        ]
-}
+WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
+podman-terminal:/workspace/l3-enablement-helpers$ cat ~/.sigstore/root/remote.json
+{"mirror":"https://tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io"}
+podman-terminal:/workspace/l3-enablement-helpers$ ls ~/.sigstore/root/
+remote.json
+tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io
+tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io.json
 ----
+
+The `mirror` above is the TUF endpoint, and the directory beside it - named after that same endpoint - holds the trust root itself.
 
 The same applies here, but we need to create it as a k8s CR.
 
@@ -76,7 +48,7 @@ The same applies here, but we need to create it as a k8s CR.
 ====
 Same as with `cosign initialize`, we can also manually define our custom Trust Root by manually defining the certificates and where they are stored, *BUT* 
 
-Only by using TUF (what we see as `remote:` in the above example) the controller will take care of refreshing the certificates after they have been rotated in the central RHTAS instance. +
+Only by using TUF (what we see as `mirror` in the above example) the controller will take care of refreshing the certificates after they have been rotated in the central RHTAS instance. +
 If we use a manually configured Trust Root, we have to manually update the certificates - while the policy-controller will do that automatically using TUF.
 ====
 

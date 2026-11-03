@@ -350,21 +350,33 @@ cosign tree $IMAGE
 [source,console]
 ----
 cosign tree $IMAGE
-📦 Supply Chain Security Related artifacts for an image: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
-└── 💾 Attestations for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.att
-   ├── 🍒 sha256:6e1bd0b49e31237c28d14b0e90f69c532defd47685a7ea1e5920e63924adf378
-   ├── 🍒 sha256:2c9aaacbdcad589845dfd37f830e878673e41aaa79a5623d23ff152c69fdb5b9
-   ├── 🍒 sha256:b37ce919cda4683964533680c5eec92bedc9df10a4e5f4236d68f084a70fa872
-   └── 🍒 sha256:72af2fa19513e226e73e70c567bf3d8b763524f0607e09357301dadb1ddb432c
-└── 🔐 Signatures for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
-   └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5
+📦 Supply Chain Security Related artifacts for an image: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:4faa67ec0d07d73fa69747303a29601e69ac650b58f38a9c77a8a2a098daa065
+   └── 🍒 sha256:0d0d72ce95841bb4abd200e8360653d34115bdf706ed13a77af33f388d8e7874
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5a5158f2a4ed8c049f7135658ed77dd1f6a46c6053b32146d9c9cf5948ca8eaf
+   └── 🍒 sha256:4be159b0b5796d267b952278380b1118d44885ae127b4a79f4bbfc6e99b76385
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:0d1a7621f015e3d31e98db1552f2b7468b71fc96e1d50ee11608161f0f85d0f1
+   └── 🍒 sha256:08bc78f9073f2a1a759c58b9d20745d98c065507f3236a8e61e0f5e01eb2db64
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:7893603608c9d84b5411c7115f778e414d08f2ab475b8fda695a544f2cb9032a
+   └── 🍒 sha256:93762970a2eb4b1577aa9350bd03c23a8b28406a4d1ece6e057ef61997f6fb8c
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:dcb6064838a3b44426f80f32b11efbc27714140a5beda895724b4a0ffdf4ac5e
+   └── 🍒 sha256:6d4653a7a6822d54db72469c0792779580763d291c6eac0eef2c79f25398831a
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:ce8df553a1687023ecf43dd06d67275f7e7edce4925178389de3868bfebb7c82
+   └── 🍒 sha256:8ab91153ec027c1dc4be3dd5b0c681ced81e65855af7b80ca945ffb936b621e7
 ----
+
+Six artifacts now: the two signatures from exercise 1, the `example.com` and SLSA predicates from exercise 3, and the two SBOMs we just attached. As in exercise 3, every entry carries the same `https://sigstore.dev/cosign/sign/v1` label, so the listing alone will not tell you which is which.
 
 [NOTE]
 ====
 Just from the `cosign tree` we can just tell that we now have a new attestation, but not what `type` it is.
 
-The same image in {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay^,window="quay"] just shows us *_one_* attestation tag (which contains all of them).
+[WARNING]
+=====
+The screenshot below predates `cosign` 3.x and shows the older storage layout, where every attestation lived inside a single `…​.att` tag. Against Quay, which implements the OCI referrers API, there is no `.att` tag any more - each artifact is a separate referrer of the image digest, and the Tags view will show only the image's own tags. Use `cosign tree` or the commands below rather than the Quay tag list.
+=====
+
+The same image in {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay^,window="quay"] used to show *_one_* attestation tag containing all of them:
 
 image::security-practices/quay-signed-image-attestations.png[link=self, window="image"]
 
@@ -379,28 +391,31 @@ If we want to browse what we have, we need to go one level deeper, using `jq` an
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq | less
+cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq | less
 ----
 
 Instead of scrolling back and forth with `less` in a huge list of attestations, we can also check what attestation types (`predicateTypes`) we have and then only download and inspect the ones we're interested in:
 
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq -r '.predicateType' | sort -u
+cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq -r '.predicateType' | sort -u
 ----
 
 [source,console]
 ----
-cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq -r '.predicateType' | sort -u
+cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq -r '.predicateType' | sort -u
 https://cyclonedx.org/bom
 https://example.com/predicate/v1
+https://sigstore.dev/cosign/sign/v1
 https://slsa.dev/provenance/v0.2
 https://spdx.dev/Document
 ----
 
+`https://sigstore.dev/cosign/sign/v1` is in that list because a plain `cosign sign` is itself an attestation in `cosign` 3.x - those are the two signatures from exercise 1. `sort -u` collapses them into one line.
+
 [source,bash,role=execute,subs=attributes+]
 ----
-cosign download attestation $IMAGE --predicate-type "https://cyclonedx.org/bom" | jq -r '.payload' | base64 -d | jq | less
+cosign download attestation $IMAGE --predicate-type "https://cyclonedx.org/bom" | jq -r '.dsseEnvelope.payload' | base64 -d | jq | less
 ----
 
 === Simple Signature and Integrity Verification

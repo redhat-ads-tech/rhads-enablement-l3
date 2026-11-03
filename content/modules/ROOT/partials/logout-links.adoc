@@ -2,8 +2,14 @@
 ====
 *Quick Logout Links*
 
-Prior to starting this module, click the following two links and make sure you log out of previous sessions to prevent errors related to performing actions as the wrong user.
+Prior to starting this module, click the following links and make sure you log out of previous sessions to prevent errors related to performing actions as the wrong user.
 
 * link:{openshift_console_url}[Logout from OpenShift^,window="_blank"]
 * link:https://gitlab-gitlab.{openshift_cluster_ingress_domain}/users/sign_out[Logout from GitLab^,window="_blank"]
+
+Sessions are held by Keycloak, so the most reliable way to log out is to end it at the source. All of these applications share the `tssc-iam` realm, so one logout covers them all:
+
+* link:https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam/protocol/openid-connect/logout[Logout from Keycloak^,window="_blank"]
+
+TIP: Logging out of the OpenShift console may leave you on a browser error page such as `DNS_PROBE_FINISHED_NXDOMAIN`, because the console sends you to a post-logout address that isn't resolvable in this environment. That page is harmless - use the Keycloak logout link above to confirm the session is really gone, then navigate back to the console.
 ====
