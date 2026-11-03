@@ -1043,16 +1043,32 @@ So the workflow is:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">cosign tree $IMAGE
-📦 Supply Chain Security Related artifacts for an image: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
-└── 🔐 Signatures for an image tag: quay-qkw52.apps.cluster-qkw52.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
-   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
-   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
-   ├── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63
-   └── 🍒 sha256:5c2dd18bf07139ce496ed581b39170279b31ab97e03e17963817227bc5163c63</code></pre>
+📦 Supply Chain Security Related artifacts for an image: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:70f9e0c5b81b5044daf6e1ce31e47f29063ed17ea67dd5b440bad0338a58aa79
+   └── 🍒 sha256:d71f6efec1dfa99c89acfb9ea25349f9b99264e93fd75c5c70ee9767f862e1a5
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:66eb65f92422795dda5e2c79523b45f801bcbe2d9b9555120f2e3f06e1a33693
+   └── 🍒 sha256:0ce8d59f45ff17708211e982b333acb6fbc9d8046c038bb89d3f99c55e7f0ef0</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In this case, we can see that we have multiple signatures for this image (since we signed interactively and with the OAuth access token) but no other artifacts attached or related.</p>
+<p>In this case, we can see two signatures for this image - one per signing - and no other artifacts attached or related. Each is listed as an <strong>OCI referrer</strong> of the image, tagged with the artifact type <code><a href="https://sigstore.dev/cosign/sign/v1" class="bare">https://sigstore.dev/cosign/sign/v1</a></code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Where a signature <strong>lives</strong> depends on the registry. Quay implements the OCI referrers API, so <code>cosign</code> 3.x attaches the signature as a referrer of the image digest, which is what you see above. A registry without referrers support falls back to the older convention - a sibling tag named after the digest, <code>…:sha256-5c50daa8….sig</code>, which <code>cosign tree</code> reports as <code>🔐 Signatures for an image tag</code>. Either way the signature is the same; only where it is stored differs.</p>
+</div>
+<div class="paragraph">
+<p>Note also that the digest on each <code>🔗</code> line is the <strong>signature artifact&#8217;s</strong> own digest, not the image&#8217;s - so it will not match the <code>docker-manifest-digest</code> that <code>cosign verify</code> reports below.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_online"><a class="anchor" href="#_online"></a>Online</h3>
