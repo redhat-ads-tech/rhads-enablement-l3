@@ -948,15 +948,23 @@ cosign attest --predicate demo-image-sbom-roxctl.json --type spdxjson $IMAGE</co
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">cosign tree $IMAGE
-📦 Supply Chain Security Related artifacts for an image: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
-└── 💾 Attestations for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.att
-   ├── 🍒 sha256:6e1bd0b49e31237c28d14b0e90f69c532defd47685a7ea1e5920e63924adf378
-   ├── 🍒 sha256:2c9aaacbdcad589845dfd37f830e878673e41aaa79a5623d23ff152c69fdb5b9
-   ├── 🍒 sha256:b37ce919cda4683964533680c5eec92bedc9df10a4e5f4236d68f084a70fa872
-   └── 🍒 sha256:72af2fa19513e226e73e70c567bf3d8b763524f0607e09357301dadb1ddb432c
-└── 🔐 Signatures for an image tag: quay-v9q9c.apps.cluster-v9q9c.dynamic.redhatworkshops.io/l3-students/l3-rhads-demoimage:sha256-5c50daa8cf06e7c36854343ccc31a99aecc10167d391f2a1d3cc048b63bd29ee.sig
-   └── 🍒 sha256:853aa60efb46da00ef2fe35f9343f68c269be888ed3202274df55ff275a780c5</code></pre>
+📦 Supply Chain Security Related artifacts for an image: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage:latest
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:4faa67ec0d07d73fa69747303a29601e69ac650b58f38a9c77a8a2a098daa065
+   └── 🍒 sha256:0d0d72ce95841bb4abd200e8360653d34115bdf706ed13a77af33f388d8e7874
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:5a5158f2a4ed8c049f7135658ed77dd1f6a46c6053b32146d9c9cf5948ca8eaf
+   └── 🍒 sha256:4be159b0b5796d267b952278380b1118d44885ae127b4a79f4bbfc6e99b76385
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:0d1a7621f015e3d31e98db1552f2b7468b71fc96e1d50ee11608161f0f85d0f1
+   └── 🍒 sha256:08bc78f9073f2a1a759c58b9d20745d98c065507f3236a8e61e0f5e01eb2db64
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:7893603608c9d84b5411c7115f778e414d08f2ab475b8fda695a544f2cb9032a
+   └── 🍒 sha256:93762970a2eb4b1577aa9350bd03c23a8b28406a4d1ece6e057ef61997f6fb8c
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:dcb6064838a3b44426f80f32b11efbc27714140a5beda895724b4a0ffdf4ac5e
+   └── 🍒 sha256:6d4653a7a6822d54db72469c0792779580763d291c6eac0eef2c79f25398831a
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: quay-tclxg-1.apps.cluster-tclxg.dyn.redhatworkshops.io/l3-students/l3-rhads-demoimage@sha256:ce8df553a1687023ecf43dd06d67275f7e7edce4925178389de3868bfebb7c82
+   └── 🍒 sha256:8ab91153ec027c1dc4be3dd5b0c681ced81e65855af7b80ca945ffb936b621e7</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Six artifacts now: the two signatures from exercise 1, the <code>example.com</code> and SLSA predicates from exercise 3, and the two SBOMs we just attached. As in exercise 3, every entry carries the same <code><a href="https://sigstore.dev/cosign/sign/v1" class="bare">https://sigstore.dev/cosign/sign/v1</a></code> label, so the listing alone will not tell you which is which.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -968,8 +976,22 @@ cosign attest --predicate demo-image-sbom-roxctl.json --type spdxjson $IMAGE</co
 <div class="paragraph">
 <p>Just from the <code>cosign tree</code> we can just tell that we now have a new attestation, but not what <code>type</code> it is.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>The same image in {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay^,window="quay"] just shows us <strong><em>one</em></strong> attestation tag (which contains all of them).</p>
+<p>The screenshot below predates <code>cosign</code> 3.x and shows the older storage layout, where every attestation lived inside a single <code>…​.att</code> tag. Against Quay, which implements the OCI referrers API, there is no <code>.att</code> tag any more - each artifact is a separate referrer of the image digest, and the Tags view will show only the image&#8217;s own tags. Use <code>cosign tree</code> or the commands below rather than the Quay tag list.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The same image in {quay_url}/repository/l3-students/l3-rhads-demoimage?tab=tags[Quay^,window="quay"] used to show <strong><em>one</em></strong> attestation tag containing all of them:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -994,7 +1016,7 @@ cosign attest --predicate demo-image-sbom-roxctl.json --type spdxjson $IMAGE</co
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq | less</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq | less</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1002,21 +1024,25 @@ cosign attest --predicate demo-image-sbom-roxctl.json --type spdxjson $IMAGE</co
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq -r '.predicateType' | sort -u</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq -r '.predicateType' | sort -u</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">cosign download attestation $IMAGE | jq -r '.payload' | base64 -d | jq -r '.predicateType' | sort -u
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq -r '.predicateType' | sort -u
 https://cyclonedx.org/bom
 https://example.com/predicate/v1
+https://sigstore.dev/cosign/sign/v1
 https://slsa.dev/provenance/v0.2
 https://spdx.dev/Document</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><code><a href="https://sigstore.dev/cosign/sign/v1" class="bare">https://sigstore.dev/cosign/sign/v1</a></code> is in that list because a plain <code>cosign sign</code> is itself an attestation in <code>cosign</code> 3.x - those are the two signatures from exercise 1. <code>sort -u</code> collapses them into one line.</p>
+</div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation $IMAGE --predicate-type "https://cyclonedx.org/bom" | jq -r '.payload' | base64 -d | jq | less</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cosign download attestation $IMAGE --predicate-type "https://cyclonedx.org/bom" | jq -r '.dsseEnvelope.payload' | base64 -d | jq | less</code></pre>
 </div>
 </div>
 <div class="sect2">
