@@ -7,7 +7,7 @@
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/setup-tpa/setup-openshift.html">
     <link rel="prev" href="setup.html">
     <link rel="next" href="setup-rhel.html">
-    <meta name="generator" content="Antora 3.1.14">
+    <meta name="generator" content="Antora 3.1.15">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -716,10 +716,10 @@ We are using RHBK (Red Hat Build of Keycloak) here, but you can also use Amazon 
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top" rowspan="2"><p class="tableblock"><span class="image"><img src="../_images/m3-tpa-openshift/keycloak-realms.png" alt="keycloak realms" width="150"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">We already have a working install of TPA that we&#8217;ll use in later exercises - this uses the <code>chicken</code> realm in Keycloak. Red Hat Developer Hub, OpenShift and Trusted Artifact Signer use the <code>trusted-artifact-signer</code> realm.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Every application in this lab shares a single Keycloak realm, <code>tssc-iam</code> - Red Hat Developer Hub, OpenShift, Trusted Artifact Signer and the working install of TPA we&#8217;ll use in later exercises all authenticate against it.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">With that said - let&#8217;s use the <code>trusted-artifact-signer</code> realm for our install, so we can use the same user across all applications.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">So we&#8217;ll use <code>tssc-iam</code> for our install too, which means the same user works across all of them.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1313,7 +1313,7 @@ The operator is currently in tech preview and has some issues handling multiple 
 <p>Do the same in the <code>spec.oidc.IssuerUrl</code> (this is Keycloak realm where we defined our clients and client scopes):</p>
 </div>
 <div class="paragraph">
-<p><code>issuerUrl: 'https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer'</code></p>
+<p><code>issuerUrl: 'https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam'</code></p>
 </div>
 <div class="paragraph">
 <p>And, while you still have it in your clipboard, also for the <code>spec.storage.region</code>:</p>
@@ -1703,7 +1703,7 @@ Make sure you copied and ran the above commands, as that makes sure you&#8217;re
 </div>
 </li>
 <li>
-<p>Set <code>oidc.issuerUrl</code> to <code>https://sso.{openshift_cluster_ingress_domain}/realms/trusted-artifact-signer</code></p>
+<p>Set <code>oidc.issuerUrl</code> to <code>https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam</code></p>
 <div class="admonitionblock note">
 <table>
 <tr>

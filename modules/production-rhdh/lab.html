@@ -7,7 +7,7 @@
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/production-rhdh/lab.html">
     <link rel="prev" href="introduction.html">
     <link rel="next" href="../tssc-3rdparty-ci.html">
-    <meta name="generator" content="Antora 3.1.14">
+    <meta name="generator" content="Antora 3.1.15">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -451,7 +451,7 @@
 <p><strong>Quick Logout Links</strong></p>
 </div>
 <div class="paragraph">
-<p>Prior to starting this module, click the following two links and make sure you log out of previous sessions to prevent errors related to performing actions as the wrong user.</p>
+<p>Prior to starting this module, click the following links and make sure you log out of previous sessions to prevent errors related to performing actions as the wrong user.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -462,6 +462,28 @@
 <p><a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/users/sign_out" target="_blank" rel="noopener">Logout from GitLab</a></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Sessions are held by Keycloak, so the most reliable way to log out is to end it at the source. All of these applications share the <code>tssc-iam</code> realm, so one logout covers them all:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://sso.{openshift_cluster_ingress_domain}/realms/tssc-iam/protocol/openid-connect/logout" target="_blank" rel="noopener">Logout from Keycloak</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Logging out of the OpenShift console may leave you on a browser error page such as <code>DNS_PROBE_FINISHED_NXDOMAIN</code>, because the console sends you to a post-logout address that isn&#8217;t resolvable in this environment. That page is harmless - use the Keycloak logout link above to confirm the session is really gone, then navigate back to the console.
+</td>
+</tr>
+</table>
 </div>
 </td>
 </tr>

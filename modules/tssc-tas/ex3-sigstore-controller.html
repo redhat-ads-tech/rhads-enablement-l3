@@ -7,7 +7,7 @@
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/tssc-tas/ex3-sigstore-controller.html">
     <link rel="prev" href="ex2-enterprise-contract.html">
     <link rel="next" href="ex3.1-sigstore-prep.html">
-    <meta name="generator" content="Antora 3.1.14">
+    <meta name="generator" content="Antora 3.1.15">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -488,49 +488,22 @@
 The Trust Root is the collection and configuration of public certificates of the various services that Trusted Artifact Signer provides, such as Fulcio (the Certificate Issuer) and Rekor (the Transparency Database).</p>
 </div>
 <div class="paragraph">
-<p>When you issue a <code>cosign initialize</code>, a Trust Root is obtained from the TUF (The Update Framework) endpoint of the TAS installation and stored in the user&#8217;s home directory <code>~/.sigstore</code>.</p>
+<p>When you issue a <code>cosign initialize</code>, a Trust Root is obtained from the TUF (The Update Framework) endpoint of the TAS installation and stored in the user&#8217;s home directory <code>~/.sigstore</code>. <code>cosign</code> reads that endpoint from the <code>COSIGN_MIRROR</code> / <code>COSIGN_ROOT</code> variables the terminal already has set, and from <code>cosign</code> 3.x on it prints nothing at all on success - so to see what it recorded, read the file it wrote:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">podman-terminal:/workspace/l3-enablement-helpers$ cosign initialize
-Root status:
- {
-        "local": "/home/student/.sigstore/root",
-        "remote": "https://tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io",
-        "metadata": {
-                "root.json": {
-                        "version": 1,
-                        "len": 4128,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                },
-                "snapshot.json": {
-                        "version": 1,
-                        "len": 994,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                },
-                "targets.json": {
-                        "version": 1,
-                        "len": 2071,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                },
-                "timestamp.json": {
-                        "version": 1,
-                        "len": 995,
-                        "expiration": "04 Nov 26 22:11 UTC",
-                        "error": ""
-                }
-        },
-        "targets": [
-                "trusted_root.json",
-                "ctfe.pub",
-                "rekor.pub",
-                "fulcio_v1.crt.pem"
-        ]
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">podman-terminal:/workspace/l3-enablement-helpers$ cosign initialize
+WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
+podman-terminal:/workspace/l3-enablement-helpers$ cat ~/.sigstore/root/remote.json
+{"mirror":"https://tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io"}
+podman-terminal:/workspace/l3-enablement-helpers$ ls ~/.sigstore/root/
+remote.json
+tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io
+tuf-tssc-tas.apps.cluster-vtm4r.dynamic.redhatworkshops.io.json</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The <code>mirror</code> above is the TUF endpoint, and the directory beside it - named after that same endpoint - holds the trust root itself.</p>
 </div>
 <div class="paragraph">
 <p>The same applies here, but we need to create it as a k8s CR.</p>
@@ -546,7 +519,7 @@ Root status:
 <p>Same as with <code>cosign initialize</code>, we can also manually define our custom Trust Root by manually defining the certificates and where they are stored, <strong>BUT</strong></p>
 </div>
 <div class="paragraph">
-<p>Only by using TUF (what we see as <code>remote:</code> in the above example) the controller will take care of refreshing the certificates after they have been rotated in the central RHTAS instance.<br>
+<p>Only by using TUF (what we see as <code>mirror</code> in the above example) the controller will take care of refreshing the certificates after they have been rotated in the central RHTAS instance.<br>
 If we use a manually configured Trust Root, we have to manually update the certificates - while the policy-controller will do that automatically using TUF.</p>
 </div>
 </td>

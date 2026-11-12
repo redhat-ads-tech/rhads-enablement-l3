@@ -7,7 +7,7 @@
     <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/tssc-tas/ex3.4-sigstore-cip.html">
     <link rel="prev" href="ex3.3-sigstore-config.html">
     <link rel="next" href="ex4-acs-controller.html">
-    <meta name="generator" content="Antora 3.1.14">
+    <meta name="generator" content="Antora 3.1.15">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -685,9 +685,23 @@ Remember, our "Podman Terminal" comes with these preconfigured, simply type <cod
 </tr>
 </table>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The first line below re-applies the <code>tssc-iam</code> realm override from the start of this module. If you are still in the same terminal it changes nothing; if you opened a new one, it keeps the stale <code>trusted-artifact-signer</code> issuer out of the <code>ClusterImagePolicy</code>, where it would silently reject every image you are about to test. Check the echoed <code>OIDC_ISSUER_URL</code> before moving on.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project policy-controller-operator
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export OIDC_ISSUER_URL="${OIDC_ISSUER_URL%/realms/*}/realms/tssc-iam"
+
+oc project policy-controller-operator
 echo ""
 echo "SIGSTORE_FULCIO_URL: ${SIGSTORE_FULCIO_URL}"
 echo "SIGSTORE_REKOR_URL:  ${SIGSTORE_REKOR_URL}"
