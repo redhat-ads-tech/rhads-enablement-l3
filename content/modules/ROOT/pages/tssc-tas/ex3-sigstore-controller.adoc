@@ -26,7 +26,7 @@ The PolicyController CR defines the global behaviour of the Admission Controller
 If you went through previous RHTAS chapters and exercises, the name "Trust Root" should ring a bell.
 The Trust Root is the collection and configuration of public certificates of the various services that Trusted Artifact Signer provides, such as Fulcio (the Certificate Issuer) and Rekor (the Transparency Database).
 
-When you issue a `cosign initialize`, a Trust Root is obtained from the TUF (The Update Framework) endpoint of the TAS installation and stored in the user's home directory `~/.sigstore`. `cosign` reads that endpoint from the `COSIGN_MIRROR` / `COSIGN_ROOT` variables the terminal already has set, and from `cosign` 3.x on it prints nothing at all on success - so to see what it recorded, read the file it wrote:
+When you invoke `cosign initialize`, a Trust Root is obtained from the TUF (The Update Framework) endpoint of the TAS installation and stored in your home directory `~/.sigstore`. `cosign` reads that endpoint from the `COSIGN_MIRROR` / `COSIGN_ROOT` variables set in the terminal. Apart from a possible and safely ignored deprecation `WARNING`, cosign prints nothing on success. To see what it recorded, read the file it wrote:
 
 [source,console]
 ----

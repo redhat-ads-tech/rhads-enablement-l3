@@ -392,7 +392,7 @@ podman-terminal:/workspace$ cosign initialize
 WARNING: Fetching initial root from URL without providing its checksum is deprecated and will be disallowed in a future Cosign release. Please provide the initial root checksum via the --root-checksum argument.
 ----
 
-That really is the whole output. `cosign` 3.x prints nothing on success - earlier versions reported a `Root status:` JSON summary here, and that is gone.
+Apart from a possible and safely ignored deprecation `WARNING`, cosign prints nothing on success. Some earlier versions reported a `Root status:` JSON summary.
 
 [NOTE]
 ====
@@ -429,14 +429,14 @@ You should see:
 
 [source,console]
 ----
-podman-terminal:/workspace$ IMAGE_NAME="ttl.sh/rhtas/test-image-4be1a048:24h"
+podman-terminal:/workspace$ IMAGE_NAME="ttl.sh/rhtas/test-image-<guid>:24h"
 echo "FROM scratch" > ./tmp.Dockerfile
 podman build . -f ./tmp.Dockerfile -t $IMAGE_NAME
 podman push $IMAGE_NAME
 STEP 1/1: FROM scratch
-COMMIT ttl.sh/rhtas/test-image-4be1a048:24h
+COMMIT ttl.sh/rhtas/test-image-<guid>:24h
 --> 555cca0b8910
-Successfully tagged ttl.sh/rhtas/test-image-4be1a048:24h
+Successfully tagged ttl.sh/rhtas/test-image-<guid>:24h
 555cca0b89106c0b78185f2091e7708384ee7694f555d100ee5c7ba50e44dbcd
 Getting image source signatures
 Copying config 555cca0b89 done   | 
@@ -461,7 +461,7 @@ Since we are running in a terminal session with no browser, we are presented wit
 [source,console]
 ----
 podman-terminal:/workspace$ cosign sign -y --use-signing-config=false $IMAGE_NAME
-WARNING: Image reference ttl.sh/rhtas/test-image-4be1a048:24h uses a tag, not a digest, to identify the image to sign.
+WARNING: Image reference ttl.sh/rhtas/test-image-<guid>:24h uses a tag, not a digest, to identify the image to sign.
     This can lead you to sign a different image than the intended one. Please use a
     digest (example.com/ubuntu@sha256:abc123...) rather than tag
     (example.com/ubuntu:latest) for the input to cosign. The ability to refer to
@@ -518,9 +518,9 @@ cosign tree $IMAGE_NAME
 [source,console]
 ----
 podman-terminal:/workspace$ cosign tree $IMAGE_NAME
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-4be1a048:24h
-└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: ttl.sh/rhtas/test-image-4be1a048@sha256:a07d920dbb3de8e69dff08c3e94fb4fe1df7e7f859da67941673ff7e0f3769f7
-   └── 🍒 sha256:9937a84e9e6e5ddb9612521094563b78f398292431b8f137144c2ac142f13e1a
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-<guid>:24h
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: ttl.sh/rhtas/test-image-<guid>@sha256:<digest>
+   └── 🍒 sha256:<digest>
 ----
 
 [NOTE]
@@ -852,14 +852,16 @@ cosign tree $IMAGE_NAME
 [source,console]
 ----
 podman-terminal:/workspace$ cosign tree $IMAGE_NAME
-📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-0c5e2a69:24h
-└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
-   └── 🍒 sha256:f9266c99008d19ca8f82ef47ce654f9b1eb1ed840dfc2bf2286a89100a294abf
-└── 🔗 https://slsa.dev/provenance/v0.2 artifacts via OCI referrer: ttl.sh/rhtas/test-image-0c5e2a69@sha256:106410741959c10919e4ebeb8c3e80f8883e0868a0d29a4518d0d922e41cc90a
-   └── 🍒 sha256:b6c3b279f887b1a0cf37a2d63da8376e85b0cd53596cd980369e848df88e1d58
+📦 Supply Chain Security Related artifacts for an image: ttl.sh/rhtas/test-image-<guid>:24h
+└── 🔗 https://sigstore.dev/cosign/sign/v1 artifacts via OCI referrer: ttl.sh/rhtas/test-image-<guid>@sha256:<digest>
+   └── 🍒 sha256:<digest>
+└── 🔗 https://slsa.dev/provenance/v0.2 artifacts via OCI referrer: ttl.sh/rhtas/test-image-<guid>@sha256:<digest>
+   └── 🍒 sha256:<digest>
 ----
 
 We will now verify the attestation as well as the image using `ec` - enterprise contract, which has an embedded `cosign` version for the image signature verification part:
+
+Note that these tools are updated regularly and the versions returned by your invocation of `ec version` may differ from the sample output shown below.
 
 [source,bash,role=execute,subs=attributes+]
 ----
@@ -902,17 +904,17 @@ Success: true
 Result: SUCCESS
 Violations: 0, Warnings: 0, Successes: 3
 Component: Unnamed
-ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+ImageRef: ttl.sh/rhtas/test-image-<guid>@sha256:<digest>
 
 Results:
 ✓ [Success] builtin.attestation.signature_check
-  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+  ImageRef: ttl.sh/rhtas/test-image-<guid>@sha256:<digest>
 
 ✓ [Success] builtin.attestation.syntax_check
-  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+  ImageRef: ttl.sh/rhtas/test-image-<guid>@sha256:<digest>
 
 ✓ [Success] builtin.image.signature_check
-  ImageRef: ttl.sh/rhtas/test-image-0c5e2a69@sha256:b3c5ac2cdd6d472c45c8137af82bbb5f8881d484a7a0984089d23e0616dd86b9
+  ImageRef: ttl.sh/rhtas/test-image-<guid>@sha256:<digest>
 ----
 
 So, we can see that the built-in minimal policies have been applied and succeeded:

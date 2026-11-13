@@ -107,7 +107,7 @@ IMPORTANT: Do this in your "Podman Terminal" that we just deployed - we will exc
 cosign initialize
 ----
 
-This creates the *Trust Root* structure in your user's home directory (under `~/.sigstore`) that verification commands in the next chapters need. `cosign` 3.x prints nothing when it succeeds, so if you want to confirm it used *your* TUF endpoint and not the public Sigstore one, read `~/.sigstore/root/remote.json`.
+This creates the *Trust Root* structure in your user's home directory (under `~/.sigstore`) that verification commands in the next chapters need. `cosign` 3.x prints nothing apart from a possible and safely ignored deprecation warning when it succeeds. To confirm it used *your* TUF endpoint and not the public Sigstore endpoint, read `~/.sigstore/root/remote.json`.
 
 include::partial$tas-realm-override.adoc[]
 
