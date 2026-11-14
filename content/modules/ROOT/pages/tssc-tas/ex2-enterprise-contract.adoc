@@ -147,7 +147,7 @@ Some noteworthy things about the last command:
 The `--policy` parameter in our command tells `ec` where to find the `policyConfiguration`, which we have inline in JSON format here:
 
 
-[console,json]
+[source,json]
 ----
   {
     "sources": [{

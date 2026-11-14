@@ -463,9 +463,9 @@ NOTE: `cosign download signature` does not verify anything - it just pulls the b
 
 === Offline verification (no access to TAS infrastructure)
 
-Some customers have asked how to verify keylessly signed artifacts in an offline scenario. One recent example is a customer using Trusted Artifact Signer throughout his CI and CD chains, up to pre-production.
+Some customers have asked how to verify keylessly signed artifacts in an offline scenario. A recent example shows a customer using Trusted Artifact Signer throughout their CI and CD chains, up to pre-production.
 
-The production systems however are completely isolated from the internal network and they transfer artifacts securely through what they call a "Diode". In other words, there is a secured way in - but nothing inside that environment can reach the outside.
+The production systems are completely isolated from the internal network. Artifacts move to it securely through what the customer calls a "diode". In other words, a one-way gate. There is a single, secure way in, but nothing inside the production environment can reach the outside.
 
 Your customers may have similar challenges - or it could be as simple as: 
 

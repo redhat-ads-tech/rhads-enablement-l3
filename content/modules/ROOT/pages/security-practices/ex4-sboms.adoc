@@ -176,7 +176,7 @@ roxctl image sbom --image=$IMAGE | jq | less
 
 So, as you can see at the beginning of the file, `roxctl` generates an SPDX (not CycloneDX) SBOM - which is fine, since both formats are very well established
 
-[console,json]
+[source,json]
 ----
 {
   "spdxVersion": "SPDX-2.3",
