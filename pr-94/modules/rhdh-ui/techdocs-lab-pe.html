@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TechDocs Lab 2: Production TechDocs :: Red Hat Advanced Developer Suite - Level 3 Self-paced training</title>
+    <link rel="canonical" href="https://redhat-ads-tech.github.io/rhads-enablement-l3/modules/rhdh-ui/techdocs-lab-pe.html">
+    <link rel="prev" href="techdocs-lab-user.html">
+    <link rel="next" href="../rhdh-orchestrator/overview.html">
+    <meta name="generator" content="Antora 3.1.15">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://demo.redhat.com" target="_blank" style="margin-left: 5%;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739" style="width: 278px;"><g fill="#fff"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#fff"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#fff" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg>
+      </a>
+      <a class="navbar-item site-title" target="__blank" style="color: #fff !important;" href="https://redhat-ads-tech.github.io/rhads-enablement-l3">Red Hat Advanced Developer Suite - Level 3 Self-paced training</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item navbar-item-right-dropdown has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown navbar-dropdown-right">
+            <a class="navbar-item navbar-item-right-content" href="https://redhat.com" target="_blank">Red Hat</a>
+            <a class="navbar-item navbar-item-right-content" href="env.html" target="_blank">Lab</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="modules" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html" class=" query-params-link">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting-started.html">Module 1: Getting started with RHADS</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Module 2: Setup Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/foundations.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_core_features">Core Features</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_software_catalog_and_entities">Software Catalog &amp; Entities</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_plugins">Plugins</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/foundations.html#_understanding_the_red_hat_developer_hub_configuration">Red Hat Developer Hub Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/setup-rhdh.html">Installation &amp; Base Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/configure-your-first-plugin.html">Configure your First Plugin (Authentication)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/plugin-cache.html">Plugin Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-gitlab-scm.html">GitLab Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/connect-argocd.html">Argo CD Integration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../setup-rhdh/security.html">Enable Role-Based Access Control</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tpa/setup.html">Module 3: Setup Trusted Profile Analyzer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-openshift.html">Setup Trusted Profile Analyzer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tpa/setup-rhel.html">Setup Trusted Profile Analyzer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../setup-tas/setup.html">Module 4: Setup Trusted Artifact Signer</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-openshift.html">Setup Trusted Artifact Signer on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../setup-tas/setup-rhel.html">Setup Trusted Artifact Signer on RHEL</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="foundations.html">Module 5: Red Hat Developer Hub User Interface</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="foundations.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="customize-rhdh.html">Hands-on Lab: Customize RHDH Appearance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="techdocs-foundations.html">TechDocs Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="techdocs-lab-user.html">TechDocs Lab 1: Creating and Editing TechDocs</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="techdocs-lab-pe.html">TechDocs Lab 2: Production TechDocs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Module 6: Orchestrator for Red Hat Developer Hub</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../rhdh-orchestrator/overview.html">Foundations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/install.html">Install &amp; Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/workflows.html">Managing and Running Workflows</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhdh-orchestrator/advanced-workflow.html">Workflows with State and Integrations</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/overview.html">Module 7: Getting started with security best practices</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/overview.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/security-practices.html">Foundations and Frameworks</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../security-practices/understanding-keyless.html">Understanding Keyless Signing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../security-practices/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex1-signing-images.html">Image Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex2-git-signing.html">Commit Signing &amp; Verification</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex3-provenance.html">Provenance &amp; Attestations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../security-practices/ex4-sboms.html">SBOM Creation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/tssc-tpa.html">Module 8: Trusted Software Supply Chain with TPA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tssc-tpa/correlation.html">Data Types &amp; Correlation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tpa/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex1-uploading-sboms.html">Exercise: Uploading Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex2-ui-usecases.html">Exercise: Exploring the Security Posture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tpa/ex3-licenses.html">Exercise: (Open Source) License Compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/tssc-tas.html">Module 9: Attestations, Tekton Chains &amp; Enterprise Contract with TAS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/exercises.html">Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex1-chains.html">Tekton Chains</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex2-enterprise-contract.html">Conforma and Rego policies</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tssc-tas/ex3-sigstore-controller.html">Sigstore Admission Controller</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.1-sigstore-prep.html">Preparation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.2-sigstore-install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.3-sigstore-config.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tssc-tas/ex3.4-sigstore-cip.html">ClusterImagePolicies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex4-acs-controller.html">RHACS Admission Controller</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../tssc-tas/ex-controller-summary.html">Admission Controllers Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/tssc-rhdh.html">Module 10: RHADS End-to-End: Production-Ready Development Lifecycle</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/introduction.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/introduction.html">An overview of the composite product set (RHADS)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../production-rhdh/lab.html">Hands on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../production-rhdh/lab.html">Full lifecycle of product usage</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../tssc-3rdparty-ci.html">Module 11: Trusted Software Supply Chain with other CIs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Module 12: Patterns for third-party tools integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#architecting-software-templates">Architecting Software Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/self-service-patterns.html#patterns">Patterns for third-party tools integrations using software templates for self-service</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-intro-self-service-patterns.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-vm-self-service-patterns.html">Hands-on Lab: VM as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-namespace-self-service-patterns.html">Hands-on Lab: Namespace as a Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../self-service-patterns/lab-db-self-service-patterns.html">Hands-on Lab: DB as a Service</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ai-intro.html">Module 13: Intro to AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Module 14: RHADS for AI Engineers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html">Foundations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhai">RH AI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#rhads-ai">How RHADS enables tools AI for AI Engineers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai.html#other-devtools">Other Developer tools</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html">Hands-on Lab</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-overview-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev-setup.html">Hands-on Lab: AI Engineering: Streamline AI Agent Development with Red Hat Advanced Developer Suite Templates</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-rhads/lab-ai-rhads-rhads-ai-dev.html">Hands-on Lab: AI Engineering: Implementing AI Agent Development with Red Hat Advanced Developer Suite</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html">Hands-on Lab on other developer tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-intro-rhads-ai.html#introduction">Hands-on Lab Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-devspaces-rhads-ai.html">Hands-on Lab: Build an Agent with RHDH from OpenShift Dev Spaces</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../rhads-ai/rhads-ai-devtools/lab-ai-podman-rhads-ai.html">Hands-on Lab: Experiment with an AI application locally using Podman AI Lab</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../end-to-end.html">Module 15: RHADS Complete: Summary and Next Steps</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../env.html">My lab environment details</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Advanced Developer Suite (RHADS) - Technical Workshop</a></li>
+    <li><a href="foundations.html">Module 5: Red Hat Developer Hub User Interface</a></li>
+    <li><a href="techdocs-lab-pe.html">TechDocs Lab 2: Production TechDocs</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">TechDocs Lab 2: Production TechDocs</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>How is a production-grade deployment different from the default Red Hat Developer Hub TechDocs deployment?</p>
+</div>
+<div class="paragraph">
+<p>The TechDocs default deployment mode generates and stores documentation artifacts within the RHDH instance. For production use, it is recommended to use persistent storage, external to RHDH, and potentially distribute the TechDocs <em>generation</em> step to continuous integration tasks in each repository.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_high_level_tasks"><a class="anchor" href="#_high_level_tasks"></a>High Level Tasks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Implementing those differences to create a production-ready TechDocs deployment involves 3 high level tasks:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Storage</strong> - ODF S3 Emulation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a ODF storage claim for an emulated S3 bucket and configure TechDocs to retrieve HTML from it.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Flexible Generation</strong> centered in Red Hat Developer Hub, or distributed in project CI pipelines</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Integrate documentation site generation and storage publication into the CI/CD pipeline for each source repository.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Read-Mostly</strong> TechDocs</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Modify <code>app-config.yaml</code> in the RHDH ConfigMap, setting <code>techdocs.builder</code> from <code>local</code> to <code>external</code>. This disables the local generator.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuring_storage"><a class="anchor" href="#_configuring_storage"></a>Configuring Storage</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab establishes production TechDocs in divisible segments. First, establish persistent storage (for the document cache) on an S3-style object store. This is the key step, because some kind of persistent storage is required in order to even consider external generation, and because when running on OpenShift, even external (that is, external to RHDH) generation will tend to run in pipelines on the cluster. This is a distinct advantage of deploying a Backstage IDP in the form of Red Hat Developer Hub on OpenShift, because it makes the choice between local and external TechDocs generation a matter of site practices and preferences, rather than a hard requirement for the most basic division of labor.</p>
+</div>
+<div class="sect2">
+<h3 id="_use_existing_deployment"><a class="anchor" href="#_use_existing_deployment"></a>Use Existing Deployment</h3>
+<div class="paragraph">
+<p>Begin with the platform components already deployed in the <code>tssc-dh</code> Project.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to the {openshift_console_url}[OpenShift Web Console^]. Log in with the credentials:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>{openshift_admin_user}</code></p>
+</li>
+<li>
+<p>Password: <code>{openshift_admin_password}</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Ensure the <strong>Administrator</strong> perspective is selected using the <strong>Perspective Switcher</strong> at the top of the left-hand navigation.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You met OpenShift Data Foundation in the <a href="../setup-tpa/setup-openshift.html" class="xref page">Setup Trusted Profile Analyzer</a> module. A part of OpenShift Platform Plus, OpenShift Data Foundation is already configured and deployed in your environment. You need ODF to provide an emulated S3 bucket to store generated TechDocs HTML.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_objectbucketclaim"><a class="anchor" href="#_create_objectbucketclaim"></a>Create ObjectBucketClaim</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the OpenShift Web Console, visit <strong>Storage</strong> &gt; <strong>Object Storage</strong> &gt; <strong>ObjectBucketClaims</strong> to check the OpenShift Data Foundation. You&#8217;ll see UI tabs for storage <em>Buckets</em>, backing stores, and this step&#8217;s focus, <em>Object Bucket Claims</em> (OBC). These represent resources that declare segments of storage available to applications on the cluster.</p>
+</li>
+<li>
+<p>Click the <code>(+)</code> button at the top of the console, and choose <strong>Import YAML</strong>.</p>
+</li>
+<li>
+<p>Copy the following Kubernetes manifest into the YAML editor.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: rhdh-bucket-claim
+  namespace: tssc-dh
+spec:
+  generateBucketName: techdocs <i class="conum" data-value="1"></i><b>(1)</b>
+  storageClassName: openshift-storage.noobaa.io <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>A prefix to add to the generated bucket name, for uniqueness and later identification/filtering.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The storage class to use for the bucket. <a href="https://www.noobaa.io/NooBaa" target="_blank" rel="noopener">NooBaa</a> (the upstream of <em>Multicloud Object Gateway</em> in OpenShift products) is a smart S3 gateway that routes object data across multiple storage backends.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Click <strong>Create</strong> to declare a storage bucket to store rendered TechDocs. This will also create a Secret and ConfigMap containing configuration details for the bucket. You&#8217;ll use those to configure Red Hat Developer Hub to use this bucket.</p>
+</div>
+</li>
+<li>
+<p>In the OpenShift Web Console, visit <strong>Workloads</strong> &#8594; <strong>ConfigMaps</strong> and <strong>Workloads</strong> &#8594; <strong>Secrets</strong> in turn to examine the <code>rhdh-bucket-claim</code> resources of each type automatically created when you created the ObjectBucketClaim. In the next steps, you will configure Red Hat Developer Hub to use these resources, available as environment variables (or mounted on the filesystem) in the Red Hat Developer Hub Pod.</p>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/rhdh-ui/claim-secret.png" target="image"><img src="../_images/rhdh-ui/claim-secret.png" alt="claim secret"></a>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_developer_hub"><a class="anchor" href="#_configure_developer_hub"></a>Configure Developer Hub</h3>
+<div class="paragraph">
+<p>In the following steps, you will configure Red Hat Developer Hub to connect to the storage bucket you created. The RHDH configuration will refer to variables defined in the <code>rhdh-bucket-claim</code> ConfigMap and Secret. Referenced here, those variables will be populated after you adjust the RHDH Custom Resource to point to their sources in the <code>rhdh-bucket-claim</code> ConfigMap and Secret.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the OpenShift Web Console, click <strong>Workloads</strong> in the left navigation to expand it, then click  <strong>ConfigMaps</strong>.</p>
+</li>
+<li>
+<p>Select the <strong>tssc-developer-hub-app-config</strong> ConfigMap to open it.</p>
+</li>
+<li>
+<p>Click the <strong>YAML</strong> tab to open the ConfigMap source.</p>
+</li>
+<li>
+<p>Near the bottom of the file, delete and replace the <code>techdocs:</code> section with the following content (be sure to match indentation, such as aligning <code>techdocs:</code> with the previous <code>signInPage:</code> element):</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">    techdocs:
+      builder: local
+      generator:
+        runIn: local
+      publisher:
+        type: awsS3 <i class="conum" data-value="1"></i><b>(1)</b>
+        awsS3: <i class="conum" data-value="2"></i><b>(2)</b>
+          bucketName: '${BUCKET_NAME}'
+          credentials:
+            accessKeyId: '${AWS_ACCESS_KEY_ID}'
+            secretAccessKey: '${AWS_SECRET_ACCESS_KEY}'
+          endpoint: 'https://${BUCKET_HOST}'
+          region: noobaa <i class="conum" data-value="3"></i><b>(3)</b>
+          s3ForcePathStyle: true <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The type of publisher to use. In this case, you are using the <code>awsS3</code> publisher type to publish to the ODF storage bucket.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>awsS3</code> publisher type configuration.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>A placeholder value provides a counterfeit region.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The <code>s3ForcePathStyle</code> parameter uses the storage bucket&#8217;s conventional file path interface rather the content-addressable API.
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>As you may remember from the setup-tpa module, the following script when executed in the <code>tssc-dh</code> Project namespace retrieves all of the credentials for your ODF storage bucket at once and dressed up with a bit of formatting, so you can inspect what is constructed from the variables in the YAML above. Remember, the values for these variables come from the <code>rhdh-bucket-claim</code> ConfigMap and Secret generated when you create the <code>rhdh-bucket-claim</code> ObjectBucketClaim. If you&#8217;re interested, run the following commands in the Web Terminal (the <code>&gt;_</code> icon near the top right of the OpenShift Web Console) to see their values. You will use this later on when configuring GitLab CI.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">CLAIM="rhdh-bucket-claim"
+echo ""
+
+echo -n "Bucket Name:         "
+oc get configmap $CLAIM -n tssc-dh -o jsonpath='{.data.BUCKET_NAME}'
+echo ""
+
+echo -n "Access Key ID:       "
+oc get secret $CLAIM -n tssc-dh -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 -d
+echo ""
+
+echo -n "Secret Access Key:   "
+oc get secret $CLAIM -n tssc-dh -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 -d
+echo ""
+
+echo -n "Bucket Host:         "
+oc get configmap $CLAIM -n tssc-dh -o jsonpath='{.data.BUCKET_HOST}'
+echo ""</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div></td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adjust_rhdh_custom_resource"><a class="anchor" href="#_adjust_rhdh_custom_resource"></a>Adjust RHDH Custom Resource</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the OpenShift Web Console, go to <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> &#8594; <strong>Red Hat Developer Hub Operator</strong></p>
+</li>
+<li>
+<p>Click the <strong>Red Hat Developer Hub</strong> tab (next to <em>Events</em>)to see the list of all instances of Red Hat Developer Hub on the cluster (there should be only one).</p>
+</li>
+<li>
+<p>Select the <code>developer-hub</code> CR. Its letter <code>B</code> icon represents its Custom Resource Kind, <em>Backstage</em>.</p>
+</li>
+<li>
+<p>Open the YAML view by clicking the <strong>YAML</strong> tab</p>
+</li>
+<li>
+<p>Edit the <code>extraEnvs:</code> stanza to add the names of your bucket claim&#8217;s configMap and Secret (don&#8217;t remove any existing values!). Both are named <code>rhdh-bucket-claim</code>. Be sure to use the correct indentation as shown below:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: rhdh.redhat.com/v1alpha3
+kind: Backstage
+metadata:
+ name: developer-hub
+spec:
+ application:
+  appConfig:
+    configMaps:
+      - name: tssc-developer-hub-app-config
+    mountPath: /opt/app-root/src
+  dynamicPluginsConfigMapName: tssc-developer-hub-dynamic-plugins
+  extraEnvs:
+    configMaps:
+      - name: rhdh-bucket-claim
+    secrets:
+      - name: tssc-developer-hub-env
+      - name: rhdh-bucket-claim
+    replicas: 1
+    route:
+      enabled: true
+[ ... ]</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong> to commit the changes. It will take a few moments for the Red Hat Developer Hub Pod to restart.</p>
+</li>
+<li>
+<p>Navigate to <strong>Workloads</strong> &#8594; <strong>Pods</strong> in the left navigation to watch the new RHDH Pod rollout in response to your changes to the desired state. Wait for the new Pod to be ready (and the old Pod to be terminated) before proceeding.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_edit_techdocs_to_trigger_rebuild"><a class="anchor" href="#_edit_techdocs_to_trigger_rebuild"></a>Edit TechDocs to trigger rebuild</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to {rhdh_url}[Red Hat Developer Hub^, window="rhdh"] and login as <code>{rhdh_user}</code> with password <code>{rhdh_user_password}</code>.</p>
+</li>
+<li>
+<p>In Red Hat Developer Hub, click <strong>Docs</strong> in the left navigation to open the TechDocs index page.</p>
+</li>
+<li>
+<p>Click on the <code>uq</code> component to open its TechDocs index page.</p>
+</li>
+<li>
+<p>Click the pencil-and-paper Edit icon to the right of the first document heading, <em>Trusted Application Pipeline Software Template</em>, in your <em>uq</em> document.</p>
+</li>
+<li>
+<p>Log into GitLab using username <code>{gitlab_user}</code> and password <code>{gitlab_user_password}</code>.</p>
+</li>
+<li>
+<p>Arrive in the doc source in the GitLab <em>user1/uq</em> source repository that holds your component source and documentation.</p>
+</li>
+<li>
+<p>Edit the document in the repository service editor for the quickest experience. For example, you might change the second sentence to clarify it, or change the page first heading for the highest visibility in the result.</p>
+</li>
+<li>
+<p>Leave the default <strong>Commit message</strong>, or edit it if you like. The commit message can&#8217;t be blank.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Leave the <strong>Target Branch</strong> set to the default, <code>main</code>.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click the <strong>Commit changes</strong> button.</p>
+</li>
+<li>
+<p>Navigate or switch browser tabs back to your component&#8217;s TechDoc index page in Red Hat Developer Hub. Refresh <em>your browser</em> if you don&#8217;t see the expected "building", then "please refresh" banner.</p>
+</li>
+<li>
+<p>Click the <strong>Refresh</strong> link in the green-outlined "please refresh" banner shown on the TechDocs page to load the latest HTML rendition of your document from ODF object storage.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The experience is the same as before, but the documentation is now stored in ODF object storage instead of within the RHDH instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_view_the_raw_docs_in_odf"><a class="anchor" href="#_view_the_raw_docs_in_odf"></a>View the raw docs in ODF</h3>
+<div class="paragraph">
+<p>You can see the new objects created by visiting the ODF storage bucket in the OpenShift Web Console.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the OpenShift Web Console, visit <strong>Storage</strong> &gt; <strong>Object Storage</strong> &gt; <strong>Buckets</strong> and select the bucket beginning with <code>techdocs-</code>.</p>
+</li>
+<li>
+<p>You should see a new folder <code>default/</code> (the RHDH "namespace" used by your <code>uq</code> component). Click on it and the folders within to eventually arrive at the html structure of the techdoc that was rendered:</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="../_images/rhdh-ui/odf-bucket-contents.png" target="image"><img src="../_images/rhdh-ui/odf-bucket-contents.png" alt="odf bucket contents"></a>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_external_storage_summary"><a class="anchor" href="#_external_storage_summary"></a>External Storage: Summary</h3>
+<div class="paragraph">
+<p>The Developer Hub Custom Resources' <code>extraEnvs</code> points to the <code>rhdh-bucket-claim</code> ConfigMap and Secret. This makes their contents available in the running RHDH Pod, where they appear to processes within as conventional files and environment variables.</p>
+</div>
+<div class="paragraph">
+<p>The RHDH App Config ConfigMap then refers to those resources with names transmuted from the Kubernetes API to the conventional Unix namespace of the actual running process. For example, you can find the environment variable <code>$AWS_ACCESS_KEY_ID</code> in the next YAML listing, the relevant excerpt from the App Config ConfigMap.</p>
+</div>
+<div class="paragraph">
+<p>When the Developer Hub application later reads <code>$AWS_ACCESS_KEY_ID</code> from its environment, it finds in it the value declared in the <code>rhdh-bucket-claim</code> Secret.</p>
+</div>
+<div class="paragraph">
+<p>In effect, ODF has put the key to a storage bucket in a known location. You arranged for RHDH to access that location.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_flexible_generation_builder_mechanics_with_mkdocs"><a class="anchor" href="#_flexible_generation_builder_mechanics_with_mkdocs"></a>Flexible Generation: Builder Mechanics with <em>MkDocs</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An Entity has TechDocs features configured when it is tagged with the <code>backstage.io/techdocs-ref</code> <em>annotation</em>.</p>
+</div>
+<div class="sect2">
+<h3 id="_understanding_entity_annotations"><a class="anchor" href="#_understanding_entity_annotations"></a>Understanding Entity Annotations</h3>
+<div class="paragraph">
+<p>The <code>backstage.io/techdocs-ref</code> annotation in an entity&#8217;s <code>catalog-info.yaml</code> dictates the source file location for the entity&#8217;s documentation source.</p>
+</div>
+<div class="paragraph">
+<p>Most entities should specify <code>dir:.</code> That is, their catalog-info&#8217;s <code>dir:</code> parameter should be set to <em>dot</em> (<code>.</code>), the current directory of <code>catalog-info.yaml</code>. With this configuration, Source files and <code>mkdocs.yml</code> live in the same directory as <code>catalog-info.yaml</code>. The entire directory is downloaded during the <em>Prepare</em> step.</p>
+</div>
+<div class="paragraph">
+<p>A child directory of the current directory may be specified instead, e.g., <code>dir:./name/</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inspect_annotations_on_your_component"><a class="anchor" href="#_inspect_annotations_on_your_component"></a>Inspect annotations on your Component</h3>
+<div class="paragraph">
+<p>Take a look at your {gitlab_url}/user1/uq/-/blob/main/catalog-info.yaml#L15[<code>catalog-info.yaml</code> definition&#8217;s line 15^]. You&#8217;ll see the <code>backstage.io/techdocs-ref</code> annotation and its reference to the current directory as the documentation location.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_the_builder_with_mkdocs_yaml"><a class="anchor" href="#_configuring_the_builder_with_mkdocs_yaml"></a>Configuring the builder with <code>mkdocs.yaml</code>:</h3>
+<div class="paragraph">
+<p>Now view your Component&#8217;s {gitlab_url}/user1/uq/-/blob/main/mkdocs.yml[<code>mkdocs.yml</code>^]. This file configures any options for the mkdocs-techdocs builder.</p>
+</div>
+<div class="sect3">
+<h4 id="_inspect_software_template"><a class="anchor" href="#_inspect_software_template"></a>Inspect Software Template</h4>
+<div class="paragraph">
+<p>In the Quarkus Java template from which your <code>uq</code> template was instantiated, you&#8217;ll find the skeletal forms of the <code>catalog-info.yaml</code> and <code>mkdocs.yml</code> that are templated with instance values and added during the initialization of new instances created from the Template. You&#8217;ve probably noticed you can navigate from the RHDH Catalog to the Template&#8217;s source repo (like you can with any Catalog entity). <a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/template.yaml" target="_blank" rel="noopener"><code>template.yaml</code></a> is a quick shortcut to the Template&#8217;s source.</p>
+</div>
+<div class="paragraph">
+<p>This primary Template fills in the <a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/skeleton/source-repo/catalog-info.yaml" target="_blank" rel="noopener">catalog-info.yaml</a> and
+<a href="https://github.com/redhat-appstudio/tssc-sample-templates/blob/release-v1.7.x/templates/java-quarkus/content/mkdocs.yml" target="_blank" rel="noopener">mkdocs.yml</a> skeletons with instance configuration and settings you entered in the create-from-Template forms.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mkdocs_summary"><a class="anchor" href="#_mkdocs_summary"></a>MkDocs Summary</h3>
+<div class="paragraph">
+<p>You&#8217;ve been through the details of the "server" side (find, build, store, publish) of Red Hat Developer Hub TechDocs configuration for external storage, and you&#8217;ve seen the mechanism on the "client" side (Templates and the Entities they make) that specifies <code>mkdocs-techdocs-core</code>. <a href="https://github.com/backstage/mkdocs-techdocs-core"><code>Mkdocs-techdocs-core</code></a> is a plugin that customizes the operation of <a href="https://mkdocs.org/">MkDocs</a> for TechDocs. MkDocs is a domain-specific static site generator for documentation.</p>
+</div>
+<div class="paragraph">
+<p>At this point, your TechDocs deployment centralizes builds in OpenShift (<code>builder: local</code>), but stores the resulting HTML in object bucket storage <em>external</em> to Red Hat Developer Hub. It passes configuration and secrets references only between necessary applications and only through standard mechanisms. This configuration is not an exact match for the upstream BackStage "recommended" TechDocs setup, but the upstream recommended setup is not running on an OpenShift cluster. Many setups will still want to distribute TechDocs builds out to project pipelines, as shown in the next section, but RHDH on OpenShift makes local TechDocs builds to external storage a legitimate production layout.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_externalizing_techdocs_builds"><a class="anchor" href="#_externalizing_techdocs_builds"></a>Externalizing TechDocs Builds</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Somewhat incredibly, a CLI tool drives all of this. Embedded in RHDH is a version of <code>techdocs-cli</code>, and you could employ the same program on the command line to fetch doc source from some repo and drive <code>mkdocs-techdos-core</code> to build and publish it.</p>
+</div>
+<div class="sect2">
+<h3 id="_builder_by_hand"><a class="anchor" href="#_builder_by_hand"></a>Builder by hand</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You are not expected to copy and run this, it is for reference only. It will not work without adjustments to fit the publish step to your <code>rhdh-bucket-claim</code>  configuration and neither <code>npm</code> nor <code>pip</code> are immediately available in your OpenShift web console.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Git that which is owed
+git clone {gitlab_url}/user1/uq
+cd uq
+
+# Install gobs of node
+npm install -g @techdocs/cli
+pip install "mkdocs-techdocs-core==1.*"
+
+# Generate docs like code
+techdocs-cli generate --no-docker
+
+# Publish ala mode
+# _storage-name_ wants BUCKET_NAME. Retrieved as in script above.
+# _entity_ wants namespace/kind/name from entity catalog-info.
+#    Special case: If catalog-info does not spec a namespace,
+#    its namespace is taken to be the literal string `default`.
+techdocs-cli publish --publisher-type awsS3 --storage-name techdocs-etc-BEEF-etc-BEEF --entity default/Component/uq</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_builder_in_gitlab_runner"><a class="anchor" href="#_builder_in_gitlab_runner"></a>Builder in GitLab Runner</h3>
+<div class="paragraph">
+<p>The outlines of a <code>.gitlab-ci.yaml</code> defining a techdocs-cli Runner on your GitLab instance should look fairly familiar by now:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">stages:
+  - build-docs
+
+generate-and-publish-techdocs:
+  stage: build-docs
+  image: node:18 # Tested 18 and 20.
+  variables:
+    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+    AWS_REGION: noobaa
+    TECHDOCS_BUCKET_NAME: $TECHDOCS_BUCKET_NAME
+  script:
+    - npm install -g npx
+    - npm install -g @techdocs/cli
+    # 1st half of entire Internet downloaded. Download part 2/2? Enter Y or N? Y
+    - python3 -m venv .techdocs-venv
+    - source .techdocs-venv/bin/activate
+    - pip install "mkdocs-techdocs-core==1.*"
+    # Generate the documentation site
+    - npx @techdocs/cli generate --no-docker --source-dir . --output-dir ./site
+    # Publish the generated site to external storage
+    - npx @techdocs/cli publish --publisher-type awsS3 --storage-url https://${TECHDOCS_BUCKET_NAME}.s3.${AWS_REGION} --entity default/component/${{ parameters.name }}
+  only:
+    - main # Don't build branches etc - build commits that modify main branch</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_the_gitlab_ci_for_techdocs_cli_mkdocs_techdocs_core"><a class="anchor" href="#_create_the_gitlab_ci_for_techdocs_cli_mkdocs_techdocs_core"></a>Create the GitLab CI for <code>techdocs-cli</code>, <code>mkdocs-techdocs-core</code></h4>
+<div class="paragraph">
+<p>In the following steps, you will create a GitLab CI pipeline for the <code>uq</code> component to generate and publish its TechDocs to the ODF object bucket.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The pre-installed GitLab you are using does not have GitLab <em>runners</em> configured, so the pipeline created below will not actually run. It  demonstrates the configuration of a GitLab CI pipeline for TechDocs. In a production environment, you would continue on to <a href="https://www.redhat.com/en/blog/your-guide-to-the-gitlab-operator-on-openshift" target="_blank" rel="noopener">configure a GitLab Runner</a> and the GitLab Operator to run the pipeline.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Copy the YAML excerpt above to your clipboard.</p>
+</li>
+<li>
+<p>Visit {gitlab_url}/user1/uq/[your <code>uq</code> component&#8217;s source repo^].</p>
+</li>
+<li>
+<p>Click <strong>Build</strong> in the left navigation, then <strong>Pipelines</strong> in the sub-menu that appears.</p>
+</li>
+<li>
+<p>Since there is no existing <code>.gitlab-ci.yaml</code> file defining a pipeline in this repo yet, click <strong>Try test template</strong> to create the file.</p>
+</li>
+<li>
+<p>Select all of the skeleton YAML in the Default pipeline and delete it. Replace it entirely with the YAML you copied from the <code>stages:</code> excerpt above.</p>
+</li>
+<li>
+<p>Replace <code>$AWS_ACCESS_KEY_ID</code> with the value returned by the same object bucket config dump bash script you used earlier. (I.e., return to the OpenShift Web Console in another browser tab or window, open the Web Terminal, and run the script to obtain the values for your object bucket.</p>
+</li>
+<li>
+<p>Replace <code>$AWS_SECRET_ACCESS_KEY</code> with its value returned from the config dump script.</p>
+</li>
+<li>
+<p>Replace <code>$TECHDOCS_BUCKET_NAME</code> with its value returned from the script.</p>
+</li>
+<li>
+<p>Click <strong>Commit changes</strong> to save the file and create the CI action.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This exercise is specifically contrived to highlight what is happening when the system prepares, generates, and publishes Red Hat Developer Hub TechDocs. It is intentionally stripped out and isolated from other pipelines that build or scaffold source code and gitops configuration, so that the operation and position of <code>mkdocs-techdocs-core</code> and the ODF S3 Object Bucket storage are obvious.</p>
+</div>
+<div class="paragraph">
+<p>For the same reasons, you quickly pasted plain text credentials into the GitLab CI action configuration, just to stay focused for the moment on operation rather configuration. The last cherry atop this lab as a production-like example of Red Hat Developer Hub would be entering those ODF object bucket credentials, fetched once again from the bucket claim dump script, into GitLab settings (or stored and accessed securely from an external credential vault), instead of into plain text. From there they become available, more securely, as names in an environment variable-like namespace accessible to the GitLab CI. Such configuration is left as a brief, and entirely optional, exercise for the reader.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reconfigure_rhdh_techdocs_for_builder_external"><a class="anchor" href="#_reconfigure_rhdh_techdocs_for_builder_external"></a>Reconfigure RHDH TechDocs for <code>builder: external</code></h4>
+<div class="paragraph">
+<p>Switch back to the OpenShift Web Console. Ensure you are in the Administrator perspective, in the <code>tssc-dh</code> Project. Click <strong>Workloads</strong> in the left navigation, then <strong>ConfigMaps</strong>. Select the <code>tssc-developer-hub-app-config</code> ConfigMap to open it for editing. Click the <strong>YAML</strong> tab and scroll down to the <code>techdocs:</code> section near the bottom and change <code>builder: local</code> to <code>builder: external</code>. Click <strong>Save</strong> to commit the changes. RHDH will start a new Pod with the new configuration in the read-mostly mode described in the introduction to this lab.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_edit_docs_trigger_rebuild"><a class="anchor" href="#_edit_docs_trigger_rebuild"></a>Edit docs, trigger rebuild</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Return to {gitlab_url}/user1/uq/[your <code>uq</code> component&#8217;s source repo^] - this is the fastest route to commit a new change to its documentation and trigger the GitLab CI you&#8217;ve set up.</p>
+</li>
+<li>
+<p>Click the <strong>docs</strong> directory in the file listing, then click <strong>index.md</strong> to open it for editing. You&#8217;ve edited this file twice already, but previously reached it through links in RHDH.</p>
+</li>
+<li>
+<p>Make a recognizable change to the file, then scroll down and <strong>Commit Changes</strong>.</p>
+<div class="paragraph">
+<p>Since the pre-installed GitLab you are using does not have any GitLab <em>runners</em> configured, the pipeline will not actually run (it will remain <em>pending</em>), and the docs won&#8217;t be updated. It demonstrates the configuration of a GitLab CI pipeline for TechDocs from a developer viewpoint.</p>
+</div>
+</li>
+<li>
+<p>Revert back to local generation by changing <code>builder: external</code> back to <code>builder: local</code> and click <strong>Save</strong> to commit the changes. Wait for the new Pod to be ready (and the old Pod to be terminated) before proceeding.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_read_it_again_for_the_very_first_time"><a class="anchor" href="#_read_it_again_for_the_very_first_time"></a>Read it again, for the very first time</h4>
+<div class="paragraph">
+<p>At last you can return to {rhdh_url}[Red Hat Developer Hub^, window="rhdh"]. Click <strong>Catalog</strong> on the left, find your <code>uq</code> component in the catalog and click through to its TechDocs (or just click <strong>Docs</strong> in the left navigation). Refresh the content with the link in the green notification as in each of the previous milestones. You can also see the updated objects (by timestamp) in the ODF storage bucket (Navigate to <strong>Storage</strong> &gt; <strong>Object Storage</strong> &gt; <strong>Buckets</strong> and select the bucket beginning with <code>techdocs-</code>) and drill down to the HTML files.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cleanup_annihilate"><a class="anchor" href="#_cleanup_annihilate"></a>Cleanup (Annihilate)</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In Red Hat Developer Hub, click <strong>Catalog</strong> in the left navigation.</p>
+</li>
+<li>
+<p>Click <strong>uq</strong> in the <strong>Owned Components</strong> Catalog list to open your Component.</p>
+</li>
+<li>
+<p>Click the "falafel menu" (three stacked dots) near top right to expand the entity actions menu.</p>
+</li>
+<li>
+<p>Click <strong>Unregister entity</strong></p>
+</li>
+<li>
+<p>Click <strong>Unregister Location</strong> in the presented dialog</p>
+</li>
+<li>
+<p>Notice that the <strong>Owned Components</strong> list no longer includes the <em>uq</em> Component.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Unregistering a Component removes it from the Red Hat Developer Hub Catalog, but does not remove or change external resources that may have been created or executed when the Component was created from its Template. Git repos, OpenShift Projects, Deployments, Pods, and other resources associated with the unregistered Component will still exist. In fact, you can re-register a Component by again providing RHDH a reference to its source repo that still contains a <a href="https://gitlab-gitlab.{openshift_cluster_ingress_domain}/user1/uq/-/blob/main/catalog-info.yaml" target="_blank" rel="noopener"><code>catalog-info.yaml</code> definition</a>. Without further arrangement to cleanup such resources, however, a later instantiation attempting to specify an identical Component name beneath the identical org or user could lead to name conflicts or other resource contention. For example, if your <code>user1 TSSC</code> creates another <code>uq</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_techdocs_summary"><a class="anchor" href="#_techdocs_summary"></a>TechDocs Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Nice work. Now you can explain how TechDocs prepares, generates, and publishes documentation in Backstage and Red Hat Developer Hub, and you have a foundation to assess at customer sites and projects whether simple centralized TechDocs processing directly within RHDH makes the most sense, or if the specific requirements of a particular case demand distributed generation at the point of continuous integration in each Catalog Entity repo. In either event, you know how to wire TechDocs to persistent and highly scalable storage atop OpenShift Data Foundation.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="techdocs-lab-user.html" class="query-params-link">TechDocs Lab 1: Creating and Editing TechDocs</a></span>
+  <span class="next"><a href="../rhdh-orchestrator/overview.html" class="query-params-link">Module 6: Orchestrator for Red Hat Developer Hub</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>  </div>
+</main>
+</div>
+<footer class="footer">
+  <a href="https://demo.redhat.com" target="_blank" class="poweredBy"><p>Powered by</p><div class="labInfo_poweredBy" style="display: block; width: 260px;"><svg class="labInfo_poweredByLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1508.5 178.739"><g fill="#111"><path d="M316.6 63.2v-56H342a21.279 21.279 0 0 1 7.8 1.3 18.111 18.111 0 0 1 5.9 3.5 15.577 15.577 0 0 1 5 11.8 15.051 15.051 0 0 1-3.1 9.5 16.836 16.836 0 0 1-8.4 5.8l12.5 24.1h-9.3l-11.6-23H325v23Zm24.7-48.6H325v18.7h16.3q5.25 0 8.1-2.7a8.7 8.7 0 0 0 2.8-6.6 8.7 8.7 0 0 0-2.8-6.6c-1.8-1.9-4.5-2.8-8.1-2.8ZM364.1 42.8a20.674 20.674 0 0 1 1.6-8.2 20.288 20.288 0 0 1 4.3-6.7 19.92 19.92 0 0 1 6.5-4.5 19.718 19.718 0 0 1 8-1.6 18.463 18.463 0 0 1 7.8 1.6 18.677 18.677 0 0 1 6.2 4.5 20.927 20.927 0 0 1 4.1 6.8 23.2 23.2 0 0 1 1.5 8.4v2.3H372a13.822 13.822 0 0 0 4.6 8.4 13.6 13.6 0 0 0 9.1 3.3 15.553 15.553 0 0 0 5.7-1 12.858 12.858 0 0 0 4.6-2.6l5.1 5a25.983 25.983 0 0 1-7.4 4.1 24.69 24.69 0 0 1-8.4 1.3 21.306 21.306 0 0 1-8.4-1.6 22.763 22.763 0 0 1-6.8-4.4 20.788 20.788 0 0 1-4.5-6.7 23.2 23.2 0 0 1-1.5-8.4Zm20.2-14.2a11.527 11.527 0 0 0-8 3 13.046 13.046 0 0 0-4.2 7.8h24.2a13.091 13.091 0 0 0-4.2-7.8 11.106 11.106 0 0 0-7.8-3ZM443.1 63.2v-3.8a19.448 19.448 0 0 1-5.8 3.3 18.924 18.924 0 0 1-6.7 1.2 19.824 19.824 0 0 1-14.6-6.1 22.268 22.268 0 0 1-4.4-6.7 21.812 21.812 0 0 1 0-16.4A20.534 20.534 0 0 1 416 28a19.335 19.335 0 0 1 6.6-4.5 20.334 20.334 0 0 1 8.2-1.6 20.7 20.7 0 0 1 6.6 1 19.415 19.415 0 0 1 5.7 3V7.2l8-1.8v57.8Zm-25.2-20.4a13.718 13.718 0 0 0 4 10.1 13.45 13.45 0 0 0 9.8 4.1 14.956 14.956 0 0 0 6.4-1.3 15.954 15.954 0 0 0 4.9-3.6V33.6a14.988 14.988 0 0 0-4.9-3.5 15.271 15.271 0 0 0-6.4-1.3 13.423 13.423 0 0 0-9.9 4 13.806 13.806 0 0 0-3.9 10ZM478.1 63.2v-56h8.4v24h29.8v-24h8.4v56h-8.4V38.8h-29.8v24.4ZM547.2 64a16.483 16.483 0 0 1-10.8-3.5 11.037 11.037 0 0 1-4.2-8.9 10.375 10.375 0 0 1 4.7-9.2 20.76 20.76 0 0 1 11.8-3.2 27.841 27.841 0 0 1 5.8.6 27.374 27.374 0 0 1 5.3 1.6v-4.3a8.143 8.143 0 0 0-2.6-6.5 11.452 11.452 0 0 0-7.4-2.2 20.788 20.788 0 0 0-6 .9 34.616 34.616 0 0 0-6.6 2.6l-3-6a54.169 54.169 0 0 1 8.4-3.1 33.18 33.18 0 0 1 8.3-1.1c5.2 0 9.3 1.3 12.2 3.8s4.4 6.1 4.4 10.8v27h-7.8v-3.5a19.441 19.441 0 0 1-5.8 3.2 23.54 23.54 0 0 1-6.7 1Zm-7.3-12.6a5.646 5.646 0 0 0 2.6 4.8 11.193 11.193 0 0 0 6.6 1.8 16.256 16.256 0 0 0 5.9-1 14.449 14.449 0 0 0 4.9-2.9V47a19.778 19.778 0 0 0-4.8-1.8 24.933 24.933 0 0 0-5.7-.6 11.859 11.859 0 0 0-6.8 1.8 5.728 5.728 0 0 0-2.7 5ZM580.6 53.2v-24H572v-6.7h8.6V12.1l7.9-1.9v12.3h12v6.7h-12v22.1a5.94 5.94 0 0 0 1.4 4.4c.9.9 2.5 1.3 4.6 1.3a23.637 23.637 0 0 0 3-.2 10.857 10.857 0 0 0 2.8-.8v6.7a19.28 19.28 0 0 1-3.8.9 27.484 27.484 0 0 1-3.8.3c-3.9 0-7-.9-9-2.8-2-1.7-3.1-4.4-3.1-7.9Z"></path></g><path d="M127 90.2c12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4L149.8 37c-1.7-7.1-3.2-10.3-15.7-16.6-9.7-5-30.8-13.1-37.1-13.1-5.8 0-7.5 7.5-14.4 7.5-6.7 0-11.6-5.6-17.9-5.6-6 0-9.9 4.1-12.9 12.5 0 0-8.4 23.7-9.5 27.2a4.216 4.216 0 0 0-.3 1.9c0 9.2 36.3 39.4 85 39.4Zm32.5-11.4c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3C21.8 58.8 0 61.8 0 81c0 31.5 74.6 70.3 133.7 70.3 45.3 0 56.7-20.5 56.7-36.6-.1-12.8-11-27.3-30.9-35.9Z" fill="#e00"></path><path d="M159.5 78.8c1.7 8.2 1.7 9.1 1.7 10.1 0 14-15.7 21.8-36.4 21.8-46.8 0-87.7-27.4-87.7-45.5a17.535 17.535 0 0 1 1.5-7.3l3.7-9.1a4.877 4.877 0 0 0-.3 2c0 9.2 36.3 39.4 85 39.4 12.5 0 30.6-2.6 30.6-17.5a12.678 12.678 0 0 0-.3-3.4Z"></path><path d="M253.5 158.7a2.22 2.22 0 0 1-2.2-2.2V2.2a2.2 2.2 0 0 1 4.4 0v154.2a2.242 2.242 0 0 1-2.2 2.3Z" fill="#111"></path><text data-name="Demo Platform" transform="translate(1186 149)" fill="#111" font-size="82" font-family="'RedHatDisplay', 'Overpass', overpass, helvetica, arial, sans-serif" font-weight="700"><tspan x="-877.892" y="0">Demo Platform</tspan></text></svg></div></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
