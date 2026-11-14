@@ -264,7 +264,6 @@ In other words, going forward we can focus on supplying the _actual_ predicate a
 
 [source,json]
 ----
-cosign download attestation $IMAGE | jq -r '.dsseEnvelope.payload' | base64 -d | jq .
 {
   "_type": "https://in-toto.io/Statement/v0.1",
   "predicateType": "https://example.com/predicate/v1",
